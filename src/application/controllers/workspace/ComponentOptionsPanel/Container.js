@@ -138,20 +138,20 @@ class Container extends Component {
                         {optionInputs}
                 </Tab>
             );
-            tabPanes.push(
-                <Tab
-                    key="quickProperties"
-                    eventKey={tabPanes.length + 1}
-                    title="Quick props">
-                    <div style={{width: '100%', overflow: 'auto', marginTop: '1em'}}>
-                        <div style={{width: '196px', height: '50px', backgroundColor: '#cdcdcd'}}>
-
-                        </div>
-                        <p><span>Props:</span></p>
-                        <pre style={{fontSize: '10px'}}>{JSON.stringify(props, null, 2)}</pre>
-                    </div>
-                </Tab>
-            );
+            // tabPanes.push(
+            //     <Tab
+            //         key="quickProperties"
+            //         eventKey={tabPanes.length + 1}
+            //         title="Quick props">
+            //         <div style={{width: '100%', overflow: 'auto', marginTop: '1em'}}>
+            //             <div style={{width: '196px', height: '50px', backgroundColor: '#cdcdcd'}}>
+			//
+            //             </div>
+            //             <p><span>Props:</span></p>
+            //             <pre style={{fontSize: '10px'}}>{JSON.stringify(props, null, 2)}</pre>
+            //         </div>
+            //     </Tab>
+            // );
 
             panelContent = (
                 <div style={style}>

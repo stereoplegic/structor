@@ -14,9 +14,9 @@ module.exports = [
         },
         devtool: 'inline-source-map',
         module: {
-            loaders: [
-                { test: /\.js$/, exclude: /node_modules/, loader: 'babel',
-                    query: {
+            rules: [
+                { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader',
+                    options: {
                         presets: [
                             [
                                 "es2015",
@@ -34,7 +34,7 @@ module.exports = [
             ]
         },
         plugins: [
-            new ExtractTextPlugin("styles.css")
+            new ExtractTextPlugin({filename: "styles.css"})
         ],
         externals: {
             "jquery": "jQuery"

@@ -12,9 +12,9 @@ module.exports = [
             filename: '[name].js'
         },
         module: {
-            loaders: [
-                { test: /\.js$/, exclude: /node_modules/, loader: 'babel',
-                    query: {
+            rules: [
+                { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader',
+                    options: {
                         presets: [
                             [
                                 "es2015",
@@ -35,7 +35,6 @@ module.exports = [
             ]
         },
         plugins: [
-            new webpack.optimize.OccurrenceOrderPlugin(true),
             new webpack.DefinePlugin({
                 "process.env": {
                     NODE_ENV: JSON.stringify("production")
@@ -47,7 +46,7 @@ module.exports = [
                     warnings: false
                 }
             }),
-            new ExtractTextPlugin("styles.css")
+            new ExtractTextPlugin({filename: "styles.css"})
         ],
         externals: {
             "jquery": "jQuery"
