@@ -17,7 +17,7 @@
 import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { Collapse, Panel } from 'react-bootstrap';
-import { getStylePropList } from '../../api/utils/styleProps.js';
+import { getStylePropList } from 'api/utils/styleProps.js';
 
 class CollapsiblePlusOptionInput extends Component {
 

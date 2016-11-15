@@ -12,9 +12,12 @@ module.exports = [
             filename: '[name].js'
         },
         module: {
-            rules: [
-                { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader',
-                    options: {
+            loaders: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    loader: 'babel-loader',
+                    query: {
                         presets: [
                             [
                                 "es2015",
@@ -30,8 +33,16 @@ module.exports = [
                         ]
                     }
                 },
-                { test: /\.css$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract({fallbackLoader: 'style-loader', loader: 'css-loader'}) },
-                { test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)([\?]?.*)$/, exclude: /node_modules/, loader: 'url-loader' }
+                {
+                    test: /\.css$/,
+                    exclude: /node_modules/,
+                    loader: ExtractTextPlugin.extract({fallbackLoader: 'style-loader', loader: 'css-loader'})
+                },
+                {
+                    test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)([\?]?.*)$/,
+                    exclude: /node_modules/,
+                    loader: 'url-loader'
+                }
             ]
         },
         plugins: [
@@ -50,7 +61,15 @@ module.exports = [
         ],
         externals: {
             "jquery": "jQuery"
-        }
+        },
+        resolve: {
+            modules: ['src/application', 'node_modules'],
+            extensions: [
+                '.js',
+                '.jsx',
+                '.react.js',
+            ],
+        },
     }
 ];
 

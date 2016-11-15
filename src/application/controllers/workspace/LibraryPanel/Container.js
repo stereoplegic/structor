@@ -149,6 +149,7 @@ class Container extends Component {
                     } else if(expandedGroupKeys[key] === true){
                         collapsed = "in";
                     }
+                    // todo: use React Bootstrap panel group instead: http://react-bootstrap.github.io/components.html#panels
                     libGroups.push(
                         <div key={key}
                              className="panel panel-default">
