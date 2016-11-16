@@ -23,7 +23,9 @@ const initialState = {
     groupsList: [],
     defaultVariantMap: {},
     componentInPreview: undefined,
-    variantsInPreview: []
+    variantsInPreview: [],
+    expandedGroupKeys: {},
+    recentlyUsed: [],
 };
 
 export default (state = initialState, action = {}) => {
@@ -71,11 +73,33 @@ export default (state = initialState, action = {}) => {
         });
     }
 
-    if(type === actions.SET_DEFAULT_VARIANT){
+    if(type === actions.SET_DEFAULT_VARIANT) {
         let defaultVariantMap = state.defaultVariantMap;
         defaultVariantMap[payload.componentName] = { key: payload.variant };
         return Object.assign({}, state, {
             defaultVariantMap: defaultVariantMap
+        });
+    }
+
+    if(type === actions.TOGGLE_PANEL_GROUP) {
+        let newExpandedGroupKeys = Object.assign({}, state.expandedGroupKeys);
+        newExpandedGroupKeys[payload] = !newExpandedGroupKeys[payload];
+        return Object.assign({}, state, {
+            expandedGroupKeys: newExpandedGroupKeys
+        });
+    }
+
+    if(type === actions.ADD_RECENTLY_USED) {
+        let newRecentlyUsed = [].concat(state.recentlyUsed);
+        const found = newRecentlyUsed.find(i => payload === i);
+        if(!found){
+            newRecentlyUsed.splice(0, 0, payload);
+        }
+        if(newRecentlyUsed.length > 10){
+            newRecentlyUsed = newRecentlyUsed.slice(0, 10);
+        }
+        return Object.assign({}, state, {
+            recentlyUsed: newRecentlyUsed
         });
     }
 

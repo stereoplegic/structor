@@ -15,20 +15,24 @@
  */
 
 import { bindActionCreators } from 'redux';
-import { HtmlComponents, previewGraphApi, graphApi, utils } from '../../../api';
-import { success, failed} from '../../app/AppMessage/actions.js';
-import { updateMarked, updatePage } from '../DeskPage/actions.js';
-import { setSelectedKey } from '../SelectionBreadcrumbs/actions.js';
-import { setForNew } from '../ClipboardIndicator/actions.js';
-import { pushHistory } from '../HistoryControls/actions.js';
+import { HtmlComponents, previewGraphApi, graphApi, utils } from 'api';
+import { success, failed} from 'controllers/app/AppMessage/actions.js';
+import { updateMarked, updatePage } from 'controllers/workspace/DeskPage/actions.js';
+import { setSelectedKey } from 'controllers/workspace/SelectionBreadcrumbs/actions.js';
+import { setForNew } from 'controllers/workspace/ClipboardIndicator/actions.js';
+import { pushHistory } from 'controllers/workspace/HistoryControls/actions.js';
 
 export const LOAD_COMPONENTS = "LibraryPanel/LOAD_COMPONENTS";
 export const SET_COMPONENTS = "LibraryPanel/SET_COMPONENTS";
 export const PREVIEW_COMPONENT = "LibraryPanel/PREVIEW_COMPONENT";
 export const HIDE_PREVIEW = "LibraryPanel/HIDE_PREVIEW";
 export const SET_DEFAULT_VARIANT = "LibraryPanel/SET_DEFAULT_VARIANT";
+export const TOGGLE_PANEL_GROUP = "LibraryPanel/TOGGLE_PANEL_GROUP";
+export const ADD_RECENTLY_USED = "LibraryPanel/ADD_RECENTLY_USED";
 
 export const loadComponents = () => ({ type: LOAD_COMPONENTS });
+export const togglePanelGroup = (key) => ({type: TOGGLE_PANEL_GROUP, payload: key});
+export const addRecentlyUsed = (componentName) => ({type: ADD_RECENTLY_USED, payload: componentName});
 
 export const previewComponent = (componentName) => (dispatch, getState) => {
     const variants = previewGraphApi.getVariantKeys(componentName);
@@ -69,6 +73,7 @@ export const quickCopyToClipboard = (componentName) => (dispatch, getState) => {
         const variantModel = getVariantModel(defaultVariantMap, [componentName]);
         if(variantModel){
             dispatch(setForNew(variantModel));
+            dispatch(addRecentlyUsed(componentName));
             dispatch(success(componentName + ' was copied to clipboard'));
         } else {
             console.error('Quick copy to clipboard: model for variant key was not found');
@@ -161,7 +166,7 @@ export const quickReplace = (componentNames) => (dispatch, getState) => {
 //};
 
 export const containerActions = (dispatch) => bindActionCreators({
-    previewComponent, quickCopyToClipboard
+    previewComponent, quickCopyToClipboard, togglePanelGroup
 }, dispatch);
 
 function getVariantModel(defaultVariantMap, componentNames){

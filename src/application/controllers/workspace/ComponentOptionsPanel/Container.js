@@ -21,9 +21,21 @@ import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 
-import OptionInput from '../../../views/workspace/OptionInput.js';
-import CollapsiblePlusOptionInput from '../../../views/workspace/CollapsiblePlusOptionInput.js';
+import OptionInput from 'views/workspace/OptionInput.js';
+import CollapsiblePlusOptionInput from 'views/workspace/CollapsiblePlusOptionInput.js';
 import DimensionContainer from 'views/workspace/DimensionContainer.js';
+
+const style = {
+    width: '100%',
+    paddingTop: '5px',
+    paddingRight: '5px',
+    paddingLeft: '5px',
+    paddingBottom: '10px',
+    border: '1px solid #DBDBDB',
+    borderRadius: '3px',
+    height: '100%',
+    overflow: 'auto',
+};
 
 class Container extends Component {
 
@@ -70,18 +82,6 @@ class Container extends Component {
     render() {
 
         const { currentComponent, activeTab } = this.props;
-
-        let style = {
-            width: '100%',
-            paddingTop: '5px',
-            paddingRight: '5px',
-            paddingLeft: '5px',
-            paddingBottom: '10px',
-            border: '1px solid #DBDBDB',
-            borderRadius: '3px',
-            height: '100%',
-            overflow: 'auto',
-        };
 
         let panelContent = null;
 

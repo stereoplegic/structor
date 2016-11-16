@@ -20,13 +20,17 @@ import { forOwn, isObject } from 'lodash';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 
-import { Button } from 'react-bootstrap';
+const style = {
+    position: 'relative',
+    width: '100%',
+    marginTop: '5px'
+};
 
 class Container extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { filer: '', expandedGroupKeys: {} };
+        this.state = { filer: '' };
         this.handleChangeFind = this.handleChangeFind.bind(this);
         this.handleClearFind = this.handleClearFind.bind(this);
         this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
@@ -59,9 +63,7 @@ class Container extends Component {
         e.stopPropagation();
         e.preventDefault();
         const key = e.currentTarget.dataset.groupkey;
-        let newExpandedGroupKeys = Object.assign({}, this.state.expandedGroupKeys);
-        newExpandedGroupKeys[key] = !newExpandedGroupKeys[key];
-        this.setState({ expandedGroupKeys: newExpandedGroupKeys });
+        this.props.togglePanelGroup(key);
     }
 
     // handlePreviewComponent(e){
@@ -94,21 +96,64 @@ class Container extends Component {
 
     render() {
 
-        const { componentModel: {componentsTree : componentTreeModel} } = this.props;
-
-        const { filter, expandedGroupKeys } = this.state;
-
-        const style = {
-            position: 'relative',
-            width: '100%',
-            marginTop: '5px'
-        };
+        const {
+            componentModel: {
+                recentlyUsed,
+                expandedGroupKeys,
+                componentsTree : componentTreeModel
+            }
+        } = this.props;
+        const { filter } = this.state;
 
         let libGroups = [];
         let groupHeaderKey = 0;
         let counter = 0;
 
         const filterString = filter ? filter.toUpperCase() : null;
+        if(!filter && recentlyUsed && recentlyUsed.length > 0){
+            let key = 'groupKeyRecent';
+            let collapsed = "";
+            if(expandedGroupKeys[key] === true){
+                collapsed = "in";
+            }
+            let components = [];
+            recentlyUsed.forEach((componentName, index) => {
+                components.push(
+                    <a key={componentName}
+                       className={'list-group-item'}
+                       href="#"
+                       title={'Copy to clipboard ' + componentName}
+                       data-component={componentName}
+                       onClick={this.handleQuickCopyToClipboard}>
+                        <span>{this.makeTitle(componentName)}</span>
+                    </a>
+                );
+            });
+            libGroups.push(
+                <div key={key}
+                     className="panel panel-default">
+                    <div className="panel-heading"
+                         role="tab"
+                         id="headingOne">
+                        <a style={{outline: '0'}}
+                           role="button"
+                           data-groupkey={key}
+                           href={'#' + key}
+                           onClick={this.handleToggleGroup}>
+                            Recently Used
+                        </a>
+                    </div>
+                    <div id={key}
+                         className={"panel-collapse collapse " + collapsed}
+                         role="tabpanel">
+                        <div className="list-group">
+                            {components}
+                        </div>
+                        <div style={{height: '0'}}></div>
+                    </div>
+                </div>
+            );
+        }
         forOwn(componentTreeModel, (group, groupName) => {
             if(isObject(group)){
                 let components = [];
@@ -149,7 +194,6 @@ class Container extends Component {
                     } else if(expandedGroupKeys[key] === true){
                         collapsed = "in";
                     }
-                    // todo: use React Bootstrap panel group instead: http://react-bootstrap.github.io/components.html#panels
                     libGroups.push(
                         <div key={key}
                              className="panel panel-default">

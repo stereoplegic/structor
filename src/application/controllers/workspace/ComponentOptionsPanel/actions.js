@@ -16,11 +16,11 @@
 
 import { merge } from 'lodash';
 import { bindActionCreators } from 'redux';
-import { utils, graphApi } from '../../../api/index.js';
-import { pushHistory } from '../HistoryControls/actions.js';
-import { setSelectedKey } from '../SelectionBreadcrumbs/actions.js';
-import { updatePage } from '../DeskPage/actions.js';
-import { failed } from '../../app/AppMessage/actions.js';
+import { utils, graphApi } from 'api/index.js';
+import { pushHistory } from 'controllers/workspace/HistoryControls/actions.js';
+import { setSelectedKey } from 'controllers/workspace/SelectionBreadcrumbs/actions.js';
+import { updatePage } from 'controllers/workspace/DeskPage/actions.js';
+import { failed } from 'controllers/app/AppMessage/actions.js';
 
 export const DELETE_OPTION = "ComponentOptionsPanel/DELETE_OPTION";
 export const CHANGE_OPTION = "ComponentOptionsPanel/CHANGE_OPTION";
