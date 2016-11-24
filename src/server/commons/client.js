@@ -42,7 +42,6 @@ export function post(url, requestBody) {
                 requestOptions,
                 (error, response, body) => {
                     if (response) {
-
                         if (response.statusCode !== 200) {
                             if (response.statusCode >= 301 && response.statusCode <= 302) {
                                 post(response.headers.location, requestBody)

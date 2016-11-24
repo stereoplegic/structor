@@ -18,6 +18,7 @@ import * as actions from './actions.js';
 
 const initialState = {
     activeTab: 1,
+    expandedStyleSections: {},
 };
 
 export default (state = initialState, action = {}) => {
@@ -27,6 +28,14 @@ export default (state = initialState, action = {}) => {
     if(type === actions.SET_ACTIVE_TAB){
         return Object.assign({}, state, {
             activeTab: payload
+        });
+    }
+
+    if(type === actions.TOGGLE_STYLE_SECTION){
+        let newExpandedStyleSections = Object.assign({}, state.expandedStyleSections);
+        newExpandedStyleSections[payload] = !newExpandedStyleSections[payload];
+        return Object.assign({}, state, {
+            expandedStyleSections: newExpandedStyleSections
         });
     }
 

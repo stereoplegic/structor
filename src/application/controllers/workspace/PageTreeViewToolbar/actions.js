@@ -15,9 +15,18 @@
  */
 
 import { bindActionCreators } from 'redux';
-import {setForCuttingKeys, setForCopyingKeys} from '../ClipboardIndicator/actions.js';
-import {cloneSelected, moveSelected, deleteSelected} from '../SelectionControls/actions.js';
-import {pasteBefore, pasteAfter, pasteFirst, pasteLast, pasteReplace} from '../ClipboardControls/actions.js';
+import {
+	setForCuttingKeys, setForCopyingKeys
+} from 'controllers/workspace/ClipboardIndicator/actions';
+import {
+	cloneSelected, moveSelected, deleteSelected
+} from 'controllers/workspace/SelectionControls/actions';
+import {
+	pasteBefore, pasteAfter, pasteFirst, pasteLast, pasteReplace
+} from 'controllers/workspace/ClipboardControls/actions';
+import {
+	showModal as showQuickAppend
+} from 'controllers/workspace/QuickAppendModal/actions';
 
 export const containerActions = (dispatch) => bindActionCreators({
 	setForCuttingKeys,
@@ -29,5 +38,6 @@ export const containerActions = (dispatch) => bindActionCreators({
 	pasteAfter,
 	pasteFirst,
 	pasteLast,
-	pasteReplace
+	pasteReplace,
+	showQuickAppend
 }, dispatch);

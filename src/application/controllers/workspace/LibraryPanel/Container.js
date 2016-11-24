@@ -131,7 +131,7 @@ class Container extends Component {
             });
             libGroups.push(
                 <div key={key}
-                     className="panel panel-default">
+                     className="panel panel-info">
                     <div className="panel-heading"
                          role="tab"
                          id="headingOne">

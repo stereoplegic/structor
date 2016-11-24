@@ -479,7 +479,7 @@ body {
 
 .dimension-box {
     position: relative;
-    border: 1px solid #dcdcdc;
+    border: 1px solid #fff;
     border-radius: 4px;
     padding: 20px;
 }
@@ -525,6 +525,15 @@ body {
 .dimension-btn:hover {
     background-color: #35b3ee;
     color: #ffffff;
+}
+
+.dimension-btn-inner {
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
 }
 
 .dimension-border-left {

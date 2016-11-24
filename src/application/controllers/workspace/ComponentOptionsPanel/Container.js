@@ -21,9 +21,10 @@ import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 
-import OptionInput from 'views/workspace/OptionInput.js';
-import CollapsiblePlusOptionInput from 'views/workspace/CollapsiblePlusOptionInput.js';
-import DimensionContainer from 'views/workspace/DimensionContainer.js';
+import OptionInput from 'views/workspace/OptionInput';
+import CollapsiblePlusOptionInput from 'views/workspace/CollapsiblePlusOptionInput';
+import DimensionContainer from 'views/workspace/DimensionContainer';
+import StyleNumberInput from 'views/workspace/StyleNumberInput';
 
 const style = {
     width: '100%',
@@ -37,6 +38,21 @@ const style = {
     overflow: 'auto',
 };
 
+const styleGroups = [
+    {
+        key: '01',
+        title: 'Layout'
+    },
+    {
+        key: '02',
+        title: 'Dimensions'
+    },
+    {
+        key: '03',
+        title: 'Border'
+    }
+];
+
 class Container extends Component {
 
     constructor(props) {
@@ -45,6 +61,7 @@ class Container extends Component {
         this.handleChangeOption = this.handleChangeOption.bind(this);
         this.handleDeleteOption = this.handleDeleteOption.bind(this);
         this.handleSelectTab = this.handleSelectTab.bind(this);
+        this.handleToggleStyleSection = this.handleToggleStyleSection.bind(this);
     }
 
     handleAddNewProp(options){
@@ -79,15 +96,73 @@ class Container extends Component {
         }
     }
 
+    handleToggleStyleSection(e){
+        e.stopPropagation();
+        e.preventDefault();
+        const key = e.currentTarget.dataset.groupkey;
+        this.props.toggleStyleSection(key);
+    }
+
     render() {
 
-        const { currentComponent, activeTab } = this.props;
+        const { currentComponent, componentModel: {activeTab, expandedStyleSections} } = this.props;
 
         let panelContent = null;
 
         if(currentComponent){
 
             const {key, props} = currentComponent;
+
+            let styleSections = [];
+            let collapsed;
+            styleGroups.forEach((group, index) => {
+                if(expandedStyleSections[group.key] === true){
+                    collapsed = 'in';
+                } else {
+                    collapsed = '';
+                }
+                let styleOptionInputs = [];
+                let valueObject = {};
+                let pathTo = 'style.width';
+                if(props && props.style && props.style.width) {
+                    set(valueObject, pathTo, props.style.width);
+                } else {
+                    set(valueObject, pathTo, '100%');
+                }
+                styleOptionInputs.push(
+                    <div className="list-group-item">
+                        <StyleNumberInput
+                            key={pathTo + key}
+                            valueObject={valueObject}
+                            path={pathTo}
+                            onChangeValue={this.handleChangeOption} />
+                    </div>
+                );
+                styleSections.push(
+                    <div key={group.key}
+                         className="panel panel-default">
+                        <div className="panel-heading"
+                             role="tab"
+                             id={'heading' + group.key}>
+                            <a style={{outline: '0'}}
+                               role="button"
+                               data-groupkey={group.key}
+                               href={'#' + group.key}
+                               onClick={this.handleToggleStyleSection}>
+                                {group.title}
+                            </a>
+                        </div>
+                        <div id={group.key}
+                             className={"panel-collapse collapse " + collapsed}
+                             role="tabpanel">
+                            <div className="list-group">
+                                {styleOptionInputs}
+                            </div>
+                            <div style={{height: '0'}}></div>
+                        </div>
+                    </div>
+                );
+            });
 
             let optionInputs = [];
 
@@ -105,7 +180,7 @@ class Container extends Component {
                                     valueObject={valueObject}
                                     path={pathTo}
                                     onDeleteValue={this.handleDeleteOption}
-                                    onChangeValue={this.handleChangeOption}/>
+                                    onChangeValue={this.handleChangeOption} />
                             );
                         }
                     });
@@ -120,7 +195,7 @@ class Container extends Component {
                             valueObject={valueObject}
                             path={pathTo}
                             onDeleteValue={this.handleDeleteOption}
-                            onChangeValue={this.handleChangeOption}/>
+                            onChangeValue={this.handleChangeOption} />
                     );
                 }
             });
@@ -144,10 +219,19 @@ class Container extends Component {
                     key="quickProperties"
                     eventKey={tabPanes.length + 1}
                     title="Quick props">
-                    <div style={{width: '100%', overflow: 'auto', marginTop: '1em'}}>
-                        <DimensionContainer />
-                        <p><span>Props:</span></p>
-                        <pre style={{fontSize: '10px'}}>{JSON.stringify(props, null, 2)}</pre>
+                    <div style={{width: '100%', marginTop: '1em'}}>
+                        {/*<DimensionContainer />*/}
+
+                        {/*<p><span>Props:</span></p>*/}
+                        {/*<pre style={{fontSize: '10px'}}>{JSON.stringify(props, null, 2)}</pre>*/}
+                        <div
+                            className="panel-group"
+                            id="accordion"
+                            role="tablist"
+                            aria-multiselectable="true">
+                            {styleSections}
+                        </div>
+
                     </div>
                 </Tab>
             );

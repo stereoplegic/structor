@@ -26,6 +26,7 @@ export const DELETE_OPTION = "ComponentOptionsPanel/DELETE_OPTION";
 export const CHANGE_OPTION = "ComponentOptionsPanel/CHANGE_OPTION";
 export const ADD_OPTION = "ComponentOptionsPanel/ADD_OPTION";
 export const SET_ACTIVE_TAB = "ComponentOptionsPanel/SET_ACTIVE_TAB";
+export const TOGGLE_STYLE_SECTION = "ComponentOptionsPanel/TOGGLE_STYLE_SECTION";
 
 export const deleteOption = (componentObject, optionPath) => (dispatch, getState) => {
     const {key} = componentObject;
@@ -58,7 +59,8 @@ export const changeOption = (componentObject, optionObject) => (dispatch, getSta
 };
 
 export const setActiveTab = (activeTab) => ({type: SET_ACTIVE_TAB, payload: activeTab});
+export const toggleStyleSection = (sectionKey) => ({type: TOGGLE_STYLE_SECTION, payload: sectionKey});
 
 export const containerActions = (dispatch) => bindActionCreators({
-    deleteOption, changeOption, setActiveTab
+    deleteOption, changeOption, setActiveTab, toggleStyleSection
 }, dispatch);

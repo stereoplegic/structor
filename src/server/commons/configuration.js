@@ -23,6 +23,7 @@ export const READY = 'ready-to-go';
 export const EMPTY = 'dir-is-empty';
 
 export const SERVICE_URL = 'https://helmetrex.com';
+// export const SERVICE_URL = 'http://localhost';
 
 export const STRUCTOR_URLS = [
     '/structor',

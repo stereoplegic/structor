@@ -39,7 +39,7 @@ const setTargetKey = (targetKey, selectedKeys) => {
 };
 
 export const pasteBefore = (targetKey) => (dispatch, getState) => {
-    const { clipboardIndicator: {clipboardMode}, selectionBreadcrumbs: {selectedKeys}} = getState();
+    const { clipboardIndicator: {clipboardMode}} = getState();
     let resultKeys;
     if(targetKey){
         dispatch(setSelectedKeys([targetKey]));
@@ -60,7 +60,7 @@ export const pasteBefore = (targetKey) => (dispatch, getState) => {
 };
 
 export const pasteAfter = (targetKey) => (dispatch, getState) => {
-    const { clipboardIndicator: {clipboardMode}, selectionBreadcrumbs: {selectedKeys}} = getState();
+    const { clipboardIndicator: {clipboardMode}} = getState();
     let resultKeys;
     if(targetKey){
         dispatch(setSelectedKeys([targetKey]));
@@ -81,7 +81,7 @@ export const pasteAfter = (targetKey) => (dispatch, getState) => {
 };
 
 export const pasteFirst = (targetKey) => (dispatch, getState) => {
-    const { clipboardIndicator: {clipboardMode}, selectionBreadcrumbs: {selectedKeys}} = getState();
+    const { clipboardIndicator: {clipboardMode}} = getState();
     let resultKeys;
     if(targetKey){
         dispatch(setSelectedKeys([targetKey]));
@@ -102,7 +102,7 @@ export const pasteFirst = (targetKey) => (dispatch, getState) => {
 };
 
 export const pasteLast = (targetKey) => (dispatch, getState) => {
-    const { clipboardIndicator: {clipboardMode}, selectionBreadcrumbs: {selectedKeys}} = getState();
+    const { clipboardIndicator: {clipboardMode}} = getState();
     let resultKeys;
     if(targetKey){
         dispatch(setSelectedKeys([targetKey]));
@@ -123,7 +123,7 @@ export const pasteLast = (targetKey) => (dispatch, getState) => {
 };
 
 export const pasteReplace = (targetKey) => (dispatch, getState) => {
-    const { clipboardIndicator: {clipboardMode}, selectionBreadcrumbs: {selectedKeys}} = getState();
+    const { clipboardIndicator: {clipboardMode}} = getState();
     let resultKeys;
     if(targetKey){
         dispatch(setSelectedKeys([targetKey]));

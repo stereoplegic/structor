@@ -18,6 +18,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
+import { modeMap } from 'controllers/workspace/QuickAppendModal/actions';
 
 class Container extends Component {
 
@@ -28,8 +29,22 @@ class Container extends Component {
     handleButtonClick = (type) => (e) => {
         e.stopPropagation();
         e.preventDefault();
-        const { setForCuttingKeys, setForCopyingKeys, cloneSelected, moveSelected, deleteSelected } = this.props;
-        const { selectionBreadcrumbsModel: {selectedKeys} } = this.props;
+        const { selectionBreadcrumbsModel: {selectedKeys}, clipboardIndicatorModel: {clipboardKeys} } = this.props;
+        const {
+            pasteBefore,
+            pasteAfter,
+            pasteFirst,
+            pasteLast,
+            pasteReplace,
+            showQuickAppend
+        } = this.props;
+        const {
+            setForCuttingKeys,
+            setForCopyingKeys,
+            cloneSelected,
+            moveSelected,
+            deleteSelected
+        } = this.props;
         switch(type) {
             case 'copy':
                 setForCopyingKeys(selectedKeys);
@@ -49,7 +64,41 @@ class Container extends Component {
             case 'delete':
                 deleteSelected();
                 break;
-
+            case 'pasteBefore':
+                if(clipboardKeys.length <= 0) {
+                    showQuickAppend(modeMap.addBefore);
+                } else {
+                    pasteBefore();
+                }
+                break;
+            case 'pasteAfter':
+                if(clipboardKeys.length <= 0) {
+                    showQuickAppend(modeMap.addAfter);
+                } else {
+                    pasteAfter();
+                }
+                break;
+            case 'pasteFirst':
+                if(clipboardKeys.length <= 0) {
+                    showQuickAppend(modeMap.insertFirst);
+                } else {
+                    pasteFirst();
+                }
+                break;
+            case 'pasteLast':
+                if(clipboardKeys.length <= 0) {
+                    showQuickAppend(modeMap.insertLast);
+                } else {
+                    pasteLast();
+                }
+                break;
+            case 'pasteReplace':
+                if(clipboardKeys.length <= 0) {
+                    showQuickAppend(modeMap.replace);
+                } else {
+                    pasteReplace();
+                }
+                break;
             default:
                 break;
         }
@@ -60,6 +109,27 @@ class Container extends Component {
         return (
             <div style={this.props.style}>
                 <div className="btn-group-vertical btn-group-xs">
+                    <button
+                        className="btn btn-default"
+                        disabled={selectedKeys.length <= 0}
+                        onClick={this.handleButtonClick('pasteBefore')}
+                        title="Append components before selected component">
+                        <span className="umy-icon-append-before" />
+                    </button>
+                    <button
+                        className="btn btn-default"
+                        disabled={selectedKeys.length <= 0}
+                        onClick={this.handleButtonClick('pasteFirst')}
+                        title="Insert components into selected component as the first child">
+                        <span className="umy-icon-insert-first" />
+                    </button>
+                    <button
+                        className="btn btn-default"
+                        disabled={selectedKeys.length <= 0}
+                        onClick={this.handleButtonClick('pasteReplace')}
+                        title="Replace selected component">
+                        <span className="umy-icon-replace" />
+                    </button>
                     <button
                         className="btn btn-default"
                         disabled={selectedKeys.length <= 0}
@@ -101,6 +171,20 @@ class Container extends Component {
                         onClick={this.handleButtonClick('delete')}
                         title="Delete selected components">
                         <span className="fa fa-trash-o" />
+                    </button>
+                    <button
+                        className="btn btn-default"
+                        disabled={selectedKeys.length <= 0}
+                        onClick={this.handleButtonClick('pasteLast')}
+                        title="Insert components into selected component as the last child">
+                        <span className="umy-icon-insert-last" />
+                    </button>
+                    <button
+                        className="btn btn-default"
+                        disabled={selectedKeys.length <= 0}
+                        onClick={this.handleButtonClick('pasteAfter')}
+                        title="Append components after selected component">
+                        <span className="umy-icon-append-after" />
                     </button>
                 </div>
             </div>

@@ -158,17 +158,35 @@ export function getTemplatePageModel(){
         pagePath: '/UnnamedPage',
         children: [
             {
-                type: 'h3',
+                type: 'div',
                 props: {
                     style: {
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
                         padding: '1em',
-                        textAlign: 'center'
                     }
                 },
                 children: [
                     {
-                        type: 'span',
-                        text: 'Click on me and start creating a new cool page.'
+                        type: 'div',
+                        children: [
+                            {
+                                type: 'h3',
+                                props: {
+                                    style: {
+                                        padding: '1em',
+                                        textAlign: 'center'
+                                    }
+                                },
+                                children: [
+                                    {
+                                        type: 'span',
+                                        text: 'Click on me and start creating a new cool component.'
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             }

@@ -76,7 +76,6 @@ const popoverListStyle = {
 	height: '5.5em',
 	width: '15em',
 	overflowX: 'auto',
-	overflowY: 'hidden',
 };
 const textProbeStyle = {
 	padding: 0,
@@ -84,6 +83,17 @@ const textProbeStyle = {
 	position: 'absolute',
 	color: 'transparent',
 	zIndex: -1
+};
+const listItemSelectedStyle = {
+	margin: 0,
+	padding: '2px 4px',
+	borderRadius: '3px',
+	overflow: 'hidden',
+};
+const listItemStyle = {
+	margin: 0,
+	padding: '2px 4px',
+	overflow: 'hidden',
 };
 
 const getCaretPosition = (input) => {
@@ -346,7 +356,7 @@ class InputComponentAutocomplete extends Component {
 												key={item + index}
 												ref={me => this.selectedListItem = me}
 												className="bg-primary"
-												style={{margin: 0, padding: '2px 4px', borderRadius: '3px'}}>
+												style={listItemSelectedStyle}>
 												<span
 													style={{cursor: "pointer"}}
 													data-index={index}
@@ -359,7 +369,7 @@ class InputComponentAutocomplete extends Component {
 										return (
 											<p
 												key={item + index}
-												style={{margin: 0, padding: '2px 4px'}}>
+												style={listItemStyle}>
 												<a
 													href="#"
 													data-index={index}

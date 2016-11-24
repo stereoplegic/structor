@@ -70,12 +70,16 @@ class DimensionBorder extends Component {
                 <div style={increaseButtonStyle}
                      className="dimension-btn"
                      onClick={this.handleIncrease}>
-                    <i className="fa fa-plus" />
+                    <div className="dimension-btn-inner">
+                        <i className='fa fa-plus' />
+                    </div>
                 </div>
                 <div style={decreaseButtonStyle}
-                     className="dimension-btn"
+                     className='dimension-btn'
                      onClick={this.handleDecrease}>
-                    <i className="fa fa-minus" />
+                    <div className="dimension-btn-inner">
+                        <i className='fa fa-minus' />
+                    </div>
                 </div>
             </div>
         );

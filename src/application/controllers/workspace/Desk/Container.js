@@ -199,7 +199,7 @@ class Container extends Component {
                             <PageTreeViewToolbar
                                 style={{
                                     position: 'absolute',
-                                    top: '5em',
+                                    top: '3em',
                                     left: '2px',
                                     zIndex: 1030
                                 }}
