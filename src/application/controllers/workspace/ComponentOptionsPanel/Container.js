@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import {set, forOwn, isObject} from 'lodash';
+import {set, has, get, forOwn, isObject} from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
+import {styleGroups} from './constants';
 
 import OptionInput from 'views/workspace/OptionInput';
 import CollapsiblePlusOptionInput from 'views/workspace/CollapsiblePlusOptionInput';
-import DimensionContainer from 'views/workspace/DimensionContainer';
 import StyleNumberInput from 'views/workspace/StyleNumberInput';
 
 const style = {
@@ -37,21 +37,6 @@ const style = {
     height: '100%',
     overflow: 'auto',
 };
-
-const styleGroups = [
-    {
-        key: '01',
-        title: 'Layout'
-    },
-    {
-        key: '02',
-        title: 'Dimensions'
-    },
-    {
-        key: '03',
-        title: 'Border'
-    }
-];
 
 class Container extends Component {
 
@@ -90,6 +75,15 @@ class Container extends Component {
         deleteOption(currentComponent, path);
     }
 
+    handleToggleOption = (valueObject) => (path, checked) => {
+        const { currentComponent, deleteOption, changeOption } = this.props;
+        if(!checked) {
+            deleteOption(currentComponent, path);
+        } else {
+            changeOption(currentComponent, valueObject);
+        }
+    };
+
     handleSelectTab(eventKey){
         if(eventKey){
             this.props.setActiveTab(eventKey);
@@ -116,52 +110,62 @@ class Container extends Component {
             let styleSections = [];
             let collapsed;
             styleGroups.forEach((group, index) => {
-                if(expandedStyleSections[group.key] === true){
+                const {styleGroupKey, title, styles} = group;
+                if(expandedStyleSections[styleGroupKey] === true){
                     collapsed = 'in';
                 } else {
                     collapsed = '';
                 }
                 let styleOptionInputs = [];
-                let valueObject = {};
-                let pathTo = 'style.width';
-                if(props && props.style && props.style.width) {
-                    set(valueObject, pathTo, props.style.width);
-                } else {
-                    set(valueObject, pathTo, '100%');
-                }
-                styleOptionInputs.push(
-                    <div className="list-group-item">
-                        <StyleNumberInput
-                            key={pathTo + key}
-                            valueObject={valueObject}
-                            path={pathTo}
-                            onChangeValue={this.handleChangeOption} />
-                    </div>
-                );
-                styleSections.push(
-                    <div key={group.key}
-                         className="panel panel-default">
-                        <div className="panel-heading"
-                             role="tab"
-                             id={'heading' + group.key}>
-                            <a style={{outline: '0'}}
-                               role="button"
-                               data-groupkey={group.key}
-                               href={'#' + group.key}
-                               onClick={this.handleToggleStyleSection}>
-                                {group.title}
-                            </a>
-                        </div>
-                        <div id={group.key}
-                             className={"panel-collapse collapse " + collapsed}
-                             role="tabpanel">
-                            <div className="list-group">
-                                {styleOptionInputs}
+                let valueObject;
+                if(styles && styles.length > 0) {
+                    styles.forEach((style, index) => {
+                        let value = get(props, style.path);
+                        let isSet = false;
+                        if(value === undefined) {
+                            valueObject = set({}, style.path, style.value);
+                        } else {
+                            valueObject = set({}, style.path, value);
+                            isSet = true;
+                        }
+                        styleOptionInputs.push(
+                            <div
+                                key={style.path + styleGroupKey}
+                                className="list-group-item">
+                                <StyleNumberInput
+                                    valueObject={valueObject}
+                                    path={style.path}
+                                    isSet={isSet}
+                                    onSet={this.handleToggleOption(valueObject)}
+                                    onChangeValue={this.handleChangeOption} />
                             </div>
-                            <div style={{height: '0'}}></div>
+                        );
+                    });
+                    styleSections.push(
+                        <div key={styleGroupKey}
+                             className="panel panel-default">
+                            <div className="panel-heading"
+                                 role="tab"
+                                 id={'heading' + styleGroupKey}>
+                                <a style={{outline: '0'}}
+                                   role="button"
+                                   data-groupkey={styleGroupKey}
+                                   href={'#' + styleGroupKey}
+                                   onClick={this.handleToggleStyleSection}>
+                                    {title}
+                                </a>
+                            </div>
+                            <div id={styleGroupKey}
+                                 className={"panel-collapse collapse " + collapsed}
+                                 role="tabpanel">
+                                <div className="list-group">
+                                    {styleOptionInputs}
+                                </div>
+                                <div style={{height: '0'}}></div>
+                            </div>
                         </div>
-                    </div>
-                );
+                    );
+                }
             });
 
             let optionInputs = [];
@@ -218,12 +222,8 @@ class Container extends Component {
                 <Tab
                     key="quickProperties"
                     eventKey={tabPanes.length + 1}
-                    title="Quick props">
+                    title="Quick style">
                     <div style={{width: '100%', marginTop: '1em'}}>
-                        {/*<DimensionContainer />*/}
-
-                        {/*<p><span>Props:</span></p>*/}
-                        {/*<pre style={{fontSize: '10px'}}>{JSON.stringify(props, null, 2)}</pre>*/}
                         <div
                             className="panel-group"
                             id="accordion"
@@ -231,7 +231,6 @@ class Container extends Component {
                             aria-multiselectable="true">
                             {styleSections}
                         </div>
-
                     </div>
                 </Tab>
             );

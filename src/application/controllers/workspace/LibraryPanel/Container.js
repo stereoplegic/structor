@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import { forOwn, isObject } from 'lodash';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
+import {recentGroupKey} from './constants';
 
 const style = {
     position: 'relative',
@@ -111,9 +112,8 @@ class Container extends Component {
 
         const filterString = filter ? filter.toUpperCase() : null;
         if(!filter && recentlyUsed && recentlyUsed.length > 0){
-            let key = 'groupKeyRecent';
             let collapsed = "";
-            if(expandedGroupKeys[key] === true){
+            if(expandedGroupKeys[recentGroupKey] === true){
                 collapsed = "in";
             }
             let components = [];
@@ -130,20 +130,20 @@ class Container extends Component {
                 );
             });
             libGroups.push(
-                <div key={key}
+                <div key={recentGroupKey}
                      className="panel panel-info">
                     <div className="panel-heading"
                          role="tab"
                          id="headingOne">
                         <a style={{outline: '0'}}
                            role="button"
-                           data-groupkey={key}
-                           href={'#' + key}
+                           data-groupkey={recentGroupKey}
+                           href={'#' + recentGroupKey}
                            onClick={this.handleToggleGroup}>
                             Recently Used
                         </a>
                     </div>
-                    <div id={key}
+                    <div id={recentGroupKey}
                          className={"panel-collapse collapse " + collapsed}
                          role="tabpanel">
                         <div className="list-group">

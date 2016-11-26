@@ -15,10 +15,11 @@
  */
 
 import * as actions from './actions.js';
+import {initialExpandedStyleGroups} from './constants';
 
 const initialState = {
     activeTab: 1,
-    expandedStyleSections: {},
+    expandedStyleSections: initialExpandedStyleGroups,
 };
 
 export default (state = initialState, action = {}) => {

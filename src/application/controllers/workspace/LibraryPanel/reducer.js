@@ -16,6 +16,7 @@
 
 import {forOwn, isObject} from 'lodash';
 import * as actions from './actions.js';
+import {recentGroupKey} from './constants';
 
 const initialState = {
     componentsTree: {},
@@ -90,7 +91,13 @@ export default (state = initialState, action = {}) => {
     }
 
     if(type === actions.ADD_RECENTLY_USED) {
+        let newState = Object.assign({}, state);
         let newRecentlyUsed = [].concat(state.recentlyUsed);
+        if(newRecentlyUsed.length === 0) {
+            let newExpandedGroupKeys = Object.assign({}, state.expandedGroupKeys);
+            newExpandedGroupKeys[recentGroupKey] = true;
+            newState.expandedGroupKeys = newExpandedGroupKeys;
+        }
         const found = newRecentlyUsed.find(i => payload === i);
         if(!found){
             newRecentlyUsed.splice(0, 0, payload);
@@ -98,9 +105,8 @@ export default (state = initialState, action = {}) => {
         if(newRecentlyUsed.length > 10){
             newRecentlyUsed = newRecentlyUsed.slice(0, 10);
         }
-        return Object.assign({}, state, {
-            recentlyUsed: newRecentlyUsed
-        });
+        newState.recentlyUsed = newRecentlyUsed;
+        return newState;
     }
 
     return state;
