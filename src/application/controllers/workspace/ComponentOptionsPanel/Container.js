@@ -24,7 +24,10 @@ import {styleGroups} from './constants';
 
 import OptionInput from 'views/workspace/OptionInput';
 import CollapsiblePlusOptionInput from 'views/workspace/CollapsiblePlusOptionInput';
+import StyleSizeInput from 'views/workspace/StyleSizeInput';
 import StyleNumberInput from 'views/workspace/StyleNumberInput';
+import StyleOptionSelect from 'views/workspace/StyleOptionSelect';
+import StyleSwatchesPicker from 'views/workspace/StyleSwatchesPicker';
 
 const style = {
     width: '100%',
@@ -35,7 +38,14 @@ const style = {
     border: '1px solid #DBDBDB',
     borderRadius: '3px',
     height: '100%',
-    overflow: 'auto',
+    overflowX: 'hidden',
+    overflowY: 'auto',
+};
+
+const labelStyle = {
+    backgroundColor: 'rgb(227, 227, 227)',
+    color: 'rgb(107, 107, 107)',
+    textShadow: '0 1px 0px rgba(255, 255, 255, 0.8)'
 };
 
 class Container extends Component {
@@ -118,6 +128,7 @@ class Container extends Component {
                 }
                 let styleOptionInputs = [];
                 let valueObject;
+                let setCount = 0;
                 if(styles && styles.length > 0) {
                     styles.forEach((style, index) => {
                         let value = get(props, style.path);
@@ -127,19 +138,62 @@ class Container extends Component {
                         } else {
                             valueObject = set({}, style.path, value);
                             isSet = true;
+                            setCount++;
                         }
-                        styleOptionInputs.push(
-                            <div
-                                key={style.path + styleGroupKey}
-                                className="list-group-item">
-                                <StyleNumberInput
-                                    valueObject={valueObject}
-                                    path={style.path}
-                                    isSet={isSet}
-                                    onSet={this.handleToggleOption(valueObject)}
-                                    onChangeValue={this.handleChangeOption} />
-                            </div>
-                        );
+                        if(style.type === 'number') {
+                            styleOptionInputs.push(
+                                <div
+                                    key={style.path + styleGroupKey}
+                                    className="list-group-item">
+                                    <StyleNumberInput
+                                        valueObject={valueObject}
+                                        path={style.path}
+                                        isSet={isSet}
+                                        onSet={this.handleToggleOption(valueObject)}
+                                        onChangeValue={this.handleChangeOption} />
+                                </div>
+                            );
+                        } else if(style.type === 'size') {
+                            styleOptionInputs.push(
+                                <div
+                                    key={style.path + styleGroupKey}
+                                    className="list-group-item">
+                                    <StyleSizeInput
+                                        valueObject={valueObject}
+                                        path={style.path}
+                                        isSet={isSet}
+                                        onSet={this.handleToggleOption(valueObject)}
+                                        onChangeValue={this.handleChangeOption} />
+                                </div>
+                            );
+                        } else if(style.type === 'select') {
+                            styleOptionInputs.push(
+                                <div
+                                    key={style.path + styleGroupKey}
+                                    className="list-group-item">
+                                    <StyleOptionSelect
+                                        valueObject={valueObject}
+                                        path={style.path}
+                                        valueList={style.options}
+                                        isSet={isSet}
+                                        onSet={this.handleToggleOption(valueObject)}
+                                        onChangeValue={this.handleChangeOption} />
+                                </div>
+                            );
+                        } else if(style.type === 'color') {
+                            styleOptionInputs.push(
+                                <div
+                                    key={style.path + styleGroupKey}
+                                    className="list-group-item">
+                                    <StyleSwatchesPicker
+                                        valueObject={valueObject}
+                                        path={style.path}
+                                        isSet={isSet}
+                                        onSet={this.handleToggleOption(valueObject)}
+                                        onChangeValue={this.handleChangeOption} />
+                                </div>
+                            );
+                        }
                     });
                     styleSections.push(
                         <div key={styleGroupKey}
@@ -147,13 +201,23 @@ class Container extends Component {
                             <div className="panel-heading"
                                  role="tab"
                                  id={'heading' + styleGroupKey}>
-                                <a style={{outline: '0'}}
-                                   role="button"
-                                   data-groupkey={styleGroupKey}
-                                   href={'#' + styleGroupKey}
-                                   onClick={this.handleToggleStyleSection}>
-                                    {title}
-                                </a>
+                                <p style={{margin: 0}}>
+                                    <a style={{outline: '0'}}
+                                       role="button"
+                                       data-groupkey={styleGroupKey}
+                                       href={'#' + styleGroupKey}
+                                       onClick={this.handleToggleStyleSection}>
+                                        {title}
+                                    </a>
+                                    {setCount > 0 &&
+                                        <span
+                                            className="label pull-right"
+                                            style={labelStyle}
+                                        >
+                                            {setCount}
+                                        </span>
+                                    }
+                                </p>
                             </div>
                             <div id={styleGroupKey}
                                  className={"panel-collapse collapse " + collapsed}
@@ -207,19 +271,6 @@ class Container extends Component {
             let tabPanes = [];
             tabPanes.push(
                 <Tab
-                    key="properties"
-                    eventKey={tabPanes.length + 1}
-                    title="Properties">
-                        <div style={{position: 'relative', marginTop: '1em'}}>
-                            <CollapsiblePlusOptionInput
-                                style={{width: '100%', zIndex: '1030', marginBottom: '0.5em'}}
-                                onCommit={this.handleAddNewProp}/>
-                        </div>
-                        {optionInputs}
-                </Tab>
-            );
-            tabPanes.push(
-                <Tab
                     key="quickProperties"
                     eventKey={tabPanes.length + 1}
                     title="Quick style">
@@ -232,6 +283,19 @@ class Container extends Component {
                             {styleSections}
                         </div>
                     </div>
+                </Tab>
+            );
+            tabPanes.push(
+                <Tab
+                    key="properties"
+                    eventKey={tabPanes.length + 1}
+                    title="Properties">
+                        <div style={{position: 'relative', marginTop: '1em'}}>
+                            <CollapsiblePlusOptionInput
+                                style={{width: '100%', zIndex: '1030', marginBottom: '0.5em'}}
+                                onCommit={this.handleAddNewProp}/>
+                        </div>
+                        {optionInputs}
                 </Tab>
             );
 

@@ -16,8 +16,8 @@
 
 import { createStructuredSelector } from 'reselect';
 
-import { selectedKeysSelector } from '../SelectionBreadcrumbs/selectors.js';
-import { clipboardMode } from '../ClipboardIndicator/selectors.js';
+import { selectedKeysSelector } from 'controllers/workspace/SelectionBreadcrumbs/selectors';
+import { clipboardMode } from 'controllers/workspace/ClipboardIndicator/selectors';
 
 export const modelSelector = createStructuredSelector({
     componentModel: state => state.pageTreeViewPanel,

@@ -67,7 +67,6 @@ class PageTreeViewItemText extends Component {
     }
 
     render(){
-
         let content = null;
         if(this.state.isEditable === true){
             content = (

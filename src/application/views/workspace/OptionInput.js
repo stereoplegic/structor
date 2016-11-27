@@ -177,7 +177,9 @@ class OptionInput extends Component {
         }
         return (
             <div style={this.props.style}>
-                <p style={{marginBottom: '3px'}}>{label}</p>
+                <p style={{marginBottom: '3px'}}>
+                    <strong>{label}</strong>
+                </p>
                 {element}
             </div>
         );

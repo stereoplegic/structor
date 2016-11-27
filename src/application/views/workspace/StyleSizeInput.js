@@ -17,6 +17,27 @@
 import {isObject, isString, get, set, debounce, startCase} from 'lodash';
 import React, {Component, PropTypes} from 'react';
 
+const unitList = ['px', 'em', '%', 'ex', 'ch', 'rem', 'vw', 'vh', 'cm', 'mm', 'in', 'pt', 'pc'];
+
+const getUnitsOfProperty = (propertyValue) => {
+	if (propertyValue) {
+		let checkString;
+		if (isString(propertyValue)) {
+			checkString = propertyValue;
+		} else {
+			checkString = '' + propertyValue;
+		}
+		checkString = checkString.toLowerCase();
+		let found = unitList.find(u => checkString.indexOf(u) > 0);
+		if (found) {
+			return found;
+		} else {
+			return 'px'
+		}
+	}
+	return 'px';
+};
+
 const getValueOfProperty = (propertyValue) => {
 	if (propertyValue) {
 		let checkValue = parseFloat(propertyValue);
@@ -42,6 +63,7 @@ const getStateObject = (valueObject, path) => {
 		valueObject: valueObject,
 		label: label,
 		value: getValueOfProperty(value),
+		units: getUnitsOfProperty(value),
 	};
 };
 
@@ -70,14 +92,17 @@ const doubleButtonStyle = {
 const checkBoxStyle = {margin: 0};
 const labelStyle = {margin: '0px 0px 0px 3px'};
 
-class StyleNumberInput extends Component {
+class StyleSizeInput extends Component {
 
 	constructor(props) {
 
 		super(props);
+
 		this.state = getStateObject(props.valueObject, props.path);
+
 		this.handleChangeInputValue = this.handleChangeInputValue.bind(this);
 		this.handleToggleOption = this.handleToggleOption.bind(this);
+		this.handleChangeUnits = this.handleChangeUnits.bind(this);
 		this.changeValueByMouse = this.changeValueByMouse.bind(this);
 		this.changeValue = this.changeValue.bind(this);
 	}
@@ -102,13 +127,21 @@ class StyleNumberInput extends Component {
 	handleChangeInputValue(e) {
 		const value = e.currentTarget.value;
 		this.setState({value});
-		this.changeValue(value, true);
+		this.changeValue(value, this.state.units, true);
 	}
 
 	handleToggleOption(e) {
 		const {path, onSet} = this.props;
 		const checked = e.currentTarget.checked;
 		onSet(path, checked);
+	}
+
+	handleChangeUnits(e) {
+		const newUnits = e.currentTarget.dataset.units;
+		this.setState({
+			units: newUnits,
+		});
+		this.changeValue(this.state.value, newUnits);
 	}
 
 	handleMouseDown = (direction) => (e) => {
@@ -126,19 +159,19 @@ class StyleNumberInput extends Component {
 
 	changeValueByMouse(direction) {
 		setTimeout(() => {
-			const {value} = this.state;
+			const {value, units} = this.state;
 			let newValue = direction === 'up' ? (value + 1) : (value - 1);
 			this.setState({value: newValue});
-			this.changeValue(newValue);
+			this.changeValue(newValue, units);
 			if (this.state.isMouseDown) {
 				this.changeValueByMouse(direction);
 			}
 		}, 200);
 	};
 
-	changeValue(newValue, delay = false) {
+	changeValue(newValue, newUnits, delay = false) {
 		const value = getValueOfProperty(newValue);
-		let valueObject = set({}, this.props.path, value);
+		let valueObject = set({}, this.props.path, '' + value + newUnits);
 		if (delay) {
 			this.delayedChangeInputValue(valueObject);
 		} else {
@@ -187,12 +220,40 @@ class StyleNumberInput extends Component {
 					</div>
 					<div style={{flexGrow: 1}}>
 						<div>
-							<input
-								type="text"
-								style={inputStyle}
-								className="form-control"
-								value={value}
-								onChange={this.handleChangeInputValue}/>
+							<div className="input-group">
+								<input
+									type="text"
+									style={inputStyle}
+									className="form-control"
+									value={value}
+									onChange={this.handleChangeInputValue}/>
+								<div
+									key="unitsButton"
+									className="input-group-btn"
+									role="group">
+									<button
+										className="btn btn-default btn-xs dropdown-toggle"
+										data-toggle="dropdown">
+										<span>{units}</span>
+									</button>
+									<ul
+										className="dropdown-menu dropdown-menu-right"
+										role="menu">
+										{unitList.map((u, index) => {
+											return (
+												<li key={u + index}>
+													<a
+														href="#"
+														data-units={u}
+														onClick={this.handleChangeUnits}>
+														{u}
+													</a>
+												</li>
+											);
+										})}
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -202,7 +263,7 @@ class StyleNumberInput extends Component {
 	}
 }
 
-StyleNumberInput.propTypes = {
+StyleSizeInput.propTypes = {
 	valueObject: PropTypes.any.isRequired,
 	path: PropTypes.string.isRequired,
 	isSet: PropTypes.bool.isRequired,
@@ -210,7 +271,7 @@ StyleNumberInput.propTypes = {
 	onChangeValue: PropTypes.func.isRequired,
 };
 
-StyleNumberInput.defaultProps = {
+StyleSizeInput.defaultProps = {
 	valueObject: null,
 	path: 'style.width',
 	isSet: false,
@@ -222,4 +283,4 @@ StyleNumberInput.defaultProps = {
 	},
 };
 
-export default StyleNumberInput;
+export default StyleSizeInput;

@@ -20,11 +20,11 @@ import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 
-import { graphApi } from '../../../api';
-import { PageTreeViewItem, PageTreeViewItemText } from '../../../views/index.js';
-import PageTreeViewPlaceholder from '../../../views/workspace/PageTreeViewPlaceholder.js';
-import {CLIPBOARD_EMPTY} from '../ClipboardIndicator/actions.js';
-import { modeMap } from '../QuickAppendModal/actions.js';
+import { graphApi } from 'api/index';
+import { PageTreeViewItem, PageTreeViewItemText } from 'views/index';
+import PageTreeViewPlaceholder from 'views/workspace/PageTreeViewPlaceholder';
+import {CLIPBOARD_EMPTY} from 'controllers/workspace/ClipboardIndicator/actions';
+import { modeMap } from 'controllers/workspace/QuickAppendModal/actions';
 
 var scrollToSelected = function($frameWindow, key){
     setTimeout((function(_frameWindow){
@@ -54,6 +54,8 @@ class Container extends Component{
         this.shouldScroll = true;
         this.scrollToSelected = this.scrollToSelected.bind(this);
         this.handleChangeText = this.handleChangeText.bind(this);
+        this.handleSetHighlightSelectedKey = this.handleSetHighlightSelectedKey.bind(this);
+        this.handleRemoveHighlightSelectedKey = this.handleRemoveHighlightSelectedKey.bind(this);
     }
 
     componentDidMount() {
@@ -71,10 +73,12 @@ class Container extends Component{
 
     shouldComponentUpdate(nextProps, nextState){
 
-        const { deskPageModel } = this.props;
-        const { deskPageModel: newDeskPageModel } = nextProps;
+        const { deskPageModel, currentSelectedKeys } = this.props;
+        const { deskPageModel: newDeskPageModel, currentSelectedKeys: newSelectedKeys } = nextProps;
 
-        this.shouldScroll = newDeskPageModel.markedUpdateCounter !== deskPageModel.markedUpdateCounter;
+        if(!this.shouldScroll) {
+            this.shouldScroll = newSelectedKeys !== currentSelectedKeys;
+        }
         return (
             newDeskPageModel.reloadPageCounter !== deskPageModel.reloadPageCounter
             || newDeskPageModel.currentPagePath !== deskPageModel.currentPagePath
@@ -84,11 +88,12 @@ class Container extends Component{
     }
 
     scrollToSelected() {
-        if(this.shouldScroll === true){
+        if(this.shouldScroll){
             const selectedKeys = this.props.currentSelectedKeys;
             if(selectedKeys && selectedKeys.length > 0){
                 scrollToSelected(this.$frameWindow, selectedKeys[selectedKeys.length - 1]);
             }
+            this.shouldScroll = false;
         }
     }
 
@@ -108,6 +113,18 @@ class Container extends Component{
             }
         }
     };
+
+    handleSetHighlightSelectedKey(e){
+        const key = e.currentTarget.dataset.key;
+        const { setHighlightSelectedKey } = this.props;
+        setHighlightSelectedKey(key, true);
+    }
+
+    handleRemoveHighlightSelectedKey(e){
+        const key = e.currentTarget.dataset.key;
+        const { setHighlightSelectedKey } = this.props;
+        setHighlightSelectedKey(key, false);
+    }
 
     handleChangeText(text, nodeKey) {
         this.props.changeText(text, nodeKey);
@@ -172,7 +189,10 @@ class Container extends Component{
                 isForCopying={graphNode.isForCopying}
                 type={modelNode.type}
                 modelProps={modelNode.props}
-                onSelect={setSelectedKey}>
+                onSelect={setSelectedKey}
+                onMouseEnter={this.handleSetHighlightSelectedKey}
+                onMouseLeave={this.handleRemoveHighlightSelectedKey}
+            >
                 {inner}
             </PageTreeViewItem>
         );

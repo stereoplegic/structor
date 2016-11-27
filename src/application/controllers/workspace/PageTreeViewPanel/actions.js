@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 import { bindActionCreators } from 'redux';
-import { setSelectedKey, } from '../SelectionBreadcrumbs/actions.js';
-import { pasteBefore, pasteAfter } from '../ClipboardControls/actions.js'
-import { serverApi, graphApi } from '../../../api';
-import { pushHistory } from '../HistoryControls/actions.js';
-import { updatePage } from '../DeskPage/actions.js';
-import { showModal as showQuickAppend } from '../QuickAppendModal/actions.js';
+import { setSelectedKey, } from 'controllers/workspace/SelectionBreadcrumbs/actions';
+import { pasteBefore, pasteAfter } from 'controllers/workspace/ClipboardControls/actions';
+import { serverApi, graphApi } from 'api/index';
+import { pushHistory } from 'controllers/workspace/HistoryControls/actions';
+import { updatePage } from 'controllers/workspace/DeskPage/actions';
+import { showModal as showQuickAppend } from 'controllers/workspace/QuickAppendModal/actions';
+import { setHighlightSelectedKey } from 'controllers/workspace/SelectionBreadcrumbs/actions';
 
 export const changeText = (newText, selectedKey) => (dispatch, getState) => {
     let node = graphApi.getNode(selectedKey);
@@ -31,5 +32,5 @@ export const changeText = (newText, selectedKey) => (dispatch, getState) => {
 };
 
 export const containerActions = (dispatch) => bindActionCreators({
-    setSelectedKey, changeText, pasteBefore, pasteAfter, showQuickAppend
+    setSelectedKey, changeText, pasteBefore, pasteAfter, showQuickAppend, setHighlightSelectedKey
 }, dispatch);

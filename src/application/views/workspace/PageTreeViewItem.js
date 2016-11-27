@@ -36,6 +36,7 @@ class PageTreeViewItem extends Component {
         let content = null;
 
         const { isSelected, isForCutting, isForCopying, itemKey, children } = this.props;
+        const {onMouseEnter, onMouseLeave} = this.props;
 
         let className;
         if(isSelected){
@@ -60,7 +61,11 @@ class PageTreeViewItem extends Component {
                     <a key={'toplink'}
                        href="#"
                        onClick={this.handleClick}
-                       style={linkStyle}>
+                       style={linkStyle}
+                       data-key={itemKey}
+                       onMouseEnter={onMouseEnter}
+                       onMouseLeave={onMouseLeave}
+                    >
                         <span>{label}</span>
                     </a>
                     { props && <span className="text-muted"
@@ -72,7 +77,11 @@ class PageTreeViewItem extends Component {
                     <a key={'bottomlink'}
                        href="#"
                        onClick={this.handleClick}
-                       style={linkStyle}>
+                       style={linkStyle}
+                       data-key={itemKey}
+                       onMouseEnter={onMouseEnter}
+                       onMouseLeave={onMouseLeave}
+                    >
                         <span>{label}</span>
                     </a>
                     <span>{'>'}</span>
@@ -85,7 +94,11 @@ class PageTreeViewItem extends Component {
                     <span>{'<'}</span>
                     <a href="#"
                        onClick={this.handleClick}
-                       style={linkStyle}>
+                       style={linkStyle}
+                       data-key={itemKey}
+                       onMouseEnter={onMouseEnter}
+                       onMouseLeave={onMouseLeave}
+                    >
                         <span>{label}</span>
                     </a>
                     { props && <span className="text-muted"

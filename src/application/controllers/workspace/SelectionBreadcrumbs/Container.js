@@ -20,6 +20,24 @@ import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 import { graphApi } from '../../../api/index.js';
 
+const labelStyle = {
+    padding: '3px 6px',
+    borderRadius: '3px',
+    cursor: 'pointer',
+    backgroundColor: 'rgb(227, 227, 227)',
+    color: 'rgb(107, 107, 107)',
+    marginRight: '0.3em',
+    textShadow: '0 1px 0px rgba(255, 255, 255, 0.8)'
+};
+
+const activeStyle = {
+    padding: '2px 6px',
+    borderRadius: '3px',
+    backgroundColor: '#35b3ee',
+    color: '#ffffff',
+    cursor: 'pointer'
+};
+
 class Container extends Component {
 
     constructor(props) {
@@ -72,23 +90,8 @@ class Container extends Component {
 
         const { componentModel: {selectedKeys}, removeSelectedKeys } = this.props;
 
-        const labelStyle = {
-            padding: '3px 6px',
-            borderRadius: '3px',
-            cursor: 'pointer',
-            backgroundColor: 'rgb(227, 227, 227)',
-            color: 'rgb(107, 107, 107)',
-            marginRight: '0.3em',
-            textShadow: '0 1px 0px rgba(255, 255, 255, 0.8)'
-        };
         let content = null;
         if(selectedKeys){
-            const activeStyle = {
-                padding: '2px 6px',
-                borderRadius: '3px',
-                backgroundColor: '#35b3ee',
-                color: '#ffffff',
-                cursor: 'pointer'};
             if(selectedKeys.length === 1){
                 const parentsList = graphApi.getParentsList(selectedKeys[0]);
                 if(parentsList && parentsList.length > 1){
@@ -100,7 +103,7 @@ class Container extends Component {
                                   onClick={() => {removeSelectedKeys()}}>
                                 <i className="fa fa-times-circle fa-fw"
                                    style={{opacity: '0.6'}}/>
-                                <span>Selected on page:&nbsp;</span>
+                                <span>Selected:&nbsp;</span>
                                 <strong>
                                     {(rootItem.modelNode.pageName ? rootItem.modelNode.pagePath : 'Unknown')}
                                 </strong>
@@ -178,7 +181,8 @@ class Container extends Component {
                                           style={activeStyle}
                                           data-key={item.key}>
                                         <span className="dropdown-toggle" data-toggle="dropdown">
-                                            <span>{item.modelNode.type}&nbsp;</span><span className="caret"></span>
+                                            <span>{item.modelNode.type}&nbsp;</span>
+                                            <span className="caret" />
                                         </span>
                                         <ul className="dropdown-menu dropdown-menu-right"
                                             role="menu"

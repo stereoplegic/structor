@@ -24,7 +24,7 @@ var controller = require('./server/controller.js');
 process.on('uncaughtException',
     function(err){
         if(err.code === 'EADDRINUSE'){
-            console.error('Port is already in use, you can precise one with -p YOUR_PORT.');
+            console.error('Port is already in use, you can set another port using option: -p <YOUR_PORT>.');
         } else {
             console.log(err);
         }

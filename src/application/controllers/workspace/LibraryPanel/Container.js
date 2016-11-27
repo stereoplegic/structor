@@ -27,6 +27,12 @@ const style = {
     marginTop: '5px'
 };
 
+const labelStyle = {
+    backgroundColor: 'rgb(227, 227, 227)',
+    color: 'rgb(107, 107, 107)',
+    textShadow: '0 1px 0px rgba(255, 255, 255, 0.8)'
+};
+
 class Container extends Component {
 
     constructor(props) {
@@ -135,13 +141,22 @@ class Container extends Component {
                     <div className="panel-heading"
                          role="tab"
                          id="headingOne">
-                        <a style={{outline: '0'}}
-                           role="button"
-                           data-groupkey={recentGroupKey}
-                           href={'#' + recentGroupKey}
-                           onClick={this.handleToggleGroup}>
-                            Recently Used
-                        </a>
+                        <p style={{margin: 0}}>
+                            <a style={{outline: '0'}}
+                               role="button"
+                               data-groupkey={recentGroupKey}
+                               href={'#' + recentGroupKey}
+                               onClick={this.handleToggleGroup}
+                            >
+                                Recently Used
+                            </a>
+                            <span
+                                className="label pull-right"
+                                style={labelStyle}
+                            >
+                                {components.length}
+                            </span>
+                        </p>
                     </div>
                     <div id={recentGroupKey}
                          className={"panel-collapse collapse " + collapsed}
@@ -166,7 +181,8 @@ class Container extends Component {
                                    href="#"
                                    title={'Copy to clipboard ' + componentName}
                                    data-component={componentName}
-                                   onClick={this.handleQuickCopyToClipboard}>
+                                   onClick={this.handleQuickCopyToClipboard}
+                                >
                                     <span>{this.makeTitle(componentName)}</span>
                                 </a>
                             );
@@ -196,25 +212,37 @@ class Container extends Component {
                     }
                     libGroups.push(
                         <div key={key}
-                             className="panel panel-default">
+                             className="panel panel-default"
+                        >
                             <div className="panel-heading"
                                  role="tab"
-                                 id="headingOne">
-                                <a style={{outline: '0'}}
-                                   role="button"
-                                   data-groupkey={key}
-                                   href={'#' + id}
-                                   onClick={this.handleToggleGroup}>
-                                    {groupName}
-                                </a>
+                                 id="headingOne"
+                            >
+                                <p style={{margin: 0}}>
+                                    <a style={{outline: '0'}}
+                                       role="button"
+                                       data-groupkey={key}
+                                       href={'#' + id}
+                                       onClick={this.handleToggleGroup}
+                                    >
+                                        {groupName}
+                                    </a>
+                                    <span
+                                        className="label pull-right"
+                                        style={labelStyle}
+                                    >
+                                        {components.length}
+                                    </span>
+                                </p>
                             </div>
                             <div id={id}
                                  className={"panel-collapse collapse " + collapsed}
-                                 role="tabpanel">
+                                 role="tabpanel"
+                            >
                                 <div className="list-group">
                                     {components}
                                 </div>
-                                <div style={{height: '0'}}></div>
+                                <div style={{height: '0'}} />
                             </div>
                         </div>
                     );
@@ -238,8 +266,9 @@ class Container extends Component {
                         <button
                             className="btn btn-default"
                             type="button"
-                            onClick={this.handleClearFind}>
-                            <span className='fa fa-times'></span>
+                            onClick={this.handleClearFind}
+                        >
+                            <span className="fa fa-times" />
                         </button>
                     </span>
                 </div>
