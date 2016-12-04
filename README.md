@@ -23,11 +23,11 @@ Structor - visual editor for React components.
 
 ### Getting started
 
-Beginning from version 2 Structor should be installed as a local npm module into `react-boilerplate` project. 
+Beginning from version 2 Structor must be installed as a local npm module into React Boilerplate project. 
 
-As far as Structor uses a custom metadata in order to operate the project's components, there is a fork of `react-boilerplate` project genuinely prepared for Structor.
+For your convenience there is a clone of React Boilerplate project genuinely integrated with Structor: [https://github.com/ipselon/react-boilerplate-clone](https://github.com/ipselon/react-boilerplate-clone)
       
-Please find the instruction of how to install and start working with Structor in compatible fork of the `react-boilerplate` project here: [https://github.com/ipselon/react-boilerplate](https://github.com/ipselon/react-boilerplate);
+Please find **[The Instruction](https://github.com/ipselon/react-boilerplate-clone#quick-start)** of how to install and start working with Structor in the compatible clone. 
 
 ### Useful readings
 
