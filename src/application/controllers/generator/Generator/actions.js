@@ -79,6 +79,10 @@ export const generate = (groupName, componentName, metaData) => (dispatch, getSt
         dispatch(failed('Component name is equal to group name'));
         canProceed = false;
     }
+    if(componentName === 'Component') {
+        dispatch(failed('Component name can not be "Component"'));
+        canProceed = false;
+    }
     if(canProceed){
         const {selectionBreadcrumbs, metadataForm, libraryPanel} = getState();
         const {selectedKeys} = selectionBreadcrumbs;

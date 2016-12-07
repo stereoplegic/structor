@@ -38,7 +38,7 @@ function* exportModel(){
             yield call(serverApi.exportProjectModel, model);
             yield put(messageActions.success('Project model has been exported successfully.'));
         } catch(e){
-            yield put(messageActions.failed('Project model exporting has an error. ' + (error.message ? error.message : error)));
+            yield put(messageActions.failed('Project model exporting has an error. ' + (e.message ? e.message : e)));
         }
         yield put(spinnerActions.done('Exporting the project model'));
     }

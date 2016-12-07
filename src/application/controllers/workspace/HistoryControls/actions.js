@@ -15,10 +15,10 @@
  */
 
 import { bindActionCreators } from 'redux';
-import { graphApi } from '../../../api';
-import { removeSelectedKeys } from '../SelectionBreadcrumbs/actions.js';
-import { removeClipboardKeys } from '../ClipboardIndicator/actions.js';
-import { updatePage, saveModel, changePageRoute, resetPages } from '../DeskPage/actions.js';
+import { graphApi } from 'api';
+import { removeSelectedKeys } from 'controllers/workspace/SelectionBreadcrumbs/actions';
+import { removeClipboardKeys } from 'controllers/workspace/ClipboardIndicator/actions';
+import { updatePage, saveModel, changePageRoute, resetPages } from 'controllers/workspace/DeskPage/actions';
 
 export const UPDATE_HISTORY_COUNTER = "HistoryControls/UPDATE_HISTORY_COUNTER";
 

@@ -22,8 +22,12 @@ import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 
 import { Grid, Row, Col, Button } from 'react-bootstrap';
-import marked from 'marked';
-import { InputTextStateful, AceEditor } from '../../../views';
+import { InputTextStateful, AceEditor } from 'views';
+import MetaOptionsContainer from 'views/workspace/MetaOptionsContainer';
+
+const cellBoxStyle = {
+    display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%'
+};
 
 class Container extends Component {
 
@@ -41,18 +45,23 @@ class Container extends Component {
     handleOnSubmit(e) {
         e.stopPropagation();
         e.preventDefault();
+        let metadataObject = undefined;
+        if(this.refs.metadataOptions) {
+            const {componentModel: {metaData}} = this.props;
+            metadataObject = Object.assign({}, metaData, this.refs.metadataOptions.getOptionsObject());
+        }
         this.props.startGeneration(this.refs.groupNameInput.getValue(),
             this.refs.componentNameInput.getValue(),
-            this.refs.metadataEditor ? this.refs.metadataEditor.getSourceCode() : undefined);
+            metadataObject
+        );
     }
 
     render() {
 
-        const { componentModel: {selectedGenerator, groupName, componentName, metaData}, libraryPanelModel: {groupsList, componentsList} } = this.props;
-        const metaHelpText = selectedGenerator.metaHelp !== 'NONE' ? marked(selectedGenerator.metaHelp) : null;
-        const cellBoxStyle = {
-            display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%'
-        };
+        const {
+            componentModel: {selectedGenerator, groupName, componentName, metaData},
+            libraryPanelModel: {groupsList, componentsList}
+        } = this.props;
 
         let groupDataOptions = [];
         if (groupsList && groupsList.length > 0) {
@@ -70,89 +79,7 @@ class Container extends Component {
                 )
             });
         }
-        let content = null;
-        if(metaHelpText && !isEmpty(metaData)){
-            content = (
-                <Grid fluid={ true }>
-                    <Row style={ { position: 'relative'} }>
-                        <Col
-                            xs={ 12 }
-                            md={ 6 }
-                            sm={ 6 }
-                            lg={ 6 }>
-
-                            <div style={cellBoxStyle}>
-                                <div style={{width: '70%', minWidth: '200px'}}>
-                                    <form onSubmit={this.handleOnSubmit}>
-                                        <label htmlFor="groupNameInput"
-                                               className="form-label">
-                                            Component group
-                                        </label>
-                                        <InputTextStateful
-                                            validateFunc={this.validateName}
-                                            placeholder="Enter group name"
-                                            id="groupNameInput"
-                                            ref="groupNameInput"
-                                            type="text"
-                                            list="groups"
-                                            value={groupName}
-                                            autoComplete="on"/>
-                                        <datalist id="groups">
-                                            {groupDataOptions}
-                                        </datalist>
-                                        <label htmlFor="componentNameInput"
-                                               className="form-label">
-                                            Component name
-                                        </label>
-                                        <InputTextStateful
-                                            validateFunc={this.validateName}
-                                            placeholder="Enter component name"
-                                            id="componentNameInput"
-                                            ref="componentNameInput"
-                                            type="text"
-                                            list="components"
-                                            value={componentName}
-                                            autoComplete="on"/>
-                                        <datalist id="components">
-                                            {componentsDataOptions}
-                                        </datalist>
-                                        <div style={{display: 'flex', justifyContent: 'center'}}>
-                                            <Button type="submit" bsStyle="primary">Generate source code</Button>
-                                        </div>
-                                    </form>
-                                    <div style={{marginTop: '2em'}}>
-                                        <div dangerouslySetInnerHTML={{__html: metaHelpText}}></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </Col>
-                        <Col
-                            xs={ 12 }
-                            md={ 6 }
-                            sm={ 6 }
-                            lg={ 6 }>
-
-                            <div style={cellBoxStyle}>
-                                <div style={{width: '100%', height: '100%'}}>
-                                    <label htmlFor="metadataEditor">Metadata</label>
-                                    <AceEditor id="metadataEditor"
-                                               ref="metadataEditor"
-                                               sourceName="metadataScript"
-                                               style={{width: '100%', height: '50.5em', borderRadius: '3px', border: '1px solid #cdcdcd'}}
-                                               sourceCode={JSON.stringify(metaData, null, 4)}/>
-
-                                    <div style={{marginTop: '1.5em'}}>
-                                        <p>Enter valid data in JSON format</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
-                    </Row>
-                </Grid>
-            );
-        } else {
-            content = (
+        let content = (
                 <Grid fluid={ true }>
                     <Row style={ { position: 'relative'} }>
                         <Col
@@ -167,8 +94,10 @@ class Container extends Component {
                             <div style={cellBoxStyle}>
                                 <div style={{width: '70%', minWidth: '200px'}}>
                                     <form onSubmit={this.handleOnSubmit}>
-                                        <label htmlFor="groupNameInput"
-                                               className="form-label">
+                                        <label
+                                            htmlFor="groupNameInput"
+                                            className="form-label"
+                                        >
                                             Component group
                                         </label>
                                         <InputTextStateful
@@ -179,12 +108,14 @@ class Container extends Component {
                                             type="text"
                                             list="groups"
                                             value={groupName}
-                                            autoComplete="on"/>
+                                            autoComplete="on" />
                                         <datalist id="groups">
                                             {groupDataOptions}
                                         </datalist>
-                                        <label htmlFor="componentNameInput"
-                                               className="form-label">
+                                        <label
+                                            htmlFor="componentNameInput"
+                                            className="form-label"
+                                        >
                                             Component name
                                         </label>
                                         <InputTextStateful
@@ -195,13 +126,26 @@ class Container extends Component {
                                             type="text"
                                             list="components"
                                             value={componentName}
-                                            autoComplete="on"/>
+                                            autoComplete="on" />
                                         <datalist id="components">
                                             {componentsDataOptions}
                                         </datalist>
                                         <div style={{display: 'flex', justifyContent: 'center'}}>
-                                            <Button type="submit" bsStyle="primary">Generate source code</Button>
+                                            <Button
+                                                type="submit"
+                                                bsStyle="primary"
+                                            >
+                                                Generate source code
+                                            </Button>
                                         </div>
+                                        {!isEmpty(metaData) &&
+                                            <div style={{marginTop: '2em', marginBottom: '5em'}}>
+                                                <MetaOptionsContainer
+                                                    ref="metadataOptions"
+                                                    optionsObject={metaData}
+                                                    optionsHelpObject={selectedGenerator.metaHelp} />
+                                            </div>
+                                        }
                                     </form>
                                 </div>
                             </div>
@@ -210,7 +154,6 @@ class Container extends Component {
                     </Row>
                 </Grid>
             );
-        }
         return (
             <div>
                 {content}

@@ -25,7 +25,7 @@ import { loadOptionsAndShowModal } from '../ComponentOptionsModal/actions.js';
 import { pushHistory, popHistory } from '../HistoryControls/actions.js';
 import { loadComponents, setDefaultVariant, hidePreviewComponent, selectVariant } from '../LibraryPanel/actions.js';
 // import { quickBefore, quickAfter, quickFirst, quickLast, quickReplace } from '../LibraryPanel/actions.js';
-import { showModal as showQuickAppend } from '../QuickAppendModal/actions.js';
+import { showModal as showQuickAppend } from 'controllers/workspace/QuickAppendModal/actions';
 
 export const SET_PAGES = "DeskPage/SET_PAGES";
 export const RELOAD_PAGE = "DeskPage/RELOAD_PAGE";
@@ -84,6 +84,7 @@ export const addNewPage = (pageName, pagePath) => (dispatch, getState) => {
         dispatch(setPages(pageList));
         dispatch(changePageRouteFeedback(pageList[pageList.length - 1].pagePath));
         dispatch(reloadPage());
+        dispatch(saveModel());
         dispatch(success('New page was added successfully'));
     } catch(e){
         dispatch(failed(e.message ? e.message : e));
@@ -98,6 +99,7 @@ export const clonePage = (pageName, pagePath) => (dispatch, getState) => {
         dispatch(setPages(pageList));
         dispatch(changePageRouteFeedback(pageList[pageList.length - 1].pagePath));
         dispatch(reloadPage());
+        dispatch(saveModel());
         dispatch(success('Page was cloned successfully'));
     } catch(e){
         dispatch(failed(e.message ? e.message : e));
@@ -118,6 +120,7 @@ export const changePageOptions = (pageName, pagePath) => (dispatch, getState) =>
                 dispatch(setPages(pageList));
                 dispatch(changePageRouteFeedback(pagePath));
                 dispatch(reloadPage());
+                dispatch(saveModel());
                 dispatch(success('Page options were changed successfully.'));
             }
         }
@@ -134,6 +137,7 @@ export const setIndexPage = () => (dispatch, getState) => {
         if(pageList){
             dispatch(setPages(pageList));
             dispatch(reloadPage());
+            dispatch(saveModel());
             dispatch(success('Route ' + currentPagePath + ' now is the index route.'));
         }
     } catch(e){
@@ -156,6 +160,7 @@ export const deletePage = () => (dispatch, getState) => {
             dispatch(resetClipboardKeys());
             dispatch(resetSelectedKeys());
             dispatch(reloadPage());
+            dispatch(saveModel());
             dispatch(success('Route path ' + currentPagePath + ' were deleted successfully'));
         }
     } catch(e){

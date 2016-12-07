@@ -18,7 +18,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
-import { graphApi } from '../../../api';
+import { graphApi } from 'api';
 
 class Container extends Component {
 
