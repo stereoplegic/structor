@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-//import {forOwn, isObject} from 'lodash';
+import { isEmpty } from 'lodash';
 //import validator from 'validator';
 import { bindActionCreators } from 'redux';
-import { graphApi, serverApi } from '../../../api';
-import { started, done } from '../../app/AppSpinner/actions.js';
-import { success, failed, timeout, close} from '../../app/AppMessage/actions.js';
+import { graphApi, serverApi } from 'api';
+import { failed } from 'controllers/app/AppMessage/actions';
 
 export const LOAD_OPTIONS = "ComponentOptionsModal/LOAD_OPTIONS";
 export const LOAD_OPTIONS_AND_SHOW_MODAL = "ComponentOptionsModal/LOAD_OPTIONS_AND_SHOW_MODAL";
@@ -57,6 +56,9 @@ export const submitChanges = (componentObject) => (dispatch, getState) => {
     let sourcePropsObj;
     try{
         sourcePropsObj = JSON.parse(sourceProps);
+        if(sourcePropsObj.style && isEmpty(sourcePropsObj.style)) {
+            delete sourcePropsObj.style;
+        }
     } catch(e){
         dispatch(failed('Parsing properties error. Error: ' + (e.message ? e.message : e)));
     }

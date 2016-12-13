@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { merge } from 'lodash';
+import { merge, isEmpty } from 'lodash';
 import { bindActionCreators } from 'redux';
 import { utils, graphApi } from 'api/index.js';
 import { pushHistory } from 'controllers/workspace/HistoryControls/actions.js';
@@ -34,6 +34,9 @@ export const deleteOption = (componentObject, optionPath) => (dispatch, getState
     if (node) {
         let oldProps = node.modelNode.props || {};
         let newProps = utils.delex(utils.fulex(oldProps), optionPath);
+        if(newProps.style && isEmpty(newProps.style)) {
+            delete newProps.style;
+        }
         dispatch(pushHistory());
         node.modelNode.props = newProps;
         dispatch(setSelectedKey(key));
@@ -49,6 +52,9 @@ export const changeOption = (componentObject, optionObject) => (dispatch, getSta
     if (node) {
         let oldProps = node.modelNode.props || {};
         let newProps = merge({}, oldProps, optionObject);
+        if(newProps.style && isEmpty(newProps.style)) {
+            delete newProps.style;
+        }
         dispatch(pushHistory());
         node.modelNode.props = newProps;
         dispatch(setSelectedKey(key));
