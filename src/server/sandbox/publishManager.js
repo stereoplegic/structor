@@ -24,15 +24,19 @@ import * as fileParser from '../commons/fileParser.js';
 import * as npmUtils from '../commons/npmUtils.js';
 import * as modelParser from '../commons/modelParser.js';
 
+const checkModelErrorText =
+    `It is not allowed to include another component. 
+    You may include only HTML elements or components which are inside the published directory.`;
+
 export function readComponentSources(componentName, model, readmeText){
     return indexManager.initIndex()
         .then(indexObj => {
             return checkModel(model, componentName)
                 .then(invalidModelComponents => {
                     if(invalidModelComponents.length > 0){
-                        throw Error('Component model includes other components: \n\n' +
-                            JSON.stringify(invalidModelComponents, null, 4)
-                            + '\n\n Published component is allowed to include only HTML components in composition.')
+                        throw Error('Component includes other components: \n\n' +
+                            JSON.stringify(invalidModelComponents, null, 4) + '\n\n' +
+                            checkModelErrorText)
                     }
                     let found = undefined;
                     if (indexObj.groups) {
@@ -103,7 +107,7 @@ export function readComponentSources(componentName, model, readmeText){
                     if(fileObjects && fileObjects.length > 0){
                         fileObjects.forEach(fileObject => {
                             if(fileObject.extName === '.js'){
-                                let imports = findImports(fileObject.sourceCode, fileObject.filePath);
+                                let imports = findImports(fileObject.sourceCode, fileObject.filePath, fileObject.nestedDir);
                                 if(imports.invalidImports.length > 0){
                                     throw Error('Invalid imports \n' + JSON.stringify(imports.invalidImports, null, 4) + '\n in ' + fileObject.fileName +
                                         '. Published component has to import from own dir or installed npm modules.');
@@ -126,7 +130,16 @@ export function readComponentSources(componentName, model, readmeText){
                                 isContainer: isContainer,
                                 dependencies: validDeps
                             };
-                    });
+                        });
+                })
+                .then(resultObject => {
+                    return fileManager.readFile(config.deskReducersFilePath())
+                        .then(fileData => {
+                            resultObject.deskReducersFile = fileData;
+                            return resultObject;
+                        }).catch(err => {
+                            throw Error(err.message + '. Broken file: ' + filePath);
+                        });
                 });
         });
 }
@@ -167,19 +180,28 @@ export function publishGenerator(generatorKey, dataObject) {
     }
 }
 
-function findImports(fileData, filePath){
+function findImports(fileData, filePath, nestedDir){
     let ast = fileParser.getFileAst(fileData, filePath);
     let imports = {
         validImports: [],
         invalidImports:[],
         deps: []
     };
+    let invalidNesting = '..';
+    if(nestedDir) {
+        const dirs = nestedDir.split('/');
+        if(dirs && dirs.length > 0) {
+            for(let i = 0; i < dirs.length; i++) {
+                invalidNesting += '/..';
+            }
+        }
+    }
     fileParser.traverse(ast, node => {
         if(node.type === 'ImportDeclaration'){
             const {source} = node;
             if(source && source.value && source.value.length > 0){
                 let testSource = source.value.replace(/\\/g, '/');
-                if(testSource.indexOf('..') === 0){
+                if(testSource.indexOf(invalidNesting) === 0){
                     imports.invalidImports.push(testSource);
                 } else if(testSource.indexOf('.') === 0){
                     imports.validImports.push(testSource);

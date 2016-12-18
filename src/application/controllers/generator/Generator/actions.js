@@ -52,7 +52,16 @@ export const pregenerate = (generatorId, generatorKey, version) => (dispatch, ge
         if (selectedNode) {
             const {modelNode} = selectedNode;
             if(modelNode){
-                dispatch({type: PREGENERATE, payload:{generatorId, generatorKey, version, modelNode}});
+                let groupName = 'NewGroup';
+                let componentName = 'NewComponent';
+                if(generatorKey && generatorKey.length > 0) {
+                    let keyParts = generatorKey.split('.');
+                    if(keyParts.length >= 2){
+                        groupName = keyParts[keyParts.length - 2];
+                        componentName = keyParts[keyParts.length - 1];
+                    }
+                }
+                dispatch({type: PREGENERATE, payload:{generatorId, groupName, componentName, version, modelNode}});
             }
         }
     }

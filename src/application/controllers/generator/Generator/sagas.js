@@ -30,13 +30,14 @@ import { serverApi, graphApi, coockiesApi } from '../../../api';
 
 function* pregenerate(){
     while(true){
-        const {payload: {generatorId, generatorKey, version, model}} = yield take(actions.PREGENERATE);
+        const {payload: {generatorId, groupName, componentName, version, model}} = yield take(actions.PREGENERATE);
         yield put(spinnerActions.started('Retrieving metadata'));
         try {
-            const pregeneratedData = yield call(serverApi.pregenerate, generatorId, version, undefined, undefined, model);
+            const pregeneratedData = yield call(serverApi.pregenerate, generatorId, version, groupName, componentName, model);
             yield put(metadataFormActions.setSelectedGenerator({
                 generatorId,
-                generatorKey,
+                groupName,
+                componentName,
                 version,
                 metaData: pregeneratedData.metaData,
                 metaHelp: pregeneratedData.metaHelp
