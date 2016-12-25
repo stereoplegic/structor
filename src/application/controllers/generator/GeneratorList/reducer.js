@@ -18,13 +18,15 @@ import * as actions from './actions.js';
 
 const initialState = {
     generators: {},
-    recentGenerators: {},
+    recentGenerators: [],
+    scaffoldGenerators: [],
     filter: {
         groupKey: actions.ALL_GROUP_KEY,
         groupName: actions.ALL_GROUP_KEY,
         groupNameBack: null
     },
-    selectedTabKey: 2
+    selectedTabKey: 3,
+    searchText: '',
 };
 
 export default (state = initialState, action = {}) => {
@@ -34,13 +36,18 @@ export default (state = initialState, action = {}) => {
     if(type === actions.SET_GENERATORS){
         return Object.assign({}, state, {
             generators: payload.generators || {},
-            recentGenerators: payload.recentGenerators || {}
         });
     }
 
     if(type === actions.SET_RECENT_GENERATORS){
         return Object.assign({}, state, {
             recentGenerators: payload || {}
+        });
+    }
+
+    if(type === actions.SET_SCAFFOLD_GENERATORS){
+        return Object.assign({}, state, {
+            scaffoldGenerators: payload || []
         });
     }
 

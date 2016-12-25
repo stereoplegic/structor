@@ -26,7 +26,7 @@ class Container extends Component {
     }
 
     render(){
-        const { currentComponent, loadOptionsAndShowModal, loadGenerators, setGeneratorSample } = this.props;
+        const { currentComponent, loadOptionsAndShowModal, loadAllGenerators, setGeneratorSample } = this.props;
         const buttonLabelStyle = {
             margin: '0 0.5em'
         };
@@ -45,7 +45,7 @@ class Container extends Component {
                 <button
                     className="btn btn-default btn-xs"
                     disabled={!currentComponent}
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); loadGenerators(); }}
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); loadAllGenerators(); }}
                     title="Generate the source code for a new component">
                     <span style={buttonLabelStyle}>
                         <i className="fa fa-magic"/>

@@ -112,12 +112,31 @@ function* saveGenerated(){
 
 function* loadGenerators(){
     while(true){
-        yield take(actions.LOAD_GENERATORS);
+        const {payload: options} = yield take(actions.LOAD_GENERATORS);
+        yield put(spinnerActions.started('Loading generators'));
+        try {
+            let generatorsList = yield call(serverApi.getAvailableGeneratorsList, options.searchText);
+            const recentGenerators = coockiesApi.getRecentGenerators();
+            yield put(generatorListActions.setGenerators(generatorsList, recentGenerators));
+            yield put(appContainerActions.showGenerator());
+        } catch(error) {
+            yield put(messageActions.failed('Generators loading has an error. ' + (error.message ? error.message : error)));
+        }
+        yield put(spinnerActions.done('Loading generators'));
+    }
+}
+
+function* loadAllGenerators(){
+    while(true){
+        yield take(actions.LOAD_ALL_GENERATORS);
         yield put(spinnerActions.started('Loading generators'));
         try {
             let generatorsList = yield call(serverApi.getAvailableGeneratorsList);
+            let scaffoldGeneratorsList = yield call(serverApi.getAvailableGeneratorGenerics);
             const recentGenerators = coockiesApi.getRecentGenerators();
-            yield put(generatorListActions.setGenerators(generatorsList, recentGenerators));
+            yield put(generatorListActions.setGenerators(generatorsList));
+            yield put(generatorListActions.setRecentGenerators(recentGenerators));
+            yield put(generatorListActions.setScaffoldGenerators(scaffoldGeneratorsList));
             yield put(appContainerActions.showGenerator());
         } catch(error) {
             yield put(messageActions.failed('Generators loading has an error. ' + (error.message ? error.message : error)));
@@ -129,6 +148,7 @@ function* loadGenerators(){
 // main saga
 export default function* mainSaga() {
     yield fork(loadGenerators);
+    yield fork(loadAllGenerators);
     yield fork(pregenerate);
     yield fork(generate);
     yield fork(remove);

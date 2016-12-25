@@ -29,6 +29,7 @@ export const STAGE4 = 'STAGE4';
 
 export const STEP_TO_STAGE = "Generator/STEP_TO_STAGE";
 export const LOAD_GENERATORS = "Generator/LOAD_GENERATORS";
+export const LOAD_ALL_GENERATORS = "Generator/LOAD_ALL_GENERATORS";
 export const SET_GENERATED_DATA = "Generator/SET_GENERATED_DATA";
 export const PREGENERATE = "Generator/PREGENERATE";
 export const GENERATE = "Generator/GENERATE";
@@ -43,6 +44,8 @@ export const loadGenerators = (options) => (dispatch, getState) => {
     }
     dispatch({type: LOAD_GENERATORS, payload: options});
 };
+export const loadAllGenerators = () => ({type: LOAD_ALL_GENERATORS});
+
 export const setGeneratedData = (generatedData) => ({type: SET_GENERATED_DATA, payload: generatedData});
 
 export const pregenerate = (generatorId, generatorKey, version) => (dispatch, getState) => {

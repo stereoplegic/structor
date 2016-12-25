@@ -154,8 +154,8 @@ export function getProjectsGallery(){
     return clientManager.getAllProjects();
 }
 
-export function getAvailableGeneratorsList(){
-    return clientManager.getAvailableGeneratorsList();
+export function getAvailableGeneratorsList(options){
+    return clientManager.getAvailableGeneratorsList(options);
 }
 
 export function getAvailableGeneratorGenerics(){

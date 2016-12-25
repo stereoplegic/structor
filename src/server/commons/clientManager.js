@@ -87,8 +87,15 @@ export function getGeneratorReadmeText(userId, generatorId) {
         return client.getText(SERVICE_URL + '/sm/public/generator/info/' + userId + '/' + generatorId + '/readme.md')
 }
 
-export function getAvailableGeneratorsList() {
+export function getAvailableGeneratorsList(options) {
     if (config.projectId()) {
+        if(options && options.searchText && options.searchText.length > 0) {
+            return client.get(
+                SERVICE_URL +
+                '/sm/public/generator/list/search?projectId=' + config.projectId() +
+                '&searchText=' + options.searchText
+            );
+        }
         return client.get(SERVICE_URL + '/sm/public/generator/map?projectId=' + config.projectId());
     }
     return Promise.reject('Current project\'s configuration does not have projectId field. It seems project is not compatible with Structor\'s version.');

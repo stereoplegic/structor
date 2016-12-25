@@ -22,7 +22,8 @@ const initialState = {
         dependencies: {}
     },
     loadOptions: {
-        isOnlyGenerics: false
+        isOnlyGenerics: false,
+        searchText: '',
     },
     stage: actions.STAGE1
 
@@ -46,7 +47,7 @@ export default (state = initialState, action = {}) => {
 
     if(type === actions.LOAD_GENERATORS){
         return Object.assign({}, state, {
-            loadOptions: payload
+            loadOptions: Object.assign({}, state.loadOptions, payload)
         });
     }
 

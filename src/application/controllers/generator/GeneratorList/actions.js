@@ -15,12 +15,13 @@
  */
 
 import { bindActionCreators } from 'redux';
-import { coockiesApi } from '../../../api';
-import { loadGenerators } from '../Generator/actions.js';
+import { coockiesApi } from 'api';
+import { loadGenerators } from 'controllers/generator/Generator/actions';
 
 export const ALL_GROUP_KEY = 'All';
 
 export const SET_GENERATORS = "GeneratorList/SET_GENERATORS";
+export const SET_SCAFFOLD_GENERATORS = "GeneratorList/SET_SCAFFOLD_GENERATORS";
 export const SET_RECENT_GENERATORS = "GeneratorList/SET_RECENT_GENERATORS";
 export const SET_FILTER = "GeneratorList/SET_FILTER";
 export const SET_SELECTED_TAB = "GeneratorList/SET_SELECTED_TAB";
@@ -44,9 +45,11 @@ export const setFilterByGeneratorKey = (generatorKey) => (dispatch, getState) =>
     }
 };
 
-export const setGenerators = (generators, recentGenerators) => ({type: SET_GENERATORS, payload: {generators, recentGenerators}});
+export const setGenerators = (generators) => ({type: SET_GENERATORS, payload: {generators}});
 
 export const setRecentGenerators = (recentGenerators) => ({type: SET_RECENT_GENERATORS, payload: recentGenerators});
+
+export const setScaffoldGenerators = (scaffoldGenerators) => ({type: SET_SCAFFOLD_GENERATORS, payload: scaffoldGenerators});
 
 export const setSelectedTab = (tabKey) => ({type: SET_SELECTED_TAB, payload: tabKey});
 
@@ -56,11 +59,15 @@ export const toggleGenerics = () => (dispatch, getState) => {
     dispatch(loadGenerators(loadOptions));
 };
 
+export const runSearch = (searchText) => (dispatch, getState) => {
+    dispatch(loadGenerators({searchText}));
+};
+
 export const removeFromRecentGenerators = (generatorId) => (dispatch, getState) => {
     let recentGenerators = coockiesApi.removeFromRecentGenerators(generatorId);
     dispatch(setRecentGenerators(recentGenerators));
 };
 
 export const containerActions = (dispatch) => bindActionCreators({
-    setFilter, setSelectedTab, toggleGenerics
+    setFilter, setSelectedTab, toggleGenerics, runSearch
 }, dispatch);
