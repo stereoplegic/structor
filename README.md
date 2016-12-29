@@ -27,7 +27,7 @@ Beginning from version 2 Structor must be installed as a local npm module into R
 
 For your convenience there is a clone of React Boilerplate project genuinely integrated with Structor: [https://github.com/ipselon/react-boilerplate-clone](https://github.com/ipselon/react-boilerplate-clone)
       
-Please find **[The Instruction](https://github.com/ipselon/react-boilerplate-clone#quick-start)** of how to install and start working with Structor in the compatible clone. 
+Please find **[The Instruction](https://github.com/ipselon/react-boilerplate-clone#getting-started)** of how to install and start working with Structor in the compatible clone. 
 
 ### Useful readings
 
