@@ -7,8 +7,6 @@ Structor - visual editor for React components.
 [![npm version](https://img.shields.io/npm/v/structor.svg?style=flat)](https://www.npmjs.com/package/structor)
 [![npm downloads](https://img.shields.io/npm/dt/structor.svg?style=flat)](https://www.npmjs.com/package/structor)
 
-<img src="https://github.com/ipselon/structor/blob/master/images/title-background.png" style="width: 100%;"></img>
-
 #### What Structor is:
 * **Structor is a visual editor (WYSIWYG editor)** - you may construct a React component of any complexity combining components and styling them right on the page.
 * **Structor is a scaffolding tool** - you may generate scaffolds of different types of React components (dumbs, containers) with different configuration.
