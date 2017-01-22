@@ -7,6 +7,16 @@ Structor - React UI Builder.
 [![npm version](https://img.shields.io/npm/v/structor.svg?style=flat)](https://www.npmjs.com/package/structor)
 [![npm downloads](https://img.shields.io/npm/dt/structor.svg?style=flat)](https://www.npmjs.com/package/structor)
 
+Structor lets you generate scaffolds for components, containers, reducers, selectors and sagas. 
+Additionally, Structor is a portal to a marketplace where you can find full-fledged React components and install their source code right into the application structure. 
+
+You may compose/stylize a complex component using advanced UI editor and then just create the source code of a new component using sophisticated generators. 
+Or you may choose to install the source code of a pre-created component into the application from marketplace.
+
+Moreover, you have the ability to publish the source code of your component on Structor Market in order to share it or to preserve for another project.
+
+Structor uses own Webpack Dev server to compile components, and that allows you to develop UI components in isolation from the application.  
+
 #### What Structor is:
 * **Structor is a visual editor (WYSIWYG editor)** - you may construct a React component of any complexity combining components and styling them right on the page.
 * **Structor is a scaffolding tool** - you may generate scaffolds of different types of React components (dumbs, containers) with different configuration.
