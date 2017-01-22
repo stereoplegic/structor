@@ -17,6 +17,7 @@
 
 import _ from 'lodash';
 import esprima from 'esprima';
+import escodegen from 'escodegen';
 
 // Executes visitor on the object and its children (recursively).
 export function traverse(object, visitor) {
@@ -54,5 +55,14 @@ export function validateSourceCode(fileData){
     } catch(e){
         throw Error('File is not valid, error: ' + e.message);
     }
+}
+
+
+export function parse(inputData, options = {tolerant: true, range: false, comment: true, jsx: true}){
+    return esprima.parse(inputData, options);
+}
+
+export function generate(ast){
+    return escodegen.generate(ast, {comment: true});
 }
 

@@ -15,38 +15,101 @@
  */
 
 import path from 'path';
-import express from 'express';
-import * as clientManager from '../commons/clientManager.js';
-import * as storageManager from './storageManager.js';
-import * as npmUtils from '../commons/npmUtils.js';
+import {template} from 'lodash';
 import * as config from '../commons/configuration.js';
+import * as client from '../commons/client.js';
+import * as fileManager from '../commons/fileManager.js';
 
-let postInstallationCallback = undefined;
-let currentProjectDirPath = undefined;
+const applicationFiles = [
+    'app/components.js',
+    'app/reducers.js',
+    'app/sagas.js',
+    'app/store.js',
+    'defaults',
+    'desk/model.json',
+    'docs',
+    'config.js',
+    'webpack.app.js',
+];
 
-export function setPostInstallationCallback(func){
-    postInstallationCallback = func;
+const configTplPath = 'templates/config.js.tpl';
+const configFilePath = 'config.js';
+
+export function checkMetaFolder(dirPath) {
+    return fileManager.isExisting(path.join(dirPath, config.SERVICE_DIR));
 }
 
-export function setProjectDirPath(projectDirPath){
-    currentProjectDirPath = projectDirPath;
+export function downloadMetaDistr(downloadUrl, destDirPath) {
+    return client.downloadGet(downloadUrl)
+        .then(fileData => {
+            let destFilePath = path.join(destDirPath, '__metaDistr.tar.gz').replace(/\\/g, '/');
+            let tempDirPath = path.join(destDirPath, '___metaDistr').replace(/\\/g, '/');
+            return fileManager.writeBinaryFile(destFilePath, fileData)
+                .then(() => {
+                    return fileManager.unpackTarGz(destFilePath, tempDirPath);
+                })
+                .then(() => {
+                    return fileManager.removeFile(destFilePath);
+                }).then(() => {
+                    return tempDirPath;
+                });
+        })
 }
 
-export function prepareProject(options){
-    return clientManager.downloadGalleryFile(options.downloadUrl)
-        .then(file => {
-            return storageManager.writeProject(currentProjectDirPath, file);
+export function createMetaFolder(srcDirPath, destDirPath, options) {
+    const destMetaFolderPath = path.join(destDirPath, config.SERVICE_DIR);
+    const srcMetaFolderPath = path.join(srcDirPath, config.SERVICE_DIR);
+    return fileManager.copyFile(srcMetaFolderPath, destMetaFolderPath)
+        .then(() => {
+            const templatePath = path.join(srcDirPath, configTplPath);
+            return fileManager.readFile(templatePath)
+        })
+        .then(fileData => {
+            return template(fileData)(options);
+        })
+        .then(newFileData => {
+            const destFilePath = path.join(destMetaFolderPath, configFilePath);
+            return fileManager.writeFile(destFilePath, newFileData);
         })
         .then(() => {
-            return npmUtils.installDefault(currentProjectDirPath);
-        })
-        .then(() => {
-            if(postInstallationCallback){
-                return postInstallationCallback();
-            }
+            const projectPackageFilePath = path.join(destDirPath, 'package.json');
+            return fileManager.readJson(projectPackageFilePath)
+                .then(packageConfig => {
+                    packageConfig.scripts = packageConfig.scripts || {};
+                    packageConfig.scripts['structor'] = 'structor';
+                    return fileManager.writeJson(projectPackageFilePath, packageConfig);
+                })
         });
 }
 
-export function getProjectList(){
-    return clientManager.getAllProjects();
+export function updateMetaFolder(srcDirPath, destDirPath) {
+    let filesToCopy = [];
+    const srcMetaFolderPath = path.join(srcDirPath, config.SERVICE_DIR);
+    const destMetaFolderPath = path.join(destDirPath, config.SERVICE_DIR);
+    applicationFiles.forEach(filePath => {
+        filesToCopy.push({
+            srcFilePath: path.join(destMetaFolderPath, filePath),
+            destFilePath: path.join(srcMetaFolderPath, filePath),
+        })
+    });
+    return fileManager.copyFilesNoError(filesToCopy)
+        .then(() => {
+            return fileManager.removeFile(destMetaFolderPath);
+        })
+        .then(() => {
+            return fileManager.copyFile(srcMetaFolderPath, destMetaFolderPath);
+        });
+}
+
+export function removeFile(filePath) {
+    return fileManager.removeFile(filePath);
+}
+
+export function ensureFileStructure(dirPath, options) {
+    const srcPath = path.join(dirPath, options.srcPath);
+    return fileManager.ensureDirPath(srcPath)
+        .then(() => {
+            const srcAssetsPath = path.join(srcPath, 'assets');
+            return fileManager.ensureDirPath(srcAssetsPath);
+        });
 }

@@ -53,16 +53,13 @@ function setupProjectPaths(rootDirPath) {
     const absRoot = path.join(rootDirPath, SERVICE_DIR).replace(/\\/g, '/');
     config.project.paths = {
         dir: rootDirPath,
-        configFilePath: path.join(absRoot, 'config.json').replace(/\\/g, '/'),
-        webpackConfigFilePath: path.join(absRoot, 'webpack.config.js').replace(/\\/g, '/'),
+        configFilePath: path.join(absRoot, 'config.js').replace(/\\/g, '/'),
+        webpackConfigFilePath: path.join(absRoot, 'webpack.app.js').replace(/\\/g, '/'),
         deskIndexFilePath: path.join(absRoot, 'app', 'components.js').replace(/\\/g, '/'),
         deskReducersFilePath: path.join(absRoot, 'app', 'reducers.js').replace(/\\/g, '/'),
         deskSagasFilePath: path.join(absRoot, 'app', 'sagas.js').replace(/\\/g, '/'),
         componentDefaultsDirPath: path.join(absRoot, 'defaults').replace(/\\/g, '/'),
         docsComponentsDirPath: path.join(absRoot, 'docs', 'components').replace(/\\/g, '/'),
-
-        appDirPath: path.join(rootDirPath, 'app').replace(/\\/g, '/'),
-        appAssetsDirPath: path.join(rootDirPath, 'app', 'assets').replace(/\\/g, '/'),
 
         sandboxDirPath: path.join(absRoot, 'sandbox').replace(/\\/g, '/'),
 
@@ -108,29 +105,15 @@ function checkProjectDir() {
 }
 
 function loadProjectConfig() {
-    return fileManager.readJson(config.project.paths.configFilePath)
-        .then(jsonData => {
-            let newPaths = {};
-            if (jsonData.paths) {
-                forOwn(jsonData.paths, (value, prop) => {
-                    newPaths[prop] = path.join(config.project.paths.dir, value).replace(/\\/g, '/');
-                });
-            } else {
-                throw Error('The paths section is missing in the current project configuration.');
-            }
-            let newFiles = {};
-            if (jsonData.files) {
-                forOwn(jsonData.files, (value, prop) => {
-                    newFiles[prop] = path.join(config.project.paths.dir, value).replace(/\\/g, '/');
-                });
-            } else {
-                throw Error('The files section is missing in the current project configuration.');
-            }
-            config.project.conf = Object.assign({}, jsonData, {
-                paths: newPaths,
-                files: newFiles
-            });
-        });
+    const {configFilePath, dir} = config.project.paths;
+    let configFileData = require(configFilePath);
+    config.project.conf = Object.assign({}, configFileData);
+    if(configFileData.srcPath && dir) {
+        config.project.paths.appDirPath = path.join(dir, configFileData.srcPath).replace(/\\/g, '/');
+        config.project.paths.appAssetsDirPath = path.join(dir, configFileData.srcPath, 'assets').replace(/\\/g, '/');
+    } else {
+        throw Error('"srcPath" field is missing in Structor config object.');
+    }
 }
 
 function loadServerConfig() {
@@ -142,6 +125,56 @@ function loadServerConfig() {
                 throw Error('Could not parse JSON file: ' + config.server.paths.packageFilePath);
             }
         });
+}
+
+function changePropertyValue(ast, prop, value) {
+    const body = ast.body;
+    if(body && body.length > 0) {
+        let moduleExports;
+        body.forEach(item => {
+            if(item.type === 'ExpressionStatement'
+                && item.expression
+                && item.expression.type === 'AssignmentExpression'
+                && item.expression.left
+                && item.expression.right
+                && item.expression.right.type === 'ObjectExpression') {
+                const {type, object, property} = item.expression.left;
+                if(type === 'MemberExpression' && object && property) {
+                    if(object.name === 'module' && property.name === 'exports') {
+                        moduleExports = item.expression.right.properties;
+                    }
+                }
+            }
+        });
+        if(moduleExports) {
+            let property;
+            if(moduleExports.length > 0) {
+                property = moduleExports.find(p => p.key && p.key.name === prop);
+            }
+            if(property && property.value) {
+                property.value.value = value;
+                property.value.row = '"' + value + '"';
+            } else {
+                property = {
+                    type: "Property",
+                    key: {
+                        type: "Identifier",
+                        name: prop,
+                    },
+                    computed: false,
+                    value: {
+                        type: "Literal",
+                        value: value,
+                        raw: '"' + value + '"',
+                    },
+                    kind: "init",
+                    method: false,
+                    shorthand: false,
+                };
+                moduleExports.push(property);
+            }
+        }
+    }
 }
 
 export function serverDir(value) {
@@ -190,9 +223,7 @@ export function init(serverDirPath, projectDirPath, debugMode) {
                             }
                         })
                         .then(() => {
-                            return loadProjectConfig();
-                        })
-                        .then(() => {
+                            loadProjectConfig();
                             config.status = READY;
                             return READY;
                         })
@@ -201,14 +232,13 @@ export function init(serverDirPath, projectDirPath, debugMode) {
 }
 
 export function rewriteProjectConfigOption(optionPath, optionValue){
-    return fileManager.readJson(config.project.paths.configFilePath)
-        .then(jsonData => {
-            set(jsonData, optionPath, optionValue);
-            return fileManager.writeJson(config.project.paths.configFilePath, jsonData);
-        })
-        .then(() => {
-            return loadProjectConfig();
-        })
+    return fileManager.readFile(config.project.paths.configFilePath)
+        .then(fileData => {
+            set(config.project.conf, optionPath, optionValue);
+            let ast = fileParser.parse(fileData);
+            changePropertyValue(ast, optionPath, optionValue);
+            return fileManager.writeFile(config.project.paths.configFilePath, fileParser.generate(ast));
+        });
 }
 
 export function checkDeniedProxyURL(textUrl){
@@ -290,10 +320,6 @@ export function docsComponentsDirPath() {
 
 export function templatesDirPath(){
     return config.project.paths.templatesDirPath;
-}
-
-export function projectName() {
-    return config.project.conf.projectName;
 }
 
 export function projectId() {

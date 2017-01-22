@@ -29,7 +29,7 @@ let webpackConfig = undefined;
 export function getDevMiddlewareCompiler() {
     if (compiler === undefined) {
         try{
-            webpackConfig = require(config.webpackConfigFilePath())();
+            webpackConfig = require(config.webpackConfigFilePath());
             compiler = webpack(webpackConfig);
             if(config.getDebugMode()){
                 console.log('Webpack configuration:');

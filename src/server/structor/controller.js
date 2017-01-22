@@ -72,9 +72,12 @@ function initProxyServer(){
                 console.error(statusText);
             });
             proxy.on('proxyReq', () => {
-                const proxyURL = config.projectProxyURL().replace('http://', '');
-                return (proxyReq, req, res, options) => {
-                    proxyReq.setHeader('X-Forwarded-Host', proxyURL);
+                let projectProxyURL = config.projectProxyURL();
+                if(projectProxyURL) {
+                    const proxyURL = projectProxyURL.replace('http://', '');
+                    return (proxyReq, req, res, options) => {
+                        proxyReq.setHeader('X-Forwarded-Host', proxyURL);
+                    }
                 }
             });
             //

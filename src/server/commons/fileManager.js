@@ -124,6 +124,19 @@ export function copyFiles(options){
     );
 }
 
+export function copyFilesNoError(options){
+    return options.reduce(
+        (sequence, valuePair) => {
+            return sequence.then(() => {
+                return copyFile(valuePair.srcFilePath, valuePair.destFilePath)
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+        },
+        Promise.resolve()
+    );
+}
 
 export function copyFile(srcFilePath, destFilePath){
     return new Promise( (resolve, reject) => {
