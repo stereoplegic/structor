@@ -20,7 +20,6 @@ import deskPageSaga from '../controllers/workspace/DeskPage/sagas.js';
 import libraryPanelSaga from '../controllers/workspace/LibraryPanel/sagas.js';
 import componentOptionsSaga from '../controllers/workspace/ComponentOptionsModal/sagas.js';
 import generatorSaga from '../controllers/generator/Generator/sagas.js';
-import generatorBriefPanelSaga from '../controllers/generator/GeneratorBriefPanel/sagas.js';
 import proxySetupModalSaga from '../controllers/app/ProxySetupModal/sagas.js';
 import sandboxSaga from '../controllers/sandbox/Sandbox/sagas.js';
 import generatorTemplateSaga from '../controllers/sandbox/GeneratorTemplate/sagas.js';
@@ -32,7 +31,6 @@ export default function* mainSaga(){
     yield fork(libraryPanelSaga);
     yield fork(componentOptionsSaga);
     yield fork(generatorSaga);
-    yield fork(generatorBriefPanelSaga);
     yield fork(proxySetupModalSaga);
     yield fork(sandboxSaga);
     yield fork(generatorTemplateSaga);

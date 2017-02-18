@@ -18,7 +18,7 @@ import path from 'path';
 import {template} from 'lodash';
 import * as config from '../commons/configuration.js';
 import * as client from '../commons/client.js';
-import * as fileManager from '../commons/fileManager.js';
+import engine from 'structor-commons';
 
 const applicationFiles = [
     'app/components.js',
@@ -36,7 +36,7 @@ const configTplPath = 'templates/config.js.tpl';
 const configFilePath = 'config.js';
 
 export function checkMetaFolder(dirPath) {
-    return fileManager.isExisting(path.join(dirPath, config.SERVICE_DIR));
+    return engine.isExisting(path.join(dirPath, config.SERVICE_DIR));
 }
 
 export function downloadMetaDistr(downloadUrl, destDirPath) {
@@ -44,14 +44,27 @@ export function downloadMetaDistr(downloadUrl, destDirPath) {
         .then(fileData => {
             let destFilePath = path.join(destDirPath, '__metaDistr.tar.gz').replace(/\\/g, '/');
             let tempDirPath = path.join(destDirPath, '___metaDistr').replace(/\\/g, '/');
-            return fileManager.writeBinaryFile(destFilePath, fileData)
+            return engine.writeBinaryFile(destFilePath, fileData)
                 .then(() => {
-                    return fileManager.unpackTarGz(destFilePath, tempDirPath);
+                    return engine.unpackTarGz(destFilePath, tempDirPath);
                 })
                 .then(() => {
-                    return fileManager.removeFile(destFilePath);
-                }).then(() => {
-                    return tempDirPath;
+                    return engine.readDirectoryFlat(tempDirPath)
+                        .then(found => {
+                            if (found) {
+                                const {dirs} = found;
+                                if (dirs && dirs.length === 1) {
+                                    return dirs[0].path;
+                                }
+                            }
+                            throw Error('Downloaded tarball has different structure. Check the ulr: ' + downloadUrl);
+                        });
+                })
+                .then(innerDirPath => {
+                    return engine.removeFile(destFilePath)
+                        .then(() => {
+                            return {innerDirPath, tempDirPath};
+                        });
                 });
         })
 }
@@ -59,25 +72,25 @@ export function downloadMetaDistr(downloadUrl, destDirPath) {
 export function createMetaFolder(srcDirPath, destDirPath, options) {
     const destMetaFolderPath = path.join(destDirPath, config.SERVICE_DIR);
     const srcMetaFolderPath = path.join(srcDirPath, config.SERVICE_DIR);
-    return fileManager.copyFile(srcMetaFolderPath, destMetaFolderPath)
+    return engine.copyFile(srcMetaFolderPath, destMetaFolderPath)
         .then(() => {
             const templatePath = path.join(srcDirPath, configTplPath);
-            return fileManager.readFile(templatePath)
+            return engine.readFile(templatePath)
         })
         .then(fileData => {
             return template(fileData)(options);
         })
         .then(newFileData => {
             const destFilePath = path.join(destMetaFolderPath, configFilePath);
-            return fileManager.writeFile(destFilePath, newFileData);
+            return engine.writeFile(destFilePath, newFileData);
         })
         .then(() => {
             const projectPackageFilePath = path.join(destDirPath, 'package.json');
-            return fileManager.readJson(projectPackageFilePath)
+            return engine.readJson(projectPackageFilePath)
                 .then(packageConfig => {
                     packageConfig.scripts = packageConfig.scripts || {};
                     packageConfig.scripts['structor'] = 'structor';
-                    return fileManager.writeJson(projectPackageFilePath, packageConfig);
+                    return engine.writeJson(projectPackageFilePath, packageConfig);
                 })
         });
 }
@@ -92,24 +105,24 @@ export function updateMetaFolder(srcDirPath, destDirPath) {
             destFilePath: path.join(srcMetaFolderPath, filePath),
         })
     });
-    return fileManager.copyFilesNoError(filesToCopy)
+    return engine.copyFilesNoError(filesToCopy)
         .then(() => {
-            return fileManager.removeFile(destMetaFolderPath);
+            return engine.removeFile(destMetaFolderPath);
         })
         .then(() => {
-            return fileManager.copyFile(srcMetaFolderPath, destMetaFolderPath);
+            return engine.copyFile(srcMetaFolderPath, destMetaFolderPath);
         });
 }
 
 export function removeFile(filePath) {
-    return fileManager.removeFile(filePath);
+    return engine.removeFile(filePath);
 }
 
 export function ensureFileStructure(dirPath, options) {
     const srcPath = path.join(dirPath, options.srcPath);
-    return fileManager.ensureDirPath(srcPath)
+    return engine.ensureDirPath(srcPath)
         .then(() => {
             const srcAssetsPath = path.join(srcPath, 'assets');
-            return fileManager.ensureDirPath(srcAssetsPath);
+            return engine.ensureDirPath(srcAssetsPath);
         });
 }

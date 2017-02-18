@@ -15,9 +15,7 @@
  */
 
 import { createStructuredSelector } from 'reselect';
-import { availableGeneratorsLoadOptions } from 'controllers/generator/Generator/selectors';
 
 export const modelSelector = createStructuredSelector({
     componentModel: state => state.generatorList,
-    availableGeneratorsLoadOptions,
 });

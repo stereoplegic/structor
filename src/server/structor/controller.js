@@ -18,12 +18,12 @@ import express from 'express';
 import rewrite from 'express-urlrewrite';
 import httpProxy from 'http-proxy';
 import * as config from '../commons/configuration.js';
-import * as indexManager from '../commons/indexManager.js';
+import engine from 'structor-commons';
 import * as clientManager from '../commons/clientManager.js';
 import * as storageManager from './storageManager.js';
 import * as middlewareCompilerManager from './middlewareCompilerManager.js';
 import * as generatorManager from './generatorManager.js';
-import * as exportManager from './exportManager.js';
+import * as scaffoldManager from './scaffoldManager.js';
 
 let serverRef = undefined;
 let proxy = undefined;
@@ -57,7 +57,7 @@ function initServer(){
         }));
         serverRef.app.use(rewrite('/structor-deskpage/*', '/structor-desk/index.html'));
         serverRef.app.use('/structor-desk', express.static(config.deskDirPath()));
-        
+        serverRef.app.use('/structor-gengine-scaffolds', express.static(config.getScaffoldsDirPath()));
     }
 }
 
@@ -118,7 +118,7 @@ export function setProxyURL(options){
 }
 
 export function getComponentsTree(){
-    return indexManager.getComponentsTree();
+    return engine.getComponentsTree(config.deskIndexFilePath(), config.appDirPath());
 }
 
 export function getComponentDefaults(options){
@@ -157,29 +157,29 @@ export function getProjectsGallery(){
     return clientManager.getAllProjects();
 }
 
-export function getAvailableGeneratorsList(options){
-    return clientManager.getAvailableGeneratorsList(options);
-}
-
-export function getAvailableGeneratorGenerics(){
-    return clientManager.getAvailableGeneratorGenerics();
-}
+// export function getAvailableGeneratorsList(options){
+//     return clientManager.getAvailableGeneratorsList(options);
+// }
+//
+// export function getAvailableGeneratorGenerics(){
+//     return clientManager.getAvailableGeneratorGenerics();
+// }
 
 export function pregenerate(options){
-    const {generatorId, version, groupName, componentName, model} = options;
+    const {name, dirPath, groupName, componentName, model} = options;
     return generatorManager.initGeneratorData(groupName, componentName, model)
         .then(generatorData => {
-            return clientManager.invokePreGeneration(generatorId, version, generatorData);
+            return generatorManager.invokePreGeneration(dirPath, generatorData);
         });
 }
 
 export function generate(options){
-    const {generatorId, version, groupName, componentName, model, metadata} = options;
+    const {name, dirPath, groupName, componentName, model, metadata} = options;
     return generatorManager.initGeneratorData(groupName, componentName, model, metadata)
         .then(generatorData => {
-            // console.log('Generator data: ', JSON.stringify(generatorData));
-            return clientManager.invokeGeneration(generatorId, version, generatorData).then(result => {
-                // console.log('Resulting  data: ', JSON.stringify(result));
+            console.log('Generator data: ', JSON.stringify(generatorData));
+            return generatorManager.invokeGeneration(dirPath, generatorData).then(result => {
+                console.log('Resulting  data: ', JSON.stringify(result));
                 return result;
             });
         });
@@ -202,4 +202,8 @@ export function saveGenerated(options){
 export function getGeneratorReadme(options){
     const {userId, generatorId} = options;
     return clientManager.getGeneratorReadmeText(userId, generatorId);
+}
+
+export function getScaffoldGenerators(options) {
+    return scaffoldManager.getScaffoldGenerators();
 }

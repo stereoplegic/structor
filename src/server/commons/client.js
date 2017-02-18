@@ -60,7 +60,7 @@ export function post(url, requestBody) {
                             } else if (response.statusCode === 502) {
                                 reject('Connection to Structor Market server can not be established. Please try a little bit later.');
                             } else {
-                                reject('Got error code ' + response.statusCode + '. Status: ' + response.statusMessage + '. Message: ' + JSON.stringify(body));
+                                reject('Got error code ' + response.statusCode + ' for ' + url + '. Status: ' + response.statusMessage + '. Message: ' + JSON.stringify(body));
                             }
                         } else if (error) {
                             reject('Error connection to ' + url + '. ' + (error.message ? error.message : error));
@@ -121,7 +121,7 @@ export function get(url) {
                             } else if (response.statusCode === 502) {
                                 reject('Connection to Structor Market server can not be established. Please try a little bit later.');
                             } else {
-                                reject('Got error code ' + response.statusCode + '. Status: ' + response.statusMessage + '. Message: ' + JSON.stringify(body));
+                                reject('Got error code ' + response.statusCode + ' for ' + url + '. Status: ' + response.statusMessage + '. Message: ' + JSON.stringify(body));
                             }
                         } else if (error) {
                             reject('Error connection to ' + url + ". " + (error.message ? error.message : error));
@@ -170,7 +170,7 @@ export function getText(url) {
                             } else if (response.statusCode === 502) {
                                 reject('Connection to Structor Market server can not be established. Please try a little bit later.');
                             } else {
-                                reject('Got error code ' + response.statusCode + '. Status: ' + response.statusMessage + '. Message: ' + JSON.stringify(body));
+                                reject('Got error code ' + response.statusCode + ' for ' + url + '. Status: ' + response.statusMessage + '. Message: ' + JSON.stringify(body));
                             }
                         } else if (error) {
                             reject('Error connection to ' + url + '. ' + (error.message ? error.message : error));
@@ -221,7 +221,7 @@ export function download(url, requestBody) {
                             } else if (response.statusCode === 502) {
                                 reject('Connection to Structor Market server can not be established. Please try a little bit later.');
                             } else {
-                                reject('Got error code ' + response.statusCode + '. Status: ' + response.statusMessage + '. Message: ' + JSON.stringify(body));
+                                reject('Got error code ' + response.statusCode + ' for ' + url + '. Status: ' + response.statusMessage + '. Message: ' + JSON.stringify(body));
                             }
                         } else if (error) {
                             reject('Error connection to ' + url + '. ' + (error.message ? error.message : error));
@@ -237,7 +237,6 @@ export function download(url, requestBody) {
             reject(e.message ? e.message : e);
         }
     });
-
 }
 
 export function downloadGet(url) {
@@ -272,7 +271,7 @@ export function downloadGet(url) {
                             } else if (response.statusCode === 502) {
                                 reject('Connection to Structor Market server can not be established. Please try a little bit later.');
                             } else {
-                                reject('Got error code ' + response.statusCode + '. Error: ' + response.statusMessage);
+                                reject('Got error code ' + response.statusCode + ' for ' + url + '. Error: ' + response.statusMessage);
                             }
                         } else if (error) {
                             reject('Error connection to ' + url + '. ' + (error.message ? error.message : error));
@@ -288,7 +287,6 @@ export function downloadGet(url) {
             reject(e.message ? e.message : e);
         }
     });
-
 }
 
 export function uploadFile(url, filePath, fieldName) {
@@ -327,7 +325,7 @@ export function uploadFile(url, filePath, fieldName) {
                             } else if (response.statusCode === 502) {
                                 reject('Connection to Structor Market server can not be established. Please try a little bit later.');
                             } else {
-                                reject('Got error code ' + response.statusCode + '. Status: ' + response.statusMessage + '. Message: ' + JSON.stringify(body));
+                                reject('Got error code ' + response.statusCode + ' for ' + url + '. Status: ' + response.statusMessage + '. Message: ' + JSON.stringify(body));
                             }
                         } else if (error) {
                             reject('Error connection to ' + url + '. ' + (error.message ? error.message : error));

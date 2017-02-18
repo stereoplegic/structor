@@ -16,9 +16,9 @@
 
 import { bindActionCreators } from 'redux';
 import { loadOptionsAndShowModal } from 'controllers/workspace/ComponentOptionsModal/actions';
-import { loadAllGenerators } from 'controllers/generator/Generator/actions';
+import { loadGenerators } from 'controllers/generator/Generator/actions';
 import { setGeneratorSample } from 'controllers/sandbox/Sandbox/actions';
 
 export const containerActions = (dispatch) => bindActionCreators({
-    loadOptionsAndShowModal, loadAllGenerators, setGeneratorSample
+    loadOptionsAndShowModal, loadGenerators, setGeneratorSample
 }, dispatch);

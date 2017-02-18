@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-import * as actions from './actions.js';
+// import * as actions from './actions.js';
 
 const initialState = {
-    infos: {}
 };
 
 export default (state = initialState, action = {}) => {
 
-    const {type, payload} = action;
-
-    if(type === actions.SET_GENERATOR_INFO){
-        let newInfos = state.infos;
-        newInfos[payload.generatorId] = payload.info;
-        return Object.assign({}, state, { infos: newInfos });
-    }
+    // const {type, payload} = action;
 
     return state;
 

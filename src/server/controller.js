@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+require('babel-register');
 import express from 'express';
 import http from 'http';
 import path from 'path';
@@ -22,7 +23,7 @@ import bodyParser from 'body-parser';
 import * as config from './commons/configuration.js';
 
 import * as structorController from './structor/controller.js';
-import * as sandboxController from './sandbox/controller.js';
+// import * as sandboxController from './sandbox/controller.js';
 // import * as downloadController from './download/controller.js';
 
 let server = {
@@ -98,7 +99,7 @@ export function initServer(options){
                 // initDownloadController();
                 if(status === config.READY){
                     initStructorController();
-                    initSandboxController();
+                    // initSandboxController();
                 }
             }
         }).catch(e => {
@@ -111,7 +112,7 @@ function reinitServer(){
         .then(status => {
             if(status === config.READY){
                 initStructorController();
-                initSandboxController();
+                // initSandboxController();
             } else {
                 throw Error('Server reinitialization should not be provided in empty directory.');
             }
@@ -133,10 +134,10 @@ function initStructorController(){
     });
     structorController.setServer(server);
 }
-
-function initSandboxController(){
-    server.app.post('/structor-sandbox', bodyParser.json({limit: '50mb'}), (req, res) => {
-        callControllerMethod(sandboxController, req, res);
-    });
-    sandboxController.setServer(server);
-}
+//
+// function initSandboxController(){
+//     server.app.post('/structor-sandbox', bodyParser.json({limit: '50mb'}), (req, res) => {
+//         callControllerMethod(sandboxController, req, res);
+//     });
+//     sandboxController.setServer(server);
+// }

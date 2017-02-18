@@ -16,10 +16,7 @@
 
 import _ from 'lodash';
 import path from 'path';
-import * as fileManager from '../commons/fileManager.js';
-import * as indexManager from '../commons/indexManager.js';
-import * as modelParser from '../commons/modelParser.js';
-import * as formatter from '../commons/fileFormatter.js';
+import engine from 'structor-commons';
 import * as config from '../commons/configuration.js';
 import * as pathResolver from './pathResolver.js';
 
@@ -33,7 +30,7 @@ export function createPageDataObject(pageModel, indexObj) {
         imports: []
     };
 
-    let modelComponentMap = modelParser.getModelComponentMap(_.extend(pageModel, {type: pageModel.pageName}));
+    let modelComponentMap = engine.getModelComponentMap(_.extend(pageModel, {type: pageModel.pageName}));
     if (indexObj.groups) {
 
         _.forOwn(indexObj.groups, (value, prop) => {
@@ -100,11 +97,11 @@ export function doGeneration(projectModel) {
         pages: []
     };
 
-    return indexManager.initIndex().then(indexObj => {
+    return engine.initIndex(config.deskIndexFilePath(), config.appDirPath()).then(indexObj => {
 
         let projectDataObj = createProjectDataObject(projectModel, projectConfig.conf.paths.exportDirPath, indexObj);
 
-        return fileManager.readDirectoryFiles(config.templatesDirPath())
+        return engine.readDirectoryFiles(config.templatesDirPath())
             .then(found => {
                 if (!found.files || found.files.length <= 0) {
                     throw Error('Current project does not have a templates for export.');
@@ -115,7 +112,7 @@ export function doGeneration(projectModel) {
                             let _templateObjects = templateObjects || [];
                             const ext = path.extname(filePath);
                             if (ext === '.tpl') {
-                                return fileManager.readFile(filePath)
+                                return engine.readFile(filePath)
                                     .then(fileData => {
                                         _templateObjects.push({
                                             dirPath: path.dirname(filePath),
@@ -167,15 +164,15 @@ export function commitGeneration(generatedObj) {
     let sequence = Promise.resolve();
 
     sequence = sequence.then(() => {
-        return fileManager.removeFile(generatedObj.outputDirPath);
+        return engine.removeFile(generatedObj.outputDirPath);
     });
 
     generatedObj.pages.forEach((page, index) => {
         sequence = sequence.then(() => {
-            return fileManager.ensureFilePath(page.pageOutputFilePath)
+            return engine.ensureFilePath(page.pageOutputFilePath)
                 .then(() => {
                     const ext = path.extname(page.pageOutputFilePath);
-                    return fileManager.writeFile(
+                    return engine.writeFile(
                         page.pageOutputFilePath,
                         page.pageSourceCode,
                         ext === '.js'

@@ -46,11 +46,14 @@ class Container extends Component {
         e.stopPropagation();
         e.preventDefault();
         let metadataObject = undefined;
+        const {componentModel: {name, dirPath, metaData}} = this.props;
         if(this.refs.metadataOptions) {
-            const {componentModel: {metaData}} = this.props;
             metadataObject = Object.assign({}, metaData, this.refs.metadataOptions.getOptionsObject());
         }
-        this.props.startGeneration(this.refs.groupNameInput.getValue(),
+        this.props.startGeneration(
+            name,
+            dirPath,
+            this.refs.groupNameInput.getValue(),
             this.refs.componentNameInput.getValue(),
             metadataObject
         );
@@ -59,7 +62,7 @@ class Container extends Component {
     render() {
 
         const {
-            componentModel: {selectedGenerator, groupName, componentName, metaData},
+            componentModel: {groupName, componentName, metaData, metaHelp},
             libraryPanelModel: {groupsList, componentsList}
         } = this.props;
 
@@ -90,7 +93,8 @@ class Container extends Component {
                             xsOffset={3}
                             mdOffset={3}
                             smOffset={3}
-                            lgOffset={3}>
+                            lgOffset={3}
+                        >
                             <div style={cellBoxStyle}>
                                 <div style={{width: '70%', minWidth: '200px'}}>
                                     <form onSubmit={this.handleOnSubmit}>
@@ -108,7 +112,8 @@ class Container extends Component {
                                             type="text"
                                             list="groups"
                                             value={groupName}
-                                            autoComplete="on" />
+                                            autoComplete="on"
+                                        />
                                         <datalist id="groups">
                                             {groupDataOptions}
                                         </datalist>
@@ -126,7 +131,8 @@ class Container extends Component {
                                             type="text"
                                             list="components"
                                             value={componentName}
-                                            autoComplete="on" />
+                                            autoComplete="on"
+                                        />
                                         <datalist id="components">
                                             {componentsDataOptions}
                                         </datalist>
@@ -143,13 +149,13 @@ class Container extends Component {
                                                 <MetaOptionsContainer
                                                     ref="metadataOptions"
                                                     optionsObject={metaData}
-                                                    optionsHelpObject={selectedGenerator.metaHelp} />
+                                                    optionsHelpObject={metaHelp}
+                                                />
                                             </div>
                                         }
                                     </form>
                                 </div>
                             </div>
-
                         </Col>
                     </Row>
                 </Grid>

@@ -1,9 +1,10 @@
 .git
 .idea
 build-conf
+docs
 images
 node_modules
 src
-.babelrc
+test
 .gitignore
 structor.iml

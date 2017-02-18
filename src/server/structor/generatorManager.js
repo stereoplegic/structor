@@ -15,46 +15,36 @@
  */
 
 import { forOwn, has } from 'lodash';
-import path from 'path';
-import * as fileManager from '../commons/fileManager.js';
 import * as config from '../commons/configuration.js';
-import * as indexManager from '../commons/indexManager.js';
-import * as npmUtils from '../commons/npmUtils.js';
-
-function repairPath(path){
-    if(path.substr(0, 1) !== '.'){
-        path = './' + path;
-    }
-    return path;
-}
+import engine from 'structor-commons';
 
 export function initGeneratorData(groupName, componentName, model, metadata) {
-    return indexManager.initIndex()
+    return engine.initIndex(config.deskIndexFilePath(), config.appDirPath())
         .then(index => {
             let fileReaders = [];
             let project = config.getProjectConfig();
             let fileSources = {};
             fileReaders.push(
-                fileManager.readFile(config.deskIndexFilePath())
+                engine.readFile(config.deskIndexFilePath())
                     .then(fileData => {
                         fileSources.deskIndexFile = fileData;
                     })
             );
             fileReaders.push(
-                fileManager.readFile(config.deskReducersFilePath())
+                engine.readFile(config.deskReducersFilePath())
                     .then(fileData => {
                         fileSources.deskReducersFile = fileData;
                     })
             );
             fileReaders.push(
-                fileManager.readFile(config.deskSagasFilePath())
+                engine.readFile(config.deskSagasFilePath())
                     .then(fileData => {
                         fileSources.deskSagasFile = fileData;
                     })
             );
             // forOwn(project.conf.files, (value, prop) => {
             //     fileReaders.push(
-            //         fileManager.readFile(value)
+            //         engine.readFile(value)
             //             .then(fileData => {
             //                 fileSources[prop] = fileData;
             //             })
@@ -66,6 +56,14 @@ export function initGeneratorData(groupName, componentName, model, metadata) {
                     return {groupName, componentName, model, metadata, project, index};
                 });
         });
+}
+
+export function invokePreGeneration(generatorDirPath, data) {
+    return engine.preProcess(generatorDirPath, data);
+}
+
+export function invokeGeneration(generatorDirPath, data) {
+    return engine.process(generatorDirPath, data);
 }
 
 export function installDependencies(dependencies) {
@@ -83,7 +81,7 @@ export function installDependencies(dependencies) {
             let packageNames = '';
             packages.forEach(pkg => {
                 installTask = installTask.then(() => {
-                    return npmUtils.getPackageAbsolutePath(pkg.name, config.projectDir())
+                    return engine.getPackageAbsolutePath(pkg.name, config.projectDir())
                         .then(packagePath => {
                             if (!packagePath) {
                                 const version = pkg.version && pkg.version.trim().length > 0 ? '@' + pkg.version.trim() : '';
@@ -95,7 +93,7 @@ export function installDependencies(dependencies) {
             installTask = installTask.then(() => {
                 packageNames = packageNames.substr(0, packageNames.length - 1);
                 if (packageNames && packageNames.length > 0) {
-                    return npmUtils.installPackages(packageNames, config.projectDir());
+                    return engine.installPackages(packageNames, config.projectDir());
                 }
             });
             // packages.forEach(pkg => {
@@ -103,7 +101,7 @@ export function installDependencies(dependencies) {
             //     if (copy && copy.length > 0) {
             //         let absDirPath;
             //         installTask = installTask.then(() => {
-            //             return npmUtils.getPackageAbsolutePath(pkg.name, config.projectDir())
+            //             return engine.getPackageAbsolutePath(pkg.name, config.projectDir())
             //                 .then(packagePath => {
             //                     if(!packagePath){
             //                         throw Error('Package ' + pkg.name + ' was not installed properly.');
@@ -115,7 +113,7 @@ export function installDependencies(dependencies) {
             //             installTask = installTask.then(() => {
             //                 const absSrcPath = path.join(absDirPath, copyItem.from).replace(/\\/g, '/');
             //                 const absDestPath = path.join(projectConfig.conf.paths.assetsDirPath, copyItem.to).replace(/\\/g, '/');
-            //                 return fileManager.copyFile(absSrcPath, absDestPath);
+            //                 return engine.copyFile(absSrcPath, absDestPath);
             //             });
             //         });
             //     }
@@ -135,19 +133,19 @@ export function saveGenerated(groupName, componentName, files) {
             componentFilePath = fileObject.outputFilePath;
         }
         fileSavers.push(
-            fileManager.ensureFilePath(fileObject.outputFilePath).then(() => {
-                return fileManager.writeFile(fileObject.outputFilePath, fileObject.sourceCode, false);
+            engine.ensureFilePath(fileObject.outputFilePath).then(() => {
+                return engine.writeFile(fileObject.outputFilePath, fileObject.sourceCode, false);
             })
         );
     });
     return Promise.all(fileSavers).then(() => {
-        return indexManager.initIndex();
+        return engine.initIndex(config.deskIndexFilePath(), config.appDirPath());
         // if (componentFilePath) {
         //     const indexFileDirPath = config.deskSourceDirPath();
         //     const relativeFilePathInIndex = path.relative(indexFileDirPath, componentFilePath).replace(/\\/g, '/');
-        //     return indexManager.addComponent(groupName, componentName, relativeFilePathInIndex);
+        //     return engine.addComponent(groupName, componentName, relativeFilePathInIndex, config.deskIndexFilePath());
         // } else {
-        //     return indexManager.initIndex();
+        //     return engine.initIndex(config.deskIndexFilePath(), config.appDirPath());
         // }
     });
 }

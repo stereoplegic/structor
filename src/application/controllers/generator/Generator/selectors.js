@@ -20,6 +20,5 @@ import { userAccountSelector } from 'controllers/app/AppContainer/selectors';
 export const availableGeneratorsLoadOptions = state => state.generator.loadOptions;
 
 export const modelSelector = createStructuredSelector({
-    componentModel: state => state.generator,
-    userAccount: userAccountSelector
+    componentModel: state => state.generator
 });

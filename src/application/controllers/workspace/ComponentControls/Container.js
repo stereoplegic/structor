@@ -26,7 +26,7 @@ class Container extends Component {
     }
 
     render(){
-        const { currentComponent, loadOptionsAndShowModal, loadAllGenerators, setGeneratorSample } = this.props;
+        const { currentComponent, loadOptionsAndShowModal, loadGenerators} = this.props;
         const buttonLabelStyle = {
             margin: '0 0.5em'
         };
@@ -45,23 +45,23 @@ class Container extends Component {
                 <button
                     className="btn btn-default btn-xs"
                     disabled={!currentComponent}
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); loadAllGenerators(); }}
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); loadGenerators(); }}
                     title="Generate the source code for a new component">
                     <span style={buttonLabelStyle}>
                         <i className="fa fa-magic"/>
-                        <span style={{marginLeft: '0.5em'}}>New component</span>
+                        <span style={{marginLeft: '0.5em'}}>Generate New Component</span>
                     </span>
                 </button>
-                <button
-                    className="btn btn-default btn-xs"
-                    disabled={!currentComponent || !currentComponent.sourceFilePath}
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setGeneratorSample(currentComponent); }}
-                    title="Publish the source code of the component">
-                    <span style={buttonLabelStyle}>
-                        <i className="fa fa-cloud-upload"/>
-                        <span style={{marginLeft: '0.5em'}}>Publish</span>
-                    </span>
-                </button>
+                {/*<button*/}
+                    {/*className="btn btn-default btn-xs"*/}
+                    {/*disabled={!currentComponent || !currentComponent.sourceFilePath}*/}
+                    {/*onClick={(e) => { e.preventDefault(); e.stopPropagation(); setGeneratorSample(currentComponent); }}*/}
+                    {/*title="Publish the source code of the component">*/}
+                    {/*<span style={buttonLabelStyle}>*/}
+                        {/*<i className="fa fa-cloud-upload"/>*/}
+                        {/*<span style={{marginLeft: '0.5em'}}>Publish</span>*/}
+                    {/*</span>*/}
+                {/*</button>*/}
             </div>
         );
     }

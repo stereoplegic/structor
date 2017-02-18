@@ -14,30 +14,3 @@
  * limitations under the License.
  */
 
-import { SagaCancellationException } from 'redux-saga';
-import { fork, take, call, put, race } from 'redux-saga/effects';
-import * as actions from './actions.js';
-import { serverApi, cookies } from '../../../api';
-//
-//const delay = ms => new Promise(resolve => setTimeout(() => resolve('timed out'), ms));
-//
-function* getInfo(userId, generatorId){
-    try{
-        const textInfo = yield call(serverApi.getGeneratorInfo, userId, generatorId);
-        yield put(actions.setGeneratorInfo(userId, generatorId, {brief: textInfo}));
-    } catch(e){
-        console.warn(e.message ? e.message : e);
-    }
-}
-
-function* getGeneratorInfo(){
-    while(true){
-        const {payload: {userId, generatorId}} = yield take(actions.GET_GENERATOR_INFO);
-        yield fork(getInfo, userId, generatorId);
-    }
-}
-// main saga
-export default function* mainSaga() {
-    yield [fork(getGeneratorInfo)];
-
-};

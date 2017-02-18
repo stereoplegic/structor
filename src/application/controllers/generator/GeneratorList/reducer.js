@@ -17,16 +17,9 @@
 import * as actions from './actions.js';
 
 const initialState = {
-    generators: {},
+    generators: [],
     recentGenerators: [],
-    scaffoldGenerators: [],
-    filter: {
-        groupKey: actions.ALL_GROUP_KEY,
-        groupName: actions.ALL_GROUP_KEY,
-        groupNameBack: null
-    },
-    selectedTabKey: 3,
-    searchText: '',
+    selectedTabKey: 1,
 };
 
 export default (state = initialState, action = {}) => {
@@ -35,25 +28,13 @@ export default (state = initialState, action = {}) => {
 
     if(type === actions.SET_GENERATORS){
         return Object.assign({}, state, {
-            generators: payload.generators || {},
+            generators: payload.generators || [],
         });
     }
 
     if(type === actions.SET_RECENT_GENERATORS){
         return Object.assign({}, state, {
-            recentGenerators: payload || {}
-        });
-    }
-
-    if(type === actions.SET_SCAFFOLD_GENERATORS){
-        return Object.assign({}, state, {
-            scaffoldGenerators: payload || []
-        });
-    }
-
-    if(type === actions.SET_FILTER){
-        return Object.assign({}, state, {
-            filter: payload
+            recentGenerators: payload || []
         });
     }
 

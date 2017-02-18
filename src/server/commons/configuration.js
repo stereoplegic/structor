@@ -15,8 +15,7 @@
  */
 import path from 'path';
 import {forOwn, get, set} from 'lodash';
-import * as fileManager from './fileManager.js';
-import * as fileParser from './fileParser.js';
+import engine from 'structor-commons';
 
 export const SERVICE_DIR = '.structor';
 export const READY = 'ready-to-go';
@@ -33,7 +32,8 @@ export const STRUCTOR_URLS = [
     '/structor-dev',
     '/structor-desk',
     '/structor-sandbox-preview',
-    '/structor-sandbox-screenshot'
+    '/structor-sandbox-screenshot',
+    '/structor-gengine-scaffolds'
 ];
 
 let config = {
@@ -61,7 +61,8 @@ function setupProjectPaths(rootDirPath) {
         componentDefaultsDirPath: path.join(absRoot, 'defaults').replace(/\\/g, '/'),
         docsComponentsDirPath: path.join(absRoot, 'docs', 'components').replace(/\\/g, '/'),
 
-        sandboxDirPath: path.join(absRoot, 'sandbox').replace(/\\/g, '/'),
+        gengineDirPath: path.join(absRoot, 'gengine').replace(/\\/g, '/'),
+        scaffoldsDirPath: path.join(absRoot, 'gengine', 'scaffolds').replace(/\\/g, '/'),
 
         // templatesDirPath: path.join(absRoot, 'templates').replace(/\\/g, '/'),
         deskSourceDirPath: path.join(absRoot, 'src').replace(/\\/g, '/'),
@@ -87,7 +88,7 @@ function checkPaths(confObj) {
     let sequence = Promise.resolve([]);
     forOwn(confObj, (value, prop) => {
         sequence = sequence.then(errors => {
-            return fileManager.isExisting(value)
+            return engine.isExisting(value)
                 .then(() => {
                     return errors;
                 })
@@ -117,7 +118,7 @@ function loadProjectConfig() {
 }
 
 function loadServerConfig() {
-    return fileManager.readJson(config.server.paths.packageFilePath)
+    return engine.readJson(config.server.paths.packageFilePath)
         .then(jsonData => {
             try {
                 config.server.packageConf = JSON.stringify(jsonData);
@@ -203,41 +204,38 @@ export function init(serverDirPath, projectDirPath, debugMode) {
     config.status = undefined;
     config.debugMode = debugMode;
     serverDir(serverDirPath);
-    return loadServerConfig()
+    return engine.checkDirIsEmpty(projectDirPath)
         .then(() => {
-            return fileManager.checkDirIsEmpty(projectDirPath)
-                .then(() => {
-                    config.status = EMPTY;
-                    return EMPTY;
+            config.status = EMPTY;
+            return EMPTY;
+        })
+        .catch(e => {
+            projectDir(projectDirPath);
+            return checkProjectDir()
+                .then(errors => {
+                    if (errors.length > 0) {
+                        let messages = '';
+                        errors.forEach(error => {
+                            messages += error + '\n';
+                        });
+                        throw Error(messages);
+                    }
                 })
-                .catch(e => {
-                    projectDir(projectDirPath);
-                    return checkProjectDir()
-                        .then(errors => {
-                            if (errors.length > 0) {
-                                let messages = '';
-                                errors.forEach(error => {
-                                    messages += error + '\n';
-                                });
-                                throw Error(messages);
-                            }
-                        })
-                        .then(() => {
-                            loadProjectConfig();
-                            config.status = READY;
-                            return READY;
-                        })
-                });
+                .then(() => {
+                    loadProjectConfig();
+                    config.status = READY;
+                    return READY;
+                })
         });
 }
 
 export function rewriteProjectConfigOption(optionPath, optionValue){
-    return fileManager.readFile(config.project.paths.configFilePath)
+    return engine.readFile(config.project.paths.configFilePath)
         .then(fileData => {
             set(config.project.conf, optionPath, optionValue);
-            let ast = fileParser.parse(fileData);
+            let ast = engine.parse(fileData);
             changePropertyValue(ast, optionPath, optionValue);
-            return fileManager.writeFile(config.project.paths.configFilePath, fileParser.generate(ast));
+            return engine.writeFile(config.project.paths.configFilePath, engine.generate(ast));
         });
 }
 
@@ -334,10 +332,14 @@ export function projectProxyURL(){
     return config.project.conf.proxyURL;
 }
 
-export function sandboxDirPath(){
-    return config.project.paths.sandboxDirPath;
-}
-
 export function appAssetsDirPath(){
     return config.project.paths.appAssetsDirPath;
+}
+
+export function getGengineDirPath() {
+    return config.project.paths.gengineDirPath;
+}
+
+export function getScaffoldsDirPath() {
+    return config.project.paths.scaffoldsDirPath;
 }

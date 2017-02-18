@@ -29,48 +29,34 @@ export const STAGE4 = 'STAGE4';
 
 export const STEP_TO_STAGE = "Generator/STEP_TO_STAGE";
 export const LOAD_GENERATORS = "Generator/LOAD_GENERATORS";
-export const LOAD_ALL_GENERATORS = "Generator/LOAD_ALL_GENERATORS";
 export const SET_GENERATED_DATA = "Generator/SET_GENERATED_DATA";
 export const PREGENERATE = "Generator/PREGENERATE";
 export const GENERATE = "Generator/GENERATE";
 export const SAVE_GENERATED = "Generator/SAVE_GENERATED";
-export const REMOVE_GENERATOR = "Generator/REMOVE_GENERATOR";
 
 export const stepToStage = (stage) => ({type: STEP_TO_STAGE, payload: stage});
 export const loadGenerators = (options) => (dispatch, getState) => {
-    if(!options){
-        const {generator: {loadOptions}} = getState();
-        options = loadOptions;
-    }
     dispatch({type: LOAD_GENERATORS, payload: options});
 };
-export const loadAllGenerators = () => ({type: LOAD_ALL_GENERATORS});
 
 export const setGeneratedData = (generatedData) => ({type: SET_GENERATED_DATA, payload: generatedData});
 
-export const pregenerate = (generatorId, generatorKey, version) => (dispatch, getState) => {
+export const pregenerate = (name, dirPath) => (dispatch, getState) => {
     const { selectionBreadcrumbs: {selectedKeys}} = getState();
     if(selectedKeys && selectedKeys.length === 1){
         const selectedNode = graphApi.getNode(selectedKeys[0]);
         if (selectedNode) {
             const {modelNode} = selectedNode;
             if(modelNode){
-                let groupName = 'NewGroup';
-                let componentName = 'NewComponent';
-                if(generatorKey && generatorKey.length > 0) {
-                    let keyParts = generatorKey.split('.');
-                    if(keyParts.length >= 2){
-                        groupName = keyParts[keyParts.length - 2];
-                        componentName = keyParts[keyParts.length - 1];
-                    }
-                }
-                dispatch({type: PREGENERATE, payload:{generatorId, groupName, componentName, version, modelNode}});
+                let groupName = '';
+                let componentName = '';
+                dispatch({type: PREGENERATE, payload:{name, dirPath, groupName, componentName, modelNode}});
             }
         }
     }
 };
 
-export const generate = (groupName, componentName, metaData) => (dispatch, getState) => {
+export const generate = (name, dirPath, groupName, componentName, metaData) => (dispatch, getState) => {
 
     let canProceed = true;
 
@@ -96,9 +82,8 @@ export const generate = (groupName, componentName, metaData) => (dispatch, getSt
         canProceed = false;
     }
     if(canProceed){
-        const {selectionBreadcrumbs, metadataForm, libraryPanel} = getState();
+        const {selectionBreadcrumbs, libraryPanel} = getState();
         const {selectedKeys} = selectionBreadcrumbs;
-        const {selectedGenerator: {id: generatorId, version}} = metadataForm;
         const {componentsList} = libraryPanel;
 
         if(selectedKeys && selectedKeys.length === 1){
@@ -111,7 +96,7 @@ export const generate = (groupName, componentName, metaData) => (dispatch, getSt
                 if (selectedNode) {
                     const {modelNode} = selectedNode;
                     if(modelNode){
-                        dispatch({type: GENERATE, payload:{generatorId, version, groupName, componentName, modelNode, metaData}});
+                        dispatch({type: GENERATE, payload:{name, dirPath, groupName, componentName, modelNode, metaData}});
                     }
                 }
             }
@@ -124,18 +109,12 @@ export const saveGenerated = () => (dispatch, getState) => {
     const {generator: {generatedData: {files, dependencies}}} = getState();
     const {metadataForm: {groupName, componentName}} = getState();
     dispatch({type: SAVE_GENERATED, payload: {selectedKey: selectedKeys[0], groupName, componentName, files, dependencies}});
-
 };
 
 export const hide = () => (dispatch, getState) => {
     dispatch(stepToStage(STAGE1));
     dispatch(hideGenerator());
 };
-
-export const removeGenerator = (generatorId) => (dispatch, getState) => {
-    dispatch({type: REMOVE_GENERATOR, payload:{generatorId}});
-};
-
 
 export const containerActions = (dispatch) => bindActionCreators({
     hide, stepToStage, showSignIn

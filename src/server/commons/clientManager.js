@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-// import _ from 'lodash';
 import path from 'path';
 import * as client from './client.js';
 import * as config from './configuration.js';

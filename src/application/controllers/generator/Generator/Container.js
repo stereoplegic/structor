@@ -26,6 +26,25 @@ import GeneratorList from '../GeneratorList';
 import MetadataForm from '../MetadataForm';
 import SourceFilesList from '../SourceFilesList';
 
+const toolbarLabelStyle = {
+    margin: '0 1em'
+};
+const labelSectionStyle = {
+    width: '35%',
+    margin: '0, 2em'
+};
+const centerSectionStyle = {
+    width: '30%',
+    display: 'flex',
+    justifyContent: 'center'
+};
+const toolbarSectionStyle = {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '1em'
+};
+
 class Container extends Component {
 
     constructor(props) {
@@ -60,25 +79,7 @@ class Container extends Component {
 
     render(){
 
-        const { componentModel: {stage}, hide, userAccount} = this.props;
-        const toolbarLabelStyle = {
-            margin: '0 1em'
-        };
-        const labelSectionStyle = {
-            width: '35%',
-            margin: '0, 2em'
-        };
-        const centerSectionStyle = {
-            width: '30%',
-            display: 'flex',
-            justifyContent: 'center'
-        };
-        const toolbarSectionStyle = {
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            marginBottom: '1em'
-        };
+        const { componentModel: {stage}, hide } = this.props;
 
         const closeButton = (
             <Button onClick={(e) => {e.stopPropagation(); e.preventDefault(); hide();} }>
@@ -98,15 +99,6 @@ class Container extends Component {
             toolbar = (
                 <ButtonGroup bsSize="xs">
                     {closeButton}
-                    {userAccount.userId ?
-                        null :
-                        <Button bsStyle="warning"
-                                onClick={this.handleOnSignIn}>
-                            <span style={toolbarLabelStyle}>
-                                Sign in to market
-                            </span>
-                        </Button>
-                    }
                 </ButtonGroup>
             );
             header = (<h4 className="text-center">Select component source code generator</h4>);
@@ -120,7 +112,12 @@ class Container extends Component {
             );
             toolbar = (
                 <ButtonGroup bsSize="xs">
-                    <Button data-stage={STAGE1} onClick={this.handleOnStep} ><span style={toolbarLabelStyle}>Back</span></Button>
+                    <Button
+                        data-stage={STAGE1}
+                        onClick={this.handleOnStep}
+                    >
+                        <span style={toolbarLabelStyle}>Back</span>
+                    </Button>
                     {closeButton}
                 </ButtonGroup>
             );
@@ -135,7 +132,12 @@ class Container extends Component {
             );
             toolbar = (
                 <ButtonGroup bsSize="xs">
-                    <Button data-stage={STAGE2} onClick={this.handleOnStep} ><span style={toolbarLabelStyle}>Back</span></Button>
+                    <Button
+                        data-stage={STAGE2}
+                        onClick={this.handleOnStep}
+                    >
+                        <span style={toolbarLabelStyle}>Back</span>
+                    </Button>
                     {closeButton}
                 </ButtonGroup>
             );
@@ -143,9 +145,11 @@ class Container extends Component {
             content = (<SourceFilesList />);
         }
         return (
-            <div ref="containerElement"
-                 id="containerElement"
-                 style={{position: 'absolute', top: '0px', left: '0px', right: '0px', bottom: '0px', overflow: 'auto'}}>
+            <div
+                ref="containerElement"
+                id="containerElement"
+                style={{position: 'absolute', top: '0px', left: '0px', right: '0px', bottom: '0px', overflow: 'auto'}}
+            >
                 <div style={{width: '100%', position: 'fixed', zIndex: '100', padding: '0 2em'}}>
                     <div style={{backgroundColor: '#f5f5f5', borderBottom: '1px solid #ffffff'}}>
                         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>

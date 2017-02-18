@@ -21,10 +21,6 @@ const initialState = {
         files: [],
         dependencies: {}
     },
-    loadOptions: {
-        isOnlyGenerics: false,
-        searchText: '',
-    },
     stage: actions.STAGE1
 
 };
@@ -42,12 +38,6 @@ export default (state = initialState, action = {}) => {
     if(type === actions.SET_GENERATED_DATA){
         return Object.assign({}, state, {
             generatedData: payload
-        });
-    }
-
-    if(type === actions.LOAD_GENERATORS){
-        return Object.assign({}, state, {
-            loadOptions: Object.assign({}, state.loadOptions, payload)
         });
     }
 

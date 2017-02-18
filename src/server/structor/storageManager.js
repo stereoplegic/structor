@@ -16,9 +16,7 @@
 
 import path from 'path';
 import * as config from '../commons/configuration.js';
-import * as fileManager from '../commons/fileManager.js';
-import * as validator from '../commons/validator.js';
-import * as modelParser from '../commons/modelParser.js';
+import engine from 'structor-commons';
 
 function isFirstCharacterInUpperCase(text){
     if (text && text.length > 0) {
@@ -30,21 +28,21 @@ function isFirstCharacterInUpperCase(text){
 }
 
 export function readProjectJsonModel(){
-    return fileManager.readJson(config.deskModelFilePath());
+    return engine.readJson(config.deskModelFilePath());
 }
 
 export function readDefaults(componentName){
     let lookupComponentName =
         isFirstCharacterInUpperCase(componentName) ? componentName : ('html-' + componentName);
     let filePath = path.join(config.componentDefaultsDirPath(), lookupComponentName + '.json').replace(/\\/g, '/');
-    return fileManager.readJson(filePath)
+    return engine.readJson(filePath)
         .then(fileData => {
             if(fileData.length > 0){
                 fileData.forEach(data => {
-                    modelParser.cleanModel(data);
+                    engine.cleanModel(data);
                 });
             }
-            return fileManager.writeJson(filePath, fileData)
+            return engine.writeJson(filePath, fileData)
                 .then(() => {
                     return fileData;
                 });
@@ -56,7 +54,7 @@ export function readDefaults(componentName){
 
 export function readComponentDocument(componentName){
     const componentNoteFilePath = path.join(config.docsComponentsDirPath(), componentName + '.md').replace(/\\/g, '/');
-    return fileManager.readFile(componentNoteFilePath)
+    return engine.readFile(componentNoteFilePath)
         .then( fileData => {
             fileData = fileData || 'Component does not have notes';
             return fileData;
@@ -67,21 +65,13 @@ export function readComponentDocument(componentName){
 }
 
 export function readComponentSourceCode(filePath){
-    return fileManager.readFile(filePath);
+    return engine.readFile(filePath);
 }
 
 export function writeComponentSourceCode(filePath, sourceCode){
-    return validator.validateJSCode(sourceCode)
-        .then(() => {
-            return fileManager.writeFile(filePath, sourceCode, false);
-        });
+    return engine.writeFile(filePath, sourceCode, false);
 }
 
 export function writeProjectJsonModel(jsonObj){
-    if(jsonObj && jsonObj.pages && jsonObj.pages.length > 0){
-        jsonObj.pages.forEach(page => {
-            modelParser.cleanModel(page);
-        });
-    }
-    return fileManager.writeJson(config.deskModelFilePath(), jsonObj);
+    return engine.writeJson(config.deskModelFilePath(), jsonObj);
 }

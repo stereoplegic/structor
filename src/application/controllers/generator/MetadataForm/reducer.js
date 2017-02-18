@@ -17,15 +17,12 @@
 import * as actions from './actions.js';
 
 const initialState = {
+    name: undefined,
+    dirPath: undefined,
     groupName: undefined,
     componentName: undefined,
     metaData: undefined,
-    selectedGenerator: {
-        id: undefined,
-        version: undefined,
-        metaData: undefined,
-        metaHelp: undefined
-    }
+    metaHelp: undefined,
 };
 
 export default (state = initialState, action = {}) => {
@@ -42,17 +39,7 @@ export default (state = initialState, action = {}) => {
     }
 
     if(type === actions.SET_SELECTED_GENERATOR){
-        return Object.assign({}, state, {
-            selectedGenerator:{
-                id: payload.generatorId,
-                version: payload.version,
-                metaData: payload.metaData,
-                metaHelp: payload.metaHelp
-            },
-            groupName: payload.groupName,
-            componentName: payload.componentName,
-            metaData: payload.metaData
-        });
+        return Object.assign({}, state, payload);
     }
 
     return state;

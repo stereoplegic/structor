@@ -137,23 +137,19 @@ export function writeComponentSource(sourceCodeFilePath, sourceCode) {
     return invokeStructor('writeComponentSourceCode', {filePath: sourceCodeFilePath, sourceCode});
 }
 
-export function getAvailableGeneratorsList(searchText){
-    return invokeStructor('getAvailableGeneratorsList', {searchText});
-}
-
-export function getAvailableGeneratorGenerics(){
-    return invokeStructor('getAvailableGeneratorGenerics');
+export function getAvailableGeneratorsList(){
+    return invokeStructor('getScaffoldGenerators');
 }
 
 export function getGeneratorInfo(userId, generatorId){
     return invokeStructor('getGeneratorReadme', {userId, generatorId});
 }
 
-export function pregenerate(generatorId, version, groupName, componentName, model){
-    return invokeStructor('pregenerate', {generatorId, version, groupName, componentName, model});
+export function pregenerate(name, dirPath, groupName, componentName, model){
+    return invokeStructor('pregenerate', {name, dirPath, groupName, componentName, model});
 }
-export function generate(generatorId, version, groupName, componentName, model, metadata){
-    return invokeStructor('generate', {generatorId, version, groupName, componentName, model, metadata});
+export function generate(name, dirPath, groupName, componentName, model, metadata){
+    return invokeStructor('generate', {name, dirPath, groupName, componentName, model, metadata});
 }
 
 export function saveGenerated(groupName, componentName, files, dependencies){
@@ -168,6 +164,6 @@ export function publishGenerator(generatorKey, dataObject){
     return invokeSandbox('publishGenerator', {generatorKey, dataObject});
 }
 
-export function removeGenerator(generatorId){
-    return invokeSandbox('removeGenerator', {generatorId});
-}
+// export function removeGenerator(generatorId){
+//     return invokeSandbox('removeGenerator', {generatorId});
+// }
