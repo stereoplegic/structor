@@ -16,9 +16,8 @@
 
 import path from 'path';
 import {template} from 'lodash';
-import * as config from '../commons/configuration.js';
+import {config, commons} from 'structor-commons';
 import * as client from '../commons/client.js';
-import engine from 'structor-commons';
 
 const applicationFiles = [
     'app/components.js',
@@ -35,8 +34,22 @@ const applicationFiles = [
 const configTplPath = 'templates/config.js.tpl';
 const configFilePath = 'config.js';
 
-export function checkMetaFolder(dirPath) {
-    return engine.isExisting(path.join(dirPath, config.SERVICE_DIR));
+export function checkMetaFolderVersion(dirPath, version) {
+    const serviceDirPath = path.join(dirPath, config.SERVICE_DIR);
+    return commons.isExisting(serviceDirPath)
+        .then(() => {
+            return commons.readJson(path.join(serviceDirPath, 'version.json'))
+                .catch(error => {
+                    return {};
+                });
+        })
+        .then(data => {
+            return data && data.version === version;
+        });
+}
+
+export function setMetaFolderVersion(dirPath, version) {
+    return commons.writeJson(path.join(dirPath, config.SERVICE_DIR, 'version.json'), {version});
 }
 
 export function downloadMetaDistr(downloadUrl, destDirPath) {
@@ -44,12 +57,12 @@ export function downloadMetaDistr(downloadUrl, destDirPath) {
         .then(fileData => {
             let destFilePath = path.join(destDirPath, '__metaDistr.tar.gz').replace(/\\/g, '/');
             let tempDirPath = path.join(destDirPath, '___metaDistr').replace(/\\/g, '/');
-            return engine.writeBinaryFile(destFilePath, fileData)
+            return commons.writeBinaryFile(destFilePath, fileData)
                 .then(() => {
-                    return engine.unpackTarGz(destFilePath, tempDirPath);
+                    return commons.unpackTarGz(destFilePath, tempDirPath);
                 })
                 .then(() => {
-                    return engine.readDirectoryFlat(tempDirPath)
+                    return commons.readDirectoryFlat(tempDirPath)
                         .then(found => {
                             if (found) {
                                 const {dirs} = found;
@@ -61,7 +74,7 @@ export function downloadMetaDistr(downloadUrl, destDirPath) {
                         });
                 })
                 .then(innerDirPath => {
-                    return engine.removeFile(destFilePath)
+                    return commons.removeFile(destFilePath)
                         .then(() => {
                             return {innerDirPath, tempDirPath};
                         });
@@ -72,25 +85,25 @@ export function downloadMetaDistr(downloadUrl, destDirPath) {
 export function createMetaFolder(srcDirPath, destDirPath, options) {
     const destMetaFolderPath = path.join(destDirPath, config.SERVICE_DIR);
     const srcMetaFolderPath = path.join(srcDirPath, config.SERVICE_DIR);
-    return engine.copyFile(srcMetaFolderPath, destMetaFolderPath)
+    return commons.copyFile(srcMetaFolderPath, destMetaFolderPath)
         .then(() => {
             const templatePath = path.join(srcDirPath, configTplPath);
-            return engine.readFile(templatePath)
+            return commons.readFile(templatePath)
         })
         .then(fileData => {
             return template(fileData)(options);
         })
         .then(newFileData => {
             const destFilePath = path.join(destMetaFolderPath, configFilePath);
-            return engine.writeFile(destFilePath, newFileData);
+            return commons.writeFile(destFilePath, newFileData);
         })
         .then(() => {
             const projectPackageFilePath = path.join(destDirPath, 'package.json');
-            return engine.readJson(projectPackageFilePath)
+            return commons.readJson(projectPackageFilePath)
                 .then(packageConfig => {
                     packageConfig.scripts = packageConfig.scripts || {};
                     packageConfig.scripts['structor'] = 'structor';
-                    return engine.writeJson(projectPackageFilePath, packageConfig);
+                    return commons.writeJson(projectPackageFilePath, packageConfig);
                 })
         });
 }
@@ -105,24 +118,24 @@ export function updateMetaFolder(srcDirPath, destDirPath) {
             destFilePath: path.join(srcMetaFolderPath, filePath),
         })
     });
-    return engine.copyFilesNoError(filesToCopy)
+    return commons.copyFilesNoError(filesToCopy)
         .then(() => {
-            return engine.removeFile(destMetaFolderPath);
+            return commons.removeFile(destMetaFolderPath);
         })
         .then(() => {
-            return engine.copyFile(srcMetaFolderPath, destMetaFolderPath);
+            return commons.copyFile(srcMetaFolderPath, destMetaFolderPath);
         });
 }
 
 export function removeFile(filePath) {
-    return engine.removeFile(filePath);
+    return commons.removeFile(filePath);
 }
 
 export function ensureFileStructure(dirPath, options) {
     const srcPath = path.join(dirPath, options.srcPath);
-    return engine.ensureDirPath(srcPath)
+    return commons.ensureDirPath(srcPath)
         .then(() => {
             const srcAssetsPath = path.join(srcPath, 'assets');
-            return engine.ensureDirPath(srcAssetsPath);
+            return commons.ensureDirPath(srcAssetsPath);
         });
 }

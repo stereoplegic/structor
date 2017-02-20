@@ -16,8 +16,10 @@
 
 import path from 'path';
 import * as client from './client.js';
-import * as config from './configuration.js';
-import {SERVICE_URL} from './configuration.js';
+import {config} from 'structor-commons';
+
+export const SERVICE_URL = 'https://helmetrex.com';
+// export const SERVICE_URL = 'http://localhost';
 
 export function getAllProjects() {
     return client.get(SERVICE_URL + '/sm/public/gallery/list');

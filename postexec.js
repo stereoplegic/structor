@@ -19,7 +19,7 @@ var currentDir = process.cwd();
 if (currentDir) {
 	currentDir = currentDir.replace(/\\/g, '/');
 }
-var downloadController = require(currentDir + '/server/download/controller.js');
+var downloadController = require(currentDir + '/server/structor/downloadManager.js');
 var pathParts = currentDir.split('/');
 
 var inquirer = require('inquirer');
@@ -58,21 +58,26 @@ if (process.env.npm_config_global) {
 
 			const appDirPath = path.resolve(currentDir, '../..');
 
-			downloadController.checkMetaFolder(appDirPath)
-				.then(() => {
-					downloadController.downloadMetaDistr(META_REPO_ARCHIVE_URL + '/' + packageFileName, appDirPath)
-						.then(paths => {
-							return downloadController.updateMetaFolder(paths.innerDirPath, appDirPath)
-								.then(() => {
-									return downloadController.removeFile(paths.tempDirPath);
-								});
-						})
-						.then(() => {
-							console.log('Meta data folder is updated successfully.');
-						})
-						.catch(error => {
-							console.error("Can not download " + META_REPO_ARCHIVE_URL + '/' + packageFileName, error);
-						});
+			downloadController.checkMetaFolderVersion(appDirPath, packageVersion)
+				.then((isVersionMatch) => {
+					if (!isVersionMatch) {
+						downloadController.downloadMetaDistr(META_REPO_ARCHIVE_URL + '/' + packageFileName, appDirPath)
+							.then(paths => {
+								return downloadController.updateMetaFolder(paths.innerDirPath, appDirPath)
+									.then(() => {
+										return downloadController.removeFile(paths.tempDirPath);
+									});
+							})
+							.then(() => {
+								return downloadController.setMetaFolderVersion(appDirPath, packageVersion)
+							})
+							.then(() => {
+								console.log('Meta data folder is updated successfully to the version: ' + packageVersion);
+							})
+							.catch(error => {
+								console.error("Can not download " + META_REPO_ARCHIVE_URL + '/' + packageFileName, error);
+							});
+					}
 				})
 				.catch(error => {
 					downloadController.downloadMetaDistr(META_REPO_ARCHIVE_URL + '/' + packageFileName, appDirPath)
@@ -88,7 +93,10 @@ if (process.env.npm_config_global) {
 										});
 								})
 								.then(() => {
-									console.log('Meta data folder is created successfully.');
+									return downloadController.setMetaFolderVersion(appDirPath, packageVersion)
+								})
+								.then(() => {
+									console.log('Meta data folder is created successfully. Version: ' + packageVersion);
 								})
 								.catch(error => {
 									console.error("Can not download " + META_REPO_ARCHIVE_URL + '/' + packageFileName, error);

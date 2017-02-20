@@ -20,7 +20,7 @@ import http from 'http';
 import path from 'path';
 import bodyParser from 'body-parser';
 
-import * as config from './commons/configuration.js';
+import {config} from 'structor-commons';
 
 import * as structorController from './structor/controller.js';
 // import * as sandboxController from './sandbox/controller.js';
@@ -73,7 +73,7 @@ export function initServer(options){
     const { serverDir, projectDir, portNumber, debugMode, io } = options;
     serverDirPath = serverDir;
     projectDirPath = projectDir;
-    return config.init(serverDir, projectDir, debugMode)
+    return config.init(projectDir, debugMode)
         .then(status => {
             if(status){
 
@@ -108,7 +108,7 @@ export function initServer(options){
 }
 
 function reinitServer(){
-    return config.init(serverDirPath, projectDirPath)
+    return config.init(projectDirPath)
         .then(status => {
             if(status === config.READY){
                 initStructorController();

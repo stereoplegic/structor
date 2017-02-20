@@ -17,13 +17,21 @@
 import express from 'express';
 import rewrite from 'express-urlrewrite';
 import httpProxy from 'http-proxy';
-import * as config from '../commons/configuration.js';
-import engine from 'structor-commons';
+import {config, storage} from 'structor-commons';
 import * as clientManager from '../commons/clientManager.js';
-import * as storageManager from './storageManager.js';
 import * as middlewareCompilerManager from './middlewareCompilerManager.js';
-import * as generatorManager from './generatorManager.js';
-import * as scaffoldManager from './scaffoldManager.js';
+
+export const STRUCTOR_URLS = [
+    '/structor',
+    '/structor-invoke',
+    '/structor-sandbox',
+    '/structor-deskpage',
+    '/structor-dev',
+    '/structor-desk',
+    '/structor-sandbox-preview',
+    '/structor-sandbox-screenshot',
+    '/structor-gengine-scaffolds'
+];
 
 let serverRef = undefined;
 let proxy = undefined;
@@ -57,7 +65,7 @@ function initServer(){
         }));
         serverRef.app.use(rewrite('/structor-deskpage/*', '/structor-desk/index.html'));
         serverRef.app.use('/structor-desk', express.static(config.deskDirPath()));
-        serverRef.app.use('/structor-gengine-scaffolds', express.static(config.getScaffoldsDirPath()));
+        serverRef.app.use('/structor-gengine-scaffolds', express.static(config.scaffoldsDirPath()));
     }
 }
 
@@ -83,7 +91,7 @@ function initProxyServer(){
             //
             serverRef.app.all('/*', (req, res, next) => {
                 let url = req.url;
-                if (config.checkDeniedProxyURL(url)) {
+                if (checkDeniedProxyURL(url)) {
                     next('route');
                 } else {
                     let proxyURL = config.projectProxyURL();
@@ -98,8 +106,21 @@ function initProxyServer(){
     }
 }
 
+function checkDeniedProxyURL(textUrl){
+    let isDenied = false;
+    if(textUrl){
+        for(let i = 0; i < STRUCTOR_URLS.length; i++){
+            if(textUrl.indexOf(STRUCTOR_URLS[i]) === 0){
+                isDenied = true;
+                break;
+            }
+        }
+    }
+    return isDenied;
+}
+
 export function getModel(){
-    return storageManager.readProjectJsonModel();
+    return storage.readProjectJsonModel();
 }
 
 export function getConfig(){
@@ -111,22 +132,22 @@ export function getProjectStatus(){
 }
 
 export function setProxyURL(options){
-    return config.rewriteProjectConfigOption('proxyURL', options.proxyURL)
+    return config.projectProxyURL(options.proxyURL)
         .then(() => {
             initProxyServer();
         });
 }
 
 export function getComponentsTree(){
-    return engine.getComponentsTree(config.deskIndexFilePath(), config.appDirPath());
+    return storage.getComponentsTree(config.deskIndexFilePath(), config.appDirPath());
 }
 
 export function getComponentDefaults(options){
-    return storageManager.readDefaults(options.componentName);
+    return storage.readDefaults(options.componentName);
 }
 
 export function getComponentNotes(options){
-    return storageManager.readComponentDocument(options.componentName);
+    return storage.readComponentDocument(options.componentName);
 }
 
 export function getComponentSourceCode(options){
@@ -134,11 +155,11 @@ export function getComponentSourceCode(options){
 }
 
 export function writeComponentSourceCode(options){
-    return storageManager.writeComponentSourceCode(options.filePath, options.sourceCode);
+    return storage.writeComponentSourceCode(options.filePath, options.sourceCode);
 }
 
 export function saveProjectModel(options){
-    return storageManager.writeProjectJsonModel(options.model);
+    return storage.writeProjectJsonModel(options.model);
 }
 
 export function initUserCredentialsByToken(options){
@@ -167,37 +188,18 @@ export function getProjectsGallery(){
 
 export function pregenerate(options){
     const {name, dirPath, groupName, componentName, model} = options;
-    return generatorManager.initGeneratorData(groupName, componentName, model)
-        .then(generatorData => {
-            return generatorManager.invokePreGeneration(dirPath, generatorData);
-        });
+    return storage.invokePreGeneration(groupName, componentName, model, dirPath);
 }
 
 export function generate(options){
     const {name, dirPath, groupName, componentName, model, metadata} = options;
-    return generatorManager.initGeneratorData(groupName, componentName, model, metadata)
-        .then(generatorData => {
-            console.log('Generator data: ', JSON.stringify(generatorData));
-            return generatorManager.invokeGeneration(dirPath, generatorData).then(result => {
-                console.log('Resulting  data: ', JSON.stringify(result));
-                return result;
-            });
-        });
+    return storage.invokeGeneration(groupName, componentName, model, metadata, dirPath);
 }
 
 export function saveGenerated(options){
     const {groupName, componentName, files, dependencies} = options;
-    return generatorManager.installDependencies(dependencies).then(() => {
-        return generatorManager.saveGenerated(groupName, componentName, files);
-    });
+    return storage.saveGenerated(dependencies, files);
 }
-
-// export function exportPages(options){
-//     const {model} = options;
-//     return exportManager.doGeneration(model).then(generatedObject => {
-//         return exportManager.commitGeneration(generatedObject);
-//     });
-// }
 
 export function getGeneratorReadme(options){
     const {userId, generatorId} = options;
@@ -205,5 +207,5 @@ export function getGeneratorReadme(options){
 }
 
 export function getScaffoldGenerators(options) {
-    return scaffoldManager.getScaffoldGenerators();
+    return storage.getScaffoldGenerators('/structor-gengine-scaffolds');
 }

@@ -18,7 +18,7 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackBuilderMiddleware from './webpackBuilderMiddleware.js';
-import * as config from '../commons/configuration.js';
+import {config} from 'structor-commons';
 
 let compiler = undefined;
 let devMiddleware = undefined;
