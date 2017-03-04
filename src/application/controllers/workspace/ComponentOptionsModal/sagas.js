@@ -81,9 +81,9 @@ function* saveSourceCode(){
     }
 }
 
-function* loadComponentOptions(componentName, sourceFilePath){
+function* loadComponentOptions(componentName, namespace, sourceFilePath){
     try{
-        return yield call(serverApi.loadComponentOptions, componentName, sourceFilePath);
+        return yield call(serverApi.loadComponentOptions, componentName, namespace, sourceFilePath);
     } catch(error){
         if(error instanceof SagaCancellationException){
             yield put(messageActions.failed('Loading component options was canceled.'));
@@ -98,36 +98,14 @@ function* loadOptionsAndShowModal(){
         const { payload } = yield take(actions.LOAD_OPTIONS_AND_SHOW_MODAL);
         yield put(spinnerActions.started('Loading component options'));
         try {
-            const {sourceFilePath, componentName} = payload;
+            const {sourceFilePath, componentName, namespace} = payload;
             const {timeout, response} = yield race({
-                response: call(loadComponentOptions, componentName, sourceFilePath),
+                response: call(loadComponentOptions, componentName, namespace, sourceFilePath),
                 timeout: call(delay, 10000)
             });
             if(response){
                 yield put(actions.setOptions({...payload, ...response}));
                 yield put(actions.showModal());
-            } else if(timeout) {
-                yield put(messageActions.timeout('Loading component options is timed out.'));
-            }
-        } catch(error) {
-            yield put(messageActions.failed('Loading component options error. Error: ' + (error.message ? error.message : error)));
-        }
-        yield put(spinnerActions.done('Loading component options'));
-    }
-}
-
-function* loadOptions(){
-    while(true){
-        const { payload } = yield take(actions.LOAD_OPTIONS);
-        yield put(spinnerActions.started('Loading component options'));
-        try {
-            const {sourceFilePath, componentName} = payload;
-            const {timeout, response} = yield race({
-                response: call(loadComponentOptions, componentName, sourceFilePath),
-                timeout: call(delay, 10000)
-            });
-            if(response){
-                yield put(actions.setOptions({...payload, ...response}));
             } else if(timeout) {
                 yield put(messageActions.timeout('Loading component options is timed out.'));
             }

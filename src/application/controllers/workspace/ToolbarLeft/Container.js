@@ -20,6 +20,25 @@ import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 import { Button } from 'react-bootstrap';
 
+const leftSideStyle = {
+    'position': 'absolute',
+    'top': 0,
+    'left': 0,
+    'bottom': 0
+};
+
+const leftSideStyleInner = {
+    'position': 'relative',
+    'minWidth': '4em',
+    'width': '4em',
+    'padding': '10px 0.5em 0 0.5em'
+};
+
+const btnGroupStyle = {
+    'width': '100%',
+    'textAlign': 'center'
+};
+
 class Container extends Component {
 
     constructor(props) {
@@ -33,24 +52,6 @@ class Container extends Component {
         const { setLivePreviewModeOn, setEditModeOn, reloadPage } = this.props;
         const { saveProject, exportModel, signOut, showModal, proxyShowModal } = this.props;
 
-        var leftSideStyle = {
-            'position': 'absolute',
-            'top': 0,
-            'left': 0,
-            'bottom': 0
-        };
-
-        var leftSideStyleInner = {
-            'position': 'relative',
-            'minWidth': '4em',
-            'width': '4em',
-            'padding': '10px 0.5em 0 0.5em'
-        };
-
-        var btnGroupStyle = {
-            'width': '100%',
-            'textAlign': 'center'
-        };
         return (
             <div style={leftSideStyle}>
                 <div style={leftSideStyleInner}>

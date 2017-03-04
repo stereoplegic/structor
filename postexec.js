@@ -19,10 +19,7 @@ var currentDir = process.cwd();
 if (currentDir) {
 	currentDir = currentDir.replace(/\\/g, '/');
 }
-var downloadController = require(currentDir + '/server/structor/downloadManager.js');
 var pathParts = currentDir.split('/');
-
-var inquirer = require('inquirer');
 
 var PACKAGE_NAME = 'structor';
 var NODE_DIR_NAME = 'node_modules';
@@ -41,9 +38,15 @@ var questions = [
 	}
 ];
 
+var downloadController;
+try{
+	downloadController = require(currentDir + '/server/structor/downloadManager.js');
+} catch (e) {
+	// do nothing;
+}
 if (process.env.npm_config_global) {
 	console.error('Structor must be installed locally.');
-} else {
+} else if (downloadController) {
 	if (pathParts && pathParts.length > 0) {
 		var lastDir = pathParts[pathParts.length - 1];
 		var nodeDir = pathParts[pathParts.length - 2];
@@ -82,6 +85,7 @@ if (process.env.npm_config_global) {
 				.catch(error => {
 					downloadController.downloadMetaDistr(META_REPO_ARCHIVE_URL + '/' + packageFileName, appDirPath)
 						.then(paths => {
+							var inquirer = require('inquirer');
 							return inquirer.prompt(questions)
 								.then(answers => {
 									const options = {

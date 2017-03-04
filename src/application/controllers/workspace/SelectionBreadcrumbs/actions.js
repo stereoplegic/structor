@@ -15,7 +15,7 @@
  */
 
 import { bindActionCreators } from 'redux';
-import { utils, utilsStore, graphApi } from '../../../api';
+import { graphApi } from 'api';
 import { success, failed, timeout, close} from '../../app/AppMessage/actions.js';
 import { updateMarked } from '../DeskPage/actions.js';
 

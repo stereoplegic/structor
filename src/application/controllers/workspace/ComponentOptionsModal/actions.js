@@ -20,7 +20,6 @@ import { bindActionCreators } from 'redux';
 import { graphApi, serverApi } from 'api';
 import { failed } from 'controllers/app/AppMessage/actions';
 
-export const LOAD_OPTIONS = "ComponentOptionsModal/LOAD_OPTIONS";
 export const LOAD_OPTIONS_AND_SHOW_MODAL = "ComponentOptionsModal/LOAD_OPTIONS_AND_SHOW_MODAL";
 export const SET_OPTIONS = "ComponentOptionsModal/SET_OPTIONS";
 export const SAVE_SOURCE_CODE = "ComponentOptionsModal/SAVE_SOURCE_CODE";
@@ -29,7 +28,6 @@ export const SAVE_SOURCE_CODE_TIMEOUT = "ComponentOptionsModal/SAVE_SOURCE_CODE_
 export const HIDE_MODAL = "ComponentOptionsModal/HIDE_MODAL";
 export const SHOW_MODAL = "ComponentOptionsModal/SHOW_MODAL";
 
-export const loadOptions = (componentObject) => ({type: LOAD_OPTIONS, payload: componentObject});
 export const loadOptionsAndShowModal = (componentObject) => ({type: LOAD_OPTIONS_AND_SHOW_MODAL, payload: componentObject});
 export const saveSourceCodeDone = () => ({type: SAVE_SOURCE_CODE_DONE});
 export const saveSourceCodeTimeout = () => ({type: SAVE_SOURCE_CODE_TIMEOUT});

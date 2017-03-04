@@ -188,6 +188,7 @@ class Container extends Component{
                 isForCutting={graphNode.isForCutting}
                 isForCopying={graphNode.isForCopying}
                 type={modelNode.type}
+                namespace={modelNode.namespace}
                 modelProps={modelNode.props}
                 onSelect={setSelectedKey}
                 onMouseEnter={this.handleSetHighlightSelectedKey}

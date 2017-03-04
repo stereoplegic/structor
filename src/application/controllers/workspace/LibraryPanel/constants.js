@@ -15,3 +15,6 @@
  */
 
 export const recentGroupKey = 'groupKeyRecent';
+export const noGroupGroupKey = 'groupKeyNoGroup';
+export const htmlGroupKey = 'groupKeyHtml';
+export const filteredGroupKey = 'groupKeyFiltered';

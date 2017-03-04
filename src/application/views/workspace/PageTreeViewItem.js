@@ -17,6 +17,10 @@
 import React, { Component, PropTypes } from 'react';
 import { printProps } from '../../api/utils/printProps.js';
 
+const linkStyle = {outline: 'none', color: '#2185D0'};
+const propsStyle = {margin: '0 0 0 0.5em', fontWeight: '200', cursor: 'pointer'};
+const namespaceStyle = {margin: '0 0 0 0.3em'};
+
 class PageTreeViewItem extends Component {
 
     constructor(props) {
@@ -35,7 +39,7 @@ class PageTreeViewItem extends Component {
 
         let content = null;
 
-        const { isSelected, isForCutting, isForCopying, itemKey, children } = this.props;
+        const { isSelected, isForCutting, isForCopying, itemKey, children, type, namespace, modelProps } = this.props;
         const {onMouseEnter, onMouseLeave} = this.props;
 
         let className;
@@ -49,10 +53,10 @@ class PageTreeViewItem extends Component {
             className = 'umy-treeview-list-item';
         }
 
-        const linkStyle = {outline: 'none', color: '#2185D0'};
-        const propsStyle = {margin: '0 0 0 0.5em', fontWeight: '200', cursor: 'pointer'};
-        let label = this.props.type;
-        let props = printProps(this.props.modelProps);
+        const label = (<span>{type}</span>);
+        const namespaceLabel = namespace ?
+            (<span className="text-muted" style={namespaceStyle}>{'[' + namespace + ']'}</span>) : null;
+        let props = printProps(modelProps);
         if (children && children.length > 0) {
             content = (
                 <li id={itemKey}
@@ -66,7 +70,8 @@ class PageTreeViewItem extends Component {
                        onMouseEnter={onMouseEnter}
                        onMouseLeave={onMouseLeave}
                     >
-                        <span>{label}</span>
+                        {label}
+                        {namespaceLabel}
                     </a>
                     { props && <span className="text-muted"
                                     onClick={this.handleClick}
@@ -82,7 +87,7 @@ class PageTreeViewItem extends Component {
                        onMouseEnter={onMouseEnter}
                        onMouseLeave={onMouseLeave}
                     >
-                        <span>{label}</span>
+                        {label}
                     </a>
                     <span>{'>'}</span>
                 </li>
@@ -99,7 +104,8 @@ class PageTreeViewItem extends Component {
                        onMouseEnter={onMouseEnter}
                        onMouseLeave={onMouseLeave}
                     >
-                        <span>{label}</span>
+                        {label}
+                        {namespaceLabel}
                     </a>
                     { props && <span className="text-muted"
                                      onClick={this.handleClick}
@@ -117,13 +123,15 @@ PageTreeViewItem.defaultProps = {
     itemKey: undefined,
     isSelected: false,
     onSelect: undefined,
-    type: undefined
+    type: undefined,
+    namespace: undefined
 };
 PageTreeViewItem.propTypes = {
     itemKey: PropTypes.string.isRequired,
     inSelected: PropTypes.bool,
     onSelect: PropTypes.func,
-    type: PropTypes.string.isRequired
+    type: PropTypes.string.isRequired,
+    namespace: PropTypes.string
 };
 
 export default PageTreeViewItem;

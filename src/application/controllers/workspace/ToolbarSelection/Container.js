@@ -23,6 +23,15 @@ import ClipboardControls from '../ClipboardControls';
 import HistoryControls from '../HistoryControls';
 import SelectionBreadcrumbs from '../SelectionBreadcrumbs';
 
+const containerStyle = {
+    marginTop: '0.2em',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    alignItems: 'center',
+    width: '150em'
+};
+
 class Container extends Component {
 
     constructor(props) {
@@ -30,26 +39,6 @@ class Container extends Component {
     }
 
     render(){
-
-        const containerStyle = {
-            marginTop: '0.2em',
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'nowrap',
-            alignItems: 'center',
-            width: '150em'
-            //padding: '0px 0px 0px 10px'
-        };
-
-        //const labelStyle = {
-        //    padding: '3px 6px',
-        //    borderRadius: '3px',
-        //    cursor: 'pointer',
-        //    backgroundColor: 'rgb(227, 227, 227)',
-        //    color: 'rgb(107, 107, 107)',
-        //    textShadow: '0 1px 0px rgba(255, 255, 255, 0.8)',
-        //    width: '6em'
-        //};
 
         const controlsGroupStyle = {
             padding: '0px',

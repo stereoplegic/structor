@@ -16,10 +16,10 @@
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { forOwn, isObject } from 'lodash';
+import { forOwn, isObject, isEmpty } from 'lodash';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
-import {recentGroupKey} from './constants';
+import {recentGroupKey, noGroupGroupKey, htmlGroupKey, filteredGroupKey} from './constants';
 
 const style = {
     position: 'relative',
@@ -33,6 +33,14 @@ const labelStyle = {
     textShadow: '0 1px 0px rgba(255, 255, 255, 0.8)'
 };
 
+const makeTitle = (componentName) => {
+    let titleComponentName = componentName;
+    if(titleComponentName.length > 23){
+        titleComponentName = titleComponentName.substr(0, 20) + '...';
+    }
+    return titleComponentName;
+};
+
 class Container extends Component {
 
     constructor(props) {
@@ -42,7 +50,7 @@ class Container extends Component {
         this.handleClearFind = this.handleClearFind.bind(this);
         this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
         this.handleToggleGroup = this.handleToggleGroup.bind(this);
-        // this.handlePreviewComponent = this.handlePreviewComponent.bind(this);
+        this.createGroupingPanel = this.createGroupingPanel.bind(this);
         this.handleQuickCopyToClipboard = this.handleQuickCopyToClipboard.bind(this);
     }
 
@@ -73,32 +81,58 @@ class Container extends Component {
         this.props.togglePanelGroup(key);
     }
 
-    // handlePreviewComponent(e){
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     const { previewComponent } = this.props;
-    //     const componentName = e.currentTarget.dataset.component;
-    //     if(previewComponent && componentName){
-    //         previewComponent(componentName);
-    //     }
-    // }
-
     handleQuickCopyToClipboard(e){
         e.preventDefault();
         e.stopPropagation();
         const { quickCopyToClipboard } = this.props;
         const componentName = e.currentTarget.dataset.component;
+        const namespace = e.currentTarget.dataset.namespace;
+        const defaultsIndex = e.currentTarget.dataset.index;
         if(quickCopyToClipboard && componentName){
-            quickCopyToClipboard(componentName);
+            quickCopyToClipboard(componentName, namespace, defaultsIndex);
         }
     }
 
-    makeTitle(componentName){
-        let titleComponentName = componentName;
-        if(titleComponentName.length > 23){
-            titleComponentName = titleComponentName.substr(0, 20) + '...';
-        }
-        return titleComponentName;
+    createGroupingPanel(key, title, items, collapsedClassName, isDefault = true) {
+        return (
+            <div
+                key={key}
+                className={"panel" + (isDefault ? " panel-default" : " panel-info")}
+            >
+                <div
+                    className="panel-heading"
+                    role="tab"
+                    id={key}
+                >
+                    <p style={{margin: 0}}>
+                        <a
+                            style={{outline: '0'}}
+                            role="button"
+                            data-groupkey={key}
+                            href="#"
+                            onClick={this.handleToggleGroup}
+                        >
+                            {title}
+                        </a>
+                        <span
+                            className="label pull-right"
+                            style={labelStyle}
+                        >
+                            {items.length}
+                        </span>
+                    </p>
+                </div>
+                <div
+                    className={"panel-collapse collapse " + collapsedClassName}
+                    role="tabpanel"
+                >
+                    <div className="list-group">
+                        {items}
+                    </div>
+                    <div style={{height: '0'}}></div>
+                </div>
+            </div>
+        );
     }
 
     render() {
@@ -107,149 +141,151 @@ class Container extends Component {
             componentModel: {
                 recentlyUsed,
                 expandedGroupKeys,
-                componentsTree : componentTreeModel
+                componentTree
             }
         } = this.props;
+
         const { filter } = this.state;
 
         let libGroups = [];
-        let groupHeaderKey = 0;
-        let counter = 0;
 
         const filterString = filter ? filter.toUpperCase() : null;
-        if(!filter && recentlyUsed && recentlyUsed.length > 0){
+        if (!filter && recentlyUsed && recentlyUsed.length > 0) {
             let collapsed = "";
             if(expandedGroupKeys[recentGroupKey] === true){
                 collapsed = "in";
             }
             let components = [];
-            recentlyUsed.forEach((componentName, index) => {
+            recentlyUsed.forEach((recentItem, index) => {
                 components.push(
-                    <a key={componentName}
-                       className={'list-group-item'}
-                       href="#"
-                       title={'Copy to clipboard ' + componentName}
-                       data-component={componentName}
-                       onClick={this.handleQuickCopyToClipboard}>
-                        <span>{this.makeTitle(componentName)}</span>
+                    <a
+                        key={recentItem.componentName + recentItem.namespace + index}
+                        className={'list-group-item'}
+                        href="#"
+                        title={'Copy to clipboard ' + recentItem.componentName}
+                        data-namespace={recentItem.namespace ? recentItem.namespace : ''}
+                        data-component={recentItem.componentName}
+                        data-index={0}
+                        onClick={this.handleQuickCopyToClipboard}>
+                        <span>
+                            {makeTitle(recentItem.componentName)}
+                        </span>
                     </a>
                 );
             });
-            libGroups.push(
-                <div key={recentGroupKey}
-                     className="panel panel-info">
-                    <div className="panel-heading"
-                         role="tab"
-                         id="headingOne">
-                        <p style={{margin: 0}}>
-                            <a style={{outline: '0'}}
-                               role="button"
-                               data-groupkey={recentGroupKey}
-                               href={'#' + recentGroupKey}
-                               onClick={this.handleToggleGroup}
-                            >
-                                Recently Used
-                            </a>
-                            <span
-                                className="label pull-right"
-                                style={labelStyle}
-                            >
-                                {components.length}
-                            </span>
-                        </p>
-                    </div>
-                    <div id={recentGroupKey}
-                         className={"panel-collapse collapse " + collapsed}
-                         role="tabpanel">
-                        <div className="list-group">
-                            {components}
-                        </div>
-                        <div style={{height: '0'}}></div>
-                    </div>
-                </div>
-            );
+            libGroups.push(this.createGroupingPanel(recentGroupKey, 'Recently Used', components, collapsed, false));
         }
-        forOwn(componentTreeModel, (group, groupName) => {
-            if(isObject(group)){
-                let components = [];
-                forOwn(group, (componentTypeValue, componentName) => {
-                    if(filter){
-                        if(componentName.toUpperCase().includes(filterString)){
-                            components.push(
-                                <a key={componentName}
-                                   className={'list-group-item'}
-                                   href="#"
-                                   title={'Copy to clipboard ' + componentName}
-                                   data-component={componentName}
-                                   onClick={this.handleQuickCopyToClipboard}
+
+        const {htmlComponents, components, modules} = componentTree;
+        let filteredComponents = [];
+
+        // No group components
+        if (components && !isEmpty(components)) {
+            let noGroupItems = [];
+            let collapsed = "";
+            if(expandedGroupKeys[noGroupGroupKey] === true){
+                collapsed = "in";
+            }
+            forOwn(components, (componentDef, componentId) => {
+                if (!filterString || componentId.toUpperCase().indexOf(filterString) >= 0) {
+                    noGroupItems.push(
+                        <a
+                            key={'noGroup' + componentId}
+                            className="list-group-item"
+                            href="#"
+                            title={'Copy to clipboard ' + componentId}
+                            data-component={componentId}
+                            data-index={0}
+                            onClick={this.handleQuickCopyToClipboard}
+                        >
+                            <span>{makeTitle(componentId)}</span>
+                        </a>
+                    );
+                }
+            });
+            if (!filter) {
+                libGroups.push(this.createGroupingPanel(noGroupGroupKey, 'Components', noGroupItems, collapsed));
+            } else {
+                filteredComponents = filteredComponents.concat(noGroupItems);
+            }
+        }
+
+        // modules
+        if (modules && !isEmpty(modules)) {
+            forOwn(modules, (moduleDef, moduleId) => {
+                const {components: moduleComponents} = moduleDef;
+                const groupKey = 'groupKey' + moduleId;
+                if (moduleComponents && !isEmpty(moduleComponents)) {
+                    let groupItems = [];
+                    let collapsed = "";
+                    if(expandedGroupKeys[groupKey] === true){
+                        collapsed = "in";
+                    }
+                    forOwn(moduleComponents, (componentDef, componentId) => {
+                        if (!filterString || componentId.toUpperCase().indexOf(filterString) >= 0) {
+                            groupItems.push(
+                                <a
+                                    key={moduleId + componentId}
+                                    className="list-group-item"
+                                    href="#"
+                                    title={'Copy to clipboard ' + componentId}
+                                    data-namespace={moduleId}
+                                    data-component={componentId}
+                                    data-index={0}
+                                    onClick={this.handleQuickCopyToClipboard}
                                 >
-                                    <span>{this.makeTitle(componentName)}</span>
+                                    <span>{makeTitle(componentId)}</span>
                                 </a>
                             );
                         }
+                    });
+                    if (!filter) {
+                        libGroups.push(this.createGroupingPanel(groupKey, moduleId, groupItems, collapsed));
                     } else {
-                        components.push(
-                            <a key={componentName}
-                               className={'list-group-item'}
-                               href="#"
-                               title={'Copy to clipboard ' + componentName}
-                               data-component={componentName}
-                               onClick={this.handleQuickCopyToClipboard}>
-                                <span>{this.makeTitle(componentName)}</span>
-                            </a>
-                        );
+                        filteredComponents = filteredComponents.concat(groupItems);
                     }
-                });
-                let key = 'groupKey' + ++groupHeaderKey;
-                if(components.length > 0){
-                    let keySuffix = filter ? '12' : '0';
-                    let id = 'group' + groupName + counter + keySuffix;
-                    let collapsed = "";
-                    if(!!filter){
-                        collapsed = "in";
-                    } else if(expandedGroupKeys[key] === true){
-                        collapsed = "in";
-                    }
-                    libGroups.push(
-                        <div key={key}
-                             className="panel panel-default"
+                }
+            });
+        }
+
+        // HTML components
+        if (htmlComponents && !isEmpty(htmlComponents)) {
+            let htmlItems = [];
+            let collapsed = "";
+            if(expandedGroupKeys[htmlGroupKey] === true){
+                collapsed = "in";
+            }
+            forOwn(htmlComponents, (componentDef, componentId) => {
+                if (!filterString || componentId.toUpperCase().indexOf(filterString) >= 0) {
+                    htmlItems.push(
+                        <a
+                            key={'htmlGroup' + componentId}
+                            className="list-group-item"
+                            href="#"
+                            title={'Copy to clipboard ' + componentId}
+                            data-component={componentId}
+                            data-index={0}
+                            onClick={this.handleQuickCopyToClipboard}
                         >
-                            <div className="panel-heading"
-                                 role="tab"
-                                 id="headingOne"
-                            >
-                                <p style={{margin: 0}}>
-                                    <a style={{outline: '0'}}
-                                       role="button"
-                                       data-groupkey={key}
-                                       href={'#' + id}
-                                       onClick={this.handleToggleGroup}
-                                    >
-                                        {groupName}
-                                    </a>
-                                    <span
-                                        className="label pull-right"
-                                        style={labelStyle}
-                                    >
-                                        {components.length}
-                                    </span>
-                                </p>
-                            </div>
-                            <div id={id}
-                                 className={"panel-collapse collapse " + collapsed}
-                                 role="tabpanel"
-                            >
-                                <div className="list-group">
-                                    {components}
-                                </div>
-                                <div style={{height: '0'}} />
-                            </div>
-                        </div>
+                            <span>{makeTitle(componentId)}</span>
+                        </a>
                     );
                 }
+            });
+            if (!filter) {
+                libGroups.push(this.createGroupingPanel(htmlGroupKey, 'HTML', htmlItems, collapsed));
+            } else {
+                filteredComponents = filteredComponents.concat(htmlItems);
             }
-            counter++;
-        });
+        }
+
+        if (filter) {
+            let collapsed = "in";
+            if(!expandedGroupKeys[filteredGroupKey]){
+                collapsed = "";
+            }
+            libGroups.push(this.createGroupingPanel(filteredGroupKey, 'Found', filteredComponents, collapsed));
+        }
 
         return (
             <div style={{paddingTop: '5px'}}>

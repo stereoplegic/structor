@@ -99,46 +99,6 @@ function* waitForCompiler(){
     }
 }
 
-//function* loadProjectInfo(){
-//    try{
-//        return yield call(serverApi.getProjectInfo);
-//    } catch(error){
-//        if(error instanceof SagaCancellationException){
-//            yield put(messageActions.failed('Project loading was canceled.'));
-//        } else {
-//            yield put(messageActions.failed('Project loading has an error. ' + (error.message ? error.message : error)));
-//        }
-//    }
-//}
-
-//function* loadProject(){
-//    yield take(actions.GET_PROJECT_INFO);
-//    yield put(spinnerActions.started('Loading project'));
-//    try {
-//        yield call(signInByToken);
-//        const {timeout, response} = yield race({
-//            response: call(loadProjectInfo),
-//            timeout: call(delay, 30000)
-//        });
-//        if(response){
-//            const {projectConfig, projectStatus} = response;
-//            if(projectStatus === 'ready-to-go'){
-//                const model = yield call(serverApi.getProjectModel);
-//                const componentsTree = yield call(serverApi.loadComponentsTree);
-//                yield put(libraryPanelActions.setComponents(componentsTree));
-//                yield put(deskPageActions.loadModel(model || {}));
-//            }
-//            yield put(actions.getProjectInfoDone({projectConfig}));
-//
-//        } else if(timeout) {
-//            yield put(messageActions.timeout('Project loading is timed out.'));
-//        }
-//    } catch(error) {
-//        yield put(messageActions.failed('Project loading has an error. ' + (error.message ? error.message : error)));
-//    }
-//    yield put(spinnerActions.done('Loading project'));
-//}
-
 function* getProjectStatus(){
     while(true){
         yield take(actions.GET_PROJECT_STATUS);
@@ -148,8 +108,7 @@ function* getProjectStatus(){
             const status = yield call(serverApi.getProjectStatus);
             if(status === 'ready-to-go'){
                 const model = yield call(serverApi.getProjectModel);
-                const componentsTree = yield call(serverApi.loadComponentsTree);
-                yield put(libraryPanelActions.setComponents(componentsTree));
+                yield put(libraryPanelActions.loadComponents());
                 yield put(deskPageActions.loadModel(model || {}));
 
                 const projectInfo = yield call(serverApi.getProjectInfo);

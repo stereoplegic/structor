@@ -14,142 +14,78 @@
  * limitations under the License.
  */
 
-//import { Map, List, fromJS } from 'immutable';
-import * as Utils from './utils.js';
-import _ from 'lodash';
-//
-let nodeMap = {};
-let frameWindow = null;
-let $currentOverlayPlugin = null;
-let undoPool = [];
-//
-function findComponent(index, componentName, level, result){
-    let _result = result || {};
-    if(index && _.isObject(index) && level <= 1){
-        level++;
-        _.forOwn(index, (value, key) => {
-            if(!_result.value){
-                if(key === componentName){
-                    _result.value = value;
-                } else if(value && _.isObject(value)){
-                    _result = findComponent(value, componentName, level, _result);
-                    if(_result.value){
-                        _result.group = key;
-                    }
+import {cloneDeep} from 'lodash';
+
+export function findComponentDef(componentTree, componentName, namespace, defaultsIndex = 0) {
+    let componentDef = undefined;
+    if (componentName && namespace) {
+        if (componentTree.modules) {
+            let module = componentTree.modules[namespace];
+            if (module && module.components) {
+                componentDef = module.components[componentName];
+            } else {
+                throw Error(`Namespace module ${namespace} was not found.`);
+            }
+        }
+    } else if (componentName) {
+        if (componentTree.htmlComponents) {
+            componentDef = componentTree.htmlComponents[componentName];
+        }
+        if (!componentDef && componentTree.components) {
+            componentDef = componentTree.components[componentName];
+        }
+    }
+    if (componentDef) {
+        const {defaults} = componentDef;
+        if (defaults && defaults.length > defaultsIndex) {
+            return componentDef;
+        } else {
+            throw Error(`Model definition for ${componentName} component is missing.`);
+        }
+    } else {
+        if (namespace) {
+            throw Error(`Component ${componentName} in namespace ${namespace} was not found.`);
+        } else {
+            throw Error(`Component ${componentName} was not found.`);
+        }
+    }
+}
+
+export function getComponentTupleModel(componentTree, componentNames) {
+    let tupleModel = undefined;
+    if (componentNames && componentNames.length > 0) {
+        let componentName;
+        let namespace;
+        let firstBracePos;
+        let secondBracePos;
+        let componentDef;
+        componentNames.forEach(name => {
+            firstBracePos = name.indexOf('[');
+            secondBracePos = name.indexOf(']');
+            if (firstBracePos > 0 && secondBracePos > 0) {
+                componentName = name.substr(0, firstBracePos).trim();
+                namespace = name.substr(firstBracePos + 1, secondBracePos - firstBracePos - 1);
+            } else {
+                componentName = name.trim();
+                namespace = undefined;
+            }
+            console.log('Try to find: ', componentName, namespace);
+            try {
+                componentDef = findComponentDef(componentTree, componentName, namespace);
+                console.log('Found...');
+                const {defaults} = componentDef;
+                if (tupleModel) {
+                    tupleModel.children = [cloneDeep(defaults[0])];
+                } else {
+                    tupleModel = cloneDeep(defaults[0]);
                 }
+            } catch (e) {
+                // do nothing;
+                console.error('Error in searching the component: ', e);
             }
         });
     }
-    return _result;
-}
-//
-export function getComponentFromTree(tree, componentName){
-    return findComponent(tree, componentName, 0);
-}
-//
-export function cleanProjectModel(projectModel, componentsTree){
-    var test = function(type){
-        var testComponent = findComponent(componentsTree, type, 0);
-        return !!testComponent.value;
-    };
-    if(projectModel && projectModel.pages){
-        _.each(projectModel.pages, function(page){
-            Utils.deleteInvalidTypeItems(page, test);
-        });
-    }
-}
-//
-export const templatePreviewPageModel = {
-    pageName: 'TemplatePage',
-    children:[
-        {
-            type: 'div',
-            props: {
-                style: {
-                    padding: '0.5em',
-                    width: '100%'
-                }
-            },
-            children:[
-                {type: 'h4', children:[ { type: 'span', text: ''} ]},
-                {type: 'hr', props: { style: { marginBottom: '2em' } } }
-            ]
-        }
-    ]
-};
-//
-export function setPageDomNode(key, DOMNode){
-    nodeMap[key] = DOMNode;
-}
-
-export function resetPageDomNode(){
-    nodeMap = {};
-}
-
-export function hasPageDomNode(key){
-    return !!nodeMap[key];
-}
-
-export function getPageDomNode(key){
-    return nodeMap[key];
-}
-
-export function getPageDomNodeMap(){
-    return nodeMap;
-}
-
-export function setFrameWindow(window){
-    frameWindow = window;
-}
-
-export function getFrameWindow(){
-    return frameWindow;
-}
-
-export function resetFrameWindow(){
-    frameWindow = null;
-}
-
-export function setCurrentOverlayPlugin($overlayObj){
-    destroyCurrentOverlayPlugin();
-    $currentOverlayPlugin = $overlayObj;
-}
-
-export function destroyCurrentOverlayPlugin(){
-    if($currentOverlayPlugin){
-        $currentOverlayPlugin.destroy();
-        $currentOverlayPlugin = null;
-        //console.log('Current overlay plugin is destroyed');
-    }
-}
-
-export function removeMarksFromModel(model){
-    if(model && model.pages){
-        _.each(model.pages, function(page){
-            Utils.removeClassNamesFromModel(['umy-grid-basic-border-copy', 'umy-grid-basic-border-cut'], page);
-        });
-    }
-    return model;
-}
-
-export function pushUndoState(model){
-    if(undoPool.length >= 50){
-        undoPool = _.takeRight(undoPool, 50);
-    }
-    undoPool.push({
-        projectModel: model
-    });
-}
-
-export function popUndoState(){
-    if(undoPool.length > 0){
-        let undoState = _.last(undoPool);
-        let projectModel = undoState.projectModel;
-        undoPool = _.initial(undoPool);
-        return projectModel;
-    } else {
-        return null;
-    }
+    return tupleModel;
 }
 
 export function getTemplatePageModel(){

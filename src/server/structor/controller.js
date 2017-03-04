@@ -138,8 +138,8 @@ export function setProxyURL(options){
         });
 }
 
-export function getComponentsTree(){
-    return storage.getComponentsTree(config.deskIndexFilePath(), config.appDirPath());
+export function getComponentTree(){
+    return storage.getComponentTree(config.deskIndexFilePath(), config.appDirPath());
 }
 
 export function getComponentDefaults(options){
@@ -147,11 +147,11 @@ export function getComponentDefaults(options){
 }
 
 export function getComponentNotes(options){
-    return storage.readComponentDocument(options.componentName);
+    return storage.readComponentDocument(options.componentName, options.namespace);
 }
 
 export function getComponentSourceCode(options){
-    return storageManager.readComponentSourceCode(options.filePath);
+    return storage.readComponentSourceCode(options.filePath);
 }
 
 export function writeComponentSourceCode(options){

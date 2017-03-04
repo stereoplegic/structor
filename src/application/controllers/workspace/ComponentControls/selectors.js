@@ -16,13 +16,13 @@
 
 import {forOwn, isObject} from 'lodash';
 import { createSelector, createStructuredSelector } from 'reselect';
-import { graphApi } from '../../../api';
+import { graphApi, utilsStore } from 'api';
 
-const componentsTreeSelector = state => state.libraryPanel.componentsTree;
+const componentTreeSelector = state => state.libraryPanel.componentTree;
 const selectedKeysSelector = state => state.selectionBreadcrumbs.selectedKeys;
 
 export const currentComponentSelector = createSelector(
-    componentsTreeSelector,
+    componentTreeSelector,
     selectedKeysSelector,
     (tree, keys) => {
         let result = undefined;
@@ -30,20 +30,19 @@ export const currentComponentSelector = createSelector(
             const selectedNode = graphApi.getNode(keys[0]);
             if (selectedNode) {
                 const {modelNode} = selectedNode;
-                forOwn(tree, (group, groupName) => {
-                    if (isObject(group)) {
-                        forOwn(group, (component, componentName) => {
-                            if (modelNode.type === componentName) {
-                                result = result || {};
-                                result.key = keys[0];
-                                result.sourceFilePath = component.absoluteSource;
-                                result.componentName = componentName;
-                                result.props = modelNode.props;
-                                result.text = modelNode.text;
-                            }
-                        });
-                    }
-                });
+                let componentDef;
+                try {
+                    componentDef = utilsStore.findComponentDef(tree, modelNode.type, modelNode.namespace);
+                    result = result || {};
+                    result.key = keys[0];
+                    result.sourceFilePath = componentDef.absoluteIndexFilePath;
+                    result.componentName = modelNode.type;
+                    result.namespace = modelNode.namespace;
+                    result.props = modelNode.props;
+                    result.text = modelNode.text;
+                } catch (e) {
+                    // do nothing;
+                }
             }
         }
         return result;

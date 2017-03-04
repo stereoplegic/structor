@@ -18,7 +18,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
-import InputComponentAutocomplete from '../../../views/workspace/InputComponentAutocomplete.js';
+import InputComponentAutocomplete from 'views/workspace/InputComponentAutocomplete.js';
 
 import { Modal, Button } from 'react-bootstrap';
 
@@ -45,14 +45,14 @@ class Container extends Component {
     }
 
     handleSubmit(){
-        const {submit, componentModel: {appendMode}, libraryPanelModel: {componentsList}} = this.props;
+        const {submit, componentModel: {appendMode}, componentNames} = this.props;
         const tuple = this.input.getText();
         if(tuple){
             const parts = tuple.split('.');
             if(parts && parts.length > 0){
                 let errors = [];
                 parts.forEach(part => {
-                    if(componentsList.findIndex(i => i === part) < 0){
+                    if(componentNames.findIndex(i => i === part) < 0){
                         errors.push(`"${part}" component was not found`);
                     }
                 });
@@ -61,7 +61,7 @@ class Container extends Component {
                         errors: errors
                     });
                 } else {
-                    submit(this.input.getText(), appendMode);
+                    submit(tuple, appendMode);
                 }
             } else {
                 this.setState({
@@ -76,7 +76,7 @@ class Container extends Component {
     }
 
     render() {
-        const { componentModel: {show, appendMode}, libraryPanelModel: {componentsList}, hideModal } = this.props;
+        const { componentModel: {show, appendMode}, componentNames, hideModal } = this.props;
         const {errors} = this.state;
         return (
             <Modal show={show}
@@ -106,9 +106,10 @@ class Container extends Component {
                     }
                     <InputComponentAutocomplete
                         ref={me => this.input = me}
-                        componentNames={componentsList}
+                        componentNames={componentNames}
                         onSubmit={this.handleSubmit}
-                        onCancel={this.handleClose} />
+                        onCancel={this.handleClose}
+                    />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.handleClose}>Cancel</Button>

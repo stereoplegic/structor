@@ -26,7 +26,7 @@ function* loadComponents(){
         yield take(actions.LOAD_COMPONENTS);
         yield put(spinnerActions.started('Loading components'));
         try {
-            const response = yield call(serverApi.loadComponentsTree);
+            const response = yield call(serverApi.loadComponentTree);
             yield put(actions.setComponents(response));
 
         } catch(error) {

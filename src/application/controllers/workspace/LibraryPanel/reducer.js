@@ -19,12 +19,9 @@ import * as actions from './actions.js';
 import {recentGroupKey} from './constants';
 
 const initialState = {
-    componentsTree: {},
-    componentsList: [],
-    groupsList: [],
-    defaultVariantMap: {},
-    componentInPreview: undefined,
-    variantsInPreview: [],
+    componentTree: {},
+    // componentsList: [],
+    // groupsList: [],
     expandedGroupKeys: {},
     recentlyUsed: [],
 };
@@ -34,51 +31,8 @@ export default (state = initialState, action = {}) => {
     const {type, payload} = action;
 
     if(type === actions.SET_COMPONENTS){
-        const {componentsTree} = payload;
-        let componentsList = [];
-        let groupsList = [];
-        forOwn(componentsTree, (group, groupName) => {
-            if (isObject(group)) {
-                groupsList.push(groupName);
-                forOwn(group, (componentTypeValue, componentName) => {
-                    componentsList.push(componentName);
-                });
-            }
-        });
         return Object.assign({}, state, {
-            componentsTree: componentsTree,
-            componentsList: componentsList,
-            groupsList: groupsList
-        });
-    }
-
-    if(type === actions.PREVIEW_COMPONENT){
-        const {componentName, variants} = payload;
-        let defaultVariantMap = state.defaultVariantMap;
-        let defaultVariant = defaultVariantMap[componentName];
-        if(!defaultVariant || !defaultVariant.key){
-            if(variants && variants.length > 0){
-                defaultVariantMap[componentName] = { key: variants[0] };
-            }
-        }
-        return Object.assign({}, state, {
-            componentInPreview: componentName,
-            variantsInPreview: variants,
-            defaultVariantMap: defaultVariantMap
-        });
-    }
-
-    if(type === actions.HIDE_PREVIEW){
-        return Object.assign({}, state, {
-            componentInPreview: undefined
-        });
-    }
-
-    if(type === actions.SET_DEFAULT_VARIANT) {
-        let defaultVariantMap = state.defaultVariantMap;
-        defaultVariantMap[payload.componentName] = { key: payload.variant };
-        return Object.assign({}, state, {
-            defaultVariantMap: defaultVariantMap
+            componentTree: Object.assign({}, payload.componentTree),
         });
     }
 
@@ -91,6 +45,7 @@ export default (state = initialState, action = {}) => {
     }
 
     if(type === actions.ADD_RECENTLY_USED) {
+        const {componentName, namespace} = payload;
         let newState = Object.assign({}, state);
         let newRecentlyUsed = [].concat(state.recentlyUsed);
         if(newRecentlyUsed.length === 0) {
@@ -98,9 +53,15 @@ export default (state = initialState, action = {}) => {
             newExpandedGroupKeys[recentGroupKey] = true;
             newState.expandedGroupKeys = newExpandedGroupKeys;
         }
-        const found = newRecentlyUsed.find(i => payload === i);
+        const found = newRecentlyUsed.find(i => {
+            if (namespace) {
+                return i.namespace === namespace && i.componentName === componentName;
+            } else {
+                return i.componentName === componentName;
+            }
+        });
         if(!found){
-            newRecentlyUsed.splice(0, 0, payload);
+            newRecentlyUsed.splice(0, 0, {componentName, namespace});
         }
         if(newRecentlyUsed.length > 10){
             newRecentlyUsed = newRecentlyUsed.slice(0, 10);

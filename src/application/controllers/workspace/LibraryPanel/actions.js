@@ -15,7 +15,7 @@
  */
 
 import { bindActionCreators } from 'redux';
-import { HtmlComponents, previewGraphApi, graphApi, utils } from 'api';
+import { HtmlComponents, graphApi, utils, utilsStore } from 'api';
 import { success, failed} from 'controllers/app/AppMessage/actions.js';
 import { updateMarked, updatePage } from 'controllers/workspace/DeskPage/actions.js';
 import { setSelectedKey } from 'controllers/workspace/SelectionBreadcrumbs/actions.js';
@@ -24,68 +24,36 @@ import { pushHistory } from 'controllers/workspace/HistoryControls/actions.js';
 
 export const LOAD_COMPONENTS = "LibraryPanel/LOAD_COMPONENTS";
 export const SET_COMPONENTS = "LibraryPanel/SET_COMPONENTS";
-export const PREVIEW_COMPONENT = "LibraryPanel/PREVIEW_COMPONENT";
-export const HIDE_PREVIEW = "LibraryPanel/HIDE_PREVIEW";
-export const SET_DEFAULT_VARIANT = "LibraryPanel/SET_DEFAULT_VARIANT";
 export const TOGGLE_PANEL_GROUP = "LibraryPanel/TOGGLE_PANEL_GROUP";
 export const ADD_RECENTLY_USED = "LibraryPanel/ADD_RECENTLY_USED";
 
 export const loadComponents = () => ({ type: LOAD_COMPONENTS });
 export const togglePanelGroup = (key) => ({type: TOGGLE_PANEL_GROUP, payload: key});
-export const addRecentlyUsed = (componentName) => ({type: ADD_RECENTLY_USED, payload: componentName});
-
-export const previewComponent = (componentName) => (dispatch, getState) => {
-    const variants = previewGraphApi.getVariantKeys(componentName);
-    dispatch({ type: PREVIEW_COMPONENT, payload: {componentName, variants} });
-    dispatch(updateMarked());
+export const addRecentlyUsed = (componentName, namespace) => {
+    return {type: ADD_RECENTLY_USED, payload: {componentName, namespace}};
 };
 
-export const hidePreviewComponent = () => (dispatch, getState) => {
-    dispatch({ type: HIDE_PREVIEW });
-    dispatch(updateMarked());
+export const setComponents = (componentTree) => (dispatch, getState) => {
+    dispatch({type: SET_COMPONENTS, payload: {componentTree}});
 };
 
-export const setComponents = (components) => (dispatch, getState) => {
-    let {componentsTree, componentDefaultsMap} = components;
-    previewGraphApi.initGraph(componentDefaultsMap);
-
-    dispatch({type: SET_COMPONENTS, payload: {componentsTree}});
-};
-
-export const setDefaultVariant = (componentName, variant) => (dispatch, getState) => {
-    dispatch({type: SET_DEFAULT_VARIANT, payload: {componentName, variant}});
-    dispatch(updateMarked());
-};
-
-export const selectVariant = (variant) => (dispatch, getState) => {
-    const variantModel = previewGraphApi.getModelForVariant(variant);
-    if(variantModel){
-        dispatch(setForNew(variantModel));
-        dispatch(hidePreviewComponent());
-    } else {
-        console.error('Select variant: model for variant key was not found');
-    }
-};
-
-export const quickCopyToClipboard = (componentName) => (dispatch, getState) => {
-    const { libraryPanel: {defaultVariantMap, componentsList} } = getState();
-    if(componentsList && componentsList.indexOf(componentName) >= 0){
-        const variantModel = getVariantModel(defaultVariantMap, [componentName]);
-        if(variantModel){
-            dispatch(setForNew(variantModel));
-            dispatch(addRecentlyUsed(componentName));
-            dispatch(success(componentName + ' was copied to clipboard'));
-        } else {
-            console.error('Quick copy to clipboard: model for variant key was not found');
-        }
-    } else {
-        dispatch(failed('Component ' + componentName + ' was not found.'))
+export const quickCopyToClipboard = (componentName, namespace, defaultsIndex) => (dispatch, getState) => {
+    const { libraryPanel: {componentTree} } = getState();
+    let componentDef = undefined;
+    try {
+        componentDef = utilsStore.findComponentDef(componentTree, componentName, namespace, defaultsIndex);
+        const {defaults} = componentDef;
+        dispatch(setForNew(defaults[defaultsIndex]));
+        dispatch(addRecentlyUsed(componentName));
+        dispatch(success(componentName + ' was copied to clipboard'));
+    } catch (e) {
+        dispatch(failed(e.message));
     }
 };
 
 export const quickBefore = (componentNames) => (dispatch, getState) => {
-    const { libraryPanel: {defaultVariantMap} } = getState();
-    const variantModel = getVariantModel(defaultVariantMap, componentNames);
+    const { libraryPanel: {componentTree} } = getState();
+    const variantModel = utilsStore.getComponentTupleModel(componentTree, componentNames);
     if(variantModel){
         dispatch(pushHistory());
         const newSelectedKey = graphApi.quickBeforeOrAfter(variantModel, false);
@@ -97,8 +65,8 @@ export const quickBefore = (componentNames) => (dispatch, getState) => {
 };
 
 export const quickAfter = (componentNames) => (dispatch, getState) => {
-    const { libraryPanel: {defaultVariantMap} } = getState();
-    const variantModel = getVariantModel(defaultVariantMap, componentNames);
+    const { libraryPanel: {componentTree} } = getState();
+    const variantModel = utilsStore.getComponentTupleModel(componentTree, componentNames);
     if(variantModel){
         dispatch(pushHistory());
         const newSelectedKey = graphApi.quickBeforeOrAfter(variantModel, true);
@@ -110,8 +78,8 @@ export const quickAfter = (componentNames) => (dispatch, getState) => {
 };
 
 export const quickFirst = (componentNames) => (dispatch, getState) => {
-    const { libraryPanel: {defaultVariantMap} } = getState();
-    const variantModel = getVariantModel(defaultVariantMap, componentNames);
+    const { libraryPanel: {componentTree} } = getState();
+    const variantModel = utilsStore.getComponentTupleModel(componentTree, componentNames);
     if(variantModel){
         dispatch(pushHistory());
         const newSelectedKey = graphApi.quickFirstOrLast(variantModel, true);
@@ -123,8 +91,8 @@ export const quickFirst = (componentNames) => (dispatch, getState) => {
 };
 
 export const quickLast = (componentNames) => (dispatch, getState) => {
-    const { libraryPanel: {defaultVariantMap} } = getState();
-    const variantModel = getVariantModel(defaultVariantMap, componentNames);
+    const { libraryPanel: {componentTree} } = getState();
+    const variantModel = utilsStore.getComponentTupleModel(componentTree, componentNames);
     if(variantModel){
         dispatch(pushHistory());
         const newSelectedKey = graphApi.quickFirstOrLast(variantModel, false);
@@ -136,8 +104,8 @@ export const quickLast = (componentNames) => (dispatch, getState) => {
 };
 
 export const quickReplace = (componentNames) => (dispatch, getState) => {
-    const { libraryPanel: {defaultVariantMap} } = getState();
-    const variantModel = getVariantModel(defaultVariantMap, componentNames);
+    const { libraryPanel: {componentTree} } = getState();
+    const variantModel = utilsStore.getComponentTupleModel(componentTree, componentNames);
     if(variantModel){
         dispatch(pushHistory());
         const newSelectedKey = graphApi.quickReplace(variantModel);
@@ -166,38 +134,5 @@ export const quickReplace = (componentNames) => (dispatch, getState) => {
 //};
 
 export const containerActions = (dispatch) => bindActionCreators({
-    previewComponent, quickCopyToClipboard, togglePanelGroup
+    quickCopyToClipboard, togglePanelGroup
 }, dispatch);
-
-function getVariantModel(defaultVariantMap, componentNames){
-    let variantModel = null;
-    if(componentNames && componentNames.length > 0){
-        let variantKey;
-        let defaultVariant;
-        let variants;
-        let prevModel;
-        componentNames.forEach(componentName => {
-            defaultVariant = defaultVariantMap[componentName];
-            if(defaultVariant && defaultVariant.key){
-                variantKey = defaultVariant.key;
-            } else {
-                variants = previewGraphApi.getVariantKeys(componentName);
-                if(variants && variants.length > 0){
-                    variantKey = variants[0];
-                } else {
-                    console.error('Quick add before: none of model variants is found for ' + componentName);
-                }
-            }
-            if(variantKey){
-                let model = utils.fulex(previewGraphApi.getModelForVariant(variantKey));
-                if(prevModel){
-                    prevModel.children = [model];
-                } else {
-                    variantModel = model;
-                }
-                prevModel = model;
-            }
-        });
-    }
-    return variantModel;
-}

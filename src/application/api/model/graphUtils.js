@@ -57,7 +57,6 @@ export function mapModelForNode(srcGraph, rootModelNode, rootIndex, isNew, prop,
 export function makeNodeWrapper(key, graphNode){
     return {
         key: key,
-        //modelNode: graphNode.modelNode.type + ' ' + graphNode.modelNode.props['data-umyid'],
         modelNode: graphNode.modelNode,
         index: graphNode.index,
         prop: graphNode.prop,

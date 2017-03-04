@@ -20,6 +20,31 @@ import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions, FAILED, TIMEOUT } from './actions.js';
 
+const style = {
+    position: 'relative',
+    color: '#ffffff',
+    borderRadius: '4px',
+    border: '1px solid #ffffff',
+    verticalAlign: 'middle',
+    textAlign: 'left',
+    padding: '1.5em',
+    marginBottom: '0.5em',
+    fontSize: '12px'
+};
+const buttonStyle = {
+    position: 'absolute',
+    top: '0px',
+    right: '0px',
+    width: '1em',
+    height: '1em',
+    color: '#fff',
+    borderRadius: '50%',
+    verticalAlign: 'middle',
+    textAlign: 'center',
+    cursor: 'pointer',
+    fontSize: '18px'
+};
+
 class Container extends Component {
 
     constructor(props) {
@@ -47,31 +72,6 @@ class Container extends Component {
     render() {
         const { componentModel: {messages}, close } = this.props;
         if (messages.size > 0) {
-            const style = {
-                position: 'relative',
-                color: '#ffffff',
-                borderRadius: '4px',
-                border: '1px solid #ffffff',
-                verticalAlign: 'middle',
-                textAlign: 'left',
-                padding: '1.5em',
-                marginBottom: '0.5em',
-                fontSize: '12px'
-            };
-            const buttonStyle = {
-                position: 'absolute',
-                top: '0px',
-                right: '0px',
-                width: '1em',
-                height: '1em',
-                color: '#fff',
-                borderRadius: '50%',
-                verticalAlign: 'middle',
-                textAlign: 'center',
-                cursor: 'pointer',
-                fontSize: '18px'
-            };
-
             let messagesItems = [];
             messages.forEach( (item, key) => {
                 let messageStyle = Object.assign({}, style);
@@ -87,7 +87,9 @@ class Container extends Component {
                 }
                 messagesItems.push(
                         <div key={key} style={messageStyle} >
-                            <p style={{margin: 0}}><span>{messageText}</span></p>
+                            <p style={{margin: 0}}>
+                                <span style={{wordWrap: 'break-word'}}>{messageText}</span>
+                            </p>
                             { textNeedCut ?
                                 <p style={{margin: '0.5em 0 0 0', cursor: 'pointer'}}>
                                     <a href="#"

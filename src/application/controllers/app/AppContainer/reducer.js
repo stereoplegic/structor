@@ -15,7 +15,6 @@
  */
 
 import * as actions from './actions.js';
-import { utilsStore, HtmlComponents } from '../../../api/index.js';
 
 const initialState = {
     userAccount: {

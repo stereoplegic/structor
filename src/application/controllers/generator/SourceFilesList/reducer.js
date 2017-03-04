@@ -24,50 +24,6 @@ export default (state = initialState, action = {}) => {
 
     const {type, payload} = action;
 
-    //if(type === actions.GET_PROJECT_INFO_DONE){
-    //
-    //    //let { model, componentsTree} = payload.projectData;
-    //
-    //    // add Html components as additional group
-    //    //componentsTree['Html'] = HtmlComponents.getSortedHtmlComponents();
-    //
-    //    return Object.assign({}, state, {
-    //        packageConfig: payload.packageConfig,
-    //        projectDirectoryStatus: payload.projectDirectoryStatus,
-    //
-    //        //componentsTree: componentsTree,
-    //        workspaceMode: 'desk'
-    //    });
-    //}
-    //
-    //if(type === actions.SIGN_IN){
-    //    return Object.assign({}, state, {
-    //        authentication: {
-    //            error: null
-    //        }
-    //    });
-    //}
-    //
-    //if(type === actions.SIGN_IN_DONE){
-    //    return Object.assign({}, state, {
-    //        userAccount: payload
-    //    });
-    //}
-    //
-    //if(type === actions.SIGN_IN_FAILED){
-    //    return Object.assign({}, state, {
-    //        authentication: {
-    //            error: String(payload)
-    //        }
-    //    });
-    //}
-    //
-    //if(type === actions.SIGN_OUT){
-    //    return Object.assign({}, state, {
-    //        userAccount: initialState.userAccount
-    //    });
-    //}
-
     return state;
 
 }

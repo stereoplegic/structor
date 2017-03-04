@@ -19,23 +19,39 @@ import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 
+const buttonLabelStyle = {
+    margin: '0 0.5em'
+};
+
 class Container extends Component {
 
     constructor(props) {
         super(props);
+        this.onEdit = this.onEdit.bind(this);
+    }
+
+    onEdit(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        const {currentComponent, loadOptionsAndShowModal} = this.props;
+        loadOptionsAndShowModal(currentComponent);
+    }
+
+    onGenerate(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        const {loadGenerators} = this.props;
+        loadGenerators();
     }
 
     render(){
-        const { currentComponent, loadOptionsAndShowModal, loadGenerators} = this.props;
-        const buttonLabelStyle = {
-            margin: '0 0.5em'
-        };
+        const {currentComponent} = this.props;
         return (
             <div style={this.props.style} className="btn-group" role="group">
                 <button
                     className="btn btn-default btn-xs"
                     disabled={!currentComponent}
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); loadOptionsAndShowModal(currentComponent); }}
+                    onClick={this.onEdit}
                     title="Show selected component options">
                     <span style={buttonLabelStyle}>
                         <i className="fa fa-wrench"/>
@@ -45,23 +61,13 @@ class Container extends Component {
                 <button
                     className="btn btn-default btn-xs"
                     disabled={!currentComponent}
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); loadGenerators(); }}
+                    onClick={this.onGenerate}
                     title="Generate the source code for a new component">
                     <span style={buttonLabelStyle}>
                         <i className="fa fa-magic"/>
                         <span style={{marginLeft: '0.5em'}}>Generate New Component</span>
                     </span>
                 </button>
-                {/*<button*/}
-                    {/*className="btn btn-default btn-xs"*/}
-                    {/*disabled={!currentComponent || !currentComponent.sourceFilePath}*/}
-                    {/*onClick={(e) => { e.preventDefault(); e.stopPropagation(); setGeneratorSample(currentComponent); }}*/}
-                    {/*title="Publish the source code of the component">*/}
-                    {/*<span style={buttonLabelStyle}>*/}
-                        {/*<i className="fa fa-cloud-upload"/>*/}
-                        {/*<span style={{marginLeft: '0.5em'}}>Publish</span>*/}
-                    {/*</span>*/}
-                {/*</button>*/}
             </div>
         );
     }

@@ -145,7 +145,6 @@ class Container extends Component {
                         }
                         let componentTitle = this.makeTitle(item.modelNode.type);
                         if(i !== 0){
-
                             content.push(
                                 <li key={i} >
                                     <a href="#"
@@ -175,7 +174,6 @@ class Container extends Component {
                             if(childrenMenuItems.length > 0){
                                 content.push(
                                     <li key={i} >
-
                                     <span key={'menuMore'}
                                           className="dropdown"
                                           style={activeStyle}

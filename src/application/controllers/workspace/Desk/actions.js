@@ -15,8 +15,6 @@
  */
 import { bindActionCreators } from 'redux';
 
-import {hidePreviewComponent} from '../LibraryPanel/actions.js';
-
 export const CHANGE_VIEWPORT_WIDTH = "Desk/CHANGE_VIEWPORT_WIDTH";
 export const TOGGLE_LIBRARY_PANEL = "Desk/TOGGLE_LIBRARY_PANEL";
 export const TOGGLE_PAGE_TREEVIEW = "Desk/TOGGLE_PAGE_TREEVIEW";
@@ -28,7 +26,6 @@ export const toggleQuickOptions = () => ({ type: TOGGLE_QUICK_OPTIONS });
 export const changeViewportWidth = (width) => ({type: CHANGE_VIEWPORT_WIDTH, payload: width});
 
 export const toggleLibraryPanel = () => (dispatch, getState) => {
-    dispatch(hidePreviewComponent());
     dispatch({ type: TOGGLE_LIBRARY_PANEL });
 };
 

@@ -61,7 +61,6 @@ class Container extends Component {
         const { setForCuttingKeys, setForCopyingKeys } = this.props;
         const { pasteBefore, pasteAfter, pasteFirst, pasteLast, pasteReplace } = this.props;
         const { cloneSelected, deleteSelected } = this.props;
-        // const { setDefaultVariant, hidePreviewComponent, selectVariant } = this.props;
         const { showQuickAppend } = this.props;
         const { loadOptionsAndShowModal } = this.props;
         loadPage();
@@ -80,17 +79,6 @@ class Container extends Component {
                 page.bindGetPageModel(pathname => graphApi.getWrappedModelByPagePath(pathname));
                 page.bindGetMarked(pathname => graphApi.getMarkedKeysByPagePath(pathname));
                 page.bindGetMode(() => {return this.props.componentModel.isEditModeOn;});
-
-                // page.bindGetComponentInPreview(() => {
-                //     const { libraryPanelModel: {componentInPreview, variantsInPreview, defaultVariantMap}} = this.props;
-                //     if(componentInPreview){
-                //         const defaultVariantKey = defaultVariantMap[componentInPreview].key;
-                //         const previewModel = previewGraphApi.getWrappedModelForVariant(defaultVariantKey);
-                //         return {componentInPreview, variantsInPreview, previewModel, defaultVariantKey};
-                //     } else {
-                //         return undefined;
-                //     }
-                // });
 
                 page.bindToState('onLoadOptions', (key, isModifier) => {
                     const { currentComponent } = this.props;
@@ -173,17 +161,6 @@ class Container extends Component {
                 //    return clipboardKeys && selectedKeys && clipboardKeys.length === 1 && selectedKeys.length === 1;
                 //});
 
-                // page.bindToState('setDefaultVariant', (componentName, key) => {
-                //     setDefaultVariant(componentName, key);
-                // });
-                // page.bindToState('selectVariant', (key) => { selectVariant(key); });
-                // page.bindToState('hidePreview', () => { hidePreviewComponent() });
-
-                // page.bindToState('getComponentsList', () => {
-                //     const { libraryPanelModel: {componentsList}} = this.props;
-                //     return componentsList;
-                // });
-
                 // page.bindToState('quickBefore', (componentName, selectedKey) => {
                 //     showQuickAppend(modeMap.addBefore);
                 // });
@@ -230,7 +207,7 @@ class Container extends Component {
             && newComponentModel.pagePathToChange != componentModel.pagePathToChange){
             if(this.contentWindow){
                 // only when page is already loaded
-                //console.log('Switching to path: ' + newComponentModel.pagePathToChange);
+                // console.log('Switching to path: ' + newComponentModel.pagePathToChange);
                 this.contentWindow.__switchToPath(newComponentModel.pagePathToChange);
             }
         }

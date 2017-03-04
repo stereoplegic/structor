@@ -65,60 +65,13 @@ export function setProxyURL(proxyURL){
     return invokeStructor('setProxyURL', {proxyURL});
 }
 
-export function loadComponentsTree() {
-    let result = {};
-    return invokeStructor('getComponentsTree', {})
-        .then(response => {
-            if (response) {
-                let componentsTree = response;
-                componentsTree['Html'] = getSortedHtmlComponents();
-                let componentDefaultsMap = new Map();
-                let sequence = Promise.resolve();
-                forOwn(componentsTree, (group, groupName) => {
-                    if (isObject(group)) {
-                        forOwn(group, (componentTypeValue, componentName) => {
-                            sequence = sequence
-                                .then(() => {
-                                    return invokeStructor('getComponentDefaults', {componentName})
-                                        .then(response => {
-                                            if (!response || response.length <= 0) {
-                                                let htmlDefaults = HtmlComponents[componentName];
-                                                response = [];
-                                                if (htmlDefaults) {
-                                                    response.push({
-                                                        type: componentName,
-                                                        props: htmlDefaults.props,
-                                                        children: htmlDefaults.children,
-                                                        text: htmlDefaults.text
-                                                    });
-                                                } else {
-                                                    response.push({
-                                                        type: componentName
-                                                    });
-                                                }
-                                            }
-                                            componentDefaultsMap.set(componentName, response);
-                                        });
-                                })
-                                .catch(e => {
-                                    console.error(e);
-                                });
-                        });
-                    }
-                });
-                return sequence.then(() => {
-                    result.componentDefaultsMap = componentDefaultsMap;
-                    result.componentsTree = componentsTree;
-                    return result;
-                });
-            }
-            return Promise.resolve(result);
-        });
+export function loadComponentTree() {
+    return invokeStructor('getComponentTree', {})
 }
 
-export function loadComponentOptions(componentName, sourceCodeFilePath) {
+export function loadComponentOptions(componentName, namespace, sourceCodeFilePath) {
     let result = {};
-    return invokeStructor('getComponentNotes', {componentName})
+    return invokeStructor('getComponentNotes', {componentName, namespace})
         .then(response => {
             result.readmeText = response;
             if (sourceCodeFilePath) {

@@ -15,9 +15,10 @@
  */
 
 import { createStructuredSelector } from 'reselect';
+import { componentNamesSelector } from 'controllers/workspace/LibraryPanel/selectors.js';
 
 export const modelSelector = createStructuredSelector({
     componentModel: state => state.quickAppendModal,
-    libraryPanelModel: state => state.libraryPanel,
+    componentNames: componentNamesSelector,
 });
 
