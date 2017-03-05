@@ -98,15 +98,15 @@ export function getGeneratorInfo(userId, generatorId){
     return invokeStructor('getGeneratorReadme', {userId, generatorId});
 }
 
-export function pregenerate(name, dirPath, groupName, componentName, model){
-    return invokeStructor('pregenerate', {name, dirPath, groupName, componentName, model});
+export function pregenerate(name, dirPath, namespace, componentName, model){
+    return invokeStructor('pregenerate', {name, dirPath, namespace, componentName, model});
 }
-export function generate(name, dirPath, groupName, componentName, model, metadata){
-    return invokeStructor('generate', {name, dirPath, groupName, componentName, model, metadata});
+export function generate(name, dirPath, namespace, componentName, model, metadata){
+    return invokeStructor('generate', {name, dirPath, namespace, componentName, model, metadata});
 }
 
-export function saveGenerated(groupName, componentName, files, dependencies){
-    return invokeStructor('saveGenerated', {groupName, componentName, files, dependencies});
+export function saveGenerated(files, dependencies){
+    return invokeStructor('saveGenerated', {files, dependencies});
 }
 
 export function readComponentSources(componentName, model, readmeText){

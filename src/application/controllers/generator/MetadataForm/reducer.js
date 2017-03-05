@@ -19,7 +19,7 @@ import * as actions from './actions.js';
 const initialState = {
     name: undefined,
     dirPath: undefined,
-    groupName: undefined,
+    namespace: undefined,
     componentName: undefined,
     metaData: undefined,
     metaHelp: undefined,
@@ -32,7 +32,7 @@ export default (state = initialState, action = {}) => {
 
     if(type === actions.SET_COMPONENT_METADATA){
         return Object.assign({}, state, {
-            groupName: payload.groupName,
+            namespace: payload.namespace,
             componentName: payload.componentName,
             metaData: payload.metaData
         });

@@ -93,7 +93,6 @@ function* saveGenerated(){
             yield call(serverApi.saveGenerated, groupName, componentName, files, dependencies);
             const response = yield call(serverApi.loadComponentTree);
             yield put(libraryPanelActions.setComponents(response));
-            // todo: get defaults for newly created component in the right way -> from the component tree.
             let componentDefaults = response.componentDefaultsMap.get(componentName);
             if(!componentDefaults || componentDefaults.length <= 0){
                 throw Error('Generated component does not have a valid model.');

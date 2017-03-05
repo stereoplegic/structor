@@ -1036,7 +1036,7 @@ export function deleteSelected(){
     return newResultKeys;
 }
 
-export function changeModelNodeType(nodeKey, newType, newModel){
+export function changeModelNodeType(nodeKey, newModel){
     const {graph} = graphObject;
     let node = graph.node(nodeKey);
     const parentKey = graph.parent(nodeKey);

@@ -23,11 +23,11 @@ export const SET_SELECTED_GENERATOR = "MetadataForm/SET_SELECTED_GENERATOR";
 export const SET_COMPONENT_METADATA = "MetadataForm/SET_COMPONENT_METADATA";
 
 export const setSelectedGenerator = (generatorData) => ({type: SET_SELECTED_GENERATOR, payload: generatorData});
-export const startGeneration = (name, dirPath, groupName, componentName, metaData) => (dispatch, getState) => {
+export const startGeneration = (name, dirPath, namespace, componentName, metaData) => (dispatch, getState) => {
     try{
         let metaDataObject = metaData || {};
-        dispatch(generate(name, dirPath, groupName, componentName, metaDataObject));
-        dispatch({type: SET_COMPONENT_METADATA, payload: {groupName, componentName, metaData: metaDataObject}});
+        dispatch(generate(name, dirPath, namespace, componentName, metaDataObject));
+        dispatch({type: SET_COMPONENT_METADATA, payload: {namespace, componentName, metaData: metaDataObject}});
     } catch(e){
         dispatch(failed('Parsing metadata error. ' + e));
     }

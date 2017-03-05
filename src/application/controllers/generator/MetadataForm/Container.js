@@ -33,7 +33,11 @@ class Container extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            enableNamespaceInput: false,
+        };
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
+        this.handleNamespaceCheck = this.handleNamespaceCheck.bind(this);
     }
 
     validateName(value) {
@@ -47,36 +51,44 @@ class Container extends Component {
         e.preventDefault();
         let metadataObject = undefined;
         const {componentModel: {name, dirPath, metaData}} = this.props;
-        if(this.refs.metadataOptions) {
-            metadataObject = Object.assign({}, metaData, this.refs.metadataOptions.getOptionsObject());
+        const {metadataOptions, namespaceInput, componentNameInput} = this;
+        if(metadataOptions) {
+            metadataObject = Object.assign({}, metaData, metadataOptions.getOptionsObject());
         }
+        const namespace = namespaceInput ? namespaceInput.getValue() : '';
+        const componentName = componentNameInput.getValue();
         this.props.startGeneration(
             name,
             dirPath,
-            this.refs.groupNameInput.getValue(),
-            this.refs.componentNameInput.getValue(),
+            namespace,
+            componentName,
             metadataObject
         );
     }
 
-    render() {
+    handleNamespaceCheck(e) {
+        this.setState({enableNamespaceInput: this.namespaceCheckbox.checked});
+    }
 
+    render() {
+        const {enableNamespaceInput} = this.state;
         const {
             componentModel: {groupName, componentName, metaData, metaHelp},
-            libraryPanelModel: {groupsList, componentsList}
+            availableComponentNames,
+            availableNamespaces
         } = this.props;
 
         let groupDataOptions = [];
-        if (groupsList && groupsList.length > 0) {
-            groupsList.forEach((name, index) => {
+        if (availableNamespaces && availableNamespaces.length > 0) {
+            availableNamespaces.forEach((name, index) => {
                 groupDataOptions.push(
                     <option key={index}>{name}</option>
                 )
             });
         }
         let componentsDataOptions = [];
-        if (componentsList && componentsList.length > 0) {
-            componentsList.forEach((name, index) => {
+        if (availableComponentNames && availableComponentNames.length > 0) {
+            availableComponentNames.forEach((name, index) => {
                 componentsDataOptions.push(
                     <option key={index}>{name}</option>
                 )
@@ -99,25 +111,6 @@ class Container extends Component {
                                 <div style={{width: '70%', minWidth: '200px'}}>
                                     <form onSubmit={this.handleOnSubmit}>
                                         <label
-                                            htmlFor="groupNameInput"
-                                            className="form-label"
-                                        >
-                                            Component group
-                                        </label>
-                                        <InputTextStateful
-                                            validateFunc={this.validateName}
-                                            placeholder="Enter group name"
-                                            id="groupNameInput"
-                                            ref="groupNameInput"
-                                            type="text"
-                                            list="groups"
-                                            value={groupName}
-                                            autoComplete="on"
-                                        />
-                                        <datalist id="groups">
-                                            {groupDataOptions}
-                                        </datalist>
-                                        <label
                                             htmlFor="componentNameInput"
                                             className="form-label"
                                         >
@@ -127,7 +120,7 @@ class Container extends Component {
                                             validateFunc={this.validateName}
                                             placeholder="Enter component name"
                                             id="componentNameInput"
-                                            ref="componentNameInput"
+                                            ref={me => this.componentNameInput = me}
                                             type="text"
                                             list="components"
                                             value={componentName}
@@ -136,6 +129,48 @@ class Container extends Component {
                                         <datalist id="components">
                                             {componentsDataOptions}
                                         </datalist>
+
+                                        <label
+                                            htmlFor="groupNameInput"
+                                            className="form-label"
+                                        >
+                                            <input
+                                                ref={me => this.namespaceCheckbox = me}
+                                                type="checkbox"
+                                                checked={enableNamespaceInput}
+                                                onChange={ this.handleNamespaceCheck }
+                                            />
+                                            <span style={{marginLeft: '0.5em'}}>
+                                                Add Component In Namespace
+                                            </span>
+                                        </label>
+                                        {enableNamespaceInput &&
+                                            <InputTextStateful
+                                                validateFunc={this.validateName}
+                                                placeholder="Enter namespace"
+                                                id="groupNameInput"
+                                                ref={me => this.namespaceInput = me}
+                                                type="text"
+                                                list="groups"
+                                                value={groupName}
+                                                autoComplete="on"
+                                                disabled={!enableNamespaceInput}
+                                            />
+                                        }
+                                        {enableNamespaceInput &&
+                                            <datalist id="groups">
+                                                {groupDataOptions}
+                                            </datalist>
+                                        }
+                                        {!isEmpty(metaData) &&
+                                            <div style={{marginTop: '1em', marginBottom: '2em'}}>
+                                                <MetaOptionsContainer
+                                                    ref={me => this.metadataOptions = me}
+                                                    optionsObject={metaData}
+                                                    optionsHelpObject={metaHelp}
+                                                />
+                                            </div>
+                                        }
                                         <div style={{display: 'flex', justifyContent: 'center'}}>
                                             <Button
                                                 type="submit"
@@ -144,15 +179,6 @@ class Container extends Component {
                                                 Generate source code
                                             </Button>
                                         </div>
-                                        {!isEmpty(metaData) &&
-                                            <div style={{marginTop: '2em', marginBottom: '5em'}}>
-                                                <MetaOptionsContainer
-                                                    ref="metadataOptions"
-                                                    optionsObject={metaData}
-                                                    optionsHelpObject={metaHelp}
-                                                />
-                                            </div>
-                                        }
                                     </form>
                                 </div>
                             </div>

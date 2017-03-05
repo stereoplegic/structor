@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+import {sortBy} from 'lodash';
 import express from 'express';
 import rewrite from 'express-urlrewrite';
 import httpProxy from 'http-proxy';
 import {config, storage} from 'structor-commons';
+import * as gengineManager from '../commons/gengine';
 import * as clientManager from '../commons/clientManager.js';
 import * as middlewareCompilerManager from './middlewareCompilerManager.js';
 
@@ -187,17 +189,24 @@ export function getProjectsGallery(){
 // }
 
 export function pregenerate(options){
-    const {name, dirPath, groupName, componentName, model} = options;
-    return storage.invokePreGeneration(groupName, componentName, model, dirPath);
+    const {name, dirPath, namespace, componentName, model} = options;
+    return storage.initGeneratorData(namespace, componentName, model)
+        .then(data => {
+            return gengineManager.preProcess(dirPath, data);
+        });
 }
 
 export function generate(options){
-    const {name, dirPath, groupName, componentName, model, metadata} = options;
-    return storage.invokeGeneration(groupName, componentName, model, metadata, dirPath);
+    const {name, dirPath, namespace, componentName, model, metadata} = options;
+    return storage.initGeneratorData(namespace, componentName, model, metadata)
+        .then(data => {
+            console.log('Generator data: ', JSON.stringify(data, null, 4));
+            return gengineManager.process(dirPath, data);
+        });
 }
 
 export function saveGenerated(options){
-    const {groupName, componentName, files, dependencies} = options;
+    const {files, dependencies} = options;
     return storage.saveGenerated(dependencies, files);
 }
 
@@ -207,5 +216,16 @@ export function getGeneratorReadme(options){
 }
 
 export function getScaffoldGenerators(options) {
-    return storage.getScaffoldGenerators('/structor-gengine-scaffolds');
+    const scaffoldsUrlPrefix = '/structor-gengine-scaffolds';
+    const rootDir = config.scaffoldsDirPath();
+    return storage.getScaffoldGenerators()
+        .then(generators => {
+            if (generators && generators.length > 0) {
+                generators.forEach(generator => {
+                    generator.screenshotFilePath = generator.screenshotFilePath.replace(rootDir, scaffoldsUrlPrefix)
+                });
+                generators = sortBy(generators, ['name']);
+            }
+            return generators;
+        });
 }

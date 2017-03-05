@@ -20,7 +20,7 @@ import marked from 'marked';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 import { Modal, Tabs, Tab, Button } from 'react-bootstrap';
-import AceEditor from '../../../views/workspace/AceEditor.js';
+import AceEditor from 'views/workspace/AceEditor.js';
 
 class Container extends Component {
 
@@ -32,6 +32,7 @@ class Container extends Component {
         this.handleClose = this.handleClose.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleSelectTab = this.handleSelectTab.bind(this);
+        this.handleTextAreaKeyDown = this.handleTextAreaKeyDown.bind(this);
     }
 
     handleSelectTab(eventKey){
@@ -66,6 +67,12 @@ class Container extends Component {
         });
     }
 
+    handleTextAreaKeyDown(e) {
+        if (e.which === 13) {
+            this.handleSave(e);
+        }
+    }
+
     render(){
 
         const {componentModel: {sourceCode, sourceFilePath, sourceProps, sourceText, readmeText, show}, hideModal} = this.props;
@@ -85,7 +92,9 @@ class Container extends Component {
                             placeholder="Enter text"
                             defaultValue={sourceText ? sourceText : ""}
                             ref="sourceTextInput"
-                            style={{width: '100%', height: '400px', margin: '0px'}}/>
+                            style={{width: '100%', height: '400px', margin: '0px'}}
+                            onKeyDown={this.handleTextAreaKeyDown}
+                        />
                     </div>
                 </Tab>
             );
@@ -93,11 +102,12 @@ class Container extends Component {
         tabPanes.push(
             <Tab key={'properties'} eventKey={tabPanes.length + 1} title='Properties'>
                 <div style={containerStyle}>
-                    <AceEditor ref='sourcePropsEditor'
-                               sourceName='componentPropsScript'
-                               style={{width: '100%', height: '400px'}}
-                               sourceCode={sourceProps}/>
-
+                    <AceEditor
+                        ref='sourcePropsEditor'
+                        sourceName='componentPropsScript'
+                        style={{width: '100%', height: '400px'}}
+                        sourceCode={sourceProps}
+                    />
                 </div>
             </Tab>
         );
@@ -120,10 +130,8 @@ class Container extends Component {
             tabPanes.push(
                 <Tab key={'readMe'} eventKey={tabPanes.length + 1} title='Read Me'>
                     <div style={{height: '400px', marginTop: '1em', width: '100%', padding: '1em', overflow: 'auto'}}>
-
                             <div dangerouslySetInnerHTML={{__html: marked(readmeText)}} >
                             </div>
-
                     </div>
                 </Tab>
             );

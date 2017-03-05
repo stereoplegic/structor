@@ -14,12 +14,20 @@
  * limitations under the License.
  */
 
-import { createStructuredSelector } from 'reselect';
-import { availableComponentNamesSelector, availableNamespacesSelector } from 'controllers/workspace/LibraryPanel/selectors';
+import path from 'path';
 
-export const modelSelector = createStructuredSelector({
-    componentModel: state => state.metadataForm,
-    availableComponentNames: availableComponentNamesSelector,
-    availableNamespaces: availableNamespacesSelector,
-});
+export function preProcess(generatorDirPath, data){
+    const modulePath = path.join(generatorDirPath, 'generator.js');
+    return Promise.resolve().then(() => {
+        const module = require(modulePath);
+        return module.preProcess(generatorDirPath, data);
+    });
+}
 
+export function process(generatorDirPath, data){
+    const modulePath = path.join(generatorDirPath, 'generator.js');
+    return Promise.resolve().then(() => {
+        const module = require(modulePath);
+        return module.process(generatorDirPath, data);
+    });
+}

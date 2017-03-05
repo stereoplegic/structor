@@ -114,14 +114,14 @@ class Container extends Component {
                         disabled={selectedKeys.length <= 0}
                         onClick={this.handleButtonClick('pasteBefore')}
                         title="Append components before selected component">
-                        <span className="umy-icon-append-before" />
+                        <span className="umy-icon-arrow-plus-down" />
                     </button>
                     <button
                         className="btn btn-default"
                         disabled={selectedKeys.length <= 0}
                         onClick={this.handleButtonClick('pasteFirst')}
                         title="Insert components into selected component as the first child">
-                        <span className="umy-icon-insert-first" />
+                        <span className="umy-icon-arrow-plus-up" />
                     </button>
                     <button
                         className="btn btn-default"
@@ -177,14 +177,14 @@ class Container extends Component {
                         disabled={selectedKeys.length <= 0}
                         onClick={this.handleButtonClick('pasteLast')}
                         title="Insert components into selected component as the last child">
-                        <span className="umy-icon-insert-last" />
+                        <span className="umy-icon-arrow-plus-down" />
                     </button>
                     <button
                         className="btn btn-default"
                         disabled={selectedKeys.length <= 0}
                         onClick={this.handleButtonClick('pasteAfter')}
                         title="Append components after selected component">
-                        <span className="umy-icon-append-after" />
+                        <span className="umy-icon-arrow-plus-up" />
                     </button>
                 </div>
             </div>

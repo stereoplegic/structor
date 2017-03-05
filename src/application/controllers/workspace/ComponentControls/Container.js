@@ -28,6 +28,7 @@ class Container extends Component {
     constructor(props) {
         super(props);
         this.onEdit = this.onEdit.bind(this);
+        this.onGenerate = this.onGenerate.bind(this);
     }
 
     onEdit(e) {

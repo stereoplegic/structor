@@ -115,46 +115,60 @@ class MetaOptionInput extends Component {
                 valueLabel = helpOptions[selectedOptionIndex].label;
             }
             element = (
-                <div
-                    className="btn-group"
-                    role="group">
-                    <button
-                        className="btn btn-default dropdown-toggle"
-                        data-toggle="dropdown">
-                        <span>{valueLabel}</span>
-                        <i className="fa fa-caret-down" style={{marginLeft: '0.5em'}}/>
-                    </button>
-                    <ul
-                        className="dropdown-menu"
-                        role="menu">
-                        {helpOptions.map((u, index) => {
-                            return (
-                                <li key={u.label + index}>
-                                    <a
-                                        href="#"
-                                        data-val={u.value}
-                                        onClick={this.handleChangeOptionValue}>
-                                        {u.label}
-                                    </a>
-                                </li>
-                            );
-                        })}
-                    </ul>
+                <div style={{position: 'relative'}}>
+                    <div>
+                        <label>{description}</label>
+                    </div>
+                    <div
+                        className="btn-group"
+                        role="group"
+                    >
+                        <button
+                            className="btn btn-default dropdown-toggle"
+                            data-toggle="dropdown">
+                            <span>{valueLabel}</span>
+                            <i className="fa fa-caret-down" style={{marginLeft: '0.5em'}}/>
+                        </button>
+                        <ul
+                            className="dropdown-menu"
+                            role="menu">
+                            {helpOptions.map((u, index) => {
+                                return (
+                                    <li key={u.label + index}>
+                                        <a
+                                            href="#"
+                                            data-val={u.value}
+                                            onClick={this.handleChangeOptionValue}>
+                                            {u.label}
+                                        </a>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
                 </div>
             );
         } else if(propertyType === 'checkbox') {
             element = (
                 <div style={{position: 'relative'}}>
-                <input ref="inputElement"
-                       type={propertyType}
-                       checked={value}
-                       onChange={this.handleChangeCheckboxValue}/>
+                    <label>
+                        <input
+                            ref="inputElement"
+                            type={propertyType}
+                            checked={value}
+                            onChange={this.handleChangeCheckboxValue}
+                        />
+                        <span style={{marginLeft: '0.5em'}}>{description}</span>
+                    </label>
                 </div>
             );
 
         } else if(propertyType === 'text' || propertyType === 'number') {
             element = (
                 <div style={{position: 'relative'}}>
+                    <div>
+                        <label>{description}</label>
+                    </div>
                     <input ref="inputElement"
                            type={propertyType}
                            className="form-control"
@@ -165,9 +179,6 @@ class MetaOptionInput extends Component {
         }
         return (
             <div style={this.props.style}>
-                <h5 style={{marginBottom: '3px'}}>
-                    <span>{description}</span>
-                </h5>
                 {element}
             </div>
         );

@@ -15,33 +15,33 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import { Input } from 'react-bootstrap';
 
 class InputTextStateful extends Component {
 
     constructor(props, content) {
         super(props, content);
         this.state = {
-            value: this.props.value
+            value: this.props.value || this.props.defaultValue || ''
         };
         this.handleOnChange = this.handleOnChange.bind(this);
     }
     componentWillReceiveProps(nextProps){
-        this.setState({
-            value: nextProps.value
-        });
+        if (nextProps.value) {
+            this.setState({
+                value: nextProps.value
+            });
+        }
     }
     handleOnChange() {
         this.setState({
-            value: this.refs.inputElement.value
+            value: this.inputElement.value
         });
     }
     getValue(){
         return this.state.value;
     }
     focus(){
-        ReactDOM.findDOMNode(this.refs.inputElement).focus();
+        this.inputElement.focus();
     }
     validate(value){
         const {validateFunc} = this.props;
@@ -56,29 +56,35 @@ class InputTextStateful extends Component {
                 <input
                     style={this.props.style}
                     type={this.props.type}
-                    ref="inputElement"
+                    ref={me => this.inputElement = me}
                     className="form-control"
                     value={ value }
+                    disabled={this.props.disabled}
                     list={this.props.list}
                     autoComplete={this.props.autoComplete}
                     placeholder={this.props.placeholder}
-                    onChange={ this.handleOnChange }/>
+                    onChange={ this.handleOnChange }
+                />
             </div>
         );
     }
 }
 InputTextStateful.defaultProps = {
-    value: '',
+    defaultValue: undefined,
+    value: undefined,
     validateFunc: undefined,
-    type: 'text'
+    type: 'text',
+    disabled: false,
 };
 InputTextStateful.propTypes = {
-    value: PropTypes.any,
+    defaultValue: PropTypes.string,
+    value: PropTypes.string,
     validateFunc: PropTypes.func,
     type: PropTypes.string,
     list: PropTypes.string,
     autoComplete: PropTypes.string,
-    placeholder: PropTypes.string
+    placeholder: PropTypes.string,
+    disabled: PropTypes.bool,
 };
 
 export default InputTextStateful;

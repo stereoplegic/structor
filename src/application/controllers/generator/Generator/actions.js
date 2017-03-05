@@ -48,33 +48,27 @@ export const pregenerate = (name, dirPath) => (dispatch, getState) => {
         if (selectedNode) {
             const {modelNode} = selectedNode;
             if(modelNode){
-                let groupName = '';
+                let namespace = '';
                 let componentName = '';
-                dispatch({type: PREGENERATE, payload:{name, dirPath, groupName, componentName, modelNode}});
+                dispatch({type: PREGENERATE, payload:{name, dirPath, namespace, componentName, modelNode}});
             }
         }
     }
 };
 
-export const generate = (name, dirPath, groupName, componentName, metaData) => (dispatch, getState) => {
+export const generate = (name, dirPath, namespace, componentName, metaData) => (dispatch, getState) => {
 
     let canProceed = true;
 
     let firstChar = componentName.charAt(0).toUpperCase();
     componentName = firstChar + componentName.substr(1);
-    firstChar = groupName.charAt(0).toUpperCase();
-    groupName = firstChar + groupName.substr(1);
 
-    if(!groupName || groupName.length <= 0 || !validator.isAlphanumeric(groupName)){
-        dispatch(failed('Please enter alphanumeric value for group name'));
+    if(namespace && namespace.length > 0 && !validator.isAlphanumeric(namespace)){
+        dispatch(failed('Please enter alphanumeric value for namespace'));
         canProceed = false;
     }
     if(!componentName || componentName.length <= 0 || !validator.isAlphanumeric(componentName)){
         dispatch(failed('Please enter alphanumeric value for component name'));
-        canProceed = false;
-    }
-    if(groupName === componentName){
-        dispatch(failed('Component name is equal to group name'));
         canProceed = false;
     }
     if(componentName === 'Component') {
@@ -84,19 +78,35 @@ export const generate = (name, dirPath, groupName, componentName, metaData) => (
     if(canProceed){
         const {selectionBreadcrumbs, libraryPanel} = getState();
         const {selectedKeys} = selectionBreadcrumbs;
-        const {componentsList} = libraryPanel;
+        const {componentTree} = libraryPanel;
 
         if(selectedKeys && selectedKeys.length === 1){
-            if(componentsList && componentsList.indexOf(componentName) >= 0){
-                canProceed = confirm('There is a component with the equal name in the current project library.\n\n ' +
-                    'All reference to the component will be rewritten along with the source code files.\n');
+            if (componentTree) {
+                if (namespace && namespace.length > 0) {
+                    if (componentTree.modules) {
+                        const module = componentTree.modules[namespace];
+                        if (module) {
+                            const existingComponent = module[componentName];
+                            if (existingComponent) {
+                                canProceed = confirm(`There is a component with the equal name in ${namespace}.\n\n ` +
+                                    `All reference to the component will be rewritten along with the source code files.\n`);
+                            }
+                        }
+                    }
+                } else if (componentTree.components) {
+                    const existingComponent = componentTree.components[componentName];
+                    if (existingComponent) {
+                        canProceed = confirm(`There is a component with the equal name.\n\n ` +
+                            `All reference to the component will be rewritten along with the source code files.\n`);
+                    }
+                }
             }
             if(canProceed){
                 const selectedNode = graphApi.getNode(selectedKeys[0]);
                 if (selectedNode) {
                     const {modelNode} = selectedNode;
                     if(modelNode){
-                        dispatch({type: GENERATE, payload:{name, dirPath, groupName, componentName, modelNode, metaData}});
+                        dispatch({type: GENERATE, payload:{name, dirPath, namespace, componentName, modelNode, metaData}});
                     }
                 }
             }
@@ -106,9 +116,9 @@ export const generate = (name, dirPath, groupName, componentName, metaData) => (
 
 export const saveGenerated = () => (dispatch, getState) => {
     const {selectionBreadcrumbs: {selectedKeys}} = getState();
-    const {generator: {generatedData: {files, dependencies}}} = getState();
-    const {metadataForm: {groupName, componentName}} = getState();
-    dispatch({type: SAVE_GENERATED, payload: {selectedKey: selectedKeys[0], groupName, componentName, files, dependencies}});
+    const {generator: {generatedData: {files, dependencies, defaults}}} = getState();
+    const modelNode = defaults && defaults.length > 0 ? defaults[0] : [];
+    dispatch({type: SAVE_GENERATED, payload: {selectedKey: selectedKeys[0], modelNode, files, dependencies}});
 };
 
 export const hide = () => (dispatch, getState) => {

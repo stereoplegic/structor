@@ -19,7 +19,8 @@ import * as actions from './actions.js';
 const initialState = {
     generatedData: {
         files: [],
-        dependencies: {}
+        dependencies: {},
+        defaults: [],
     },
     stage: actions.STAGE1
 

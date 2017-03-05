@@ -25,19 +25,19 @@ import * as appContainerActions from '../../app/AppContainer/actions.js';
 import * as deskPageActions from '../../workspace/DeskPage/actions.js';
 import * as clipboardIndicatorActions from '../../workspace/ClipboardIndicator/actions.js';
 import * as libraryPanelActions from '../../workspace/LibraryPanel/actions.js';
-import { serverApi, graphApi, coockiesApi } from '../../../api';
-
+import { serverApi, graphApi, coockiesApi } from 'api';
+import * as historyActions from 'controllers/workspace/HistoryControls/actions';
 
 function* pregenerate(){
     while(true){
-        const {payload: {name, dirPath, groupName, componentName, model}} = yield take(actions.PREGENERATE);
+        const {payload: {name, dirPath, namespace, componentName, model}} = yield take(actions.PREGENERATE);
         yield put(spinnerActions.started('Retrieving metadata'));
         try {
-            const pregeneratedData = yield call(serverApi.pregenerate, name, dirPath, groupName, componentName, model);
+            const pregeneratedData = yield call(serverApi.pregenerate, name, dirPath, namespace, componentName, model);
             yield put(metadataFormActions.setSelectedGenerator({
                 name,
                 dirPath,
-                groupName,
+                namespace,
                 componentName,
                 metaData: pregeneratedData.metaData,
                 metaHelp: pregeneratedData.metaHelp
@@ -54,11 +54,11 @@ function* pregenerate(){
 
 function* generate(){
     while(true){
-        const {payload: {name, dirPath, groupName, componentName, modelNode, metaData}} = yield take(actions.GENERATE);
+        const {payload: {name, dirPath, namespace, componentName, modelNode, metaData}} = yield take(actions.GENERATE);
         yield put(spinnerActions.started('Generating the source code'));
         try {
             const generatedData = yield call(
-                serverApi.generate, name, dirPath, groupName, componentName, modelNode, metaData
+                serverApi.generate, name, dirPath, namespace, componentName, modelNode, metaData
             );
             // console.log(JSON.stringify(generatedData));
             yield put(actions.setGeneratedData(generatedData));
@@ -89,21 +89,16 @@ function* generate(){
 
 function* saveGenerated(){
     while(true){
-        const {payload: {selectedKey, groupName, componentName, files, dependencies}} = yield take(actions.SAVE_GENERATED);
+        const {payload: {selectedKey, modelNode, files, dependencies}} = yield take(actions.SAVE_GENERATED);
         yield put(spinnerActions.started('Installing & saving the source code'));
         try {
-            yield call(serverApi.saveGenerated, groupName, componentName, files, dependencies);
-            const response = yield call(serverApi.loadComponentsTree);
-            yield put(libraryPanelActions.setComponents(response));
-            let componentDefaults = response.componentDefaultsMap.get(componentName);
-            if(!componentDefaults || componentDefaults.length <= 0){
-                throw Error('Generated component does not have a valid model.');
-            }
-            graphApi.changeModelNodeType(selectedKey, componentName, componentDefaults[0]);
+            yield call(serverApi.saveGenerated, files, dependencies);
+            graphApi.changeModelNodeType(selectedKey, modelNode);
             yield put(clipboardIndicatorActions.removeClipboardKeys());
             yield put(libraryPanelActions.loadComponents());
             yield put(deskPageActions.setReloadPageRequest());
             yield put(actions.hide());
+            yield put(historyActions.pushHistory());
         } catch(error) {
             yield put(messageActions.failed('Source code installation has an error. ' + (error.message ? error.message : error)));
         }

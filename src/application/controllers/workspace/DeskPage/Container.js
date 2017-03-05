@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { forOwn } from 'lodash';
+import { forOwn, includes } from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
@@ -260,8 +260,17 @@ class Container extends Component {
     }
 
     handleComponentClick(key, isModifier){
-        const { setSelectedKey } = this.props;
-        setSelectedKey(key, isModifier);
+        const {
+            selectionBreadcrumbsModel: {selectedKeys},
+            setSelectedKey,
+            loadOptionsAndShowModal,
+            currentComponent
+        } = this.props;
+        if (selectedKeys && selectedKeys.length > 0 && includes(selectedKeys, key)) {
+            loadOptionsAndShowModal(currentComponent);
+        } else {
+            setSelectedKey(key, isModifier);
+        }
     }
 
     handlePathnameChanged(pathname){

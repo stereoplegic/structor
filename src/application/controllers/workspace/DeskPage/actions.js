@@ -15,16 +15,14 @@
  */
 
 import { bindActionCreators } from 'redux';
-import { utils, utilsStore, graphApi } from '../../../api';
+import { utils, utilsStore, graphApi } from 'api';
 import { success, failed, timeout, close} from '../../app/AppMessage/actions.js';
 import { setForCuttingKeys, setForCopyingKeys, resetClipboardKeys } from '../ClipboardIndicator/actions.js';
 import { pasteBefore, pasteAfter, pasteFirst, pasteLast, pasteReplace } from '../ClipboardControls/actions.js';
 import { setSelectedKey, resetSelectedKeys } from '../SelectionBreadcrumbs/actions.js';
 import { cloneSelected, deleteSelected } from '../SelectionControls/actions.js';
-import { loadOptionsAndShowModal } from '../ComponentOptionsModal/actions.js';
+import { loadOptionsAndShowModal } from 'controllers/workspace/ComponentOptionsModal/actions';
 import { pushHistory, popHistory } from '../HistoryControls/actions.js';
-import { loadComponents} from '../LibraryPanel/actions.js';
-// import { quickBefore, quickAfter, quickFirst, quickLast, quickReplace } from '../LibraryPanel/actions.js';
 import { showModal as showQuickAppend } from 'controllers/workspace/QuickAppendModal/actions';
 
 export const SET_PAGES = "DeskPage/SET_PAGES";
