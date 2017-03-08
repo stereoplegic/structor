@@ -5,7 +5,7 @@ module.exports = [
     {
         name: "browser",
         entry: {
-            main: './src/application/main.js'
+            main: './src-client/main.js'
         },
         output: {
             path: './static',
@@ -59,7 +59,7 @@ module.exports = [
             "jquery": "jQuery"
         },
         resolve: {
-            modules: ['src/application', 'node_modules'],
+            modules: ['src-client', 'node_modules'],
             extensions: [
                 '.js',
                 '.jsx',
