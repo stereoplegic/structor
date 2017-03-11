@@ -15,11 +15,11 @@
  */
 
 import validator from 'validator';
-import { bindActionCreators } from 'redux';
-import { graphApi, serverApi } from 'api';
-import { hideGenerator } from 'modules/app/containers/AppContainer/actions';
-import { failed } from 'modules/app/containers/AppMessage/actions';
-import { showModal as showSignIn } from 'modules/app/containers/SignInModal/actions';
+import {bindActionCreators} from 'redux';
+import {graphApi, serverApi} from 'api';
+import {hideGenerator} from 'modules/app/containers/AppContainer/actions';
+import {failed} from 'modules/app/containers/AppMessage/actions';
+import {showModal as showSignIn} from 'modules/app/containers/SignInModal/actions';
 
 export const STAGE1 = 'STAGE1';
 export const STAGE2 = 'STAGE2';
@@ -37,107 +37,113 @@ export const SET_SELECTED_GENERATOR = "Generator/SET_SELECTED_GENERATOR";
 export const SET_COMPONENT_METADATA = "Generator/SET_COMPONENT_METADATA";
 export const SET_COMPONENT_NAME = "Generator/SET_COMPONENT_NAME";
 
-export const setSelectedGenerator = (generatorData) => ({type: SET_SELECTED_GENERATOR, payload: generatorData});
-
-export const startGeneration = (name, dirPath, namespace, componentName, metaData) => (dispatch, getState) => {
-    let metaDataObject = metaData || {};
-    dispatch(generate(name, dirPath, namespace, componentName, metaDataObject));
-    dispatch({type: SET_COMPONENT_METADATA, payload: {namespace, componentName, metaData: metaDataObject}});
-};
-
-
 export const stepToStage = (stage) => ({type: STEP_TO_STAGE, payload: stage});
-export const loadGenerators = (options) => (dispatch, getState) => {
-    dispatch({type: LOAD_GENERATORS, payload: options});
+export const setComponentMetadata = (metaData, metaHelp) => (dispatch, getState) => {
+	dispatch({type: SET_COMPONENT_METADATA, payload: {metaData, metaHelp}});
 };
-
 export const setGeneratedData = (generatedData) => ({type: SET_GENERATED_DATA, payload: generatedData});
 
-export const pregenerate = (name, dirPath) => (dispatch, getState) => {
-    const { selectionBreadcrumbs: {selectedKeys}} = getState();
-    if(selectedKeys && selectedKeys.length === 1){
-        const selectedNode = graphApi.getNode(selectedKeys[0]);
-        if (selectedNode) {
-            const {modelNode} = selectedNode;
-            if(modelNode){
-                let namespace = '';
-                let componentName = '';
-                dispatch({type: PREGENERATE, payload:{name, dirPath, namespace, componentName, modelNode}});
-            }
-        }
-    }
+// Following methods go in wizard steps order
+
+export const loadGenerators = (options) => (dispatch, getState) => {
+	dispatch({type: LOAD_GENERATORS, payload: options});
+	dispatch({type: STEP_TO_STAGE, payload: STAGE1});
 };
 
-export const generate = (name, dirPath, namespace, componentName, metaData) => (dispatch, getState) => {
-
-    let canProceed = true;
-
-    let firstChar = componentName.charAt(0).toUpperCase();
-    componentName = firstChar + componentName.substr(1);
-
-    if(namespace && namespace.length > 0 && !validator.isAlphanumeric(namespace)){
-        dispatch(failed('Please enter alphanumeric value for namespace'));
-        canProceed = false;
-    }
-    if(!componentName || componentName.length <= 0 || !validator.isAlphanumeric(componentName)){
-        dispatch(failed('Please enter alphanumeric value for component name'));
-        canProceed = false;
-    }
-    if(componentName === 'Component') {
-        dispatch(failed('Component name can not be "Component"'));
-        canProceed = false;
-    }
-    if(canProceed){
-        const {selectionBreadcrumbs, libraryPanel} = getState();
-        const {selectedKeys} = selectionBreadcrumbs;
-        const {componentTree} = libraryPanel;
-
-        if(selectedKeys && selectedKeys.length === 1){
-            if (componentTree) {
-                if (namespace && namespace.length > 0) {
-                    if (componentTree.modules) {
-                        const module = componentTree.modules[namespace];
-                        if (module) {
-                            const existingComponent = module[componentName];
-                            if (existingComponent) {
-                                canProceed = confirm(`There is a component with the equal name in ${namespace}.\n\n ` +
-                                    `All reference to the component will be rewritten along with the source code files.\n`);
-                            }
-                        }
-                    }
-                } else if (componentTree.components) {
-                    const existingComponent = componentTree.components[componentName];
-                    if (existingComponent) {
-                        canProceed = confirm(`There is a component with the equal name.\n\n ` +
-                            `All reference to the component will be rewritten along with the source code files.\n`);
-                    }
-                }
-            }
-            if(canProceed){
-                const selectedNode = graphApi.getNode(selectedKeys[0]);
-                if (selectedNode) {
-                    const {modelNode} = selectedNode;
-                    if(modelNode){
-                        dispatch({type: GENERATE, payload:{name, dirPath, namespace, componentName, modelNode, metaData}});
-                    }
-                }
-            }
-        }
-    }
+export const startGeneratorWizard = (generatorName, generatorDirPath) => (dispatch, getState) => {
+	dispatch({type: SET_SELECTED_GENERATOR, payload: {generatorName, generatorDirPath}});
+	dispatch({type: STEP_TO_STAGE, payload: STAGE2});
 };
 
-export const saveGenerated = () => (dispatch, getState) => {
-    const {selectionBreadcrumbs: {selectedKeys}} = getState();
-    const {generator: {generatedData: {files, dependencies, defaults}}} = getState();
-    const modelNode = defaults && defaults.length > 0 ? defaults[0] : [];
-    dispatch({type: SAVE_GENERATED, payload: {selectedKey: selectedKeys[0], modelNode, files, dependencies}});
+export const pregenerate = (generatorName,
+							generatorDirPath,
+							namespace,
+							componentName,
+							modelNode) => (dispatch, getState) => {
+	let canProceed = true;
+
+	let firstChar = componentName.charAt(0).toUpperCase();
+	componentName = firstChar + componentName.substr(1);
+
+	if (namespace && namespace.length > 0 && !validator.isAlphanumeric(namespace)) {
+		dispatch(failed('Please enter alphanumeric value for namespace'));
+		canProceed = false;
+	}
+	if (!componentName || componentName.length <= 0 || !validator.isAlphanumeric(componentName)) {
+		dispatch(failed('Please enter alphanumeric value for component name'));
+		canProceed = false;
+	}
+	if (componentName === 'Component') {
+		dispatch(failed('Component name can not be "Component"'));
+		canProceed = false;
+	}
+	if (canProceed) {
+		const {libraryPanel} = getState();
+		const {componentTree} = libraryPanel;
+
+		// console.log('Component tree: ', JSON.stringify(componentTree, null, 4));
+		if (componentTree) {
+			if (namespace && namespace.length > 0) {
+				if (componentTree.modules) {
+					const module = componentTree.modules[namespace];
+					if (module && module.components) {
+						const existingComponent = module.components[componentName];
+						if (existingComponent) {
+							console.log('Found existing component: ', existingComponent);
+							canProceed = confirm(`There is a component with the equal name in ${namespace}.\n\n ` +
+								`All reference to the component will be rewritten along with the source code files.\n`);
+						}
+					}
+				}
+			} else if (componentTree.components) {
+				const existingComponent = componentTree.components[componentName];
+				if (existingComponent) {
+					canProceed = confirm(`There is a component with the equal name.\n\n ` +
+						`All reference to the component will be rewritten along with the source code files.\n`);
+				}
+			}
+		}
+		if (canProceed) {
+			dispatch({type: SET_COMPONENT_NAME, payload: {componentName, namespace}});
+			dispatch(
+				{
+					type: PREGENERATE,
+					payload: {generatorName, generatorDirPath, namespace, componentName, modelNode}
+				}
+			);
+		}
+	}
+
+};
+
+export const generate = (generatorName,
+						 generatorDirPath,
+						 namespace,
+						 componentName,
+						 modelNode,
+						 metaData) => (dispatch, getState) => {
+	dispatch(setComponentMetadata(metaData));
+	dispatch(
+		{
+			type: GENERATE,
+			payload: {generatorName, generatorDirPath, namespace, componentName, modelNode, metaData}
+		}
+	);
+};
+
+export const saveGenerated = (selectedKeys, files, dependencies, defaults) => (dispatch, getState) => {
+	const newModelNode = defaults && defaults.length > 0 ? defaults[0] : [];
+	dispatch({
+		type: SAVE_GENERATED,
+		payload: {selectedKey: selectedKeys[0], newModelNode, files, dependencies}
+	});
 };
 
 export const hide = () => (dispatch, getState) => {
-    dispatch(stepToStage(STAGE1));
-    dispatch(hideGenerator());
+	dispatch(hideGenerator());
+	dispatch(stepToStage(STAGE1));
 };
 
 export const containerActions = (dispatch) => bindActionCreators({
-    hide, stepToStage, showSignIn
+	hide, stepToStage, showSignIn
 }, dispatch);

@@ -16,7 +16,7 @@
 
 import { bindActionCreators } from 'redux';
 
-import { saveGenerated } from '../Generator/actions.js';
+import { saveGenerated } from 'modules/generator/containers/Generator/actions';
 
 export const containerActions = (dispatch) => bindActionCreators({
     saveGenerated

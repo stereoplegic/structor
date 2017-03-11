@@ -16,8 +16,11 @@
 
 import { createStructuredSelector } from 'reselect';
 
+import {selectedKeysSelector} from 'modules/workspace/containers/SelectionBreadcrumbs/selectors';
+import {generatedDataSelector} from 'modules/generator/containers/Generator/selectors';
+
 export const modelSelector = createStructuredSelector({
-    componentModel: state => state.sourceFilesList,
-    generatorModel: state => state.generator
+    selectedKeys: selectedKeysSelector,
+    generatedData: generatedDataSelector,
 });
 

@@ -74,7 +74,7 @@ class Container extends Component {
                                 readmeFilePath={item.readmeFilePath}
                                 screenshotFilePath={item.screenshotFilePath}
                                 readmeText={item.readmeText}
-                                isRecent={true}
+                                isRecentPanel={true}
                             />
                         );
                     }

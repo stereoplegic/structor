@@ -50,7 +50,8 @@ export default (state = initialState, action = {}) => {
 
     if(type === actions.SET_COMPONENT_METADATA){
         return Object.assign({}, state, {
-            metaData: payload.metaData
+            metaData: state.metaData || payload.metaData,
+            metaHelp: state.metaHelp || payload.metaHelp,
         });
     }
 
@@ -62,7 +63,8 @@ export default (state = initialState, action = {}) => {
     }
 
     if(type === actions.SET_SELECTED_GENERATOR){
-        return Object.assign({}, state, payload);
+        const {generatorName, generatorDirPath} = payload;
+        return Object.assign({}, state, {generatorName, generatorDirPath});
     }
 
     return state;

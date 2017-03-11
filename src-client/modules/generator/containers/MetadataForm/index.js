@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import validator from 'validator';
 import {isEmpty} from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
@@ -22,7 +21,7 @@ import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 
 import { Grid, Row, Col, Button } from 'react-bootstrap';
-import { MetaOptionsContainer, InputTextStateful, AceEditor } from 'components';
+import { MetaOptionsContainer } from 'components';
 
 const cellBoxStyle = {
     display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%'
@@ -39,28 +38,28 @@ class Container extends Component {
         this.handleNamespaceCheck = this.handleNamespaceCheck.bind(this);
     }
 
-    validateName(value) {
-        return value
-            && value.length > 0
-            && validator.isAlphanumeric(value);
-    }
-
     handleOnSubmit(e) {
         e.stopPropagation();
         e.preventDefault();
         let metadataObject = undefined;
-        const {componentModel: {name, dirPath, metaData}} = this.props;
-        const {metadataOptions, namespaceInput, componentNameInput} = this;
+        const {
+            metaData,
+            generatorName,
+            generatorDirPath,
+            selectedComponentModel,
+            componentName,
+            namespace
+        } = this.props;
+        const {metadataOptions} = this;
         if(metadataOptions) {
             metadataObject = Object.assign({}, metaData, metadataOptions.getOptionsObject());
         }
-        const namespace = namespaceInput ? namespaceInput.getValue() : '';
-        const componentName = componentNameInput.getValue();
-        this.props.startGeneration(
-            name,
-            dirPath,
+        this.props.generate(
+            generatorName,
+            generatorDirPath,
             namespace,
             componentName,
+            selectedComponentModel,
             metadataObject
         );
     }
@@ -70,29 +69,13 @@ class Container extends Component {
     }
 
     render() {
-        const {enableNamespaceInput} = this.state;
         const {
-            componentModel: {groupName, componentName, metaData, metaHelp},
-            availableComponentNames,
-            availableNamespaces
+            metaData, metaHelp,
         } = this.props;
 
-        let groupDataOptions = [];
-        if (availableNamespaces && availableNamespaces.length > 0) {
-            availableNamespaces.forEach((name, index) => {
-                groupDataOptions.push(
-                    <option key={index}>{name}</option>
-                )
-            });
-        }
-        let componentsDataOptions = [];
-        if (availableComponentNames && availableComponentNames.length > 0) {
-            availableComponentNames.forEach((name, index) => {
-                componentsDataOptions.push(
-                    <option key={index}>{name}</option>
-                )
-            });
-        }
+        console.log('Meta data: ', JSON.stringify(metaData, null, 4));
+        console.log('Meta help: ', JSON.stringify(metaHelp, null, 4));
+
         let content = (
                 <Grid fluid={ true }>
                     <Row style={ { position: 'relative'} }>
@@ -109,60 +92,8 @@ class Container extends Component {
                             <div style={cellBoxStyle}>
                                 <div style={{width: '70%', minWidth: '200px'}}>
                                     <form onSubmit={this.handleOnSubmit}>
-                                        <label
-                                            htmlFor="componentNameInput"
-                                            className="form-label"
-                                        >
-                                            Component name
-                                        </label>
-                                        <InputTextStateful
-                                            validateFunc={this.validateName}
-                                            placeholder="Enter component name"
-                                            id="componentNameInput"
-                                            ref={me => this.componentNameInput = me}
-                                            type="text"
-                                            list="components"
-                                            value={componentName}
-                                            autoComplete="on"
-                                        />
-                                        <datalist id="components">
-                                            {componentsDataOptions}
-                                        </datalist>
-
-                                        <label
-                                            htmlFor="groupNameInput"
-                                            className="form-label"
-                                        >
-                                            <input
-                                                ref={me => this.namespaceCheckbox = me}
-                                                type="checkbox"
-                                                checked={enableNamespaceInput}
-                                                onChange={ this.handleNamespaceCheck }
-                                            />
-                                            <span style={{marginLeft: '0.5em'}}>
-                                                Add Component In Namespace
-                                            </span>
-                                        </label>
-                                        {enableNamespaceInput &&
-                                            <InputTextStateful
-                                                validateFunc={this.validateName}
-                                                placeholder="Enter namespace"
-                                                id="groupNameInput"
-                                                ref={me => this.namespaceInput = me}
-                                                type="text"
-                                                list="groups"
-                                                value={groupName}
-                                                autoComplete="on"
-                                                disabled={!enableNamespaceInput}
-                                            />
-                                        }
-                                        {enableNamespaceInput &&
-                                            <datalist id="groups">
-                                                {groupDataOptions}
-                                            </datalist>
-                                        }
                                         {!isEmpty(metaData) &&
-                                            <div style={{marginTop: '1em', marginBottom: '2em'}}>
+                                            <div style={{marginTop: '1em'}}>
                                                 <MetaOptionsContainer
                                                     ref={me => this.metadataOptions = me}
                                                     optionsObject={metaData}
@@ -170,12 +101,12 @@ class Container extends Component {
                                                 />
                                             </div>
                                         }
-                                        <div style={{display: 'flex', justifyContent: 'center'}}>
+                                        <div style={{display: 'flex', justifyContent: 'center', marginBottom: '2em'}}>
                                             <Button
                                                 type="submit"
                                                 bsStyle="primary"
                                             >
-                                                Generate source code
+                                                Go to next stage
                                             </Button>
                                         </div>
                                     </form>

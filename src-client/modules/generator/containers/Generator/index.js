@@ -45,23 +45,30 @@ const toolbarSectionStyle = {
     marginBottom: '1em'
 };
 
+const TITLE_STEP_1 = 'Select component generator';
+const TITLE_STEP_2 = 'Enter component name';
+const TITLE_STEP_3 = 'Enter component metadata';
+const TITLE_STEP_4 = 'Preview generated source code';
+const TITLE_STEP_5 = 'Install generated source code';
+
 class Container extends Component {
 
     constructor(props) {
         super(props);
         this.handleOnStep = this.handleOnStep.bind(this);
         this.handleOnSignIn = this.handleOnSignIn.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.refs.containerElement.scrollTop = 0;
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         this.refs.containerElement.scrollTop = 0;
     }
 
-    handleOnStep(e){
+    handleOnStep(e) {
         e.stopPropagation();
         e.preventDefault();
         const stage = e.currentTarget.dataset.stage;
@@ -71,18 +78,24 @@ class Container extends Component {
         }
     }
 
-    handleOnSignIn(e){
+    handleOnSignIn(e) {
         e.stopPropagation();
         e.preventDefault();
         this.props.showSignIn();
     }
 
+    handleClose(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        this.props.hide();
+    }
+
     render(){
 
-        const { componentModel: {stage}, hide } = this.props;
+        const { componentModel: {stage} } = this.props;
 
         const closeButton = (
-            <Button onClick={(e) => {e.stopPropagation(); e.preventDefault(); hide();} }>
+            <Button onClick={this.handleClose}>
                 <span style={toolbarLabelStyle}>Close</span>
             </Button>
         );
@@ -94,21 +107,21 @@ class Container extends Component {
         let content = null;
         if(stage === STAGE1){
             nextStepLabel = (
-                <h5 className="text-muted text-center">Enter component metadata</h5>
+                <h5 className="text-muted text-center">{TITLE_STEP_2}</h5>
             );
             toolbar = (
                 <ButtonGroup bsSize="xs">
                     {closeButton}
                 </ButtonGroup>
             );
-            header = (<h4 className="text-center">Select component source code generator</h4>);
+            header = (<h4 className="text-center">{TITLE_STEP_1}</h4>);
             content = (<GeneratorList />);
         } else if(stage === STAGE2){
             backStepLabel = (
-                <h5 className="text-muted text-center">Select component generator</h5>
+                <h5 className="text-muted text-center">{TITLE_STEP_1}</h5>
             );
             nextStepLabel = (
-                <h5 className="text-muted text-center">Preview generated source code</h5>
+                <h5 className="text-muted text-center">{TITLE_STEP_3}</h5>
             );
             toolbar = (
                 <ButtonGroup bsSize="xs">
@@ -121,14 +134,14 @@ class Container extends Component {
                     {closeButton}
                 </ButtonGroup>
             );
-            header = (<h4 className="text-center">Enter component metadata</h4>);
-            content = (<MetadataForm />);
+            header = (<h4 className="text-center">{TITLE_STEP_2}</h4>);
+            content = (<ComponentNameForm />);
         } else if(stage === STAGE3){
             backStepLabel = (
-                <h5 className="text-muted text-center">Enter component metadata</h5>
+                <h5 className="text-muted text-center">{TITLE_STEP_2}</h5>
             );
             nextStepLabel = (
-                <h5 className="text-muted text-center">Install generated source code</h5>
+                <h5 className="text-muted text-center">{TITLE_STEP_4}</h5>
             );
             toolbar = (
                 <ButtonGroup bsSize="xs">
@@ -141,7 +154,27 @@ class Container extends Component {
                     {closeButton}
                 </ButtonGroup>
             );
-            header = (<h4 className="text-center">Preview generated source code</h4>);
+            header = (<h4 className="text-center">{TITLE_STEP_3}</h4>);
+            content = (<MetadataForm />);
+        } else if(stage === STAGE4){
+            backStepLabel = (
+                <h5 className="text-muted text-center">{TITLE_STEP_3}</h5>
+            );
+            nextStepLabel = (
+                <h5 className="text-muted text-center">{TITLE_STEP_5}</h5>
+            );
+            toolbar = (
+                <ButtonGroup bsSize="xs">
+                    <Button
+                        data-stage={STAGE3}
+                        onClick={this.handleOnStep}
+                    >
+                        <span style={toolbarLabelStyle}>Back</span>
+                    </Button>
+                    {closeButton}
+                </ButtonGroup>
+            );
+            header = (<h4 className="text-center">{TITLE_STEP_4}</h4>);
             content = (<SourceFilesList />);
         }
         return (

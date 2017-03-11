@@ -189,19 +189,18 @@ export function getProjectsGallery(){
 // }
 
 export function pregenerate(options){
-    const {name, dirPath, namespace, componentName, model} = options;
+    const {generatorName, generatorDirPath, namespace, componentName, model} = options;
     return storage.initGeneratorData(namespace, componentName, model)
         .then(data => {
-            return gengineManager.preProcess(dirPath, data);
+            return gengineManager.preProcess(generatorDirPath, data);
         });
 }
 
 export function generate(options){
-    const {name, dirPath, namespace, componentName, model, metadata} = options;
+    const {generatorName, generatorDirPath, namespace, componentName, model, metadata} = options;
     return storage.initGeneratorData(namespace, componentName, model, metadata)
         .then(data => {
-            console.log('Generator data: ', JSON.stringify(data, null, 4));
-            return gengineManager.process(dirPath, data);
+            return gengineManager.process(generatorDirPath, data);
         });
 }
 

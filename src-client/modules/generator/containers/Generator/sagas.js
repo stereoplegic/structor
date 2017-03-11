@@ -30,20 +30,24 @@ import * as historyActions from 'modules/workspace/containers/HistoryControls/ac
 
 function* pregenerate(){
     while(true){
-        const {payload: {name, dirPath, namespace, componentName, model}} = yield take(actions.PREGENERATE);
+        const {payload: {
+            generatorName, generatorDirPath, namespace, componentName, modelNode
+        }} = yield take(actions.PREGENERATE);
         yield put(spinnerActions.started('Retrieving metadata'));
         try {
-            const pregeneratedData = yield call(serverApi.pregenerate, name, dirPath, namespace, componentName, model);
-            yield put(metadataFormActions.setSelectedGenerator({
-                name,
-                dirPath,
-                namespace,
-                componentName,
-                metaData: pregeneratedData.metaData,
-                metaHelp: pregeneratedData.metaHelp
-            }));
-            yield put(actions.stepToStage(actions.STAGE2));
-            let recentGenerators = coockiesApi.addToRecentGenerators(name);
+            const pregeneratedData =
+                yield call(
+                    serverApi.pregenerate,
+                    generatorName,
+                    generatorDirPath,
+                    namespace,
+                    componentName,
+                    modelNode
+                );
+            console.log('Pregenerated data: ', JSON.stringify(pregeneratedData));
+            yield put(actions.setComponentMetadata(pregeneratedData.metaData, pregeneratedData.metaHelp));
+            yield put(actions.stepToStage(actions.STAGE3));
+            let recentGenerators = coockiesApi.addToRecentGenerators(generatorName);
             yield put(generatorListActions.setRecentGenerators(recentGenerators));
         } catch(error) {
             yield put(messageActions.failed('Metadata retrieving has an error. ' + (error.message ? error.message : error)));
@@ -54,15 +58,23 @@ function* pregenerate(){
 
 function* generate(){
     while(true){
-        const {payload: {name, dirPath, namespace, componentName, modelNode, metaData}} = yield take(actions.GENERATE);
+        const {payload: {
+            generatorName, generatorDirPath, namespace, componentName, modelNode, metaData
+        }} = yield take(actions.GENERATE);
         yield put(spinnerActions.started('Generating the source code'));
         try {
             const generatedData = yield call(
-                serverApi.generate, name, dirPath, namespace, componentName, modelNode, metaData
+                serverApi.generate,
+                generatorName,
+                generatorDirPath,
+                namespace,
+                componentName,
+                modelNode,
+                metaData
             );
             // console.log(JSON.stringify(generatedData));
             yield put(actions.setGeneratedData(generatedData));
-            yield put(actions.stepToStage(actions.STAGE3));
+            yield put(actions.stepToStage(actions.STAGE4));
         } catch(error) {
             yield put(messageActions.failed('The source code generation has an error. ' + (error.message ? error.message : error)));
         }
@@ -70,30 +82,13 @@ function* generate(){
     }
 }
 
-// function* remove(){
-//     while(true){
-//         const {payload: {generatorId}} = yield take(actions.REMOVE_GENERATOR);
-//         yield put(spinnerActions.started('Removing generator from the market'));
-//         try {
-//             yield call(serverApi.removeGenerator, generatorId);
-//             let generatorsList = yield call(serverApi.getAvailableGeneratorsList);
-//             const recentGenerators = coockiesApi.getRecentGenerators();
-//             yield put(generatorListActions.setGenerators(generatorsList, recentGenerators));
-//             yield put(appContainerActions.showGenerator());
-//         } catch(error) {
-//             yield put(messageActions.failed(error.message ? error.message : error));
-//         }
-//         yield put(spinnerActions.done('Removing generator from the market'));
-//     }
-// }
-
 function* saveGenerated(){
     while(true){
-        const {payload: {selectedKey, modelNode, files, dependencies}} = yield take(actions.SAVE_GENERATED);
+        const {payload: {selectedKey, newModelNode, files, dependencies}} = yield take(actions.SAVE_GENERATED);
         yield put(spinnerActions.started('Installing & saving the source code'));
         try {
             yield call(serverApi.saveGenerated, files, dependencies);
-            graphApi.changeModelNodeType(selectedKey, modelNode);
+            graphApi.changeModelNodeType(selectedKey, newModelNode);
             yield put(clipboardIndicatorActions.removeClipboardKeys());
             yield put(libraryPanelActions.loadComponents());
             yield put(deskPageActions.setReloadPageRequest());
@@ -124,25 +119,6 @@ function* loadGenerators(){
         yield put(spinnerActions.done('Loading generators'));
     }
 }
-
-// function* loadAllGenerators(){
-//     while(true){
-//         yield take(actions.LOAD_ALL_GENERATORS);
-//         yield put(spinnerActions.started('Loading generators'));
-//         try {
-//             let generatorsList = yield call(serverApi.getAvailableGeneratorsList);
-//             let scaffoldGeneratorsList = yield call(serverApi.getAvailableGeneratorGenerics);
-//             const recentGenerators = coockiesApi.getRecentGenerators();
-//             yield put(generatorListActions.setGenerators(generatorsList));
-//             yield put(generatorListActions.setRecentGenerators(recentGenerators));
-//             yield put(generatorListActions.setScaffoldGenerators(scaffoldGeneratorsList));
-//             yield put(appContainerActions.showGenerator());
-//         } catch(error) {
-//             yield put(messageActions.failed('Generators loading has an error. ' + (error.message ? error.message : error)));
-//         }
-//         yield put(spinnerActions.done('Loading generators'));
-//     }
-// }
 
 // main saga
 export default function* mainSaga() {

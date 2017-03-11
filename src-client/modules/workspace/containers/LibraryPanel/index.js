@@ -35,7 +35,7 @@ const labelStyle = {
 
 const makeTitle = (componentName) => {
     let titleComponentName = componentName;
-    if(titleComponentName.length > 23){
+    if(titleComponentName && titleComponentName.length > 23){
         titleComponentName = titleComponentName.substr(0, 20) + '...';
     }
     return titleComponentName;

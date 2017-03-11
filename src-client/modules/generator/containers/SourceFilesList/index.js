@@ -29,7 +29,7 @@ class Container extends Component {
         this.state = {
             activeFile: undefined
         };
-        this.handleOnSubmit = this.handleOnSubmit.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChangePreview = this.handleChangePreview.bind(this);
     }
 
@@ -45,10 +45,12 @@ class Container extends Component {
         });
     }
 
-    handleOnSubmit(e) {
+    handleSubmit(e) {
         e.stopPropagation();
         e.preventDefault();
-
+        const {selectedKeys, generatedData, saveGenerated } = this.props;
+        const {files, dependencies, defaults} = generatedData;
+        saveGenerated(selectedKeys, files, dependencies, defaults)
     }
 
     handleChangePreview(e){
@@ -61,9 +63,9 @@ class Container extends Component {
 
     render() {
 
-        const { generatorModel: {generatedData}, saveGenerated } = this.props;
+        const { generatedData } = this.props;
         let { activeFile } = this.state;
-        const {files, dependencies} = generatedData;
+        const {files, dependencies } = generatedData;
 
         const cellBoxStyle = {
             display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%'
@@ -79,17 +81,22 @@ class Container extends Component {
             files.forEach((file, index) => {
                 active = file.outputFilePath === activeFile;
                 fileItemsList.push(
-                    <ListGroupItem href="#"
-                                   key={file.outputFileName + index}
-                                   style={{position: 'relative'}}
-                                   active={active}
-                                   data-filename={file.outputFilePath}
-                                   onClick={this.handleChangePreview}>
+                    <ListGroupItem
+                        href="#"
+                        key={file.outputFileName + index}
+                        style={{position: 'relative'}}
+                        active={active}
+                        data-filename={file.outputFilePath}
+                        onClick={this.handleChangePreview}
+                    >
                         <span>{file.outputFileName}</span>
                         { active ? null :
-                            <span className="badge" style={{backgroundColor: '#fff', color: '#555'}}>
-                            <span className="fa fa-chevron-right"></span>
-                        </span>
+                            <span
+                                className="badge"
+                                style={{backgroundColor: '#fff', color: '#555'}}
+                            >
+                                <span className="fa fa-chevron-right"/>
+                            </span>
                         }
                     </ListGroupItem>
                 );
@@ -102,16 +109,21 @@ class Container extends Component {
         let dependenciesItem;
         if(dependencies && !isEmpty(dependencies)){
             dependenciesItem = (
-                <ListGroupItem href="#"
-                               key={'dependencies'}
-                               style={{position: 'relative'}}
-                               active={'dependencies' === activeFile}
-                               data-filename={'dependencies'}
-                               onClick={this.handleChangePreview}>
+                <ListGroupItem
+                    href="#"
+                    key={'dependencies'}
+                    style={{position: 'relative'}}
+                    active={'dependencies' === activeFile}
+                    data-filename={'dependencies'}
+                    onClick={this.handleChangePreview}
+                >
                     <span>Dependencies</span>
                     { 'dependencies' === activeFile ? null :
-                        <span className="badge" style={{backgroundColor: '#fff', color: '#555'}}>
-                            <span className="fa fa-chevron-right"></span>
+                        <span
+                            className="badge"
+                            style={{backgroundColor: '#fff', color: '#555'}}
+                        >
+                            <span className="fa fa-chevron-right" />
                         </span>
                     }
                 </ListGroupItem>
@@ -153,8 +165,12 @@ class Container extends Component {
                                         </ListGroup>
                                     </div> : null }
                                     <div style={{marginTop: '2em', display: 'flex', justifyContent: 'center'}}>
-                                        <Button bsStyle="primary"
-                                                onClick={(e) => {e.stopPropagation(); e.preventDefault(); saveGenerated(); }}>Install component</Button>
+                                        <Button
+                                            bsStyle="primary"
+                                            onClick={this.handleSubmit}
+                                        >
+                                            Install component
+                                        </Button>
                                     </div>
                                 </div>
                             </div>

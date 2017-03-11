@@ -17,8 +17,8 @@
 import { bindActionCreators } from 'redux';
 
 import { failed } from 'modules/app/containers/AppMessage/actions';
-import { generate } from 'modules/generator/containers/Generator/actions';
+import { pregenerate } from 'modules/generator/containers/Generator/actions';
 
 export const containerActions = (dispatch) => bindActionCreators({
-
+	pregenerate
 }, dispatch);

@@ -17,30 +17,11 @@
 import * as actions from './actions.js';
 
 const initialState = {
-    name: undefined,
-    dirPath: undefined,
-    namespace: undefined,
-    componentName: undefined,
-    metaData: undefined,
-    metaHelp: undefined,
 };
 
 export default (state = initialState, action = {}) => {
 
     const {type, payload} = action;
-
-
-    if(type === actions.SET_COMPONENT_METADATA){
-        return Object.assign({}, state, {
-            namespace: payload.namespace,
-            componentName: payload.componentName,
-            metaData: payload.metaData
-        });
-    }
-
-    if(type === actions.SET_SELECTED_GENERATOR){
-        return Object.assign({}, state, payload);
-    }
 
     return state;
 

@@ -22,10 +22,16 @@ import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 
 import { Grid, Row, Col, Button } from 'react-bootstrap';
-import { AceEditor, InputTextStateful  } from 'components';
+import { InputTextStateful  } from 'components';
 
 const cellBoxStyle = {
     display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%'
+};
+
+const validateName = (value) => {
+    return value
+        && value.length > 0
+        && validator.isAlphanumeric(value);
 };
 
 class Container extends Component {
@@ -39,29 +45,19 @@ class Container extends Component {
         this.handleNamespaceCheck = this.handleNamespaceCheck.bind(this);
     }
 
-    validateName(value) {
-        return value
-            && value.length > 0
-            && validator.isAlphanumeric(value);
-    }
-
     handleOnSubmit(e) {
         e.stopPropagation();
         e.preventDefault();
-        let metadataObject = undefined;
-        const {componentModel: {name, dirPath, metaData}} = this.props;
-        const {metadataOptions, namespaceInput, componentNameInput} = this;
-        if(metadataOptions) {
-            metadataObject = Object.assign({}, metaData, metadataOptions.getOptionsObject());
-        }
+        const {generatorName, generatorDirPath, selectedComponentModel} = this.props;
+        const {namespaceInput, componentNameInput} = this;
         const namespace = namespaceInput ? namespaceInput.getValue() : '';
         const componentName = componentNameInput.getValue();
-        this.props.startGeneration(
-            name,
-            dirPath,
+        this.props.pregenerate(
+            generatorName,
+            generatorDirPath,
             namespace,
             componentName,
-            metadataObject
+            selectedComponentModel
         );
     }
 
@@ -72,7 +68,8 @@ class Container extends Component {
     render() {
         const {enableNamespaceInput} = this.state;
         const {
-            componentModel: {groupName, componentName, metaData, metaHelp},
+            componentName,
+            namespace,
             availableComponentNames,
             availableNamespaces
         } = this.props;
@@ -116,7 +113,7 @@ class Container extends Component {
                                             Component name
                                         </label>
                                         <InputTextStateful
-                                            validateFunc={this.validateName}
+                                            validateFunc={validateName}
                                             placeholder="Enter component name"
                                             id="componentNameInput"
                                             ref={me => this.componentNameInput = me}
@@ -145,13 +142,13 @@ class Container extends Component {
                                         </label>
                                         {enableNamespaceInput &&
                                             <InputTextStateful
-                                                validateFunc={this.validateName}
+                                                validateFunc={validateName}
                                                 placeholder="Enter namespace"
                                                 id="groupNameInput"
                                                 ref={me => this.namespaceInput = me}
                                                 type="text"
                                                 list="groups"
-                                                value={groupName}
+                                                value={namespace}
                                                 autoComplete="on"
                                                 disabled={!enableNamespaceInput}
                                             />
@@ -161,12 +158,12 @@ class Container extends Component {
                                                 {groupDataOptions}
                                             </datalist>
                                         }
-                                        <div style={{display: 'flex', justifyContent: 'center'}}>
+                                        <div style={{display: 'flex', justifyContent: 'center', marginTop: '2em'}}>
                                             <Button
                                                 type="submit"
                                                 bsStyle="primary"
                                             >
-                                                Enter generator options
+                                                Go to next stage
                                             </Button>
                                         </div>
                                     </form>

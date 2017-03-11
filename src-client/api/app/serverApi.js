@@ -98,11 +98,26 @@ export function getGeneratorInfo(userId, generatorId){
     return invokeStructor('getGeneratorReadme', {userId, generatorId});
 }
 
-export function pregenerate(name, dirPath, namespace, componentName, model){
-    return invokeStructor('pregenerate', {name, dirPath, namespace, componentName, model});
+export function pregenerate(generatorName,
+                            generatorDirPath,
+                            namespace,
+                            componentName,
+                            model){
+    return invokeStructor(
+        'pregenerate',
+        {generatorName, generatorDirPath, namespace, componentName, model}
+    );
 }
-export function generate(name, dirPath, namespace, componentName, model, metadata){
-    return invokeStructor('generate', {name, dirPath, namespace, componentName, model, metadata});
+export function generate(generatorName,
+                         generatorDirPath,
+                         namespace,
+                         componentName,
+                         model,
+                         metadata){
+    return invokeStructor(
+        'generate',
+        {generatorName, generatorDirPath, namespace, componentName, model, metadata}
+    );
 }
 
 export function saveGenerated(files, dependencies){

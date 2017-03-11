@@ -16,9 +16,9 @@
 
 import { bindActionCreators } from 'redux';
 
-import { pregenerate, removeGenerator } from 'modules/generator/containers/Generator/actions';
+import { startGeneratorWizard } from 'modules/generator/containers/Generator/actions';
 import { removeFromRecentGenerators } from 'modules/generator/containers/GeneratorList/actions';
 
 export const containerActions = (dispatch) => bindActionCreators({
-    pregenerate, removeFromRecentGenerators, removeGenerator
+    startGeneratorWizard, removeFromRecentGenerators
 }, dispatch);

@@ -16,13 +16,24 @@
 
 import { createStructuredSelector } from 'reselect';
 import {
-    availableComponentNamesSelector,
-    availableNamespacesSelector
-} from 'modules/workspace/containers/LibraryPanel/selectors';
+    metaDataSelector,
+    metaHelpSelector,
+    generatorNameSelector,
+    generatorDirPathSelector,
+    componentNameSelector,
+    namespaceSelector
+} from 'modules/generator/containers/Generator/selectors';
+import {
+    selectedComponentModelSelector
+} from 'modules/workspace/containers/SelectionBreadcrumbs/selectors';
 
 export const modelSelector = createStructuredSelector({
-    componentModel: state => state.metadataForm,
-    availableComponentNames: availableComponentNamesSelector,
-    availableNamespaces: availableNamespacesSelector,
+    metaData: metaDataSelector,
+    metaHelp: metaHelpSelector,
+    generatorName: generatorNameSelector,
+    generatorDirPath: generatorDirPathSelector,
+    selectedComponentModel: selectedComponentModelSelector,
+    componentName: componentNameSelector,
+    namespace: namespaceSelector,
 });
 

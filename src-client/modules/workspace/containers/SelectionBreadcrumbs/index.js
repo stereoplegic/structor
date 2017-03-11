@@ -80,7 +80,7 @@ class Container extends Component {
 
     makeTitle(componentName){
         let titleComponentName = componentName;
-        if(titleComponentName.length > 20){
+        if(titleComponentName && titleComponentName.length > 20){
             titleComponentName = titleComponentName.substr(0, 16) + '...';
         }
         return titleComponentName;

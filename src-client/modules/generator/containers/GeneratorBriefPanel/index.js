@@ -52,8 +52,8 @@ class Container extends Component {
     handleOnSelect(e){
         e.preventDefault();
         e.stopPropagation();
-        const { name, dirPath, pregenerate } = this.props;
-        pregenerate(name, dirPath);
+        const { name, dirPath, startGeneratorWizard } = this.props;
+        startGeneratorWizard(name, dirPath);
     }
 
     handleExpand(e){
