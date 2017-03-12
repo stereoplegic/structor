@@ -90,6 +90,10 @@ export function writeComponentSource(sourceCodeFilePath, sourceCode) {
     return invokeStructor('writeComponentSourceCode', {filePath: sourceCodeFilePath, sourceCode});
 }
 
+export function writeComponentDefaults(componentName, namespace, defaults) {
+    return invokeStructor('writeComponentDefaults', {componentName, namespace, defaults});
+}
+
 export function getAvailableGeneratorsList(){
     return invokeStructor('getScaffoldGenerators');
 }

@@ -29,6 +29,7 @@ export PageTreeViewPanel from 'modules/workspace/containers/PageTreeViewPanel';
 export PageTreeViewToolbar from 'modules/workspace/containers/PageTreeViewToolbar';
 export PageViewControls from 'modules/workspace/containers/PageViewControls';
 export QuickAppendModal from 'modules/workspace/containers/QuickAppendModal';
+export SaveDefaultModelModal from 'modules/workspace/containers/SaveDefaultModelModal';
 export SelectionBreadcrumbs from 'modules/workspace/containers/SelectionBreadcrumbs';
 export SelectionControls from 'modules/workspace/containers/SelectionControls';
 export ToolbarLeft from 'modules/workspace/containers/ToolbarLeft';

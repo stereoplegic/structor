@@ -50,7 +50,7 @@ class Container extends Component {
         e.preventDefault();
         const {selectedKeys, generatedData, saveGenerated } = this.props;
         const {files, dependencies, defaults} = generatedData;
-        saveGenerated(selectedKeys, files, dependencies, defaults)
+        saveGenerated(selectedKeys, files, dependencies, defaults);
     }
 
     handleChangePreview(e){
@@ -59,6 +59,11 @@ class Container extends Component {
         this.setState({
             activeFile: e.currentTarget.dataset.filename
         });
+        const $body = $('#containerElement');
+        $body.animate(
+            { scrollTop: 0 },
+            300
+        );
     }
 
     render() {
@@ -75,12 +80,22 @@ class Container extends Component {
         let previewFilePath;
 
         let fileItemsList = [];
+        let fileStructorItemsList = [];
         if (files && files.length > 0) {
             activeFile = activeFile || files[0].outputFilePath;
             let active;
+            let filePathParts;
+            let itemLabel;
+            let itemElement;
             files.forEach((file, index) => {
                 active = file.outputFilePath === activeFile;
-                fileItemsList.push(
+                filePathParts = file.outputFilePath.split('/');
+                if (filePathParts.length > 2) {
+                    itemLabel = `${filePathParts[filePathParts.length - 2]}/${filePathParts[filePathParts.length - 1]}`;
+                } else {
+                    itemLabel = file.outputFileName;
+                }
+                itemElement = (
                     <ListGroupItem
                         href="#"
                         key={file.outputFileName + index}
@@ -89,7 +104,7 @@ class Container extends Component {
                         data-filename={file.outputFilePath}
                         onClick={this.handleChangePreview}
                     >
-                        <span>{file.outputFileName}</span>
+                        <span>{itemLabel}</span>
                         { active ? null :
                             <span
                                 className="badge"
@@ -100,6 +115,11 @@ class Container extends Component {
                         }
                     </ListGroupItem>
                 );
+                if (file.outputFilePath.indexOf('.structor') >= 0) {
+                    fileStructorItemsList.push(itemElement);
+                } else {
+                    fileItemsList.push(itemElement);
+                }
                 if(active){
                     previewSourceCode = file.sourceCode;
                     previewFilePath = file.outputFilePath;
@@ -154,16 +174,22 @@ class Container extends Component {
 
                             <div style={cellBoxStyle}>
                                 <div style={{width: '100%', paddingTop: '2em'}}>
-                                    <small>List of generated files</small>
+                                    <p><span>Component files</span></p>
                                     <ListGroup>
                                         {fileItemsList}
                                     </ListGroup>
-                                    { dependenciesItem ? <div style={{marginTop: '1em'}}>
-                                        <small>npm &amp; resources dependencies</small>
-                                        <ListGroup>
-                                            {dependenciesItem}
-                                        </ListGroup>
-                                    </div> : null }
+                                    { dependenciesItem &&
+                                        <div>
+                                            <p><span>npm &amp; resources dependencies</span></p>
+                                            <ListGroup>
+                                                {dependenciesItem}
+                                            </ListGroup>
+                                        </div>
+                                    }
+                                    <p><span>Structor specific files</span></p>
+                                    <ListGroup>
+                                        {fileStructorItemsList}
+                                    </ListGroup>
                                     <div style={{marginTop: '2em', display: 'flex', justifyContent: 'center'}}>
                                         <Button
                                             bsStyle="primary"
@@ -184,7 +210,7 @@ class Container extends Component {
 
                             <div style={cellBoxStyle}>
                                 <div style={{width: '100%', height: '100%', paddingTop: '2em'}}>
-                                    <small>Source code preview</small>
+                                    <p><span>Source code preview</span></p>
                                     <div ref="sourceCodePane">
                                         <pre key={previewFilePath}><code>
                                             {previewSourceCode}

@@ -19,7 +19,13 @@ import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 
-import {Desk, PageOptionsModal, ComponentOptionsModal, QuickAppendModal } from 'modules/workspace';
+import {
+    Desk,
+    PageOptionsModal,
+    ComponentOptionsModal,
+    QuickAppendModal,
+    SaveDefaultModelModal
+} from 'modules/workspace';
 import {Generator} from 'modules/generator';
 import SignInModal from 'modules/app/containers/SignInModal';
 import ProxySetupModal from 'modules/app/containers/ProxySetupModal';
@@ -49,6 +55,7 @@ class Container extends Component {
                         <SignInModal />
                         <ProxySetupModal />
                         <QuickAppendModal />
+                        <SaveDefaultModelModal />
                     </div>
                 </div>
             );

@@ -41,7 +41,7 @@ class Container extends Component {
         let leftPanelWidth = 0;
         let leftPanelInner = null;
         if(componentModel.isLibraryPanelActive && !deskPageModel.isLivePreviewModeOn){
-            leftPanelWidth = 200;
+            leftPanelWidth = 250;
             leftPanelInner = (<LibraryPanel />);
         }
 

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { bindActionCreators } from 'redux';
-import { loadOptionsAndShowModal } from 'modules/workspace/containers/ComponentOptionsModal/actions';
-import { loadGenerators } from 'modules/generator/containers/Generator/actions';
-import { showModal as showSaveDefaultModelModal } from 'modules/workspace/containers/SaveDefaultModelModal/actions';
+import { createStructuredSelector } from 'reselect';
+import { currentComponentSelector } from 'modules/workspace/containers/ComponentControls/selectors';
 
-export const containerActions = (dispatch) => bindActionCreators({
-    loadOptionsAndShowModal, loadGenerators, showSaveDefaultModelModal
-}, dispatch);
+export const modelSelector = createStructuredSelector({
+    componentModel: state => state.saveDefaultModelModal,
+    currentComponent: currentComponentSelector,
+});
+

@@ -35,11 +35,13 @@ export const currentComponentSelector = createSelector(
                     componentDef = utilsStore.findComponentDef(tree, modelNode.type, modelNode.namespace);
                     result = result || {};
                     result.key = keys[0];
-                    result.sourceFilePath = componentDef.absoluteIndexFilePath;
                     result.componentName = modelNode.type;
                     result.namespace = modelNode.namespace;
                     result.props = modelNode.props;
                     result.text = modelNode.text;
+                    result.children = modelNode.children;
+                    result.sourceFilePath = componentDef.absoluteIndexFilePath;
+                    result.defaults = componentDef.defaults;
                 } catch (e) {
                     // do nothing;
                 }

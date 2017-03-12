@@ -73,9 +73,6 @@ class Container extends Component {
             metaData, metaHelp,
         } = this.props;
 
-        console.log('Meta data: ', JSON.stringify(metaData, null, 4));
-        console.log('Meta help: ', JSON.stringify(metaHelp, null, 4));
-
         let content = (
                 <Grid fluid={ true }>
                     <Row style={ { position: 'relative'} }>

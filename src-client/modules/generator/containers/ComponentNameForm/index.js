@@ -34,15 +34,18 @@ const validateName = (value) => {
         && validator.isAlphanumeric(value);
 };
 
+const validateNonEmptyName = (value) => {
+    if (value && value.length > 0) {
+        return validator.isAlphanumeric(value);
+    }
+    return true;
+};
+
 class Container extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            enableNamespaceInput: false,
-        };
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
-        this.handleNamespaceCheck = this.handleNamespaceCheck.bind(this);
     }
 
     handleOnSubmit(e) {
@@ -61,12 +64,7 @@ class Container extends Component {
         );
     }
 
-    handleNamespaceCheck(e) {
-        this.setState({enableNamespaceInput: this.namespaceCheckbox.checked});
-    }
-
     render() {
-        const {enableNamespaceInput} = this.state;
         const {
             componentName,
             namespace,
@@ -130,34 +128,23 @@ class Container extends Component {
                                             htmlFor="groupNameInput"
                                             className="form-label"
                                         >
-                                            <input
-                                                ref={me => this.namespaceCheckbox = me}
-                                                type="checkbox"
-                                                checked={enableNamespaceInput}
-                                                onChange={ this.handleNamespaceCheck }
-                                            />
-                                            <span style={{marginLeft: '0.5em'}}>
-                                                Add Component In Namespace
+                                            <span>
+                                                Add Component In Namespace (optional)
                                             </span>
                                         </label>
-                                        {enableNamespaceInput &&
-                                            <InputTextStateful
-                                                validateFunc={validateName}
-                                                placeholder="Enter namespace"
-                                                id="groupNameInput"
-                                                ref={me => this.namespaceInput = me}
-                                                type="text"
-                                                list="groups"
-                                                value={namespace}
-                                                autoComplete="on"
-                                                disabled={!enableNamespaceInput}
-                                            />
-                                        }
-                                        {enableNamespaceInput &&
-                                            <datalist id="groups">
-                                                {groupDataOptions}
-                                            </datalist>
-                                        }
+                                        <InputTextStateful
+                                            validateFunc={validateNonEmptyName}
+                                            placeholder="Enter namespace"
+                                            id="groupNameInput"
+                                            ref={me => this.namespaceInput = me}
+                                            type="text"
+                                            list="groups"
+                                            value={namespace}
+                                            autoComplete="on"
+                                        />
+                                        <datalist id="groups">
+                                            {groupDataOptions}
+                                        </datalist>
                                         <div style={{display: 'flex', justifyContent: 'center', marginTop: '2em'}}>
                                             <Button
                                                 type="submit"

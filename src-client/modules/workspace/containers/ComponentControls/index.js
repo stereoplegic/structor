@@ -29,6 +29,7 @@ class Container extends Component {
         super(props);
         this.onEdit = this.onEdit.bind(this);
         this.onGenerate = this.onGenerate.bind(this);
+        this.onSaveDefaultModel = this.onSaveDefaultModel.bind(this);
     }
 
     onEdit(e) {
@@ -43,6 +44,13 @@ class Container extends Component {
         e.preventDefault();
         const {loadGenerators} = this.props;
         loadGenerators();
+    }
+
+    onSaveDefaultModel(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        const {showSaveDefaultModelModal} = this.props;
+        showSaveDefaultModelModal();
     }
 
     render(){
@@ -66,7 +74,17 @@ class Container extends Component {
                     title="Generate the source code for a new component">
                     <span style={buttonLabelStyle}>
                         <i className="fa fa-magic"/>
-                        <span style={{marginLeft: '0.5em'}}>Generate New Component</span>
+                        <span style={{marginLeft: '0.5em'}}>Generate Component</span>
+                    </span>
+                </button>
+                <button
+                    className="btn btn-default btn-xs"
+                    disabled={!currentComponent}
+                    onClick={this.onSaveDefaultModel}
+                    title="Save current component model as a variant">
+                    <span style={buttonLabelStyle}>
+                        <i className="fa fa-bookmark-o"/>
+                        <span style={{marginLeft: '0.5em'}}>Save Model</span>
                     </span>
                 </button>
             </div>

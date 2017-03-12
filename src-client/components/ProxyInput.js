@@ -29,7 +29,7 @@ class ProxyInput extends Component {
     }
 
     getUrlValue(){
-        return this.refs.inputElement.value;
+        return this.inputElement.value;
     }
     
     handleClearUrlValue(e){
@@ -42,7 +42,7 @@ class ProxyInput extends Component {
     
     handleChangeUrlValue(e){
         this.setState({
-            urlValue: this.refs.inputElement.value
+            urlValue: this.inputElement.value
         });
     }
 
@@ -55,12 +55,13 @@ class ProxyInput extends Component {
                         URL:
                     </span>
                     <input
-                        ref="inputElement"
+                        ref={me => this.inputElement = me}
                         value={this.state.urlValue}
                         type="text"
                         className="form-control"
                         placeholder="Enter value"
-                        onChange={this.handleChangeUrlValue}>
+                        onChange={this.handleChangeUrlValue}
+                    >
                     </input>
                     <span className="input-group-btn">
                         <button

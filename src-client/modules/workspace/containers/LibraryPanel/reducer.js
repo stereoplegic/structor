@@ -20,9 +20,8 @@ import {recentGroupKey} from './constants';
 
 const initialState = {
     componentTree: {},
-    // componentsList: [],
-    // groupsList: [],
     expandedGroupKeys: {},
+    expandedComponentKeys: {},
     recentlyUsed: [],
 };
 
@@ -41,6 +40,14 @@ export default (state = initialState, action = {}) => {
         newExpandedGroupKeys[payload] = !newExpandedGroupKeys[payload];
         return Object.assign({}, state, {
             expandedGroupKeys: newExpandedGroupKeys
+        });
+    }
+
+    if(type === actions.TOGGLE_ITEM_GROUP) {
+        let newExpandedComponentKeys = Object.assign({}, state.expandedComponentKeys);
+        newExpandedComponentKeys[payload] = !newExpandedComponentKeys[payload];
+        return Object.assign({}, state, {
+            expandedComponentKeys: newExpandedComponentKeys
         });
     }
 

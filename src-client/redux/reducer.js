@@ -46,6 +46,7 @@ import sourceFilesListReducer from 'modules/generator/containers/SourceFilesList
 import proxySetupModalReducer from 'modules/app/containers/ProxySetupModal/reducer';
 import pageTreeViewToolbarReducer from 'modules/workspace/containers/PageTreeViewToolbar/reducer';
 import quickAppendModalReducer from 'modules/workspace/containers/QuickAppendModal/reducer';
+import saveDefaultModelModalReducer from 'modules/workspace/containers/SaveDefaultModelModal/reducer';
 
 const reducer = combineReducers({
     appContainer: appContainerReducer,
@@ -78,6 +79,7 @@ const reducer = combineReducers({
     proxySetupModal: proxySetupModalReducer,
     pageTreeViewToolbar: pageTreeViewToolbarReducer,
     quickAppendModal: quickAppendModalReducer,
+    saveDefaultModelModal: saveDefaultModelModalReducer,
 });
 
 export default reducer;

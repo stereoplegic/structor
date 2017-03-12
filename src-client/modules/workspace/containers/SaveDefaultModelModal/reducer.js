@@ -14,11 +14,28 @@
  * limitations under the License.
  */
 
-import { bindActionCreators } from 'redux';
-import { loadOptionsAndShowModal } from 'modules/workspace/containers/ComponentOptionsModal/actions';
-import { loadGenerators } from 'modules/generator/containers/Generator/actions';
-import { showModal as showSaveDefaultModelModal } from 'modules/workspace/containers/SaveDefaultModelModal/actions';
+import * as actions from './actions.js';
 
-export const containerActions = (dispatch) => bindActionCreators({
-    loadOptionsAndShowModal, loadGenerators, showSaveDefaultModelModal
-}, dispatch);
+const initialState = {
+    show: false,
+};
+
+export default (state = initialState, action = {}) => {
+
+    const {type, payload} = action;
+
+    if(type === actions.HIDE_MODAL){
+        return Object.assign({}, state, {
+            show: false
+        });
+    }
+
+    if(type === actions.SHOW_MODAL){
+        return Object.assign({}, state, {
+            show: true,
+        });
+    }
+
+    return state;
+}
+

@@ -20,11 +20,11 @@ import * as actions from './actions.js';
 import * as spinnerActions from 'modules/app/containers/AppSpinner/actions';
 import * as messageActions from 'modules/app/containers/AppMessage/actions';
 import * as generatorListActions from 'modules/generator/containers/GeneratorList/actions';
-import * as metadataFormActions from 'modules/generator/containers/MetadataForm/actions';
 import * as appContainerActions from 'modules/app/containers/AppContainer/actions';
 import * as deskPageActions from 'modules/workspace/containers/DeskPage/actions';
 import * as clipboardIndicatorActions from 'modules/workspace/containers/ClipboardIndicator/actions';
 import * as libraryPanelActions from 'modules/workspace/containers/LibraryPanel/actions';
+import * as selectionBreadcrumbsActions from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
 import { serverApi, graphApi, coockiesApi } from 'api';
 import * as historyActions from 'modules/workspace/containers/HistoryControls/actions';
 
@@ -44,7 +44,6 @@ function* pregenerate(){
                     componentName,
                     modelNode
                 );
-            console.log('Pregenerated data: ', JSON.stringify(pregeneratedData));
             yield put(actions.setComponentMetadata(pregeneratedData.metaData, pregeneratedData.metaHelp));
             yield put(actions.stepToStage(actions.STAGE3));
             let recentGenerators = coockiesApi.addToRecentGenerators(generatorName);
@@ -72,7 +71,6 @@ function* generate(){
                 modelNode,
                 metaData
             );
-            // console.log(JSON.stringify(generatedData));
             yield put(actions.setGeneratedData(generatedData));
             yield put(actions.stepToStage(actions.STAGE4));
         } catch(error) {
@@ -90,6 +88,7 @@ function* saveGenerated(){
             yield call(serverApi.saveGenerated, files, dependencies);
             graphApi.changeModelNodeType(selectedKey, newModelNode);
             yield put(clipboardIndicatorActions.removeClipboardKeys());
+            yield put(selectionBreadcrumbsActions.setSelectedKey(selectedKey));
             yield put(libraryPanelActions.loadComponents());
             yield put(deskPageActions.setReloadPageRequest());
             yield put(actions.hide());
@@ -108,8 +107,6 @@ function* loadGenerators(){
         try {
             let generatorsList = yield call(serverApi.getAvailableGeneratorsList);
             const recentGenerators = coockiesApi.getRecentGenerators();
-            console.log('Generator List: ', JSON.stringify(generatorsList, null, 4));
-            console.log('Recent List: ', JSON.stringify(recentGenerators, null, 4));
             yield put(generatorListActions.setGenerators(generatorsList));
             yield put(generatorListActions.setRecentGenerators(recentGenerators));
             yield put(appContainerActions.showGenerator());

@@ -54,8 +54,6 @@ socket.on( 'compiler.message', stats => {
 //    store.dispatch(saveModel());
 //};
 
-console.log(MainFrame);
-
 ReactDOM.render(
     <Provider store={store}>
         <MainFrame />

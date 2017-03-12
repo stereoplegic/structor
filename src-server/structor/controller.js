@@ -144,8 +144,9 @@ export function getComponentTree(){
     return storage.getComponentTree(config.deskIndexFilePath(), config.appDirPath());
 }
 
-export function getComponentDefaults(options){
-    return storage.readDefaults(options.componentName);
+export function writeComponentDefaults(options){
+    const {componentName, namespace, defaults} = options;
+    return storage.writeComponentDefaults(componentName, namespace, defaults);
 }
 
 export function getComponentNotes(options){

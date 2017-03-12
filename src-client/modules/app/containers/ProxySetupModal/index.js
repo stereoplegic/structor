@@ -40,26 +40,36 @@ class Container extends Component {
         e.stopPropagation();
         e.preventDefault();
         const { save } = this.props;
-        save(this.refs.urlInputElement.getUrlValue() || null);
+        save(this.urlInputElement.getUrlValue() || null);
     }
 
     render() {
         const { componentModel, appContainerModel: {proxyURL}, hideModal } = this.props;
         return (
 
-            <Modal show={componentModel.show}
-                   onHide={hideModal}
-                   dialogClassName="umy-modal-overlay umy-modal-middlesize"
-                   backdrop={true}
-                   keyboard={true}
-                   bsSize="large"
-                   ref="dialog"
-                   animation={true}>
-                <Modal.Header closeButton={false} aria-labelledby='contained-modal-title'>
+            <Modal
+                show={componentModel.show}
+                onHide={hideModal}
+                dialogClassName="umy-modal-overlay umy-modal-middlesize"
+                backdrop={true}
+                keyboard={true}
+                bsSize="large"
+                ref="dialog"
+                animation={true}
+            >
+                <Modal.Header
+                    closeButton={false}
+                    aria-labelledby='contained-modal-title'
+                >
                     <Modal.Title id='contained-modal-title'>Proxy URL settings</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <ProxyInput ref='urlInputElement' urlValue={proxyURL}/>
+                    <div style={{padding: "1em"}}>
+                        <ProxyInput
+                            ref={me => this.urlInputElement = me}
+                            urlValue={proxyURL}
+                        />
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.handleClose}>Cancel</Button>

@@ -14,23 +14,44 @@
  * limitations under the License.
  */
 
+import { cloneDeep } from 'lodash';
 import { bindActionCreators } from 'redux';
-import { HtmlComponents, graphApi, utils, utilsStore } from 'api';
+import { graphApi, utils, utilsStore } from 'api';
 import { success, failed} from 'modules/app/containers/AppMessage/actions';
 import { updateMarked, updatePage } from 'modules/workspace/containers/DeskPage/actions';
 import { setSelectedKey } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
 import { setForNew } from 'modules/workspace/containers/ClipboardIndicator/actions';
 import { pushHistory } from 'modules/workspace/containers/HistoryControls/actions';
+import { saveComponentDefaults } from 'modules/workspace/containers/SaveDefaultModelModal/actions';
 
 export const LOAD_COMPONENTS = "LibraryPanel/LOAD_COMPONENTS";
 export const SET_COMPONENTS = "LibraryPanel/SET_COMPONENTS";
 export const TOGGLE_PANEL_GROUP = "LibraryPanel/TOGGLE_PANEL_GROUP";
+export const TOGGLE_ITEM_GROUP = "LibraryPanel/TOGGLE_ITEM_GROUP";
 export const ADD_RECENTLY_USED = "LibraryPanel/ADD_RECENTLY_USED";
 
 export const loadComponents = () => ({ type: LOAD_COMPONENTS });
 export const togglePanelGroup = (key) => ({type: TOGGLE_PANEL_GROUP, payload: key});
+export const toggleItemGroup = (key) => ({type: TOGGLE_ITEM_GROUP, payload: key});
 export const addRecentlyUsed = (componentName, namespace) => {
     return {type: ADD_RECENTLY_USED, payload: {componentName, namespace}};
+};
+
+export const deleteComponentDefault = (componentName, namespace, defaultsIndex) => (dispatch, getState) => {
+    const { libraryPanel: {componentTree} } = getState();
+    let componentDef = undefined;
+    try {
+        componentDef = utilsStore.findComponentDef(componentTree, componentName, namespace);
+        const {defaults} = componentDef;
+        if (defaults && defaults.length > defaultsIndex) {
+            let newDefaults = defaults && defaults.length > 0 ? cloneDeep(defaults) : [];
+            newDefaults.splice(defaultsIndex, 1);
+            dispatch(saveComponentDefaults(componentName, namespace, newDefaults));
+        }
+    } catch (e) {
+        dispatch(failed(e.message));
+    }
+
 };
 
 export const setComponents = (componentTree) => (dispatch, getState) => {
@@ -44,7 +65,7 @@ export const quickCopyToClipboard = (componentName, namespace, defaultsIndex) =>
         componentDef = utilsStore.findComponentDef(componentTree, componentName, namespace, defaultsIndex);
         const {defaults} = componentDef;
         dispatch(setForNew(defaults[defaultsIndex]));
-        dispatch(addRecentlyUsed(componentName));
+        dispatch(addRecentlyUsed(componentName, namespace));
         dispatch(success(componentName + ' was copied to clipboard'));
     } catch (e) {
         dispatch(failed(e.message));
@@ -134,5 +155,5 @@ export const quickReplace = (componentNames) => (dispatch, getState) => {
 //};
 
 export const containerActions = (dispatch) => bindActionCreators({
-    quickCopyToClipboard, togglePanelGroup
+    quickCopyToClipboard, togglePanelGroup, toggleItemGroup, deleteComponentDefault
 }, dispatch);

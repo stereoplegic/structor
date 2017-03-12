@@ -50,8 +50,8 @@ export default (state = initialState, action = {}) => {
 
     if(type === actions.SET_COMPONENT_METADATA){
         return Object.assign({}, state, {
-            metaData: state.metaData || payload.metaData,
-            metaHelp: state.metaHelp || payload.metaHelp,
+            metaData: payload.metaData || state.metaData,
+            metaHelp: payload.metaHelp || state.metaHelp,
         });
     }
 

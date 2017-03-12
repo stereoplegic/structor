@@ -89,7 +89,6 @@ export const pregenerate = (generatorName,
 					if (module && module.components) {
 						const existingComponent = module.components[componentName];
 						if (existingComponent) {
-							console.log('Found existing component: ', existingComponent);
 							canProceed = confirm(`There is a component with the equal name in ${namespace}.\n\n ` +
 								`All reference to the component will be rewritten along with the source code files.\n`);
 						}

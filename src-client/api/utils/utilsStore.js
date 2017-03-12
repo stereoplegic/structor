@@ -69,10 +69,8 @@ export function getComponentTupleModel(componentTree, componentNames) {
                 componentName = name.trim();
                 namespace = undefined;
             }
-            console.log('Try to find: ', componentName, namespace);
             try {
                 componentDef = findComponentDef(componentTree, componentName, namespace);
-                console.log('Found...');
                 const {defaults} = componentDef;
                 if (tupleModel) {
                     tupleModel.children = [cloneDeep(defaults[0])];

@@ -21,7 +21,7 @@ import {
     setIndexPage,
     clonePage,
     addNewPage
-} from 'modules/workspace/containers/Desk/actions';
+} from 'modules/workspace/containers/DeskPage/actions';
 import { success, failed, timeout, close} from 'modules/app/containers/AppMessage/actions';
 
 export const CHANGE_OPTIONS = 1;
@@ -30,8 +30,6 @@ export const DUPLICATE = 3;
 
 export const HIDE_MODAL = "PageOptionsModal/HIDE_MODAL";
 export const SHOW_MODAL = "PageOptionsModal/SHOW_MODAL";
-//import { changeViewportWidth } from '../Desk/actions.js';
-//import { addNewPage, clonePage } from '../DeskPage/actions.js';
 
 export const hideModal = () => ({type: HIDE_MODAL});
 export const showModal = (mode) => ({type: SHOW_MODAL, payload: mode});
