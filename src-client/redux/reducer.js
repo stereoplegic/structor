@@ -23,7 +23,9 @@ import deskReducer from 'modules/workspace/containers/Desk/reducer';
 import deskPageReducer from 'modules/workspace/containers/DeskPage/reducer';
 import toolbarLeftReducer from 'modules/workspace/containers/ToolbarLeft/reducer';
 import toolbarTopReducer from 'modules/workspace/containers/ToolbarTop/reducer';
+import pageExportControlsReducer from 'modules/workspace/containers/PageExportControls/reducer';
 import pageListControlsReducer from 'modules/workspace/containers/PageListControls/reducer';
+import pageListPanelReducer from 'modules/workspace/containers/PageListPanel/reducer';
 import pageViewControlsReducer from 'modules/workspace/containers/PageViewControls/reducer';
 import pageOptionsModalReducer from 'modules/workspace/containers/PageOptionsModal/reducer';
 import pageTreeViewPanelReducer from 'modules/workspace/containers/PageTreeViewPanel/reducer';
@@ -33,6 +35,7 @@ import selectionControlsReducer from 'modules/workspace/containers/SelectionCont
 import clipboardControlsReducer from 'modules/workspace/containers/ClipboardControls/reducer';
 import clipboardIndicatorReducer from 'modules/workspace/containers/ClipboardIndicator/reducer';
 import historyControlsReducer from 'modules/workspace/containers/HistoryControls/reducer';
+import libraryControlsReducer from 'modules/workspace/containers/LibraryControls/reducer';
 import libraryPanelReducer from 'modules/workspace/containers/LibraryPanel/reducer';
 import componentOptionsModalReducer from 'modules/workspace/containers/ComponentOptionsModal/reducer';
 import componentControlsReducer from 'modules/workspace/containers/ComponentControls/reducer';
@@ -56,7 +59,9 @@ const reducer = combineReducers({
     deskPage: deskPageReducer,
     toolbarLeft: toolbarLeftReducer,
     toolbarTop: toolbarTopReducer,
+    pageExportControls: pageExportControlsReducer,
     pageListControls: pageListControlsReducer,
+    pageListPanel: pageListPanelReducer,
     pageViewControls: pageViewControlsReducer,
     pageOptionsModal: pageOptionsModalReducer,
     pageTreeViewPanel: pageTreeViewPanelReducer,
@@ -66,6 +71,7 @@ const reducer = combineReducers({
     clipboardControls: clipboardControlsReducer,
     clipboardIndicator: clipboardIndicatorReducer,
     historyControls: historyControlsReducer,
+    libraryControls: libraryControlsReducer,
     libraryPanel: libraryPanelReducer,
     componentOptionsModal: componentOptionsModalReducer,
     componentControls: componentControlsReducer,

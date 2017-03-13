@@ -21,11 +21,38 @@ import {utilsStore} from 'api';
 import {modelSelector} from './selectors.js';
 import {containerActions} from './actions.js';
 import {recentGroupKey, noGroupGroupKey, htmlGroupKey, filteredGroupKey} from './constants';
+import LibraryControls from "modules/workspace/containers/LibraryControls";
 
-const style = {
-	position: 'relative',
+const topToolbarStyle = {
+	paddingTop: '10px',
+	display: 'flex',
+	flexDirection: 'row',
+	flexWrap: 'nowrap',
+	alignItems: 'center',
+	width: '100%'
+};
+
+const topToolbarGroupStyle = {
+	padding: '0px',
+	margin: '0px'
+};
+
+const panelContainerStyle = {
+	position: 'absolute',
+	top: 0,
+	left: 0,
+	bottom: 0,
 	width: '100%',
-	marginTop: '5px'
+	paddingRight: '5px',
+};
+
+const listContainerStyle = {
+	position: 'absolute',
+	top: '6em',
+	left: 0,
+	bottom: 0,
+	right: '5px',
+	overflow: 'auto',
 };
 
 const labelStyle = {
@@ -356,7 +383,12 @@ class Container extends Component {
 		}
 
 		return (
-			<div style={{paddingTop: '5px'}}>
+			<div style={panelContainerStyle}>
+				<div style={{height: '3em'}}>
+					<div style={topToolbarStyle}>
+						<LibraryControls style={topToolbarGroupStyle} />
+					</div>
+				</div>
 				<div className="input-group input-group-sm">
 					<input
 						ref='inputElement'
@@ -376,7 +408,10 @@ class Container extends Component {
                         </button>
                     </span>
 				</div>
-				<div ref='container' style={style}>
+				<div
+					ref='container'
+					style={listContainerStyle}
+				>
 					<div
 						className="panel-group"
 						id="accordion"

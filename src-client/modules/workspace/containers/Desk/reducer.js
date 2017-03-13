@@ -20,7 +20,8 @@ const initialState = {
     iframeWidth: '100%',
     isLibraryPanelActive: false,
     isPageTreeviewActive: false,
-    isQuickOptionsActive: false
+    isQuickOptionsActive: false,
+    isPageListPanelActive: false,
 };
 
 export default (state = initialState, action = {}) => {
@@ -34,7 +35,17 @@ export default (state = initialState, action = {}) => {
     }
 
     if(type === actions.TOGGLE_LIBRARY_PANEL){
-        return Object.assign({}, state, { isLibraryPanelActive: !state.isLibraryPanelActive });
+        return Object.assign({}, state, {
+            isLibraryPanelActive: !state.isLibraryPanelActive,
+            isPageListPanelActive: false,
+        });
+    }
+
+    if(type === actions.TOGGLE_PAGELIST_PANEL){
+        return Object.assign({}, state, {
+            isPageListPanelActive: !state.isPageListPanelActive,
+            isLibraryPanelActive: false,
+        });
     }
 
     if(type === actions.TOGGLE_PAGE_TREEVIEW){

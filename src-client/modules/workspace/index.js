@@ -22,8 +22,11 @@ export ComponentOptionsPanel from 'modules/workspace/containers/ComponentOptions
 export Desk from 'modules/workspace/containers/Desk';
 export DeskPage from 'modules/workspace/containers/DeskPage';
 export HistoryControls from 'modules/workspace/containers/HistoryControls';
+export LibraryControls from 'modules/workspace/containers/LibraryControls';
 export LibraryPanel from 'modules/workspace/containers/LibraryPanel';
+export PageExportControls from 'modules/workspace/containers/PageExportControls';
 export PageListControls from 'modules/workspace/containers/PageListControls';
+export PageListPanel from 'modules/workspace/containers/PageListPanel';
 export PageOptionsModal from 'modules/workspace/containers/PageOptionsModal';
 export PageTreeViewPanel from 'modules/workspace/containers/PageTreeViewPanel';
 export PageTreeViewToolbar from 'modules/workspace/containers/PageTreeViewToolbar';

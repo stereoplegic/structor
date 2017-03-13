@@ -27,6 +27,7 @@ import ToolbarTop from 'modules/workspace/containers/ToolbarTop';
 import PageTreeViewPanel from 'modules/workspace/containers/PageTreeViewPanel';
 import ToolbarSelection from 'modules/workspace/containers/ToolbarSelection';
 import LibraryPanel from 'modules/workspace/containers/LibraryPanel';
+import PageListPanel from 'modules/workspace/containers/PageListPanel';
 import ComponentOptionsPanel from 'modules/workspace/containers/ComponentOptionsPanel';
 import PageTreeViewToolbar from 'modules/workspace/containers/PageTreeViewToolbar';
 
@@ -43,6 +44,10 @@ class Container extends Component {
         if(componentModel.isLibraryPanelActive && !deskPageModel.isLivePreviewModeOn){
             leftPanelWidth = 250;
             leftPanelInner = (<LibraryPanel />);
+        }
+        if(componentModel.isPageListPanelActive){
+            leftPanelWidth = 250;
+            leftPanelInner = (<PageListPanel />);
         }
 
         let bottomPanelHeight = 0;
@@ -65,8 +70,6 @@ class Container extends Component {
             left: '4em',
             bottom: '0px',
             width: leftPanelWidth + "px",
-            paddingRight: '5px',
-            overflow: 'auto'
         };
 
         let bottomPanelStyle = {

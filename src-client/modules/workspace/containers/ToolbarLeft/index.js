@@ -48,7 +48,7 @@ class Container extends Component {
     render(){
 
         const { componentModel,  userAccountModel, deskPageModel, deskModel } = this.props;
-        const { toggleLibraryPanel, togglePageTreeview, toggleQuickOptions } = this.props;
+        const { toggleLibraryPanel, togglePageListPanel, togglePageTreeview, toggleQuickOptions } = this.props;
         const { setLivePreviewModeOn, setEditModeOn, reloadPage } = this.props;
         const { saveProject, exportModel, signOut, showModal, proxyShowModal } = this.props;
 
@@ -89,7 +89,6 @@ class Container extends Component {
                             }
                         </ul>
                     </div>
-
                     <Button
                         bsStyle={deskModel.isLibraryPanelActive ? 'primary' : 'default'}
                         style={{marginTop: '1em', width: '100%'}}
@@ -98,16 +97,21 @@ class Container extends Component {
                         title="Show the list of available components">
                         <span className="fa fa-plus" />
                     </Button>
-
+                    <Button
+                        bsStyle={deskModel.isPageListPanelActive ? 'primary' : 'default'}
+                        style={{marginTop: '0.25em', width: '100%'}}
+                        onClick={togglePageListPanel}
+                        title="Show the list of pages">
+                        <span className="fa fa-book" />
+                    </Button>
                     <Button
                         bsStyle={deskModel.isPageTreeviewActive ? 'primary' : 'default'}
-                        style={{marginTop: '0.25em', width: '100%'}}
+                        style={{marginTop: '1em', width: '100%'}}
                         disabled={!deskPageModel.isEditModeOn}
                         onClick={togglePageTreeview}
                         title="Show components' hierarchy on current page">
                         <span className="fa fa-code" />
                     </Button>
-
                     <Button
                         bsStyle={deskModel.isQuickOptionsActive ? 'primary' : 'default'}
                         style={{marginTop: '0.25em', width: '100%'}}
@@ -116,7 +120,6 @@ class Container extends Component {
                         title="Show component's quick options panel">
                         <span className="fa fa-paint-brush" />
                     </Button>
-
                     <Button
                         bsStyle={deskPageModel.isEditModeOn ? 'primary' : 'default'}
                         style={{marginTop: '1em', width: '100%'}}
@@ -124,7 +127,6 @@ class Container extends Component {
                         title="Switch to edit page mode">
                         <span className="fa fa-wrench" />
                     </Button>
-
                     <Button
                         bsStyle={deskPageModel.isLivePreviewModeOn ? 'primary' : 'default'}
                         style={{marginTop: '0.25em', width: '100%'}}
@@ -132,7 +134,6 @@ class Container extends Component {
                         title="Switch to view page mode">
                         <span className="fa fa-hand-pointer-o" />
                     </Button>
-
                     <Button
                         bsStyle="default"
                         style={{marginTop: '1em', width: '100%'}}

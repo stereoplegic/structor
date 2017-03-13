@@ -24,6 +24,7 @@ import {
 } from 'modules/workspace/containers/DeskPage/actions';
 import {
     toggleLibraryPanel,
+    togglePageListPanel,
     toggleQuickOptions,
     togglePageTreeview
 } from 'modules/workspace/containers/Desk/actions';
@@ -37,6 +38,16 @@ export const saveProject = () => (dispatch, getState) => {
 };
 
 export const containerActions = (dispatch) => bindActionCreators({
-    reloadPage, setEditModeOn, setLivePreviewModeOn, saveProject, exportModel,
-    toggleLibraryPanel, toggleQuickOptions, togglePageTreeview, showModal, signOut, proxyShowModal
+    reloadPage,
+    setEditModeOn,
+    setLivePreviewModeOn,
+    saveProject,
+    exportModel,
+    toggleLibraryPanel,
+    togglePageListPanel,
+    toggleQuickOptions,
+    togglePageTreeview,
+    showModal,
+    signOut,
+    proxyShowModal,
 }, dispatch);

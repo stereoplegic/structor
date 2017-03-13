@@ -32,6 +32,11 @@ const containerStyle = {
     width: '150em'
 };
 
+const controlsGroupStyle = {
+    padding: '0px',
+    margin: '0px 0px 0px 0.5em'
+};
+
 class Container extends Component {
 
     constructor(props) {
@@ -39,12 +44,6 @@ class Container extends Component {
     }
 
     render(){
-
-        const controlsGroupStyle = {
-            padding: '0px',
-            margin: '0px 0px 0px 0.5em'
-        };
-
         return (
             <div style={this.props.style}>
                 <div style={containerStyle}>

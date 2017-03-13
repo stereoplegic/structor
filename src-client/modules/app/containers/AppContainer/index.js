@@ -66,13 +66,6 @@ class Container extends Component {
                     <SignInModal />
                 </div>
             );
-        } else if(workspaceMode === 'sandbox'){
-            content = (
-                <div style={{width: '100%', height: '100%'}}>
-                    <Sandbox />
-                    <SignInModal />
-                </div>
-            );
         } else {
             content = (
                 <div style={{position: 'fixed', top: '0px', left: '0px', right: '0px', bottom: '0px'}}>

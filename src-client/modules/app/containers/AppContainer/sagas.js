@@ -103,7 +103,7 @@ function* getProjectStatus(){
         yield take(actions.GET_PROJECT_STATUS);
         yield put(spinnerActions.started('Loading project'));
         try{
-            yield call(signInByToken);
+            // yield call(signInByToken);
             const status = yield call(serverApi.getProjectStatus);
             if(status === 'ready-to-go'){
                 const model = yield call(serverApi.getProjectModel);
