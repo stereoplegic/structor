@@ -93,7 +93,7 @@ class Container extends Component {
 	}
 
 	handleChangeFind(e) {
-		var value = this.refs.inputElement.value;
+		var value = this.inputElement.value;
 		var newState = {
 			filter: value
 		};
@@ -391,7 +391,7 @@ class Container extends Component {
 				</div>
 				<div className="input-group input-group-sm">
 					<input
-						ref='inputElement'
+						ref={me => this.inputElement = me}
 						type="text"
 						className="form-control"
 						placeholder="Filter..."

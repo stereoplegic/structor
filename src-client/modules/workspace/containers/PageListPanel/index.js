@@ -21,6 +21,7 @@ import {utilsStore} from 'api';
 import {modelSelector} from './selectors.js';
 import {containerActions} from './actions.js';
 import PageExportControls from 'modules/workspace/containers/PageExportControls';
+import { Modal, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 const topToolbarStyle = {
 	paddingTop: '10px',
@@ -47,25 +48,34 @@ const panelContainerStyle = {
 
 const listContainerStyle = {
 	position: 'absolute',
-	top: '3em',
+	top: '6em',
 	left: 0,
 	bottom: 0,
 	right: '5px',
 	overflow: 'auto',
 };
 
+const labelContainerStyle = {
+	display: 'flex',
+	flexDirection: 'row',
+	alignItems: 'center',
+};
+
 const labelStyle = {
-	backgroundColor: 'rgb(227, 227, 227)',
-	color: 'rgb(107, 107, 107)',
-	textShadow: '0 1px 0px rgba(255, 255, 255, 0.8)'
+	margin: 0,
+	whiteSpace: 'wrap',
+	wordBreak: 'break-all'
 };
 
-const itemLabelStyle = {
-	color: 'rgb(107, 107, 107)',
+const checkBoxLabelStyle = {
 	width: '1.5em',
+	minWidth: '1.5em',
+	flexGrow: 0,
 };
 
-const subitemLabelStyle = {display: 'flex', flexDirection: 'row', alignItems: 'center'};
+let checkBoxStyle = {
+	margin: 0,
+};
 
 const makeTitle = (componentName) => {
 	let titleComponentName = componentName;
@@ -79,25 +89,123 @@ class Container extends Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			filer: '',
+			selectedPages: {},
+		};
+		this.handleChangeFind = this.handleChangeFind.bind(this);
+		this.handleClearFind = this.handleClearFind.bind(this);
+		this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
+		this.handleChangePage = this.handleChangePage.bind(this);
+		this.handleSelectPage = this.handleSelectPage.bind(this);
+	}
+
+	handleChangeFind(e) {
+		var value = this.inputElement.value;
+		var newState = {
+			filter: value
+		};
+		this.setState(newState);
+	}
+
+	handleOnKeyDown(e) {
+		if (e.keyCode == 27) {
+			this.handleClearFind(e);
+		}
+	}
+
+	handleClearFind(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		this.setState({filter: ''});
+	}
+
+	handleChangePage(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		const {changePageRoute} = this.props;
+		const pagePath = e.currentTarget.dataset.path;
+		changePageRoute(pagePath);
+	}
+
+	handleSelectPage(e) {
+		e.stopPropagation();
+		let selectedPages = Object.assign({}, this.state.selectedPages);
+		const pagePath = e.currentTarget.dataset.path;
+		selectedPages[pagePath] = e.currentTarget.checked;
+		this.setState({selectedPages});
 	}
 
 	render() {
-		// const {
-		// 	componentModel: {
-		// 	}
-		// } = this.props;
+		const {filter, selectedPages} = this.state;
+		const {pages, currentPage} = this.props;
+		const filterString = filter ? filter.toUpperCase() : null;
+		let items = [];
+		if (pages && pages.length > 0) {
+			pages.forEach((item, index) => {
+				if (!filterString || item.pagePath.toUpperCase().indexOf(filterString) >= 0) {
+					// console.log(item.pagePath, !!selectedPages[item.pagePath]);
+					items.push(
+						<ListGroupItem
+							href="#"
+							key={'' + item.key + index}
+							style={{position: 'relative'}}
+							active={item.pagePath === currentPage.pagePath}
+							data-path={item.pagePath}
+							onClick={this.handleChangePage}
+						>
+							<div style={labelContainerStyle}>
+								<div style={checkBoxLabelStyle}>
+									<input
+										type="checkbox"
+										style={checkBoxStyle}
+										data-path={item.pagePath}
+										checked={!!selectedPages[item.pagePath]}
+										onClick={this.handleSelectPage}
+									/>
+								</div>
+								<div>
+									<span style={labelStyle}>{item.pagePath}</span>
+								</div>
+							</div>
+						</ListGroupItem>
+					);
+				}
+			});
+		}
 
 		return (
-		<div style={panelContainerStyle}>
-			<div style={{height: '3em'}}>
-				<div style={topToolbarStyle}>
-					<PageExportControls style={topToolbarGroupStyle} />
+			<div style={panelContainerStyle}>
+				<div style={{height: '3em'}}>
+					<div style={topToolbarStyle}>
+						<PageExportControls style={topToolbarGroupStyle}/>
+					</div>
+				</div>
+				<div className="input-group input-group-sm">
+					<input
+						ref={me => this.inputElement = me}
+						type="text"
+						className="form-control"
+						placeholder="Filter..."
+						value={this.state.filter}
+						onKeyDown={this.handleOnKeyDown}
+						onChange={this.handleChangeFind}/>
+					<span className="input-group-btn">
+                        <button
+							className="btn btn-default"
+							type="button"
+							onClick={this.handleClearFind}
+						>
+                            <span className="fa fa-times"/>
+                        </button>
+                    </span>
+				</div>
+				<div style={listContainerStyle}>
+					<ListGroup>
+						{items}
+					</ListGroup>
 				</div>
 			</div>
-			<div style={listContainerStyle}>
-				<h2>Page List</h2>
-			</div>
-		</div>
 		);
 	}
 

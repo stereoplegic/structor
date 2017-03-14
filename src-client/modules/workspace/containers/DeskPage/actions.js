@@ -188,12 +188,20 @@ export const resetPages = () => (dispatch, getState) => {
 };
 
 export const containerActions = (dispatch) => bindActionCreators({
-    loadPage, pageLoaded, setSelectedKey,
-    loadOptionsAndShowModal, changePageRouteFeedback,
-    setForCuttingKeys, setForCopyingKeys,
-    pasteBefore, pasteAfter,
-    pasteFirst, pasteLast, pasteReplace,
-    cloneSelected, deleteSelected,
+    loadPage,
+    pageLoaded,
+    setSelectedKey,
+    loadOptionsAndShowModal,
+    changePageRouteFeedback,
+    setForCuttingKeys,
+    setForCopyingKeys,
+    pasteBefore,
+    pasteAfter,
+    pasteFirst,
+    pasteLast,
+    pasteReplace,
+    cloneSelected,
+    deleteSelected,
     showQuickAppend,
     popHistory
 }, dispatch);

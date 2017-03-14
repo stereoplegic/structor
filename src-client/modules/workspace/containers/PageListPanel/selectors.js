@@ -16,6 +16,7 @@
 
 import {forOwn, uniq} from 'lodash';
 import { createStructuredSelector, createSelector } from 'reselect';
+import {pagesSelector, currentPageSelector} from 'modules/workspace/containers/DeskPage/selectors';
 
 // const componentTreeSelector = state => state.libraryPanel.componentTree;
 
@@ -74,6 +75,8 @@ import { createStructuredSelector, createSelector } from 'reselect';
 // );
 
 export const modelSelector = createStructuredSelector({
-    componentModel: state => state.pageListPanel
+    componentModel: state => state.pageListPanel,
+    pages: pagesSelector,
+    currentPage: currentPageSelector,
 });
 

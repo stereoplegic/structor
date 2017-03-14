@@ -16,6 +16,8 @@
 
 import { cloneDeep } from 'lodash';
 import { bindActionCreators } from 'redux';
+import { changePageRoute } from 'modules/workspace/containers/DeskPage/actions';
 
 export const containerActions = (dispatch) => bindActionCreators({
+	changePageRoute
 }, dispatch);

@@ -77,5 +77,5 @@ export default function* mainSaga() {
         fork(waitForPageLoaded),
         fork(preserveModel)
     ];
-    yield fork(exportModel);
+    // yield fork(exportModel);
 };
