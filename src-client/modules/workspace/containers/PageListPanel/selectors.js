@@ -18,64 +18,29 @@ import {forOwn, uniq} from 'lodash';
 import { createStructuredSelector, createSelector } from 'reselect';
 import {pagesSelector, currentPageSelector} from 'modules/workspace/containers/DeskPage/selectors';
 
-// const componentTreeSelector = state => state.libraryPanel.componentTree;
+export const selectedRoutesSelector = state => state.pageListPanel.selectedRoutes;
 
-// export const componentNamesSelector = createSelector(
-//     componentTreeSelector,
-//     (tree) => {
-//         let result = [];
-//         if (tree.htmlComponents) {
-//             result = result.concat(Object.keys(tree.htmlComponents));
-//         }
-//         if (tree.components) {
-//             result = result.concat(Object.keys(tree.components));
-//         }
-//         if (tree.modules) {
-//             let moduleKeys;
-//             forOwn(tree.modules, (value, prop) => {
-//                 if (value.components) {
-//                     moduleKeys = Object.keys(value.components);
-//                     result = result.concat(moduleKeys.map(name => `${name} [${prop}]`));
-//                 }
-//             });
-//         }
-//         return result;
-//     }
-// );
-
-// export const availableComponentNamesSelector = createSelector(
-//     componentTreeSelector,
-//     (tree) => {
-//         let result = [];
-//         if (tree.components) {
-//             result = result.concat(Object.keys(tree.components));
-//         }
-//         if (tree.modules) {
-//             let moduleKeys;
-//             forOwn(tree.modules, (value, prop) => {
-//                 if (value.components) {
-//                     moduleKeys = Object.keys(value.components);
-//                     result = result.concat(moduleKeys);
-//                 }
-//             });
-//         }
-//         return uniq(result);
-//     }
-// );
-//
-// export const availableNamespacesSelector = createSelector(
-//     componentTreeSelector,
-//     (tree) => {
-//         let result = [];
-//         if (tree.modules) {
-//             result = result.concat(Object.keys(tree.modules));
-//         }
-//         return result;
-//     }
-// );
+export const selectedPagesSelector = createSelector(
+    pagesSelector,
+    selectedRoutesSelector,
+    (pages, selectedRoutes) => {
+        let result = [];
+        pages = pages || [];
+        let filteredPages;
+        forOwn(selectedRoutes, (value, prop) => {
+            if (value === true) {
+                filteredPages = pages.filter(page => page.pagePath === prop);
+                if (filteredPages && filteredPages.length > 0) {
+                    result = result.concat(filteredPages);
+                }
+            }
+        });
+        return result;
+    }
+);
 
 export const modelSelector = createStructuredSelector({
-    componentModel: state => state.pageListPanel,
+    selectedRoutes: state => state.pageListPanel.selectedRoutes,
     pages: pagesSelector,
     currentPage: currentPageSelector,
 });

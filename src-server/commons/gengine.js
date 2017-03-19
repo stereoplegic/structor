@@ -29,9 +29,9 @@ export function preProcess(generatorDirPath, data){
 export function process(generatorDirPath, data){
     const modulePath = path.join(generatorDirPath, 'generator.js');
     return Promise.resolve()
-        .then(() => {
-            return commons.writeJson(path.join(config.getProjectDir(), 'generatorData.json'), data);
-        })
+        // .then(() => {
+        //     return commons.writeJson(path.join(config.getProjectDir(), 'generatorData.json'), data);
+        // })
         .then(() => {
             const module = require(modulePath);
             return module.process(generatorDirPath, data);

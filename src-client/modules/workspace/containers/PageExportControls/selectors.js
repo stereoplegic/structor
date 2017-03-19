@@ -15,8 +15,10 @@
  */
 
 import { createSelector, createStructuredSelector } from 'reselect';
+import {selectedPagesSelector} from 'modules/workspace/containers/PageListPanel/selectors';
 
 export const modelSelector = createStructuredSelector({
-    componentModel: state => state.libraryControls,
+    componentModel: state => state.pageExportControls,
+    selectedPages: selectedPagesSelector,
 });
 

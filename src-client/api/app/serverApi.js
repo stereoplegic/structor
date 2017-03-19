@@ -15,7 +15,7 @@
  */
 
 import {forOwn, isObject} from 'lodash';
-import { invokeStructor, invokeSandbox, invokeDownload } from './restApi.js';
+import {invokeStructor, invokeSandbox, invokeDownload} from './restApi.js';
 import HtmlComponents, {getSortedHtmlComponents} from '../utils/HtmlComponents.js';
 
 //
@@ -27,115 +27,111 @@ import HtmlComponents, {getSortedHtmlComponents} from '../utils/HtmlComponents.j
 //     return invokeDownload('prepareProject', {downloadUrl});
 // }
 
-export function getProjectStatus(){
-    return invokeStructor('getProjectStatus', {});
+export function getProjectStatus() {
+	return invokeStructor('getProjectStatus', {});
 }
 
 export function getProjectInfo() {
-    return invokeStructor('getConfig');
+	return invokeStructor('getConfig');
 }
 
 export function initUserCredentialsByToken(token) {
-    return invokeStructor('initUserCredentialsByToken', {token: token});
+	return invokeStructor('initUserCredentialsByToken', {token: token});
 }
 
 export function initUserCredentials(email, password) {
-    return invokeStructor('initUserCredentials', {username: email, password: password});
+	return invokeStructor('initUserCredentials', {username: email, password: password});
 }
 
-export function removeUserCredentials(){
-    return invokeStructor('removeUserCredentials', {});
+export function removeUserCredentials() {
+	return invokeStructor('removeUserCredentials', {});
 }
 
 export function getProjectModel() {
-    return invokeStructor('getModel');
+	return invokeStructor('getModel');
 }
 
 export function saveProjectModel(model) {
-    return invokeStructor('saveProjectModel', {model: model});
+	return invokeStructor('saveProjectModel', {model: model});
 }
 
-export function exportProjectModel(model){
-    return invokeStructor('saveProjectModel', {model: model}).then(() => {
-        return invokeStructor('exportPages', {model: model});
-    });
+export function exportProjectModel(model) {
+	return invokeStructor('saveProjectModel', {model: model}).then(() => {
+		return invokeStructor('exportPages', {model: model});
+	});
 }
 
-export function setProxyURL(proxyURL){
-    return invokeStructor('setProxyURL', {proxyURL});
+export function setProxyURL(proxyURL) {
+	return invokeStructor('setProxyURL', {proxyURL});
 }
 
 export function loadComponentTree() {
-    return invokeStructor('getComponentTree', {})
+	return invokeStructor('getComponentTree', {})
 }
 
 export function loadComponentOptions(componentName, namespace, sourceCodeFilePath) {
-    let result = {};
-    return invokeStructor('getComponentNotes', {componentName, namespace})
-        .then(response => {
-            result.readmeText = response;
-            if (sourceCodeFilePath) {
-                return invokeStructor('getComponentSourceCode', {filePath: sourceCodeFilePath})
-                    .then(response => {
-                        result.sourceCode = response;
-                        return result;
-                    });
-            } else {
-                return result;
-            }
-        });
+	let result = {};
+	return invokeStructor('getComponentNotes', {componentName, namespace})
+		.then(response => {
+			result.readmeText = response;
+			if (sourceCodeFilePath) {
+				return invokeStructor('getComponentSourceCode', {filePath: sourceCodeFilePath})
+					.then(response => {
+						result.sourceCode = response;
+						return result;
+					});
+			} else {
+				return result;
+			}
+		});
 }
 
 export function writeComponentSource(sourceCodeFilePath, sourceCode) {
-    return invokeStructor('writeComponentSourceCode', {filePath: sourceCodeFilePath, sourceCode});
+	return invokeStructor('writeComponentSourceCode', {filePath: sourceCodeFilePath, sourceCode});
 }
 
 export function writeComponentDefaults(componentName, namespace, defaults) {
-    return invokeStructor('writeComponentDefaults', {componentName, namespace, defaults});
+	return invokeStructor('writeComponentDefaults', {componentName, namespace, defaults});
 }
 
-export function getAvailableGeneratorsList(){
-    return invokeStructor('getScaffoldGenerators');
-}
-
-export function getGeneratorInfo(userId, generatorId){
-    return invokeStructor('getGeneratorReadme', {userId, generatorId});
+export function getAvailableGeneratorsList() {
+	return invokeStructor('getScaffoldGenerators');
 }
 
 export function pregenerate(generatorName,
-                            generatorDirPath,
-                            namespace,
-                            componentName,
-                            model){
-    return invokeStructor(
-        'pregenerate',
-        {generatorName, generatorDirPath, namespace, componentName, model}
-    );
+							generatorDirPath,
+							namespace,
+							componentName,
+							model) {
+	return invokeStructor(
+		'pregenerate',
+		{generatorName, generatorDirPath, namespace, componentName, model}
+	);
 }
 export function generate(generatorName,
-                         generatorDirPath,
-                         namespace,
-                         componentName,
-                         model,
-                         metadata){
-    return invokeStructor(
-        'generate',
-        {generatorName, generatorDirPath, namespace, componentName, model, metadata}
-    );
+						 generatorDirPath,
+						 namespace,
+						 componentName,
+						 model,
+						 metadata) {
+	return invokeStructor(
+		'generate',
+		{generatorName, generatorDirPath, namespace, componentName, model, metadata}
+	);
 }
 
-export function saveGenerated(files, dependencies){
-    return invokeStructor('saveGenerated', {files, dependencies});
+export function saveGenerated(files, dependencies) {
+	return invokeStructor('saveGenerated', {files, dependencies});
 }
 
-export function readComponentSources(componentName, model, readmeText){
-    return invokeSandbox('readComponentSources', {componentName, model, readmeText});
-}
-
-export function publishGenerator(generatorKey, dataObject){
-    return invokeSandbox('publishGenerator', {generatorKey, dataObject});
-}
-
-// export function removeGenerator(generatorId){
-//     return invokeSandbox('removeGenerator', {generatorId});
+// export function readComponentSources(componentName, model, readmeText) {
+// 	return invokeSandbox('readComponentSources', {componentName, model, readmeText});
 // }
+//
+// export function publishGenerator(generatorKey, dataObject) {
+// 	return invokeSandbox('publishGenerator', {generatorKey, dataObject});
+// }
+
+export function generateApplication(pagesModel, hasApplicationFiles) {
+    return invokeStructor('generateApplication', {pagesModel, hasApplicationFiles});
+}

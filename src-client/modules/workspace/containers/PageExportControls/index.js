@@ -34,37 +34,44 @@ class Container extends Component {
     onExportPages(e) {
         e.stopPropagation();
         e.preventDefault();
+        const {selectedPages, exportPages} = this.props;
+        exportPages(selectedPages);
     }
 
     onExportApp(e) {
         e.stopPropagation();
         e.preventDefault();
+        const {selectedPages, exportApplication} = this.props;
+        exportApplication(selectedPages);
     }
 
     render(){
+        const {style, selectedPages} = this.props;
         return (
             <div
-                style={this.props.style}
+                style={style}
                 className="btn-group btn-group-justified"
                 role="group"
             >
                 <div className="btn-group">
                     <button
                         className="btn btn-default btn-xs"
-                        onClick={this.onInstall}
-                        title="Export selected pages and routes"
+                        onClick={this.onExportPages}
+                        title="Generate the source code of selected pages and routes"
+                        disabled={!selectedPages || selectedPages.length <= 0}
                     >
-                    <span style={buttonLabelStyle}>
-                        <i className="fa fa-file-code-o"/>
-                        <span style={{marginLeft: '0.5em'}}>Export Pages</span>
-                    </span>
+                        <span style={buttonLabelStyle}>
+                            <i className="fa fa-file-code-o"/>
+                            <span style={{marginLeft: '0.5em'}}>Export Pages</span>
+                        </span>
                     </button>
                 </div>
                 <div className="btn-group">
                     <button
                         className="btn btn-default btn-xs"
-                        onClick={this.onPublish}
-                        title="Export selected pages and routes along with application files"
+                        onClick={this.onExportApp}
+                        title="Generate the source code of selected pages and routes along with application files"
+                        disabled={!selectedPages || selectedPages.length <= 0}
                     >
                     <span style={buttonLabelStyle}>
                         <i className="fa fa-gift"/>

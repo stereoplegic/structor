@@ -123,22 +123,19 @@ class Container extends Component {
 	handleChangePage(e) {
 		e.stopPropagation();
 		e.preventDefault();
-		const {changePageRoute} = this.props;
 		const pagePath = e.currentTarget.dataset.path;
-		changePageRoute(pagePath);
+		this.props.changePageRoute(pagePath);
 	}
 
 	handleSelectPage(e) {
 		e.stopPropagation();
-		let selectedPages = Object.assign({}, this.state.selectedPages);
 		const pagePath = e.currentTarget.dataset.path;
-		selectedPages[pagePath] = e.currentTarget.checked;
-		this.setState({selectedPages});
+		this.props.toggleRouteSelection(pagePath);
 	}
 
 	render() {
-		const {filter, selectedPages} = this.state;
-		const {pages, currentPage} = this.props;
+		const {filter} = this.state;
+		const {pages, currentPage, selectedRoutes} = this.props;
 		const filterString = filter ? filter.toUpperCase() : null;
 		let items = [];
 		if (pages && pages.length > 0) {
@@ -160,7 +157,7 @@ class Container extends Component {
 										type="checkbox"
 										style={checkBoxStyle}
 										data-path={item.pagePath}
-										checked={!!selectedPages[item.pagePath]}
+										checked={!!selectedRoutes[item.pagePath]}
 										onClick={this.handleSelectPage}
 									/>
 								</div>

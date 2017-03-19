@@ -17,12 +17,24 @@
 import * as actions from './actions.js';
 
 const initialState = {
-
+    showApplicationExportDialog: false,
 };
 
 export default (state = initialState, action = {}) => {
 
     const {type, payload} = action;
+
+    if(type === actions.SHOW_MODAL){
+        return Object.assign({}, state, {
+            showApplicationExportDialog: true,
+        });
+    }
+
+    if(type === actions.HIDE_MODAL){
+        return Object.assign({}, state, {
+            showApplicationExportDialog: false,
+        });
+    }
 
     return state;
 }

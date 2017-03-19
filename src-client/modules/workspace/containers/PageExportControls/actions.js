@@ -15,6 +15,42 @@
  */
 
 import { bindActionCreators } from 'redux';
+import { graphApi } from 'api';
+
+export const GENERATE_APPLICATION = "PageListPanel/GENERATE_APPLICATION";
+
+export const exportPages = (pages) => (dispatch, getState) => {
+	let pagesModel = [];
+	let pageModel;
+	if (pages && pages.length > 0) {
+		pages.forEach(page => {
+			pageModel = graphApi.getPageModelByPagePath(page.pagePath);
+			if (pageModel) {
+				pagesModel.push(pageModel);
+			}
+		});
+	}
+	if (pagesModel.length > 0) {
+		dispatch({type: GENERATE_APPLICATION, payload: {pagesModel, hasApplicationFiles: false}});
+	}
+};
+
+export const exportApplication = (pages) => (dispatch, getState) => {
+	let pagesModel = [];
+	let pageModel;
+	if (pages && pages.length > 0) {
+		pages.forEach(page => {
+			pageModel = graphApi.getPageModelByPagePath(page.pagePath);
+			if (pageModel) {
+				pagesModel.push(pageModel);
+			}
+		});
+	}
+	if (pagesModel.length > 0) {
+		dispatch({type: GENERATE_APPLICATION, payload: {pagesModel, hasApplicationFiles: true}});
+	}
+};
 
 export const containerActions = (dispatch) => bindActionCreators({
+	exportPages, exportApplication
 }, dispatch);

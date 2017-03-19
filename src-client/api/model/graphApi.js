@@ -107,6 +107,14 @@ export function getPagePath(pathname){
     return getAvailableRoute(paths, pathname);
 }
 
+export function getPageModelByPagePath(pathname) {
+    let found = undefined;
+    if (graphObject.model && graphObject.model.pages) {
+        found = graphObject.model.pages.find(page => page.pagePath === pathname);
+    }
+    return found;
+}
+
 export function getWrappedModelByPagePath(pathname){
     let wrappedModel = undefined;
     let paths = [];

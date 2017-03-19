@@ -14,8 +14,29 @@
  * limitations under the License.
  */
 
+import { fork, take, call, put, race } from 'redux-saga/effects';
+import * as actions from './actions.js';
+import * as spinnerActions from 'modules/app/containers/AppSpinner/actions';
+import * as messageActions from 'modules/app/containers/AppMessage/actions';
+import { serverApi } from 'api';
+//
+//const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+//
+function* generateApplication(){
+	while(true){
+		const {payload: {pagesModel, hasApplicationFiles}} = yield take(actions.GENERATE_APPLICATION);
+		yield put(spinnerActions.started('Generating the source code'));
+		try {
+			yield call(serverApi.generateApplication, pagesModel, hasApplicationFiles);
+			yield put(messageActions.success('The source code has been generated successfully.'));
+		} catch(error) {
+			yield put(messageActions.failed('Generating the source code: ' + (error.message ? error.message : error)));
+		}
+		yield put(spinnerActions.done('Generating the source code'));
+	}
+}
+
 // main saga
 export default function* mainSaga() {
-    //yield [fork(getProjectInfo)];
-
+	yield [fork(generateApplication)];
 };

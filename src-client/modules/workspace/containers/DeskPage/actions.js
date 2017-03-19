@@ -55,7 +55,6 @@ export const CHANGE_PAGE_ROUTE_FEEDBACK = "DeskPage/CHANGE_PAGE_ROUTE_FEEDBACK";
 export const UPDATE_PAGE = "DeskPage/UPDATE_PAGE";
 export const UPDATE_MARKED = "DeskPage/UPDATE_MARKED";
 export const SAVE_MODEL = "DeskPage/SAVE_MODEL";
-export const EXPORT_MODEL = "DeskPage/EXPORT_MODEL";
 
 export const setPages = (pages) => ({type: SET_PAGES, payload: pages});
 export const reloadPage = () => ({type: RELOAD_PAGE});
@@ -71,7 +70,6 @@ export const executeReloadPageRequest = () => ({ type: EXECUTE_RELOAD_PAGE_REQUE
 export const updatePage = () => ({type: UPDATE_PAGE});
 export const updateMarked = () => ({type: UPDATE_MARKED});
 export const saveModel = () => ({type: SAVE_MODEL});
-export const exportModel = () => ({type: EXPORT_MODEL});
 
 export const changePageRouteFeedback = (pathname) => (dispatch, getState) => {
     dispatch({type: CHANGE_PAGE_ROUTE_FEEDBACK, payload: pathname });
