@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
+import path from 'path';
 import {sortBy} from 'lodash';
 import express from 'express';
 import rewrite from 'express-urlrewrite';
 import httpProxy from 'http-proxy';
-import {config, storage} from 'structor-commons';
+import {config, storage, commons} from 'structor-commons';
 import * as gengineManager from '../commons/gengine';
 import * as clientManager from '../commons/clientManager.js';
 import * as middlewareCompilerManager from './middlewareCompilerManager.js';
+import * as sandboxCompilerManager from './sandboxCompilerManager.js';
 
 export const STRUCTOR_URLS = [
 	'/structor',
@@ -229,6 +231,27 @@ export function generateApplication(options) {
 		.then(generatedObject => {
 			const {files, dependencies} = generatedObject;
 			return storage.saveGenerated(dependencies, files);
+		})
+		.then(() => {
+			const sandboxGeneratorPath = config.sandboxGeneratorDirPath();
+			let newGeneratorData = {
+				namespace: 'Probe',
+				index: generatorData.index,
+				project: config.getProjectConfig(),
+			};
+			return gengineManager.process(sandboxGeneratorPath, newGeneratorData)
+				.then(generated => {
+					const {files, dependencies} = generated;
+					return storage.saveGenerated(dependencies, files);
+				})
+		})
+		.then(() => {
+			const namespaceDirPath = generatorData.index.modules['Probe'].absolutePath;
+			const sandboxDirPath = path.join(config.getProjectDir(), '__sandbox', 'modules', 'Probe');
+			return commons.copyFile(namespaceDirPath, sandboxDirPath);
+		})
+		.then(() => {
+			return sandboxCompilerManager.compileSandbox();
 		});
 }
 

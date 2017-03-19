@@ -91,10 +91,7 @@ if (process.env.npm_config_global) {
 									const options = {
 										srcPath: answers.srcPath,
 									};
-									return downloadController.createMetaFolder(paths.innerDirPath, appDirPath, options)
-										.then(() => {
-											return downloadController.ensureFileStructure(appDirPath, options);
-										});
+									return downloadController.createMetaFolder(paths.innerDirPath, appDirPath, options);
 								})
 								.then(() => {
 									return downloadController.setMetaFolderVersion(appDirPath, packageVersion)

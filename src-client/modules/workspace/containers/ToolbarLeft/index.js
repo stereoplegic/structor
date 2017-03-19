@@ -43,14 +43,27 @@ class Container extends Component {
 
     constructor(props) {
         super(props);
+        this.handleSaveProject = this.handleSaveProject.bind(this);
+        this.handleProxyModal = this.handleProxyModal.bind(this);
+    }
+
+    handleSaveProject(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.props.saveProject();
+    }
+
+    handleProxyModal(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.props.proxyShowModal();
     }
 
     render(){
 
-        const { componentModel,  userAccountModel, deskPageModel, deskModel } = this.props;
+        const { deskPageModel, deskModel } = this.props;
         const { toggleLibraryPanel, togglePageListPanel, togglePageTreeview, toggleQuickOptions } = this.props;
         const { setLivePreviewModeOn, setEditModeOn, reloadPage } = this.props;
-        const { saveProject, exportModel, signOut, showModal, proxyShowModal } = this.props;
 
         return (
             <div style={leftSideStyle}>
@@ -60,25 +73,21 @@ class Container extends Component {
                             <span className="fa fa-bars" style={{fontSize: 32}} />
                         </a>
                         <ul className="dropdown-menu" role="menu">
-                            <li><a href="#" onClick={ (e) => { e.preventDefault(); e.stopPropagation(); saveProject(); } }>
-                                <span className="fa fa-save fa-fw" />&nbsp;Save project</a>
+                            <li>
+                                <a href="#" onClick={this.handleSaveProject}>
+                                    <span className="fa fa-save fa-fw" />
+                                    &nbsp;Save project
+                                </a>
+                            </li>
+                            <li className="divider" />
+                            <li>
+                                <a href="#" onClick={this.handleProxyModal}>
+                                    <span className="fa fa-gears fa-fw" />
+                                    &nbsp;Proxy settings
+                                </a>
                             </li>
                             {/*<li className="divider" />*/}
-                            {/*<li><a href="#" onClick={ (e) => { e.preventDefault(); e.stopPropagation(); exportModel(); } }>*/}
-                                {/*<span className="fa fa-gift fa-fw" />&nbsp;Export project</a>*/}
-                            {/*</li>*/}
-                            <li className="divider" />
-                            <li><a href="#" onClick={(e) => { e.preventDefault(); e.stopPropagation(); proxyShowModal(); } }>
-                                <span className="fa fa-gears fa-fw" />&nbsp;Proxy settings</a>
-                            </li>
-                            {/*
-                            <li className="divider" />
-                            <li><a href="/structor/docs.html" target="_blank">
-                                <span className="fa fa-paperclip fa-flip-vertical fa-fw"></span>&nbsp;Project documentation</a>
-                            </li>
-                             */}
-                            <li className="divider" />
-                            { userAccountModel.email ?
+                            {/* userAccountModel.email ?
                                 <li><a href="#" onClick={(e) => { e.preventDefault(); e.stopPropagation(); signOut(); }}>
                                     <span className="fa fa-sign-out fa-fw" />&nbsp;{'Sign out ' + userAccountModel.email}</a>
                                 </li>
@@ -86,7 +95,7 @@ class Container extends Component {
                                 <li><a href="#" onClick={(e) => { e.preventDefault(); e.stopPropagation(); showModal(); }}>
                                     <span className="fa fa-sign-in fa-fw" />&nbsp;Sign in to Structor Market</a>
                                 </li>
-                            }
+                            */}
                         </ul>
                     </div>
                     <Button
@@ -94,14 +103,16 @@ class Container extends Component {
                         style={{marginTop: '1em', width: '100%'}}
                         disabled={!deskPageModel.isEditModeOn}
                         onClick={toggleLibraryPanel}
-                        title="Show the list of available components">
+                        title="Show the list of available components"
+                    >
                         <span className="fa fa-plus" />
                     </Button>
                     <Button
                         bsStyle={deskModel.isPageListPanelActive ? 'primary' : 'default'}
                         style={{marginTop: '0.25em', width: '100%'}}
                         onClick={togglePageListPanel}
-                        title="Show the list of pages">
+                        title="Show the list of pages"
+                    >
                         <span className="fa fa-book" />
                     </Button>
                     <Button
@@ -109,7 +120,8 @@ class Container extends Component {
                         style={{marginTop: '1em', width: '100%'}}
                         disabled={!deskPageModel.isEditModeOn}
                         onClick={togglePageTreeview}
-                        title="Show components' hierarchy on current page">
+                        title="Show components' hierarchy on current page"
+                    >
                         <span className="fa fa-code" />
                     </Button>
                     <Button
@@ -117,28 +129,32 @@ class Container extends Component {
                         style={{marginTop: '0.25em', width: '100%'}}
                         disabled={!deskPageModel.isEditModeOn}
                         onClick={toggleQuickOptions}
-                        title="Show component's quick options panel">
+                        title="Show component's quick options panel"
+                    >
                         <span className="fa fa-paint-brush" />
                     </Button>
                     <Button
                         bsStyle={deskPageModel.isEditModeOn ? 'primary' : 'default'}
                         style={{marginTop: '1em', width: '100%'}}
                         onClick={setEditModeOn}
-                        title="Switch to edit page mode">
+                        title="Switch to edit page mode"
+                    >
                         <span className="fa fa-wrench" />
                     </Button>
                     <Button
                         bsStyle={deskPageModel.isLivePreviewModeOn ? 'primary' : 'default'}
                         style={{marginTop: '0.25em', width: '100%'}}
                         onClick={setLivePreviewModeOn}
-                        title="Switch to view page mode">
+                        title="Switch to view page mode"
+                    >
                         <span className="fa fa-hand-pointer-o" />
                     </Button>
                     <Button
                         bsStyle="default"
                         style={{marginTop: '1em', width: '100%'}}
                         onClick={reloadPage}
-                        title="Reload current page. State will be lost.">
+                        title="Reload current page. State will be lost."
+                    >
                         <span className="fa fa-refresh" />
                     </Button>
                     <div style={{marginTop: '0.25em', width: '100%', height: '2em'}} />

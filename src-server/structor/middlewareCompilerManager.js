@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import {cloneDeep} from 'lodash';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
@@ -30,6 +31,7 @@ export function getDevMiddlewareCompiler() {
     if (compiler === undefined) {
         try{
             webpackConfig = require(config.webpackConfigFilePath());
+            webpackConfig = cloneDeep(webpackConfig);
             compiler = webpack(webpackConfig);
             if(config.getDebugMode()){
                 console.log('Webpack configuration:');
