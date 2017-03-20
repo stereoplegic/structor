@@ -20,7 +20,7 @@ import {forOwn, isObject, isEmpty} from 'lodash';
 import {utilsStore} from 'api';
 import {modelSelector} from './selectors.js';
 import {containerActions} from './actions.js';
-import {recentGroupKey, noGroupGroupKey, htmlGroupKey, filteredGroupKey} from './constants';
+import {recentGroupKey, noGroupGroupKey, htmlGroupKey} from './constants';
 import LibraryControls from "modules/workspace/containers/LibraryControls";
 
 const topToolbarStyle = {
@@ -56,7 +56,6 @@ const listContainerStyle = {
 };
 
 const labelStyle = {
-	backgroundColor: 'rgb(227, 227, 227)',
 	color: 'rgb(107, 107, 107)',
 	textShadow: '0 1px 0px rgba(255, 255, 255, 0.8)'
 };
@@ -64,6 +63,28 @@ const labelStyle = {
 const itemLabelStyle = {
 	color: 'rgb(107, 107, 107)',
 	width: '1.5em',
+};
+
+const labelContainerStyle = {
+	display: 'flex',
+	flexDirection: 'row',
+	alignItems: 'flex-start',
+};
+
+const labelTextStyle = {
+	margin: 0,
+	whiteSpace: 'wrap',
+	wordBreak: 'break-all'
+};
+
+const checkBoxLabelStyle = {
+	width: '1.5em',
+	minWidth: '1.5em',
+	flexGrow: 0,
+};
+
+let checkBoxStyle = {
+	margin: 0,
 };
 
 const subitemLabelStyle = {display: 'flex', flexDirection: 'row', alignItems: 'center'};
@@ -80,11 +101,12 @@ class Container extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {filer: ''};
+		this.state = {filer: '', selectedNamespace: null};
 		this.handleChangeFind = this.handleChangeFind.bind(this);
 		this.handleClearFind = this.handleClearFind.bind(this);
 		this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
 		this.handleToggleGroup = this.handleToggleGroup.bind(this);
+		this.handleSelectGroup = this.handleSelectGroup.bind(this);
 		this.handleToggleItem = this.handleToggleItem.bind(this);
 		this.handleDeleteModel = this.handleDeleteModel.bind(this);
 		this.createGroupingPanel = this.createGroupingPanel.bind(this);
@@ -119,6 +141,10 @@ class Container extends Component {
 		this.props.togglePanelGroup(key);
 	}
 
+	handleSelectGroup(e) {
+		this.setState({selectedNamespace: e.currentTarget.dataset.namespace});
+	}
+
 	handleToggleItem(e) {
 		e.stopPropagation();
 		e.preventDefault();
@@ -147,7 +173,8 @@ class Container extends Component {
 		}
 	}
 
-	createGroupingPanel(key, title, items, collapsedClassName, isDefault = true) {
+	createGroupingPanel(key, title, items, collapsedClassName, isExtractable, isDefault = true) {
+		const {selectedNamespace} = this.state;
 		return (
 			<div
 				key={key}
@@ -158,23 +185,38 @@ class Container extends Component {
 					role="tab"
 					id={key}
 				>
-					<p style={{margin: 0}}>
-						<a
-							style={{outline: '0'}}
-							role="button"
-							data-groupkey={key}
-							href="#"
-							onClick={this.handleToggleGroup}
-						>
-							{title}
-						</a>
-						<span
-							className="label pull-right"
-							style={labelStyle}
-						>
-                            {items.length}
-                        </span>
-					</p>
+					<div style={labelContainerStyle}>
+						<div style={checkBoxLabelStyle}>
+							{isExtractable &&
+								<input
+									type="radio"
+									style={checkBoxStyle}
+									checked={selectedNamespace === title}
+									data-namespace={title}
+									onClick={this.handleSelectGroup}
+								/>
+							}
+						</div>
+						<div style={{flexGrow: 2}}>
+							<a
+								style={{outline: '0'}}
+								role="button"
+								data-groupkey={key}
+								href="#"
+								onClick={this.handleToggleGroup}
+							>
+								<span style={labelTextStyle}>{title}</span>
+							</a>
+						</div>
+						<div style={checkBoxLabelStyle}>
+							<span
+								className="label"
+								style={labelStyle}
+							>
+								{items.length}
+							</span>
+						</div>
+					</div>
 				</div>
 				<div
 					className={"panel-collapse collapse " + collapsedClassName}
@@ -278,7 +320,7 @@ class Container extends Component {
 			}
 		} = this.props;
 
-		const {filter} = this.state;
+		const {filter, selectedNamespace} = this.state;
 
 		let libGroups = [];
 
@@ -305,7 +347,9 @@ class Container extends Component {
 					// do nothing
 				}
 			});
-			libGroups.push(this.createGroupingPanel(recentGroupKey, 'Recently Used', components, collapsed, false));
+			libGroups.push(
+				this.createGroupingPanel(recentGroupKey, 'Recently Used', components, collapsed, false, false)
+			);
 		}
 
 		const {htmlComponents, components, modules} = componentTree;
@@ -328,7 +372,7 @@ class Container extends Component {
 				}
 			});
 			if (noGroupItems.length > 0) {
-				libGroups.push(this.createGroupingPanel(noGroupGroupKey, 'Components', noGroupItems, collapsed));
+				libGroups.push(this.createGroupingPanel(noGroupGroupKey, 'Components', noGroupItems, collapsed, false));
 			}
 		}
 
@@ -354,7 +398,7 @@ class Container extends Component {
 						}
 					});
 					if (groupItems.length > 0) {
-						libGroups.push(this.createGroupingPanel(groupKey, moduleId, groupItems, collapsed));
+						libGroups.push(this.createGroupingPanel(groupKey, moduleId, groupItems, collapsed, true));
 					}
 				}
 			});
@@ -378,7 +422,7 @@ class Container extends Component {
 				}
 			});
 			if (htmlItems.length > 0) {
-				libGroups.push(this.createGroupingPanel(htmlGroupKey, 'HTML', htmlItems, collapsed));
+				libGroups.push(this.createGroupingPanel(htmlGroupKey, 'HTML', htmlItems, collapsed, false));
 			}
 		}
 
@@ -386,7 +430,10 @@ class Container extends Component {
 			<div style={panelContainerStyle}>
 				<div style={{height: '3em'}}>
 					<div style={topToolbarStyle}>
-						<LibraryControls style={topToolbarGroupStyle} />
+						<LibraryControls
+							style={topToolbarGroupStyle}
+							namespace={selectedNamespace}
+						/>
 					</div>
 				</div>
 				<div className="input-group input-group-sm">

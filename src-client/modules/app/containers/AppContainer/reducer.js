@@ -30,7 +30,8 @@ const initialState = {
     },
     packageConfig: {},
     proxyURL: undefined,
-    workspaceMode: undefined
+    workspaceMode: undefined,
+    paths: {},
 };
 
 export default (state = initialState, action = {}) => {
@@ -38,9 +39,9 @@ export default (state = initialState, action = {}) => {
     const {type, payload} = action;
 
     if(type === actions.SET_PROJECT_INFO){
-
         return Object.assign({}, state, {
             proxyURL: payload.project.conf.proxyURL,
+            paths: payload.project.paths,
             packageConfig: payload.server.packageConf
         });
     }

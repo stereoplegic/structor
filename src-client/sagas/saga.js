@@ -23,6 +23,7 @@ import generatorSaga from 'modules/generator/containers/Generator/sagas';
 import proxySetupModalSaga from 'modules/app/containers/ProxySetupModal/sagas';
 import saveDefaultModelModalSaga from 'modules/workspace/containers/SaveDefaultModelModal/sagas';
 import pageExportControlsSaga from 'modules/workspace/containers/PageExportControls/sagas';
+import libraryControlsSaga from 'modules/workspace/containers/LibraryControls/sagas';
 
 export default function* mainSaga(){
     yield fork(appContainerSaga);
@@ -34,4 +35,5 @@ export default function* mainSaga(){
     yield fork(proxySetupModalSaga);
     yield fork(saveDefaultModelModalSaga);
     yield fork(pageExportControlsSaga);
+    yield fork(libraryControlsSaga);
 }

@@ -28,7 +28,7 @@ class Container extends Component {
     constructor(props) {
         super(props);
         this.onInstall = this.onInstall.bind(this);
-        this.onPublish = this.onPublish.bind(this);
+        this.onExtract = this.onExtract.bind(this);
     }
 
     onInstall(e) {
@@ -36,12 +36,15 @@ class Container extends Component {
         e.preventDefault();
     }
 
-    onPublish(e) {
+    onExtract(e) {
         e.stopPropagation();
         e.preventDefault();
+        const {namespace, projectPaths, extractNamespace} = this.props;
+        extractNamespace(namespace, projectPaths);
     }
 
     render(){
+        const {namespace} = this.props;
         return (
             <div
                 style={this.props.style}
@@ -63,12 +66,13 @@ class Container extends Component {
                 <div className="btn-group">
                     <button
                         className="btn btn-default btn-xs"
-                        onClick={this.onPublish}
+                        onClick={this.onExtract}
                         title="Publish components"
+                        disabled={!namespace}
                     >
                     <span style={buttonLabelStyle}>
                         <i className="fa fa-cloud-upload"/>
-                        <span style={{marginLeft: '0.5em'}}>Publish</span>
+                        <span style={{marginLeft: '0.5em'}}>Extract</span>
                     </span>
                     </button>
                 </div>

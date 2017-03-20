@@ -16,7 +16,10 @@
 
 import { createSelector, createStructuredSelector } from 'reselect';
 
+import {projectPathsSelector} from 'modules/app/containers/AppContainer/selectors';
+
 export const modelSelector = createStructuredSelector({
     componentModel: state => state.libraryControls,
+    projectPaths: projectPathsSelector,
 });
 

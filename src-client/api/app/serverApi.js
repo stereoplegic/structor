@@ -135,3 +135,7 @@ export function saveGenerated(files, dependencies) {
 export function generateApplication(pagesModel, hasApplicationFiles) {
     return invokeStructor('generateApplication', {pagesModel, hasApplicationFiles});
 }
+
+export function extractNamespace(namespace) {
+	return invokeStructor('extractNamespace', {namespace});
+}

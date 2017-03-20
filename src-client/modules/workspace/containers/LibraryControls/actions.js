@@ -16,5 +16,16 @@
 
 import { bindActionCreators } from 'redux';
 
+export const EXTRACT_NAMESPACE = "LibraryControls/EXTRACT_NAMESPACE";
+
+export const extractNamespace = (namespace, projectPaths) => (dispatch, getState) => {
+	const {dir} = projectPaths;
+	const extractDirPath = dir + '_' + namespace;
+	if (confirm(`The source code of ${namespace} namespace will be extracted into directory: \n\n ${extractDirPath}`)) {
+		dispatch({type: EXTRACT_NAMESPACE, payload: {namespace}});
+	}
+};
+
 export const containerActions = (dispatch) => bindActionCreators({
+	extractNamespace
 }, dispatch);

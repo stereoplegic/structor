@@ -189,7 +189,6 @@ export function pregenerate(options) {
 		namespace,
 		componentName,
 		model,
-		metadata,
 		project: config.getProjectConfig(),
 	};
 	return storage.getComponentTree()
@@ -231,33 +230,43 @@ export function generateApplication(options) {
 		.then(generatedObject => {
 			const {files, dependencies} = generatedObject;
 			return storage.saveGenerated(dependencies, files);
-		})
-		.then(() => {
-			const sandboxGeneratorPath = config.sandboxGeneratorDirPath();
-			let newGeneratorData = {
-				namespace: 'Probe',
-				index: generatorData.index,
-				project: config.getProjectConfig(),
-			};
-			return gengineManager.process(sandboxGeneratorPath, newGeneratorData)
-				.then(generated => {
-					const {files, dependencies} = generated;
-					return storage.saveGenerated(dependencies, files);
-				})
-		})
-		.then(() => {
-			const namespaceDirPath = generatorData.index.modules['Probe'].absolutePath;
-			const sandboxDirPath = path.join(config.getProjectDir(), '__sandbox', 'modules', 'Probe');
-			return commons.copyFile(namespaceDirPath, sandboxDirPath);
-		})
-		.then(() => {
-			return sandboxCompilerManager.compileSandbox();
 		});
 }
 
 export function saveGenerated(options) {
 	const {files, dependencies} = options;
 	return storage.saveGenerated(dependencies, files);
+}
+
+export function extractNamespace(options) {
+	const {namespace} = options;
+	let generatorData = {
+		namespace,
+		project: config.getProjectConfig(),
+	};
+	const sandboxGeneratorPath = config.sandboxGeneratorDirPath();
+	return storage.getComponentTree()
+		.then(tree => {
+			generatorData.index = tree;
+			return gengineManager.process(sandboxGeneratorPath, generatorData);
+		})
+		.then(generatedObject => {
+			const {files, dependencies} = generatedObject;
+			return storage.saveGenerated(dependencies, files);
+		})
+		.then(() => {
+			const namespaceDirPath = generatorData.index.modules[namespace].absolutePath;
+			const sandboxDirPath = path.join(config.getProjectDir(), '__sandbox', 'modules', namespace);
+			return commons.copyFile(namespaceDirPath, sandboxDirPath);
+		})
+		// .then(() => {
+		// 	return sandboxCompilerManager.compileSandbox();
+		// })
+		.then(() => {
+			const namespaceDirPath = generatorData.index.modules[namespace].absolutePath;
+			const extractDirPath = config.getProjectDir() + '_' + namespace;
+			return commons.copyFile(namespaceDirPath, extractDirPath);
+		});
 }
 
 export function getScaffoldGenerators(options) {
