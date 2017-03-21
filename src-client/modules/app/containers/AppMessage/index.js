@@ -45,6 +45,15 @@ const buttonStyle = {
     fontSize: '18px'
 };
 
+const overlayStyle = {
+    position: 'fixed',
+    width: '30em',
+    padding: '.5em 1.5em .5em .5em',
+    right: '0px',
+    top: '0px',
+    zIndex: '9999'
+};
+
 class Container extends Component {
 
     constructor(props) {
@@ -69,6 +78,12 @@ class Container extends Component {
         }
     }
 
+    handleShowDetails = (text) => (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.props.showModal(text);
+    };
+
     render() {
         const { componentModel: {messages}, close } = this.props;
         if (messages.size > 0) {
@@ -92,9 +107,11 @@ class Container extends Component {
                             </p>
                             { textNeedCut ?
                                 <p style={{margin: '0.5em 0 0 0', cursor: 'pointer'}}>
-                                    <a href="#"
-                                       style={{color: '#35b3ee'}}
-                                       onClick={(e) => {e.preventDefault(); e.stopPropagation(); alert(item.text);}}>
+                                    <a
+                                        href="#"
+                                        style={{color: '#35b3ee'}}
+                                        onClick={this.handleShowDetails(item.text)}
+                                    >
                                         <span>[Read more]</span>
                                     </a>
                                 </p>
@@ -104,21 +121,16 @@ class Container extends Component {
                         <span
                             style={buttonStyle}
                             className="fa fa-times"
-                            onClick={() => {close(key)}}></span>
+                            onClick={() => {close(key)}}
+                        />
                         </div>
                 )
             });
-            const overlayStyle = {
-                position: 'fixed',
-                width: '30em',
-                padding: '.5em 1.5em .5em .5em',
-                right: '0px',
-                top: '0px',
-                zIndex: '9999'};
 
             this._overlay = (
                 <div
-                    style={overlayStyle}>
+                    style={overlayStyle}
+                >
                     <div style={{position: 'relative', width: '100%', height: '100%'}}>
                         {messagesItems}
                     </div>
@@ -127,11 +139,11 @@ class Container extends Component {
             );
         } else {
             this._overlay = (
-                <span></span>
+                <span />
             );
         }
         return (
-            <span></span>
+            <span />
         );
     }
 

@@ -15,20 +15,13 @@
  */
 
 import { bindActionCreators } from 'redux';
-import {showModal as confirmModal} from 'modules/app/containers/ConfirmationModal/actions';
 
-export const EXTRACT_NAMESPACE = "LibraryControls/EXTRACT_NAMESPACE";
+export const HIDE_MODAL = "ConfirmationModal/HIDE_MODAL";
+export const SHOW_MODAL = "ConfirmationModal/SHOW_MODAL";
 
-export const extractNamespace = (namespace, projectPaths) => (dispatch, getState) => {
-	const {dir} = projectPaths;
-	const extractDirPath = dir + '_' + namespace;
-	dispatch(confirmModal(
-		`The source code of ${namespace} namespace will be extracted into directory\n\n` +
-		'```' + extractDirPath + '```',
-		() => dispatch({type: EXTRACT_NAMESPACE, payload: {namespace}})
-	));
-};
+export const hideModal = () => ({type: HIDE_MODAL});
+export const showModal = (message, accept, cancel) => ({type: SHOW_MODAL, payload: {message, accept, cancel}});
 
 export const containerActions = (dispatch) => bindActionCreators({
-	extractNamespace
+    hideModal
 }, dispatch);

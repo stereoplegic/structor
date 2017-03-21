@@ -19,7 +19,7 @@ import {sortBy} from 'lodash';
 import express from 'express';
 import rewrite from 'express-urlrewrite';
 import httpProxy from 'http-proxy';
-import {config, storage, commons} from 'structor-commons';
+import {config, storage, commons, gengine} from 'structor-commons';
 import * as gengineManager from '../commons/gengine';
 import * as clientManager from '../commons/clientManager.js';
 import * as middlewareCompilerManager from './middlewareCompilerManager.js';
@@ -240,14 +240,26 @@ export function saveGenerated(options) {
 
 export function extractNamespace(options) {
 	const {namespace} = options;
+	const sandboxGeneratorPath = config.sandboxGeneratorDirPath();
+	const sandboxDirPath = path.join(config.getProjectDir(), '__sandbox', 'modules', namespace);
+	const extractDirPath = config.getProjectDir() + '_' + namespace;
+	const extractSrcDirPath = path.join(extractDirPath, 'src');
 	let generatorData = {
 		namespace,
 		project: config.getProjectConfig(),
 	};
-	const sandboxGeneratorPath = config.sandboxGeneratorDirPath();
+	let namespaceModule = undefined;
+	let structorNamespace = {
+		name: namespace,
+	};
 	return storage.getComponentTree()
 		.then(tree => {
 			generatorData.index = tree;
+			if (tree.modules && tree.modules[namespace]) {
+				namespaceModule = tree.modules[namespace];
+			} else {
+				throw Error(`Could not find ${namespace} module in the component tree.`);
+			}
 			return gengineManager.process(sandboxGeneratorPath, generatorData);
 		})
 		.then(generatedObject => {
@@ -255,17 +267,31 @@ export function extractNamespace(options) {
 			return storage.saveGenerated(dependencies, files);
 		})
 		.then(() => {
-			const namespaceDirPath = generatorData.index.modules[namespace].absolutePath;
-			const sandboxDirPath = path.join(config.getProjectDir(), '__sandbox', 'modules', namespace);
+			const namespaceDirPath = namespaceModule.absolutePath;
 			return commons.copyFile(namespaceDirPath, sandboxDirPath);
 		})
-		// .then(() => {
-		// 	return sandboxCompilerManager.compileSandbox();
-		// })
 		.then(() => {
-			const namespaceDirPath = generatorData.index.modules[namespace].absolutePath;
-			const extractDirPath = config.getProjectDir() + '_' + namespace;
-			return commons.copyFile(namespaceDirPath, extractDirPath);
+			return sandboxCompilerManager.compileSandbox()
+				.catch(error => {
+					throw Error(
+						`It seems that some components from "${namespace}" namespace include components from another namespace.\n\n\n ${error}`
+					);
+				});
+		})
+		.then(() => {
+			const namespaceDirPath = namespaceModule.absolutePath;
+			return commons.copyFile(namespaceDirPath, extractSrcDirPath);
+		})
+		.then(() => {
+			const reducerFilePath = namespaceModule.reducerFilePath;
+			if (reducerFilePath) {
+				const globalReducerSource = generatorData.index.reducersSourceCode;
+				const reducerPropertyName = gengine.getReducerPropertyName(globalReducerSource, reducerFilePath);
+				structorNamespace.reducerPropertyName = reducerPropertyName;
+			}
+		})
+		.then(() => {
+			return commons.writeJson(path.join(extractDirPath, 'structor-namespace.json'), structorNamespace);
 		});
 }
 

@@ -15,6 +15,7 @@
  */
 
 import { bindActionCreators } from 'redux';
+import {showModal} from 'modules/app/containers/InformationModal/actions';
 
 let messageCounter = 0;
 
@@ -30,5 +31,5 @@ export const timeout = (text) => ({ type: TIMEOUT, payload: {text, timestamp: Da
 export const close = (key) => ({ type: CLOSE, payload: key });
 
 export const containerActions = (dispatch) => bindActionCreators({
-    success, failed, timeout, close
+    success, failed, timeout, close, showModal
 }, dispatch);

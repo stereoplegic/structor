@@ -19,6 +19,8 @@ import {combineReducers} from 'redux';
 import appContainerReducer from 'modules/app/containers/AppContainer/reducer';
 import appSpinnerReducer from 'modules/app/containers/AppSpinner/reducer';
 import appMessageReducer from 'modules/app/containers/AppMessage/reducer';
+import confirmationModalReducer from 'modules/app/containers/ConfirmationModal/reducer';
+import informationModalReducer from 'modules/app/containers/InformationModal/reducer';
 import deskReducer from 'modules/workspace/containers/Desk/reducer';
 import deskPageReducer from 'modules/workspace/containers/DeskPage/reducer';
 import toolbarLeftReducer from 'modules/workspace/containers/ToolbarLeft/reducer';
@@ -55,6 +57,8 @@ const reducer = combineReducers({
     appContainer: appContainerReducer,
     appSpinner: appSpinnerReducer,
     appMessage: appMessageReducer,
+    confirmationModal: confirmationModalReducer,
+    informationModal: informationModalReducer,
     desk: deskReducer,
     deskPage: deskPageReducer,
     toolbarLeft: toolbarLeftReducer,

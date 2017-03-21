@@ -29,6 +29,8 @@ import {
 import {Generator} from 'modules/generator';
 import SignInModal from 'modules/app/containers/SignInModal';
 import ProxySetupModal from 'modules/app/containers/ProxySetupModal';
+import ConfirmationModal from 'modules/app/containers/ConfirmationModal';
+import InformationModal from 'modules/app/containers/InformationModal';
 
 class Container extends Component {
 
@@ -56,6 +58,8 @@ class Container extends Component {
                         <ProxySetupModal />
                         <QuickAppendModal />
                         <SaveDefaultModelModal />
+                        <ConfirmationModal />
+                        <InformationModal />
                     </div>
                 </div>
             );
@@ -64,6 +68,8 @@ class Container extends Component {
                 <div style={{width: '100%', height: '100%'}}>
                     <Generator />
                     <SignInModal />
+                    <ConfirmationModal />
+                    <InformationModal />
                 </div>
             );
         } else {
