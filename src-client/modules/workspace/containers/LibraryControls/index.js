@@ -34,17 +34,17 @@ class Container extends Component {
     onInstall(e) {
         e.stopPropagation();
         e.preventDefault();
+        this.props.showInstaller();
     }
 
     onExtract(e) {
         e.stopPropagation();
         e.preventDefault();
-        const {namespace, projectPaths, extractNamespace} = this.props;
-        extractNamespace(namespace, projectPaths);
+        const {showExtractor} = this.props;
+        showExtractor();
     }
 
     render(){
-        const {namespace} = this.props;
         return (
             <div
                 style={this.props.style}
@@ -68,7 +68,6 @@ class Container extends Component {
                         className="btn btn-default btn-xs"
                         onClick={this.onExtract}
                         title="Publish components"
-                        disabled={!namespace}
                     >
                     <span style={buttonLabelStyle}>
                         <i className="fa fa-cloud-upload"/>

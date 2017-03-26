@@ -76,14 +76,13 @@ class OptionInput extends Component {
     handleChangeInputValue(e) {
         let value = null;
         const {propertyType} = this.state;
-        const {inputElement} = this.refs;
         if(propertyType){
             if(propertyType === 'text'){
-                value = inputElement.value;
+                value = this.inputElement.value;
             } else if(propertyType === 'checkbox'){
-                value = inputElement.checked;
+                value = this.inputElement.checked;
             } else if(propertyType === 'number'){
-                value = parseFloat(inputElement.value);
+                value = parseFloat(this.inputElement.value);
             }
         }
         let valueObject = set({}, this.props.path, value);
@@ -100,7 +99,7 @@ class OptionInput extends Component {
         const {path, onChangeValue} = this.props;
         if(propertyType){
             if(propertyType === 'checkbox'){
-                value = this.refs.inputElement.checked;
+                value = this.inputElement.checked;
             }
         }
         let valueObject = set({}, path, value);
@@ -141,43 +140,56 @@ class OptionInput extends Component {
             height: '1.55em', paddingTop: '2px', paddingBottom: '2px'
         };
         if(propertyType === 'checkbox') {
-            style.width = '1em';
+            style.width = '2em';
             element = (
-                <div style={{position: 'relative'}}>
-                <input ref="inputElement"
-                       type={propertyType}
-                       className="form-control"
-                       checked={this.getValueFromObject()}
-                       onFocus={this.handleFocus}
-                       style={style}
-                       onChange={this.handleChangeCheckboxValue}/>
-                    <span
-                        style={{position: 'absolute', top: '0.5em', left: '-1em', cursor: 'pointer'}}
-                        className="fa fa-trash-o"
-                        onClick={this.handleDelete}/>
+                <div style={{display: 'flex', width: '100%', alignItems: 'center'}}>
+                    <div style={{flexGrow: 0, width: '1em'}}>
+                        <span
+                            style={{cursor: 'pointer'}}
+                            className="fa fa-trash-o"
+                            onClick={this.handleDelete}
+                        />
+                    </div>
+                    <div style={{flexGrow: 2}}>
+                        <input
+                            ref={me => this.inputElement = me}
+                            type={propertyType}
+                            checked={this.getValueFromObject()}
+                            onFocus={this.handleFocus}
+                            style={style}
+                            onChange={this.handleChangeCheckboxValue}
+                        />
+                    </div>
                 </div>
             );
 
         } else if(propertyType === 'text' || propertyType === 'number') {
             element = (
-                <div style={{position: 'relative'}}>
-                    <input ref="inputElement"
-                           type={propertyType}
-                           className="form-control"
-                           value={this.getValueFromObject()}
-                           style={style}
-                           onFocus={this.handleFocus}
-                           onChange={this.handleChangeInputValue}/>
-                    <span
-                        style={{position: 'absolute', top: '0.5em', left: '-1em', cursor: 'pointer'}}
-                        className="fa fa-trash-o"
-                        onClick={this.handleDelete}/>
+                <div style={{display: 'flex', width: '100%', alignItems: 'center'}}>
+                    <div style={{flexGrow: 0, width: '1em'}}>
+                        <span
+                            style={{cursor: 'pointer'}}
+                            className="fa fa-trash-o"
+                            onClick={this.handleDelete}
+                        />
+                    </div>
+                    <div style={{flexGrow: 2}}>
+                        <input
+                            ref={me => this.inputElement = me}
+                            type={propertyType}
+                            className="form-control"
+                            value={this.getValueFromObject()}
+                            style={style}
+                            onFocus={this.handleFocus}
+                            onChange={this.handleChangeInputValue}
+                        />
+                    </div>
                 </div>
             );
         }
         return (
             <div style={this.props.style}>
-                <p style={{marginBottom: '3px'}}>
+                <p style={{marginBottom: '3px', paddingLeft: '1em'}}>
                     <strong>{label}</strong>
                 </p>
                 {element}

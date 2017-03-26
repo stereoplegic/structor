@@ -50,9 +50,7 @@ class Container extends Component {
     handleDeletePage(e) {
         e.stopPropagation();
         e.preventDefault();
-        if(confirm('Are you sure you want to delete current page?')){
-            this.props.deletePage();
-        }
+        this.props.deletePage();
     }
 
     handleShowModal(e) {

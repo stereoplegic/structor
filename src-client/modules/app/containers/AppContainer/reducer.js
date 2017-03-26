@@ -86,31 +86,33 @@ export default (state = initialState, action = {}) => {
         });
     }
 
-    if(type === actions.SHOW_PROJECTS){
-        return Object.assign({}, state, {
-            workspaceMode: 'projects'
-        });
-    }
-
     if(type === actions.SHOW_GENERATOR){
         return Object.assign({}, state, {
             workspaceMode: 'generator'
         });
     }
 
-    if(type === actions.HIDE_GENERATOR || type === actions.HIDE_SANDBOX){
+    if(type === actions.SHOW_INSTALLER){
         return Object.assign({}, state, {
-            workspaceMode: 'desk'
+            workspaceMode: 'installer'
         });
     }
 
-    if(type === actions.SHOW_SANDBOX){
+    if(type === actions.SHOW_EXTRACTOR){
         return Object.assign({}, state, {
-            workspaceMode: 'sandbox'
+            workspaceMode: 'extractor'
         });
     }
 
-    return state;
+	if(type === actions.HIDE_GENERATOR
+		|| type === actions.HIDE_INSTALLER
+		|| type === actions.HIDE_EXTRACTOR){
+		return Object.assign({}, state, {
+			workspaceMode: 'desk'
+		});
+	}
+
+	return state;
 
 }
 

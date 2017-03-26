@@ -31,7 +31,7 @@ const toolbarLabelStyle = {
 };
 const labelSectionStyle = {
     width: '35%',
-    margin: '0, 2em'
+    margin: '0 2em'
 };
 const centerSectionStyle = {
     width: '30%',

@@ -21,7 +21,7 @@ import {utilsStore} from 'api';
 import {modelSelector} from './selectors.js';
 import {containerActions} from './actions.js';
 import PageExportControls from 'modules/workspace/containers/PageExportControls';
-import { Modal, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
 const topToolbarStyle = {
 	paddingTop: '10px',

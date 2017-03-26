@@ -57,7 +57,7 @@ const listContainerStyle = {
 
 const labelStyle = {
 	color: 'rgb(107, 107, 107)',
-	textShadow: '0 1px 0px rgba(255, 255, 255, 0.8)'
+	textShadow: '0 1px 0px rgba(255, 255, 255, 0.8)',
 };
 
 const itemLabelStyle = {
@@ -81,11 +81,10 @@ const checkBoxLabelStyle = {
 	width: '1.5em',
 	minWidth: '1.5em',
 	flexGrow: 0,
+	textAlign: 'right',
 };
 
-let checkBoxStyle = {
-	margin: 0,
-};
+const dotSectionStyle = {flexGrow: 0, width: '1em', display: 'flex', alignItems: 'center', justifyContent: 'center'};
 
 const subitemLabelStyle = {display: 'flex', flexDirection: 'row', alignItems: 'center'};
 
@@ -101,12 +100,11 @@ class Container extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {filer: '', selectedNamespace: null};
+		this.state = {filer: ''};
 		this.handleChangeFind = this.handleChangeFind.bind(this);
 		this.handleClearFind = this.handleClearFind.bind(this);
 		this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
 		this.handleToggleGroup = this.handleToggleGroup.bind(this);
-		this.handleSelectGroup = this.handleSelectGroup.bind(this);
 		this.handleToggleItem = this.handleToggleItem.bind(this);
 		this.handleDeleteModel = this.handleDeleteModel.bind(this);
 		this.createGroupingPanel = this.createGroupingPanel.bind(this);
@@ -115,15 +113,15 @@ class Container extends Component {
 	}
 
 	handleChangeFind(e) {
-		var value = this.inputElement.value;
-		var newState = {
+		let value = this.inputElement.value;
+		let newState = {
 			filter: value
 		};
 		this.setState(newState);
 	}
 
 	handleOnKeyDown(e) {
-		if (e.keyCode == 27) {
+		if (e.keyCode === 27) {
 			this.handleClearFind(e);
 		}
 	}
@@ -139,10 +137,6 @@ class Container extends Component {
 		e.preventDefault();
 		const key = e.currentTarget.dataset.groupkey;
 		this.props.togglePanelGroup(key);
-	}
-
-	handleSelectGroup(e) {
-		this.setState({selectedNamespace: e.currentTarget.dataset.namespace});
 	}
 
 	handleToggleItem(e) {
@@ -173,8 +167,7 @@ class Container extends Component {
 		}
 	}
 
-	createGroupingPanel(key, title, items, collapsedClassName, isExtractable, isDefault = true) {
-		const {selectedNamespace} = this.state;
+	createGroupingPanel(key, title, items, collapsedClassName, isDefault = true) {
 		return (
 			<div
 				key={key}
@@ -186,17 +179,6 @@ class Container extends Component {
 					id={key}
 				>
 					<div style={labelContainerStyle}>
-						<div style={checkBoxLabelStyle}>
-							{isExtractable &&
-								<input
-									type="radio"
-									style={checkBoxStyle}
-									checked={selectedNamespace === title}
-									data-namespace={title}
-									onClick={this.handleSelectGroup}
-								/>
-							}
-						</div>
 						<div style={{flexGrow: 2}}>
 							<a
 								style={{outline: '0'}}
@@ -208,14 +190,14 @@ class Container extends Component {
 								<span style={labelTextStyle}>{title}</span>
 							</a>
 						</div>
-						<div style={checkBoxLabelStyle}>
-							<span
-								className="label"
-								style={labelStyle}
-							>
-								{items.length}
-							</span>
-						</div>
+						{/*<div style={checkBoxLabelStyle}>*/}
+							{/*<span*/}
+								{/*className="label"*/}
+								{/*style={labelStyle}*/}
+							{/*>*/}
+								{/*{items.length}*/}
+							{/*</span>*/}
+						{/*</div>*/}
 					</div>
 				</div>
 				<div
@@ -225,7 +207,7 @@ class Container extends Component {
 					<div className="list-group">
 						{items}
 					</div>
-					<div style={{height: '0'}}></div>
+					<div style={{height: '0'}} />
 				</div>
 			</div>
 		);
@@ -243,17 +225,18 @@ class Container extends Component {
 					data-componentkey={componentKey}
 					onClick={this.handleToggleItem}
 				>
-					<span>{makeTitle(componentId)}</span>
-					<span
-						className="label pull-right"
-						style={itemLabelStyle}
-					>
-                        {isExpandedComponent ?
-							<i className="fa fa-minus-square-o"/>
-							:
-							<i className="fa fa-plus-square-o"/>
-						}
-                    </span>
+					<div style={labelContainerStyle}>
+						<div style={{flexGrow: 2}}>
+							<strong>{makeTitle(componentId)}</strong>
+						</div>
+						<div style={checkBoxLabelStyle}>
+							{isExpandedComponent ?
+								<i style={itemLabelStyle} className="fa fa-minus-square-o"/>
+								:
+								<i style={itemLabelStyle} className="fa fa-plus-square-o"/>
+							}
+						</div>
+					</div>
 				</a>
 			);
 			if (isExpandedComponent) {
@@ -270,7 +253,18 @@ class Container extends Component {
 							onClick={this.handleQuickCopyToClipboard}
 						>
 							<div style={subitemLabelStyle}>
-								<div style={{flexGrow: 0, width: '1.5em'}}>
+								<div style={dotSectionStyle}>
+									<i
+										style={{fontSize: '5px'}}
+										className="fa fa-circle"
+									/>
+								</div>
+								<div style={{flexGrow: 2, display: 'flex', justifyContent: 'flex-start'}}>
+									<span>
+										{makeTitle(componentModel.variant)}
+									</span>
+								</div>
+								<div style={checkBoxLabelStyle}>
 									{modelIndex > 0 &&
 									<span
 										className="fa fa-trash-o text-muted"
@@ -282,9 +276,6 @@ class Container extends Component {
 										onClick={this.handleDeleteModel}
 									/>
 									}
-								</div>
-								<div style={{flexGrow: 2, display: 'flex', justifyContent: 'flex-end'}}>
-									<span>{makeTitle(componentModel.variant)}</span>
 								</div>
 							</div>
 						</a>
@@ -303,7 +294,7 @@ class Container extends Component {
 					data-index={0}
 					onClick={this.handleQuickCopyToClipboard}
 				>
-					<span>{makeTitle(componentId)}</span>
+					<strong>{makeTitle(componentId)}</strong>
 				</a>
 			);
 		}
@@ -320,7 +311,7 @@ class Container extends Component {
 			}
 		} = this.props;
 
-		const {filter, selectedNamespace} = this.state;
+		const {filter} = this.state;
 
 		let libGroups = [];
 
@@ -348,7 +339,7 @@ class Container extends Component {
 				}
 			});
 			libGroups.push(
-				this.createGroupingPanel(recentGroupKey, 'Recently Used', components, collapsed, false, false)
+				this.createGroupingPanel(recentGroupKey, 'Recently Used', components, collapsed, false)
 			);
 		}
 
@@ -372,7 +363,7 @@ class Container extends Component {
 				}
 			});
 			if (noGroupItems.length > 0) {
-				libGroups.push(this.createGroupingPanel(noGroupGroupKey, 'Components', noGroupItems, collapsed, false));
+				libGroups.push(this.createGroupingPanel(noGroupGroupKey, 'Components', noGroupItems, collapsed));
 			}
 		}
 
@@ -398,7 +389,7 @@ class Container extends Component {
 						}
 					});
 					if (groupItems.length > 0) {
-						libGroups.push(this.createGroupingPanel(groupKey, moduleId, groupItems, collapsed, true));
+						libGroups.push(this.createGroupingPanel(groupKey, moduleId, groupItems, collapsed));
 					}
 				}
 			});
@@ -422,7 +413,7 @@ class Container extends Component {
 				}
 			});
 			if (htmlItems.length > 0) {
-				libGroups.push(this.createGroupingPanel(htmlGroupKey, 'HTML', htmlItems, collapsed, false));
+				libGroups.push(this.createGroupingPanel(htmlGroupKey, 'HTML', htmlItems, collapsed));
 			}
 		}
 
@@ -432,7 +423,6 @@ class Container extends Component {
 					<div style={topToolbarStyle}>
 						<LibraryControls
 							style={topToolbarGroupStyle}
-							namespace={selectedNamespace}
 						/>
 					</div>
 				</div>

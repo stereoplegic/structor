@@ -52,6 +52,10 @@ import proxySetupModalReducer from 'modules/app/containers/ProxySetupModal/reduc
 import pageTreeViewToolbarReducer from 'modules/workspace/containers/PageTreeViewToolbar/reducer';
 import quickAppendModalReducer from 'modules/workspace/containers/QuickAppendModal/reducer';
 import saveDefaultModelModalReducer from 'modules/workspace/containers/SaveDefaultModelModal/reducer';
+import installerReducer from 'modules/installer/containers/Installer/reducer';
+import extractorReducer from 'modules/extractor/containers/Extractor/reducer';
+import namespaceListReducer from 'modules/extractor/containers/NamespaceList/reducer';
+import extractListReducer from 'modules/extractor/containers/ExtractList/reducer';
 
 const reducer = combineReducers({
     appContainer: appContainerReducer,
@@ -90,6 +94,10 @@ const reducer = combineReducers({
     pageTreeViewToolbar: pageTreeViewToolbarReducer,
     quickAppendModal: quickAppendModalReducer,
     saveDefaultModelModal: saveDefaultModelModalReducer,
+    installer: installerReducer,
+    extractor: extractorReducer,
+    namespaceList: namespaceListReducer,
+    extractList: extractListReducer,
 });
 
 export default reducer;

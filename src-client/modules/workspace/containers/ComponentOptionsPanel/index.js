@@ -227,7 +227,7 @@ class Container extends Component {
                                 <div className="list-group">
                                     {styleOptionInputs}
                                 </div>
-                                <div style={{height: '0'}}></div>
+                                <div style={{height: '0'}} />
                             </div>
                         </div>
                     );
@@ -246,7 +246,7 @@ class Container extends Component {
                             optionInputs.push(
                                 <OptionInput
                                     key={pathTo + key}
-                                    style={{marginTop: '0.5em', padding: '0 0.5em 0 1em'}}
+                                    style={{marginTop: '0.5em'}}
                                     valueObject={valueObject}
                                     path={pathTo}
                                     onDeleteValue={this.handleDeleteOption}
@@ -261,7 +261,7 @@ class Container extends Component {
                     optionInputs.push(
                         <OptionInput
                             key={pathTo + key}
-                            style={{marginTop: '0.5em', padding: '0 0.5em 0 1em'}}
+                            style={{marginTop: '0.5em'}}
                             valueObject={valueObject}
                             path={pathTo}
                             onDeleteValue={this.handleDeleteOption}

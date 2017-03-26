@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import stripAnsi from 'strip-ansi';
 import { bindActionCreators } from 'redux';
 import { success, failed, timeout, close} from 'modules/app/containers/AppMessage/actions';
 import { setReloadPageRequest, executeReloadPageRequest } from 'modules/workspace/containers/DeskPage/actions';
@@ -32,11 +34,12 @@ export const COMPILER_DONE = "AppContainer/COMPILER_DONE";
 export const COMPILER_TIMEOUT = "AppContainer/COMPILER_TIMEOUT";
 
 export const SHOW_DESK = "AppContainer/SHOW_DESK";
-export const SHOW_PROJECTS = "AppContainer/SHOW_PROJECTS";
 export const SHOW_GENERATOR = "AppContainer/SHOW_GENERATOR";
 export const HIDE_GENERATOR = "AppContainer/HIDE_GENERATOR";
-export const SHOW_SANDBOX = "AppContainer/SHOW_SANDBOX";
-export const HIDE_SANDBOX = "AppContainer/HIDE_SANDBOX";
+export const SHOW_INSTALLER = "AppContainer/SHOW_INSTALLER";
+export const HIDE_INSTALLER = "AppContainer/HIDE_INSTALLER";
+export const SHOW_EXTRACTOR = "AppContainer/SHOW_EXTRACTOR";
+export const HIDE_EXTRACTOR = "AppContainer/HIDE_EXTRACTOR";
 
 export const getProjectStatus = () => ({ type: GET_PROJECT_STATUS });
 export const setProjectInfo = (info) => ({ type: SET_PROJECT_INFO, payload: info });
@@ -54,8 +57,10 @@ export const compilerTimeout = () => ({ type: COMPILER_TIMEOUT });
 export const showDesk = () => ({type: SHOW_DESK});
 export const showGenerator = () => ({type: SHOW_GENERATOR});
 export const hideGenerator = () => ({type: HIDE_GENERATOR});
-export const showSandbox = () => ({type: SHOW_SANDBOX});
-export const hideSandbox = () => ({type: HIDE_SANDBOX});
+export const showInstaller = () => ({type: SHOW_INSTALLER});
+export const hideInstaller = () => ({type: HIDE_INSTALLER});
+export const showExtractor = () => ({type: SHOW_EXTRACTOR});
+export const hideExtractor = () => ({type: HIDE_EXTRACTOR});
 
 export const handleCompilerMessage = (message) => (dispatch, getState) => {
     if(message.status === 'start'){
@@ -63,7 +68,7 @@ export const handleCompilerMessage = (message) => (dispatch, getState) => {
     } else if(message.status === 'done') {
         if(message.errors && message.errors.length > 0){
             message.errors.forEach( error => {
-                dispatch(failed(error.message ? error.message : error));
+                dispatch(failed(stripAnsi(error.message ? error.message : error)));
             });
             dispatch(setReloadPageRequest());
         } else {

@@ -104,9 +104,9 @@ class Container extends Component {
                                 <i className="fa fa-times-circle fa-fw"
                                    style={{opacity: '0.6'}}/>
                                 <span>Selected:&nbsp;</span>
-                                <strong>
-                                    {(rootItem.modelNode.pageName ? rootItem.modelNode.pagePath : 'Unknown')}
-                                </strong>
+                                {/*<strong>*/}
+                                    {/*{(rootItem.modelNode.pageName ? rootItem.modelNode.pagePath : 'Unknown')}*/}
+                                {/*</strong>*/}
                             </span>
                         </li>
                     );
@@ -171,7 +171,10 @@ class Container extends Component {
                                 </li>
                             );
                         } else {
-                            if(childrenMenuItems.length > 0){
+							if (item.modelNode.namespace) {
+								componentTitle += ' [' + item.modelNode.namespace + ']';
+							}
+							if(childrenMenuItems.length > 0){
                                 content.push(
                                     <li key={i} >
                                     <span key={'menuMore'}
@@ -179,7 +182,7 @@ class Container extends Component {
                                           style={activeStyle}
                                           data-key={item.key}>
                                         <span className="dropdown-toggle" data-toggle="dropdown">
-                                            <span>{item.modelNode.type}&nbsp;</span>
+                                            <span>{componentTitle}&nbsp;</span>
                                             <span className="caret" />
                                         </span>
                                         <ul className="dropdown-menu dropdown-menu-right"
@@ -191,7 +194,7 @@ class Container extends Component {
                                     </li>
                                 );
                             } else {
-                                content.push(
+								content.push(
                                     <li key={i} >
                                     <span style={activeStyle}
                                           data-key={item.key}

@@ -23,6 +23,7 @@ import { setSelectedKey } from 'modules/workspace/containers/SelectionBreadcrumb
 import { setForNew } from 'modules/workspace/containers/ClipboardIndicator/actions';
 import { pushHistory } from 'modules/workspace/containers/HistoryControls/actions';
 import { saveComponentDefaults } from 'modules/workspace/containers/SaveDefaultModelModal/actions';
+import { showModal as confirmModal } from 'modules/app/containers/ConfirmationModal/actions';
 
 export const LOAD_COMPONENTS = "LibraryPanel/LOAD_COMPONENTS";
 export const SET_COMPONENTS = "LibraryPanel/SET_COMPONENTS";
@@ -38,20 +39,24 @@ export const addRecentlyUsed = (componentName, namespace) => {
 };
 
 export const deleteComponentDefault = (componentName, namespace, defaultsIndex) => (dispatch, getState) => {
-    const { libraryPanel: {componentTree} } = getState();
-    let componentDef = undefined;
-    try {
-        componentDef = utilsStore.findComponentDef(componentTree, componentName, namespace);
-        const {defaults} = componentDef;
-        if (defaults && defaults.length > defaultsIndex) {
-            let newDefaults = defaults && defaults.length > 0 ? cloneDeep(defaults) : [];
-            newDefaults.splice(defaultsIndex, 1);
-            dispatch(saveComponentDefaults(componentName, namespace, newDefaults));
-        }
-    } catch (e) {
-        dispatch(failed(e.message));
-    }
-
+	dispatch(confirmModal(
+		`#### Are you sure you want \n#### to delete ${componentName} model variant?`,
+		() => {
+			const { libraryPanel: {componentTree} } = getState();
+			let componentDef = undefined;
+			try {
+				componentDef = utilsStore.findComponentDef(componentTree, componentName, namespace);
+				const {defaults} = componentDef;
+				if (defaults && defaults.length > defaultsIndex) {
+					let newDefaults = defaults && defaults.length > 0 ? cloneDeep(defaults) : [];
+					newDefaults.splice(defaultsIndex, 1);
+					dispatch(saveComponentDefaults(componentName, namespace, newDefaults));
+				}
+			} catch (e) {
+				dispatch(failed(e.message));
+			}
+		}
+	));
 };
 
 export const setComponents = (componentTree) => (dispatch, getState) => {

@@ -136,6 +136,10 @@ export function generateApplication(pagesModel, hasApplicationFiles) {
     return invokeStructor('generateApplication', {pagesModel, hasApplicationFiles});
 }
 
-export function extractNamespace(namespace) {
-	return invokeStructor('extractNamespace', {namespace});
+export function preExtractNamespaces(namespaces) {
+	return invokeStructor('preExtractNamespaces', {namespaces});
+}
+
+export function extractNamespaces(namespaces, dependencies, dirPath) {
+	return invokeStructor('extractNamespaces', {namespaces, dependencies, dirPath});
 }

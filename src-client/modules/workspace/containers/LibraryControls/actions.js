@@ -15,20 +15,8 @@
  */
 
 import { bindActionCreators } from 'redux';
-import {showModal as confirmModal} from 'modules/app/containers/ConfirmationModal/actions';
-
-export const EXTRACT_NAMESPACE = "LibraryControls/EXTRACT_NAMESPACE";
-
-export const extractNamespace = (namespace, projectPaths) => (dispatch, getState) => {
-	const {dir} = projectPaths;
-	const extractDirPath = dir + '_' + namespace;
-	dispatch(confirmModal(
-		`The source code of ${namespace} namespace will be extracted into directory\n\n` +
-		'```' + extractDirPath + '```',
-		() => dispatch({type: EXTRACT_NAMESPACE, payload: {namespace}})
-	));
-};
+import {showInstaller, showExtractor} from 'modules/app/containers/AppContainer/actions';
 
 export const containerActions = (dispatch) => bindActionCreators({
-	extractNamespace
+	showInstaller, showExtractor
 }, dispatch);

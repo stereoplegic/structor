@@ -27,8 +27,8 @@ export function compileSandbox() {
 		try {
 			webpackConfig = require(config.webpackConfigFilePath());
 			webpackConfig = cloneDeep(webpackConfig);
-			const entryFilePath = path.join(config.getProjectDir(), '__sandbox', 'index.js');
-			const outputDirPath = path.join(config.getProjectDir(), '__sandbox');
+			const entryFilePath = path.join(config.sandboxDirPath(), 'index.js');
+			const outputDirPath = config.sandboxDirPath();
 			const outputFileName = 'bundle.js';
 			webpackConfig.entry = [entryFilePath];
 			webpackConfig.output = {
@@ -36,7 +36,7 @@ export function compileSandbox() {
 				filename: outputFileName
 			};
 			webpackConfig.resolve = webpackConfig.resolve || {};
-			webpackConfig.resolve.modules = ['__sandbox', 'node_modules'];
+			webpackConfig.resolve.modules = [config.SANDBOX_DIR, 'node_modules'];
 			webpackConfig.stats = 'errors-only';
 			compiler = webpack(webpackConfig);
 		} catch (e) {
@@ -92,7 +92,7 @@ export function compileSandbox() {
 				console.error(err);
 				reject(err);
 			} else if (jsonStats.errors.length > 0) {
-				console.log(JSON.stringify(jsonStats.modules, null, 4));
+				// console.log(JSON.stringify(jsonStats.modules, null, 4));
 				reject(jsonStats.errors.join('\n\n'));
 			} else {
 				resolve();

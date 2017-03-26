@@ -45,6 +45,12 @@ body {
     background-size: 25em 25em;
 }
 
+.umy-logo-flexible {
+    width: 100%;
+    background: url(img/umylogo-white.svg);
+    background-size: 100%;
+}
+
 .umy-grid-basic-element {
     position: relative;
 }

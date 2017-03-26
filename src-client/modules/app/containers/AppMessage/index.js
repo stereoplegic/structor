@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import marked from 'marked';
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
@@ -101,10 +102,15 @@ class Container extends Component {
                     messageText = messageText.substr(0, 300) + '...';
                 }
                 messagesItems.push(
-                        <div key={key} style={messageStyle} >
-                            <p style={{margin: 0}}>
-                                <span style={{wordWrap: 'break-word'}}>{messageText}</span>
-                            </p>
+                        <div
+                            key={key}
+                            style={messageStyle} >
+							{messageText &&
+                                <div
+                                    style={{wordWrap: 'break-word'}}
+                                    dangerouslySetInnerHTML={{__html: marked(messageText)}}
+                                />
+							}
                             { textNeedCut ?
                                 <p style={{margin: '0.5em 0 0 0', cursor: 'pointer'}}>
                                     <a

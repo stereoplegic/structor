@@ -15,7 +15,7 @@
  */
 
 import path from 'path';
-import {sortBy} from 'lodash';
+import {sortBy, forOwn} from 'lodash';
 import express from 'express';
 import rewrite from 'express-urlrewrite';
 import httpProxy from 'http-proxy';
@@ -24,6 +24,7 @@ import * as gengineManager from '../commons/gengine';
 import * as clientManager from '../commons/clientManager.js';
 import * as middlewareCompilerManager from './middlewareCompilerManager.js';
 import * as sandboxCompilerManager from './sandboxCompilerManager.js';
+import * as extractManager from '../commons/extractManager.js';
 
 export const STRUCTOR_URLS = [
 	'/structor',
@@ -238,61 +239,14 @@ export function saveGenerated(options) {
 	return storage.saveGenerated(dependencies, files);
 }
 
-export function extractNamespace(options) {
-	const {namespace} = options;
-	const sandboxGeneratorPath = config.sandboxGeneratorDirPath();
-	const sandboxDirPath = path.join(config.getProjectDir(), '__sandbox', 'modules', namespace);
-	const extractDirPath = config.getProjectDir() + '_' + namespace;
-	const extractSrcDirPath = path.join(extractDirPath, 'src');
-	let generatorData = {
-		namespace,
-		project: config.getProjectConfig(),
-	};
-	let namespaceModule = undefined;
-	let structorNamespace = {
-		name: namespace,
-	};
-	return storage.getComponentTree()
-		.then(tree => {
-			generatorData.index = tree;
-			if (tree.modules && tree.modules[namespace]) {
-				namespaceModule = tree.modules[namespace];
-			} else {
-				throw Error(`Could not find ${namespace} module in the component tree.`);
-			}
-			return gengineManager.process(sandboxGeneratorPath, generatorData);
-		})
-		.then(generatedObject => {
-			const {files, dependencies} = generatedObject;
-			return storage.saveGenerated(dependencies, files);
-		})
-		.then(() => {
-			const namespaceDirPath = namespaceModule.absolutePath;
-			return commons.copyFile(namespaceDirPath, sandboxDirPath);
-		})
-		.then(() => {
-			return sandboxCompilerManager.compileSandbox()
-				.catch(error => {
-					throw Error(
-						`It seems that some components from "${namespace}" namespace include components from another namespace.\n\n\n ${error}`
-					);
-				});
-		})
-		.then(() => {
-			const namespaceDirPath = namespaceModule.absolutePath;
-			return commons.copyFile(namespaceDirPath, extractSrcDirPath);
-		})
-		.then(() => {
-			const reducerFilePath = namespaceModule.reducerFilePath;
-			if (reducerFilePath) {
-				const globalReducerSource = generatorData.index.reducersSourceCode;
-				const reducerPropertyName = gengine.getReducerPropertyName(globalReducerSource, reducerFilePath);
-				structorNamespace.reducerPropertyName = reducerPropertyName;
-			}
-		})
-		.then(() => {
-			return commons.writeJson(path.join(extractDirPath, 'structor-namespace.json'), structorNamespace);
-		});
+export function preExtractNamespaces(options) {
+	const {namespaces} = options;
+	return extractManager.getAllDependencies(namespaces);
+}
+
+export function extractNamespaces(options) {
+	const {namespaces, dependencies, dirPath} = options;
+	return extractManager.extractNamespaces(namespaces, dependencies, dirPath);
 }
 
 export function getScaffoldGenerators(options) {

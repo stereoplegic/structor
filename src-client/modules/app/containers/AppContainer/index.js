@@ -27,6 +27,8 @@ import {
     SaveDefaultModelModal
 } from 'modules/workspace';
 import {Generator} from 'modules/generator';
+import {Installer} from 'modules/installer';
+import {Extractor} from 'modules/extractor';
 import SignInModal from 'modules/app/containers/SignInModal';
 import ProxySetupModal from 'modules/app/containers/ProxySetupModal';
 import ConfirmationModal from 'modules/app/containers/ConfirmationModal';
@@ -72,13 +74,29 @@ class Container extends Component {
                     <InformationModal />
                 </div>
             );
+        } else if(workspaceMode === 'installer'){
+            content = (
+                <div style={{width: '100%', height: '100%'}}>
+                    <Installer />
+                    <ConfirmationModal />
+                    <InformationModal />
+                </div>
+            );
+        } else if(workspaceMode === 'extractor'){
+            content = (
+                <div style={{width: '100%', height: '100%'}}>
+                    <Extractor />
+                    <ConfirmationModal />
+                    <InformationModal />
+                </div>
+            );
         } else {
             content = (
                 <div style={{position: 'fixed', top: '0px', left: '0px', right: '0px', bottom: '0px'}}>
                     <div
                         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%'}}>
                         <div style={{display: 'block'}}>
-                            <div className='umy-logo'></div>
+                            <div className="umy-logo" />
                         </div>
                     </div>
                 </div>

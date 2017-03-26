@@ -68,7 +68,7 @@ class Container extends Component {
     render() {
         const { componentModel: {show}, currentComponent } = this.props;
         const {errors} = this.state;
-
+        let title = '';
         let items = [];
         if (currentComponent) {
             const {defaults} = currentComponent;
@@ -79,16 +79,19 @@ class Container extends Component {
                             href="#"
                             key={'' + item.variant + index}
                             style={{position: 'relative'}}
-                            data-variant={item.variant}
+                            data-variant={item.variant || 'default'}
                             onClick={this.handleSubmitExisting}
                         >
-                            <span>{item.variant}</span>
+                            <span>{item.variant || 'default'}</span>
                         </ListGroupItem>
                     );
                 });
             }
+			title = `Save Model for ${currentComponent.componentName}`;
+			if (currentComponent.namespace) {
+				title += ` [${currentComponent.namespace}]`;
+			}
         }
-
         return (
             <Modal show={show}
                    onHide={this.handleClose}
@@ -102,7 +105,7 @@ class Container extends Component {
                     closeButton={false}
                     aria-labelledby='contained-modal-title'
                 >
-                    <Modal.Title id='contained-modal-title'>Save Model</Modal.Title>
+                    <Modal.Title id='contained-modal-title'>{title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {errors && errors.length > 0 &&

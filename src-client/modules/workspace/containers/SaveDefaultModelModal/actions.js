@@ -32,6 +32,7 @@ export const submit = (currentComponent, variantName) => (dispatch, getState) =>
     let newDefaults = defaults && defaults.length > 0 ? cloneDeep(defaults) : [];
     let foundExisting = newDefaults.find(i => i.variant === variantName);
     if (foundExisting) {
+        foundExisting.variant = variantName;
         foundExisting.props = props || {};
         foundExisting.text = text;
         foundExisting.children = children || [];
