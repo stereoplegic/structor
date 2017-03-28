@@ -83,7 +83,6 @@ class Container extends Component {
     constructor(props) {
         super(props);
         this.handleClose = this.handleClose.bind(this);
-        this.handleSelectFile = this.handleSelectFile.bind(this);
         this.handleBrowseFiles = this.handleBrowseFiles.bind(this);
         this.state = {
             selectedFile: null,
@@ -104,13 +103,8 @@ class Container extends Component {
         this.props.hideInstaller();
     }
 
-    handleSelectFile(e) {
-        console.log(this.fileUpload.files[0]);
-        // this.setState({selectedFile: this.fileUpload.files[0]});
-    }
-
     handleBrowseFiles(e) {
-        this.fileUpload.click();
+        this.props.showDirPathModal();
     }
 
     render(){
@@ -194,7 +188,7 @@ class Container extends Component {
                                             type="text"
                                             className="form-control"
                                             placeholder="Filter..."
-                                            value={searchText}
+                                            value={searchText || ''}
                                         />
                                         <span className="input-group-btn">
                                             <button
@@ -214,14 +208,6 @@ class Container extends Component {
                                         <i className="fa fa-hdd-o" style={{marginRight: '0.5em'}} />
                                         Install from local dir
                                     </button>
-                                    <input
-                                        style={{opacity: 0}}
-                                        type='file'
-                                        accept='.json'
-                                        value=""
-                                        ref={(ref) => this.fileUpload = ref}
-                                        onChange={this.handleSelectFile}
-                                    />
                                 </div>
                             </div>
                         </div>

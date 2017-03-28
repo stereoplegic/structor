@@ -143,3 +143,7 @@ export function preExtractNamespaces(namespaces) {
 export function extractNamespaces(namespaces, dependencies, dirPath) {
 	return invokeStructor('extractNamespaces', {namespaces, dependencies, dirPath});
 }
+
+export function installFromLocalDir(dirPath) {
+	return invokeStructor('installFromLocalDir', {dirPath});
+}

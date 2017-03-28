@@ -56,6 +56,7 @@ import installerReducer from 'modules/installer/containers/Installer/reducer';
 import extractorReducer from 'modules/extractor/containers/Extractor/reducer';
 import namespaceListReducer from 'modules/extractor/containers/NamespaceList/reducer';
 import extractListReducer from 'modules/extractor/containers/ExtractList/reducer';
+import selectDirectoryModalReducer from 'modules/installer/containers/SelectDirectoryModal/reducer';
 
 const reducer = combineReducers({
     appContainer: appContainerReducer,
@@ -98,6 +99,7 @@ const reducer = combineReducers({
     extractor: extractorReducer,
     namespaceList: namespaceListReducer,
     extractList: extractListReducer,
+    selectDirectoryModal: selectDirectoryModalReducer,
 });
 
 export default reducer;

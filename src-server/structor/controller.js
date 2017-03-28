@@ -24,7 +24,7 @@ import * as gengineManager from '../commons/gengine';
 import * as clientManager from '../commons/clientManager.js';
 import * as middlewareCompilerManager from './middlewareCompilerManager.js';
 import * as sandboxCompilerManager from './sandboxCompilerManager.js';
-import * as extractManager from '../commons/extractManager.js';
+import * as extractManager from './extractManager.js';
 
 export const STRUCTOR_URLS = [
 	'/structor',
@@ -247,6 +247,12 @@ export function preExtractNamespaces(options) {
 export function extractNamespaces(options) {
 	const {namespaces, dependencies, dirPath} = options;
 	return extractManager.extractNamespaces(namespaces, dependencies, dirPath);
+}
+
+export function installFromLocalDir(options) {
+	const {dirPath} = options;
+	console.log('Installation from th directory path: ', dirPath);
+	return Promise.resolve();
 }
 
 export function getScaffoldGenerators(options) {

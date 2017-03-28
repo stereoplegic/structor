@@ -17,13 +17,21 @@
 // import validator from 'validator';
 import {bindActionCreators} from 'redux';
 import {hideInstaller} from 'modules/app/containers/AppContainer/actions';
+import {
+	showModal as showDirPathModal
+} from 'modules/installer/containers/SelectDirectoryModal/actions';
 
-// export const STEP_TO_STAGE = "Generator/STEP_TO_STAGE";
+export const INSTALL_FROM_DIRECTORY = "Installer/INSTALL_FROM_DIRECTORY";
+
+export const installFromDir = (dirPath) => (dispatch, getState) => {
+	dispatch({type: INSTALL_FROM_DIRECTORY, payload: {dirPath}});
+};
 
 // export const stepToStage = (stage) => ({type: STEP_TO_STAGE, payload: stage});
 // export const setComponentMetadata = (metaData, metaHelp) => (dispatch, getState) => {
 // 	dispatch({type: SET_COMPONENT_METADATA, payload: {metaData, metaHelp}});
 // };
+
 export const containerActions = (dispatch) => bindActionCreators({
-	hideInstaller
+	hideInstaller, showDirPathModal
 }, dispatch);

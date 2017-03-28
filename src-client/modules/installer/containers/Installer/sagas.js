@@ -14,46 +14,26 @@
  * limitations under the License.
  */
 
-// import { fork, take, call, put, cancel } from 'redux-saga/effects';
-// import { SagaCancellationException } from 'redux-saga';
-// import * as actions from './actions.js';
-// import * as spinnerActions from 'modules/app/containers/AppSpinner/actions';
-// import * as messageActions from 'modules/app/containers/AppMessage/actions';
-// import * as generatorListActions from 'modules/generator/containers/GeneratorList/actions';
-// import * as appContainerActions from 'modules/app/containers/AppContainer/actions';
-// import * as deskPageActions from 'modules/workspace/containers/DeskPage/actions';
-// import * as clipboardIndicatorActions from 'modules/workspace/containers/ClipboardIndicator/actions';
-// import * as libraryPanelActions from 'modules/workspace/containers/LibraryPanel/actions';
-// import * as selectionBreadcrumbsActions from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
-// import { serverApi, graphApi, coockiesApi } from 'api';
-// import * as historyActions from 'modules/workspace/containers/HistoryControls/actions';
+import { fork, take, call, put, cancel } from 'redux-saga/effects';
+import { SagaCancellationException } from 'redux-saga';
+import { serverApi } from 'api';
+import * as actions from './actions.js';
+import * as spinnerActions from 'modules/app/containers/AppSpinner/actions';
+import * as messageActions from 'modules/app/containers/AppMessage/actions';
 
-// function* pregenerate(){
-//     while(true){
-//         const {payload: {
-//             generatorName, generatorDirPath, namespace, componentName, modelNode
-//         }} = yield take(actions.PREGENERATE);
-//         yield put(spinnerActions.started('Retrieving metadata'));
-//         try {
-//             const pregeneratedData =
-//                 yield call(
-//                     serverApi.pregenerate,
-//                     generatorName,
-//                     generatorDirPath,
-//                     namespace,
-//                     componentName,
-//                     modelNode
-//                 );
-//             yield put(actions.setComponentMetadata(pregeneratedData.metaData, pregeneratedData.metaHelp));
-//             yield put(actions.stepToStage(actions.STAGE3));
-//             let recentGenerators = coockiesApi.addToRecentGenerators(generatorName);
-//             yield put(generatorListActions.setRecentGenerators(recentGenerators));
-//         } catch(error) {
-//             yield put(messageActions.failed('Metadata retrieving has an error. ' + (error.message ? error.message : error)));
-//         }
-//         yield put(spinnerActions.done('Retrieving metadata'));
-//     }
-// }
+function* installFromDir(){
+    while(true){
+        const {payload: {dirPath}} = yield take(actions.INSTALL_FROM_DIRECTORY);
+        yield put(spinnerActions.started('Installing namespaces'));
+        try {
+            yield call(serverApi.installFromLocalDir, dirPath);
+        } catch(error) {
+            yield put(messageActions.failed('Installing namespaces. ' + (error.message ? error.message : error)));
+        }
+        yield put(spinnerActions.done('Installing namespaces'));
+    }
+}
+
 //
 // function* generate(){
 //     while(true){
@@ -119,7 +99,7 @@
 
 // main saga
 export default function* mainSaga() {
-    // yield fork(loadGenerators);
+    yield fork(installFromDir);
     // // yield fork(loadAllGenerators);
     // yield fork(pregenerate);
     // yield fork(generate);

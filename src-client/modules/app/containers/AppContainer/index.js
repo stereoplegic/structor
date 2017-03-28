@@ -27,7 +27,7 @@ import {
     SaveDefaultModelModal
 } from 'modules/workspace';
 import {Generator} from 'modules/generator';
-import {Installer} from 'modules/installer';
+import {Installer, SelectDirectoryModal} from 'modules/installer';
 import {Extractor} from 'modules/extractor';
 import SignInModal from 'modules/app/containers/SignInModal';
 import ProxySetupModal from 'modules/app/containers/ProxySetupModal';
@@ -80,6 +80,7 @@ class Container extends Component {
                     <Installer />
                     <ConfirmationModal />
                     <InformationModal />
+                    <SelectDirectoryModal />
                 </div>
             );
         } else if(workspaceMode === 'extractor'){

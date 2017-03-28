@@ -14,50 +14,62 @@
  * limitations under the License.
  */
 
-import marked from 'marked';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 
-import { Modal, Button } from 'react-bootstrap';
-import { ProxyInput } from 'components';
+import { Modal, Button, Alert } from 'react-bootstrap';
+import { DirPathInput } from 'components';
 
 class Container extends Component {
 
     constructor(props) {
         super(props);
         this.handleCancel = this.handleCancel.bind(this);
-        this.handleAccept = this.handleAccept.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = {error: ''};
     }
+
+    componentDidUpdate(prevProps, prevState) {
+    	if (this.props.show && !prevProps.show) {
+    		this.dirPathInput.focus();
+		}
+	}
 
     handleCancel(e){
         if (e) {
             e.stopPropagation();
             e.preventDefault();
         }
-        const { componentModel: {cancel}, hideModal } = this.props;
-        if (cancel) {
-            cancel();
-        }
+        const { hideModal } = this.props;
         hideModal();
+		this.clearError();
     }
 
-    handleAccept(e){
+    handleSubmit(e){
         if (e) {
             e.stopPropagation();
             e.preventDefault();
         }
-        const { componentModel: {accept}, hideModal } = this.props;
-        if (accept) {
-            accept();
+        const dirPath = this.dirPathInput.getValue();
+        if (dirPath && dirPath.length > 0) {
+			const { submitModal } = this.props;
+			submitModal(dirPath);
+			this.clearError();
+        } else {
+            this.setState({error: 'Directory path should not be empty'});
         }
-        hideModal();
+    }
+
+    clearError() {
+        this.setState({error: ''});
     }
 
     render() {
-        const { componentModel: {show, message} } = this.props;
-        return (
+        const { show, dirPath, recentDirPaths } = this.props;
+        const { error } = this.state;
+		return (
             <Modal
                 show={show}
                 onHide={this.handleCancel}
@@ -72,18 +84,24 @@ class Container extends Component {
                     closeButton={false}
                     aria-labelledby='contained-modal-title'
                 >
-                    <Modal.Title id='contained-modal-title'>Confirm</Modal.Title>
+                    <Modal.Title id='contained-modal-title'>Directory Path</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{padding: "1em", wordBreak: 'break-all'}}>
-                        {message &&
-                            <div dangerouslySetInnerHTML={{__html: marked(message)}} />
-                        }
-                    </div>
+                    {error &&
+                        <Alert bsStyle="danger">{error}</Alert>
+                    }
+                    <DirPathInput
+                        ref={me => this.dirPathInput = me}
+                        dirPath={dirPath}
+                        label="Namespaces package directory path"
+                        isAutoComplete={true}
+                        options={recentDirPaths}
+						onEnterKey={this.handleSubmit}
+                    />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.handleCancel}>Cancel</Button>
-                    <Button onClick={this.handleAccept} bsStyle="primary">OK</Button>
+                    <Button onClick={this.handleSubmit} bsStyle="primary">Submit</Button>
                 </Modal.Footer>
             </Modal>
         );

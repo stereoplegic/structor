@@ -15,3 +15,4 @@
  */
 
 export Installer from './containers/Installer';
+export SelectDirectoryModal from './containers/SelectDirectoryModal';

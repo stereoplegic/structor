@@ -18,9 +18,8 @@ import * as actions from './actions.js';
 
 const initialState = {
     show: false,
-    message: null,
-    accept: null,
-    cancel: null,
+    dirPath: '',
+    recentDirPaths: [],
 };
 
 export default (state = initialState, action = {}) => {
@@ -30,18 +29,21 @@ export default (state = initialState, action = {}) => {
     if(type === actions.HIDE_MODAL){
         return Object.assign({}, state, {
             show: false,
-            message: null,
-            accept: null,
-            cancel: null
         });
     }
 
     if(type === actions.SHOW_MODAL){
         return Object.assign({}, state, {
             show: true,
-            message: payload.message,
-            accept: payload.accept,
-            cancel: payload.cancel,
+            recentDirPaths: payload.recentDirPaths,
+        });
+    }
+
+    if(type === actions.SUBMIT_MODAL){
+        return Object.assign({}, state, {
+            show: false,
+            dirPath: payload.dirPath,
+            recentDirPaths: [].concat(state.recentDirPaths, [payload.dirPath]),
         });
     }
 

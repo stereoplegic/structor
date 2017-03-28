@@ -17,6 +17,8 @@
 import { createStructuredSelector } from 'reselect';
 
 export const modelSelector = createStructuredSelector({
-    componentModel: state => state.confirmationModal,
+    show: state => state.selectDirectoryModal.show,
+    dirPath: state => state.selectDirectoryModal.dirPath,
+    recentDirPaths: state => state.selectDirectoryModal.recentDirPaths,
 });
 

@@ -15,7 +15,6 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import { Input, Button } from 'react-bootstrap';
 
 class ProxyInput extends Component {
 
