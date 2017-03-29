@@ -20,17 +20,42 @@ import {hideInstaller} from 'modules/app/containers/AppContainer/actions';
 import {
 	showModal as showDirPathModal
 } from 'modules/installer/containers/SelectDirectoryModal/actions';
+import {
+	showModal as confirmModal
+} from 'modules/app/containers/ConfirmationModal/actions';
 
-export const INSTALL_FROM_DIRECTORY = "Installer/INSTALL_FROM_DIRECTORY";
+export const PRE_INSTALL_NAMESPACES = "Installer/PRE_INSTALL_NAMESPACES";
+export const INSTALL_NAMESPACES = "Installer/INSTALL_NAMESPACES";
 
 export const installFromDir = (dirPath) => (dispatch, getState) => {
-	dispatch({type: INSTALL_FROM_DIRECTORY, payload: {dirPath}});
+	dispatch({type: PRE_INSTALL_NAMESPACES, payload: {dirPath}});
 };
 
-// export const stepToStage = (stage) => ({type: STEP_TO_STAGE, payload: stage});
-// export const setComponentMetadata = (metaData, metaHelp) => (dispatch, getState) => {
-// 	dispatch({type: SET_COMPONENT_METADATA, payload: {metaData, metaHelp}});
-// };
+export const installFromUrl = (url) => (dispatch, getState) => {
+	dispatch({type: PRE_INSTALL_NAMESPACES, payload: {url}});
+};
+
+export const install = (installationOptions) => (dispatch, getState) => {
+	if (installationOptions) {
+		const {existingNamespaceDirs, namespacesSrcDirPath} = installationOptions;
+		if (existingNamespaceDirs && existingNamespaceDirs.length > 0) {
+			let namespacesString = '';
+			existingNamespaceDirs.forEach(item => {
+				namespacesString += '* ' + item + '\n';
+			});
+			dispatch(confirmModal(
+				'The project already has the following namespaces:\n\n' +
+				namespacesString + '\n\n' +
+				'**Warning:** The corresponding directories along with global reducer and sagas will be rewritten',
+				() => {
+					dispatch({type: INSTALL_NAMESPACES, payload: {namespacesSrcDirPath}});
+				}
+			));
+		} else {
+			dispatch({type: INSTALL_NAMESPACES, payload: {namespacesSrcDirPath}});
+		}
+	}
+};
 
 export const containerActions = (dispatch) => bindActionCreators({
 	hideInstaller, showDirPathModal

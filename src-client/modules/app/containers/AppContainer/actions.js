@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import stripAnsi from 'strip-ansi';
 import { bindActionCreators } from 'redux';
 import { success, failed, timeout, close} from 'modules/app/containers/AppMessage/actions';
 import { setReloadPageRequest, executeReloadPageRequest } from 'modules/workspace/containers/DeskPage/actions';
@@ -68,7 +67,7 @@ export const handleCompilerMessage = (message) => (dispatch, getState) => {
     } else if(message.status === 'done') {
         if(message.errors && message.errors.length > 0){
             message.errors.forEach( error => {
-                dispatch(failed(stripAnsi(error.message ? error.message : error)));
+                dispatch(failed(error.message ? error.message : error));
             });
             dispatch(setReloadPageRequest());
         } else {

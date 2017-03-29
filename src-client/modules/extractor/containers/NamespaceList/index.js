@@ -116,7 +116,7 @@ class Container extends Component {
 								onClick={this.handlePreExtract}
 								disabled={selectedNamespaces.length <= 0}
 							>
-								Check Dependencies
+								Go to the next stage
 							</button>
 						</div>
                     </Col>

@@ -27,22 +27,17 @@ const labelContainerStyle = {
 	display: 'flex',
 	flexDirection: 'row',
 	alignItems: 'center',
+	padding: '0.5em',
 };
 
-const labelStyle = {
-	margin: 0,
+const firstCellStyle = {
 	whiteSpace: 'wrap',
-	wordBreak: 'break-all'
+	flexGrow: 2,
 };
 
-const checkBoxLabelStyle = {
-	width: '1.5em',
-	minWidth: '1.5em',
+const secondCellStyle = {
+	marginLeft: '0.5em',
 	flexGrow: 0,
-};
-
-let checkBoxStyle = {
-	margin: 0,
 };
 
 class Container extends Component {
@@ -64,25 +59,57 @@ class Container extends Component {
 		const {dependentNamespaces, dependencies, selectedNamespaces, projectPaths} = this.props;
 		let addedNamespaces = difference(dependentNamespaces, selectedNamespaces);
 		const {dir} = projectPaths;
+		const {packages} = dependencies ? dependencies : null;
 		return (
 			<Grid fluid={ true }>
 				<Row style={{position: 'relative'}}>
 					<Col xs={ 12 } md={ 8 } sm={ 12 } lg={ 8 } mdOffset={2} lgOffset={2}>
-						<h4>The source code of the listed namespaces will be saved into directory:</h4>
-						<pre>{dir + '_namespaces'}</pre>
+						<h4>The source code of the listed namespaces will be saved into the directory:</h4>
+						<div className="alert alert-info" role="alert">
+							<samp>{dir + '_namespaces'}</samp>
+						</div>
 					</Col>
 				</Row>
 				<Row style={{minHeight: '40em', position: 'relative'}}>
 					<Col xs={ 6 } md={ 4 } sm={ 6 } lg={ 4 } mdOffset={2} lgOffset={2}>
 						<div>
-							<p>Selected namespaces:</p>
-							<pre>
-								{JSON.stringify(selectedNamespaces, null, 4)}
-							</pre>
-							<p>Namespace dependencies:</p>
-							<pre>
-								{JSON.stringify(addedNamespaces, null, 4)}
-							</pre>
+
+							<div className="panel panel-primary">
+								<div className="panel-heading">Selected namespaces:</div>
+								<div className="panel-body">
+									{selectedNamespaces.map((item, index) => {
+										return (
+											<div
+												key={item + index}
+												style={labelContainerStyle}
+											>
+												<div style={firstCellStyle}>
+													<strong>{item}</strong>
+												</div>
+											</div>
+										);
+									})}
+								</div>
+							</div>
+							{addedNamespaces && addedNamespaces.length > 0 &&
+							<div className="panel panel-warning">
+								<div className="panel-heading">Linked namespaces:</div>
+								<div className="panel-body">
+									{addedNamespaces.map((item, index) => {
+										return (
+											<div
+												key={item + index}
+												style={labelContainerStyle}
+											>
+												<div style={firstCellStyle}>
+													<strong>{item}</strong>
+												</div>
+											</div>
+										);
+									})}
+								</div>
+							</div>
+							}
 						</div>
 						<div style={{marginTop: '2em', display: 'flex', justifyContent: 'center'}}>
 							<button
@@ -94,10 +121,29 @@ class Container extends Component {
 						</div>
 					</Col>
 					<Col xs={ 6 } md={ 4 } sm={ 6 } lg={ 4 }>
-						<p>Node modules dependencies:</p>
-						<pre>
-							{JSON.stringify(dependencies, null, 4)}
-						</pre>
+						<div className="panel panel-default">
+							<div className="panel-heading">Node modules dependency:</div>
+							<div className="panel-body">
+								{packages && packages.length > 0 && packages.map((item, index) => {
+									return (
+										<div
+											key={item.name + index}
+											style={labelContainerStyle}
+										>
+											<div style={firstCellStyle}>
+												<strong>{item.name}</strong>
+											</div>
+											<div style={secondCellStyle}>
+												<span>{'Version: ' + item.version}</span>
+											</div>
+										</div>
+									);
+								})}
+								{(!packages || packages.length <= 0) &&
+									<h4>None</h4>
+								}
+							</div>
+						</div>
 					</Col>
 				</Row>
 			</Grid>

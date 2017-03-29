@@ -20,13 +20,18 @@ import { serverApi } from 'api';
 import * as actions from './actions.js';
 import * as spinnerActions from 'modules/app/containers/AppSpinner/actions';
 import * as messageActions from 'modules/app/containers/AppMessage/actions';
+import * as libraryPanelActions from 'modules/workspace/containers/LibraryPanel/actions';
+import * as appContainerActions from 'modules/app/containers/AppContainer/actions';
 
-function* installFromDir(){
+function* installNamespaces() {
     while(true){
-        const {payload: {dirPath}} = yield take(actions.INSTALL_FROM_DIRECTORY);
+        const {payload: {namespacesSrcDirPath}} = yield take(actions.INSTALL_NAMESPACES);
         yield put(spinnerActions.started('Installing namespaces'));
         try {
-            yield call(serverApi.installFromLocalDir, dirPath);
+            yield call(serverApi.installFromLocalDir, namespacesSrcDirPath);
+            yield put(appContainerActions.hideInstaller());
+			yield put(messageActions.success('Namespaces have been installed successfully.'));
+			yield put(libraryPanelActions.loadComponents());
         } catch(error) {
             yield put(messageActions.failed('Installing namespaces. ' + (error.message ? error.message : error)));
         }
@@ -34,72 +39,29 @@ function* installFromDir(){
     }
 }
 
-//
-// function* generate(){
-//     while(true){
-//         const {payload: {
-//             generatorName, generatorDirPath, namespace, componentName, modelNode, metaData
-//         }} = yield take(actions.GENERATE);
-//         yield put(spinnerActions.started('Generating the source code'));
-//         try {
-//             const generatedData = yield call(
-//                 serverApi.generate,
-//                 generatorName,
-//                 generatorDirPath,
-//                 namespace,
-//                 componentName,
-//                 modelNode,
-//                 metaData
-//             );
-//             yield put(actions.setGeneratedData(generatedData));
-//             yield put(actions.stepToStage(actions.STAGE4));
-//         } catch(error) {
-//             yield put(messageActions.failed('The source code generation has an error. ' + (error.message ? error.message : error)));
-//         }
-//         yield put(spinnerActions.done('Generating the source code'));
-//     }
-// }
-//
-// function* saveGenerated(){
-//     while(true){
-//         const {payload: {selectedKey, newModelNode, files, dependencies}} = yield take(actions.SAVE_GENERATED);
-//         yield put(spinnerActions.started('Installing & saving the source code'));
-//         try {
-//             yield call(serverApi.saveGenerated, files, dependencies);
-//             graphApi.changeModelNodeType(selectedKey, newModelNode);
-//             yield put(clipboardIndicatorActions.removeClipboardKeys());
-//             yield put(selectionBreadcrumbsActions.setSelectedKey(selectedKey));
-//             yield put(libraryPanelActions.loadComponents());
-//             yield put(deskPageActions.setReloadPageRequest());
-//             yield put(actions.hide());
-//             yield put(historyActions.pushHistory());
-//         } catch(error) {
-//             yield put(messageActions.failed('Source code installation has an error. ' + (error.message ? error.message : error)));
-//         }
-//         yield put(spinnerActions.done('Installing & saving the source code'));
-//     }
-// }
-//
-// function* loadGenerators(){
-//     while(true){
-//         yield take(actions.LOAD_GENERATORS);
-//         yield put(spinnerActions.started('Loading generators'));
-//         try {
-//             let generatorsList = yield call(serverApi.getAvailableGeneratorsList);
-//             const recentGenerators = coockiesApi.getRecentGenerators();
-//             yield put(generatorListActions.setGenerators(generatorsList));
-//             yield put(generatorListActions.setRecentGenerators(recentGenerators));
-//             yield put(appContainerActions.showGenerator());
-//         } catch(error) {
-//             yield put(messageActions.failed('Generators loading has an error. ' + (error.message ? error.message : error)));
-//         }
-//         yield put(spinnerActions.done('Loading generators'));
-//     }
-// }
+function* preInstallNamespaces() {
+	while(true){
+		const {payload: {dirPath, url}} = yield take(actions.PRE_INSTALL_NAMESPACES);
+		yield put(spinnerActions.started('Checking the source'));
+		try {
+		    let installationOptions;
+		    if (dirPath) {
+				 installationOptions = yield call(serverApi.preInstallFromLocalDir, dirPath);
+            } else if (url) {
+				installationOptions = yield call(serverApi.preInstallFromUrl, url);
+            }
+            yield put(actions.install(installationOptions));
+		} catch(error) {
+			yield put(messageActions.failed('Checking the source. ' + (error.message ? error.message : error)));
+		}
+		yield put(spinnerActions.done('Checking the source'));
+	}
+}
 
 // main saga
 export default function* mainSaga() {
-    yield fork(installFromDir);
+    yield fork(preInstallNamespaces);
+    yield fork(installNamespaces);
     // // yield fork(loadAllGenerators);
     // yield fork(pregenerate);
     // yield fork(generate);

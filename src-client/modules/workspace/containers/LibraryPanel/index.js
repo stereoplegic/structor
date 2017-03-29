@@ -316,32 +316,33 @@ class Container extends Component {
 		let libGroups = [];
 
 		const filterString = filter ? filter.toUpperCase() : null;
-		if (!filter && recentlyUsed && recentlyUsed.length > 0) {
-			let collapsed = "";
-			if (expandedGroupKeys[recentGroupKey] === true) {
-				collapsed = "in";
-			}
-			let components = [];
-			recentlyUsed.forEach((recentItem, index) => {
-				let componentDef = undefined;
-				try {
-					componentDef = utilsStore.findComponentDef(
-						componentTree, recentItem.componentName, recentItem.namespace
-					);
-					const {defaults} = componentDef;
-					let componentKey = 'recent' + recentItem.componentName + recentItem.namespace;
-					const isExpandedComponent = expandedComponentKeys[componentKey];
-					components = components.concat(
-						this.createListItems(componentKey, defaults, isExpandedComponent, recentItem.componentName, recentItem.namespace)
-					);
-				} catch (e) {
-					// do nothing
-				}
-			});
-			libGroups.push(
-				this.createGroupingPanel(recentGroupKey, 'Recently Used', components, collapsed, false)
-			);
-		}
+		// todo: check if it's really needed
+		// if (!filter && recentlyUsed && recentlyUsed.length > 0) {
+		// 	let collapsed = "";
+		// 	if (expandedGroupKeys[recentGroupKey] === true) {
+		// 		collapsed = "in";
+		// 	}
+		// 	let components = [];
+		// 	recentlyUsed.forEach((recentItem, index) => {
+		// 		let componentDef = undefined;
+		// 		try {
+		// 			componentDef = utilsStore.findComponentDef(
+		// 				componentTree, recentItem.componentName, recentItem.namespace
+		// 			);
+		// 			const {defaults} = componentDef;
+		// 			let componentKey = 'recent' + recentItem.componentName + recentItem.namespace;
+		// 			const isExpandedComponent = expandedComponentKeys[componentKey];
+		// 			components = components.concat(
+		// 				this.createListItems(componentKey, defaults, isExpandedComponent, recentItem.componentName, recentItem.namespace)
+		// 			);
+		// 		} catch (e) {
+		// 			// do nothing
+		// 		}
+		// 	});
+		// 	libGroups.push(
+		// 		this.createGroupingPanel(recentGroupKey, 'Recently Used', components, collapsed, false)
+		// 	);
+		// }
 
 		const {htmlComponents, components, modules} = componentTree;
 

@@ -17,6 +17,22 @@
 import {includes, isEmpty, forOwn} from 'lodash';
 import {config, storage, commons, gengine} from 'structor-commons';
 
+// namespacesMeta = {
+// 	namespaces: {
+// 		[namespaceName]: {
+// 			reducerPropName: ''
+// 		}
+// 	},
+// 	dependencies: {
+// 		packages: [
+// 			{
+// 				name: '',
+// 				version: ''
+// 			}
+// 		]
+// 	}
+//
+// };
 
 export function getDependentNamespaces(componentTree, checkingNamespaces, resultNamespaces = [], resultModules = []) {
 	let newNamespaces = [];
