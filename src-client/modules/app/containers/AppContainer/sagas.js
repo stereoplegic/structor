@@ -13,66 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import validator from 'validator';
+
 import { SagaCancellationException } from 'redux-saga';
 import { fork, take, call, put, race, cancel } from 'redux-saga/effects';
 import * as actions from './actions.js';
-import * as signInModalActions from '../SignInModal/actions.js';
 import * as spinnerActions from 'modules/app/containers/AppSpinner/actions';
 import * as messageActions from 'modules/app/containers/AppMessage/actions';
 import * as deskPageActions from 'modules/workspace/containers/DeskPage/actions';
 import * as libraryPanelActions from 'modules/workspace/containers/LibraryPanel/actions';
-import { serverApi, cookies } from 'api';
+import { serverApi } from 'api';
 
 const delay = ms => new Promise(resolve => setTimeout(() => resolve('timed out'), ms));
-
-function* signInByToken(){
-    let tokenFromCookies = cookies.getItem("structor-market-token");
-    // console.log('Got token from coockies: ', tokenFromCookies);
-    if (tokenFromCookies) {
-        try{
-            const userCredentials = yield call(serverApi.initUserCredentialsByToken, tokenFromCookies);
-            yield put(actions.signInDone(userCredentials));
-        } catch(e){
-            console.warn(e.message ? e.message : e);
-        }
-    }
-}
-
-function* signIn(){
-    while(true){
-        const {payload: {email, password, staySignedIn}} = yield take(actions.SIGN_IN);
-        if(!email || email.length <= 0){
-            yield put(actions.signInFailed('Please enter e-mail address value'));
-        } else if( !validator.isEmail(email) ){
-            yield put(actions.signInFailed('Please enter valid e-mail address value'));
-        } else {
-            yield put(spinnerActions.started('Signing in'));
-            try{
-                const response = yield call(serverApi.initUserCredentials, email, password);
-                if(staySignedIn === true){
-                    cookies.setItem("structor-market-token", response.token, 31536e3, "/");
-                }
-                yield put(actions.signInDone(response));
-                yield put(signInModalActions.hideModal());
-                yield put(messageActions.success('Signing in to your account has been done successfully.'));
-            } catch(e){
-                yield put(actions.signInFailed(e));
-            }
-            yield put(spinnerActions.done('Signing in'));
-        }
-    }
-}
-
-function* signOut(){
-    while(true){
-        yield take(actions.SIGN_OUT);
-        yield call(serverApi.removeUserCredentials);
-        cookies.removeItem("structor-market-token", "/");
-        yield put(actions.signOutDone());
-        yield put(messageActions.success('Signing out has been done successfully.'));
-    }
-}
 
 function* delayForCompiler(){
     try{
@@ -127,7 +78,5 @@ function* getProjectStatus(){
 // main saga
 export default function* mainSaga() {
     yield fork(getProjectStatus);
-    yield fork(signIn);
-    yield fork(signOut);
     yield fork(waitForCompiler)
 };

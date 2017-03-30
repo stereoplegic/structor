@@ -18,6 +18,7 @@ import * as actions from './actions.js';
 import testData from './testData.js';
 
 const initialState = {
+    indexList: [],
     allNamespaces: testData,
     filteredNamespaces: testData,
     searchText: null,
@@ -28,11 +29,11 @@ export default (state = initialState, action = {}) => {
 
     const {type, payload} = action;
 
-    // if(type === actions.STEP_TO_STAGE){
-    //     return Object.assign({}, state, {
-    //         stage: payload
-    //     });
-    // }
+    if(type === actions.SET_MARKET_INDEX_LIST){
+        return Object.assign({}, state, {
+            indexList: [].concat(payload.indexList)
+        });
+    }
 
     return state;
 }

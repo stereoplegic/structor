@@ -18,10 +18,8 @@ import * as serverApi from './app/serverApi.js';
 import * as utils from './utils/utils.js';
 import * as utilsStore from './utils/utilsStore.js';
 import * as print from './utils/printProps.js';
-import * as HtmlComponents from './utils/HtmlComponents.js';
 import * as cookies from './utils/cookies.js';
 import * as graphApi from './model/graphApi.js';
-import * as sandboxGraphApi from './model/sandboxGraphApi.js';
 import * as coockiesApi from './app/coockiesApi.js';
 
 export {
@@ -30,9 +28,7 @@ export {
     utils,
     utilsStore,
 	print,
-    HtmlComponents,
     cookies,
     graphApi,
-    sandboxGraphApi,
     coockiesApi
 };

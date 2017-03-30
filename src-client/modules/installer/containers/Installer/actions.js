@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-// import validator from 'validator';
 import {bindActionCreators} from 'redux';
 import {hideInstaller} from 'modules/app/containers/AppContainer/actions';
 import {
@@ -24,8 +23,14 @@ import {
 	showModal as confirmModal
 } from 'modules/app/containers/ConfirmationModal/actions';
 
+export const GET_MARKET_INDEX_LIST = "Installer/GET_MARKET_INDEX_LIST";
+export const SET_MARKET_INDEX_LIST = "Installer/SET_MARKET_INDEX_LIST";
 export const PRE_INSTALL_NAMESPACES = "Installer/PRE_INSTALL_NAMESPACES";
+export const CANCEL_INSTALL_NAMESPACES = "Installer/CANCEL_INSTALL_NAMESPACES";
 export const INSTALL_NAMESPACES = "Installer/INSTALL_NAMESPACES";
+
+export const getMarketIndexList = () => ({type: GET_MARKET_INDEX_LIST});
+export const setMarketIndexList = (indexList) => ({type: SET_MARKET_INDEX_LIST, payload: {indexList}});
 
 export const installFromDir = (dirPath) => (dispatch, getState) => {
 	dispatch({type: PRE_INSTALL_NAMESPACES, payload: {dirPath}});
@@ -49,6 +54,9 @@ export const install = (installationOptions) => (dispatch, getState) => {
 				'**Warning:** The corresponding directories along with global reducer and sagas will be rewritten',
 				() => {
 					dispatch({type: INSTALL_NAMESPACES, payload: {namespacesSrcDirPath}});
+				},
+				() => {
+					dispatch({type: CANCEL_INSTALL_NAMESPACES});
 				}
 			));
 		} else {
@@ -58,5 +66,5 @@ export const install = (installationOptions) => (dispatch, getState) => {
 };
 
 export const containerActions = (dispatch) => bindActionCreators({
-	hideInstaller, showDirPathModal
+	hideInstaller, showDirPathModal, installFromUrl, getMarketIndexList
 }, dispatch);

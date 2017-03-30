@@ -23,6 +23,20 @@ import * as messageActions from 'modules/app/containers/AppMessage/actions';
 import * as libraryPanelActions from 'modules/workspace/containers/LibraryPanel/actions';
 import * as appContainerActions from 'modules/app/containers/AppContainer/actions';
 
+function* getMarketIndexList() {
+    while(true){
+        yield take(actions.GET_MARKET_INDEX_LIST);
+        yield put(spinnerActions.started('Loading packages'));
+        try {
+            const indexList = yield call(serverApi.getMarketList);
+			yield put(actions.setMarketIndexList(indexList));
+        } catch(error) {
+            yield put(messageActions.failed('Loading packages. ' + (error.message ? error.message : error)));
+        }
+        yield put(spinnerActions.done('Loading packages'));
+    }
+}
+
 function* installNamespaces() {
     while(true){
         const {payload: {namespacesSrcDirPath}} = yield take(actions.INSTALL_NAMESPACES);
@@ -39,6 +53,19 @@ function* installNamespaces() {
     }
 }
 
+function* cancelInstall() {
+    while(true){
+        yield take(actions.CANCEL_INSTALL_NAMESPACES);
+        yield put(spinnerActions.started('Clean temp data'));
+        try {
+            yield call(serverApi.cancelInstall);
+        } catch(error) {
+            yield put(messageActions.failed('Clean temp data. ' + (error.message ? error.message : error)));
+        }
+        yield put(spinnerActions.done('Clean temp data'));
+    }
+}
+
 function* preInstallNamespaces() {
 	while(true){
 		const {payload: {dirPath, url}} = yield take(actions.PRE_INSTALL_NAMESPACES);
@@ -48,6 +75,7 @@ function* preInstallNamespaces() {
 		    if (dirPath) {
 				 installationOptions = yield call(serverApi.preInstallFromLocalDir, dirPath);
             } else if (url) {
+		    	console.log('Calling preinstall from url: ', url);
 				installationOptions = yield call(serverApi.preInstallFromUrl, url);
             }
             yield put(actions.install(installationOptions));
@@ -60,11 +88,8 @@ function* preInstallNamespaces() {
 
 // main saga
 export default function* mainSaga() {
+    yield fork(getMarketIndexList);
     yield fork(preInstallNamespaces);
     yield fork(installNamespaces);
-    // // yield fork(loadAllGenerators);
-    // yield fork(pregenerate);
-    // yield fork(generate);
-    // // yield fork(remove);
-    // yield fork(saveGenerated);
+    yield fork(cancelInstall);
 };

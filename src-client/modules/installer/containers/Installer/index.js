@@ -84,6 +84,7 @@ class Container extends Component {
         super(props);
         this.handleClose = this.handleClose.bind(this);
         this.handleBrowseFiles = this.handleBrowseFiles.bind(this);
+        this.handleInstall = this.handleInstall.bind(this);
         this.state = {
             selectedFile: null,
         };
@@ -91,6 +92,7 @@ class Container extends Component {
 
     componentDidMount() {
         this.containerElement.scrollTop = 0;
+        this.props.getMarketIndexList();
     }
 
     componentDidUpdate() {
@@ -107,9 +109,12 @@ class Container extends Component {
         this.props.showDirPathModal();
     }
 
+    handleInstall(url) {
+        this.props.installFromUrl(url);
+    }
+
     render(){
         const { filteredNamespaces, searchText, limit } = this.props;
-        console.log(JSON.stringify(filteredNamespaces, null, 4));
         let namespacesCards = [];
         for (let i = 0; i < filteredNamespaces.length; i++) {
             if (i >= limit) {
@@ -125,6 +130,7 @@ class Container extends Component {
                     repoLink={repoLink}
                     namespaceDescription={namespaceDescription}
                     stars={stars}
+                    onInstallClick={this.handleInstall}
                 />
             );
         }

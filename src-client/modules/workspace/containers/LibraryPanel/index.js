@@ -84,7 +84,13 @@ const checkBoxLabelStyle = {
 	textAlign: 'right',
 };
 
-const dotSectionStyle = {flexGrow: 0, width: '1em', display: 'flex', alignItems: 'center', justifyContent: 'center'};
+const dotSectionStyle = {
+	flexGrow: 0,
+	width: '1em',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center'
+};
 
 const subitemLabelStyle = {display: 'flex', flexDirection: 'row', alignItems: 'center'};
 
@@ -254,10 +260,10 @@ class Container extends Component {
 						>
 							<div style={subitemLabelStyle}>
 								<div style={dotSectionStyle}>
-									<i
-										style={{fontSize: '5px'}}
-										className="fa fa-circle"
-									/>
+									{/*<i*/}
+										{/*style={{fontSize: '5px'}}*/}
+										{/*className="fa fa-circle"*/}
+									{/*/>*/}
 								</div>
 								<div style={{flexGrow: 2, display: 'flex', justifyContent: 'flex-start'}}>
 									<span>

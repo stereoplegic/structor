@@ -86,16 +86,6 @@ class Container extends Component {
                                     &nbsp;Proxy settings
                                 </a>
                             </li>
-                            {/*<li className="divider" />*/}
-                            {/* userAccountModel.email ?
-                                <li><a href="#" onClick={(e) => { e.preventDefault(); e.stopPropagation(); signOut(); }}>
-                                    <span className="fa fa-sign-out fa-fw" />&nbsp;{'Sign out ' + userAccountModel.email}</a>
-                                </li>
-                                :
-                                <li><a href="#" onClick={(e) => { e.preventDefault(); e.stopPropagation(); showModal(); }}>
-                                    <span className="fa fa-sign-in fa-fw" />&nbsp;Sign in to Structor Market</a>
-                                </li>
-                            */}
                         </ul>
                     </div>
                     <Button

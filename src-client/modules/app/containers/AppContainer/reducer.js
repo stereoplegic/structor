@@ -17,17 +17,6 @@
 import * as actions from './actions.js';
 
 const initialState = {
-    userAccount: {
-        userId: undefined,
-        email: undefined,
-        regDate: undefined,
-        subscriptionDescription: undefined,
-        subscriptionStartDate: undefined,
-        subscriptionEndDate: undefined
-    },
-    authentication: {
-        error: undefined
-    },
     packageConfig: {},
     proxyURL: undefined,
     workspaceMode: undefined,
@@ -49,34 +38,6 @@ export default (state = initialState, action = {}) => {
     if(type === actions.SET_PROJECT_PROXY_URL){
         return Object.assign({}, state, {
             proxyURL: payload
-        });
-    }
-
-    if(type === actions.SIGN_IN_DONE){
-        return Object.assign({}, state, {
-            userAccount: payload
-        });
-    }
-
-    if(type === actions.SIGN_IN_FAILED){
-        return Object.assign({}, state, {
-            authentication: {
-                error: payload.message ? payload.message : payload
-            }
-        });
-    }
-
-    if(type === actions.SIGN_IN_CLEAN){
-        return Object.assign({}, state, {
-            authentication: {
-                error: undefined
-            }
-        });
-    }
-
-    if(type === actions.SIGN_OUT_DONE){
-        return Object.assign({}, state, {
-            userAccount: initialState.userAccount
         });
     }
 

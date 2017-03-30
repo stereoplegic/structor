@@ -29,7 +29,6 @@ import {
 import {Generator} from 'modules/generator';
 import {Installer, SelectDirectoryModal} from 'modules/installer';
 import {Extractor} from 'modules/extractor';
-import SignInModal from 'modules/app/containers/SignInModal';
 import ProxySetupModal from 'modules/app/containers/ProxySetupModal';
 import ConfirmationModal from 'modules/app/containers/ConfirmationModal';
 import InformationModal from 'modules/app/containers/InformationModal';
@@ -56,7 +55,6 @@ class Container extends Component {
                         <Desk />
                         <PageOptionsModal />
                         <ComponentOptionsModal />
-                        <SignInModal />
                         <ProxySetupModal />
                         <QuickAppendModal />
                         <SaveDefaultModelModal />
@@ -69,7 +67,6 @@ class Container extends Component {
             content = (
                 <div style={{width: '100%', height: '100%'}}>
                     <Generator />
-                    <SignInModal />
                     <ConfirmationModal />
                     <InformationModal />
                 </div>

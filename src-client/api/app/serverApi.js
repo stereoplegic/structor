@@ -15,17 +15,7 @@
  */
 
 import {forOwn, isObject} from 'lodash';
-import {invokeStructor, invokeSandbox, invokeDownload} from './restApi.js';
-import HtmlComponents, {getSortedHtmlComponents} from '../utils/HtmlComponents.js';
-
-//
-// export function getProjectList(){
-//     return invokeDownload('getProjectList', {});
-// }
-//
-// export function prepareProject(downloadUrl){
-//     return invokeDownload('prepareProject', {downloadUrl});
-// }
+import {invokeStructor} from './restApi.js';
 
 export function getProjectStatus() {
 	return invokeStructor('getProjectStatus', {});
@@ -33,18 +23,6 @@ export function getProjectStatus() {
 
 export function getProjectInfo() {
 	return invokeStructor('getConfig');
-}
-
-export function initUserCredentialsByToken(token) {
-	return invokeStructor('initUserCredentialsByToken', {token: token});
-}
-
-export function initUserCredentials(email, password) {
-	return invokeStructor('initUserCredentials', {username: email, password: password});
-}
-
-export function removeUserCredentials() {
-	return invokeStructor('removeUserCredentials', {});
 }
 
 export function getProjectModel() {
@@ -124,14 +102,6 @@ export function saveGenerated(files, dependencies) {
 	return invokeStructor('saveGenerated', {files, dependencies});
 }
 
-// export function readComponentSources(componentName, model, readmeText) {
-// 	return invokeSandbox('readComponentSources', {componentName, model, readmeText});
-// }
-//
-// export function publishGenerator(generatorKey, dataObject) {
-// 	return invokeSandbox('publishGenerator', {generatorKey, dataObject});
-// }
-
 export function generateApplication(pagesModel, hasApplicationFiles) {
     return invokeStructor('generateApplication', {pagesModel, hasApplicationFiles});
 }
@@ -144,12 +114,20 @@ export function extractNamespaces(namespaces, dependencies, dirPath) {
 	return invokeStructor('extractNamespaces', {namespaces, dependencies, dirPath});
 }
 
+export function getMarketList() {
+	return invokeStructor('getMarketList', {});
+}
+
 export function preInstallFromLocalDir(dirPath) {
 	return invokeStructor('preInstall', {dirPath});
 }
 
 export function preInstallFromUrl(url) {
 	return invokeStructor('preInstall', {url});
+}
+
+export function cancelInstall() {
+	return invokeStructor('cancelInstall', {});
 }
 
 export function installFromLocalDir(dirPath) {

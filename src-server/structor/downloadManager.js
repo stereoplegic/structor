@@ -17,7 +17,7 @@
 import path from 'path';
 import {template} from 'lodash';
 import {config, commons} from 'structor-commons';
-import * as client from '../commons/client.js';
+import * as client from '../commons/clientGH.js';
 
 const applicationFiles = [
     'app/components.js',
@@ -53,7 +53,7 @@ export function setMetaFolderVersion(dirPath, version) {
 }
 
 export function downloadMetaDistr(downloadUrl, destDirPath) {
-    return client.downloadGet(downloadUrl)
+    return client.download(downloadUrl)
         .then(fileData => {
             let destFilePath = path.join(destDirPath, '__metaDistr.tar.gz').replace(/\\/g, '/');
             let tempDirPath = path.join(destDirPath, '___metaDistr').replace(/\\/g, '/');

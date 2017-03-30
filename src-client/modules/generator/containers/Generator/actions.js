@@ -16,10 +16,8 @@
 
 import validator from 'validator';
 import {bindActionCreators} from 'redux';
-import {graphApi, serverApi} from 'api';
 import {hideGenerator} from 'modules/app/containers/AppContainer/actions';
 import {failed} from 'modules/app/containers/AppMessage/actions';
-import {showModal as showSignIn} from 'modules/app/containers/SignInModal/actions';
 
 export const STAGE1 = 'STAGE1';
 export const STAGE2 = 'STAGE2';
@@ -144,5 +142,5 @@ export const hide = () => (dispatch, getState) => {
 };
 
 export const containerActions = (dispatch) => bindActionCreators({
-	hide, stepToStage, showSignIn
+	hide, stepToStage
 }, dispatch);

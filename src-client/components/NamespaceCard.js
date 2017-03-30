@@ -54,6 +54,20 @@ const bottomToolbarStyle = {
 
 class NamespaceCard extends Component {
 
+	constructor(props) {
+	    super(props);
+	    this.handleInstallClick = this.handleInstallClick.bind(this);
+	}
+
+	handleInstallClick(e) {
+	    e.stopPropagation();
+	    e.preventDefault();
+	    const {onInstallClick, repoLink} = this.props;
+	    if (onInstallClick) {
+			onInstallClick(`${repoLink}/archive/master.tar.gz`);
+        }
+    }
+
     render() {
         const {style, namespace, repoName, repoLink, namespaceDescription, stars} = this.props;
         return (
@@ -77,7 +91,10 @@ class NamespaceCard extends Component {
                     </div>
                     <div style={containerStyle}>
                         <div style={installBtnSectionStyle}>
-                            <button className="btn btn-default btn-block">
+                            <button
+								className="btn btn-default btn-block"
+								onClick={this.handleInstallClick}
+							>
                                 <i className="fa fa-download" />
                                 <span style={{marginLeft: '0.5em'}}>
                                     Install
@@ -89,7 +106,7 @@ class NamespaceCard extends Component {
                                 GH Stars: {stars}
                             </div>
                             <div style={{marginRight: '0.5em'}}>
-                                <a href="#">{repoLink}</a>
+                                <a href={repoLink} target="_blank">{repoName}</a>
                             </div>
                         </div>
                     </div>

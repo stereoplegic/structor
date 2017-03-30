@@ -46,7 +46,6 @@ import generatorReducer from 'modules/generator/containers/Generator/reducer';
 import generatorListReducer from 'modules/generator/containers/GeneratorList/reducer';
 import generatorBriefPanelReducer from 'modules/generator/containers/GeneratorBriefPanel/reducer';
 import metadataFormReducer from 'modules/generator/containers/MetadataForm/reducer';
-import signInModalReducer from 'modules/app/containers/SignInModal/reducer';
 import sourceFilesListReducer from 'modules/generator/containers/SourceFilesList/reducer';
 import proxySetupModalReducer from 'modules/app/containers/ProxySetupModal/reducer';
 import pageTreeViewToolbarReducer from 'modules/workspace/containers/PageTreeViewToolbar/reducer';
@@ -89,7 +88,6 @@ const reducer = combineReducers({
     generatorList: generatorListReducer,
     generatorBriefPanel: generatorBriefPanelReducer,
     metadataForm: metadataFormReducer,
-    signInModal: signInModalReducer,
     sourceFilesList: sourceFilesListReducer,
     proxySetupModal: proxySetupModalReducer,
     pageTreeViewToolbar: pageTreeViewToolbarReducer,

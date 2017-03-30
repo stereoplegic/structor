@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import path from 'path';
-import {sortBy, forOwn} from 'lodash';
 import express from 'express';
 import rewrite from 'express-urlrewrite';
 import httpProxy from 'http-proxy';
@@ -23,8 +21,8 @@ import {config, storage, commons, gengine} from 'structor-commons';
 import * as gengineManager from '../commons/gengine';
 import * as clientManager from '../commons/clientManager.js';
 import * as middlewareCompilerManager from './middlewareCompilerManager.js';
-import * as sandboxCompilerManager from './sandboxCompilerManager.js';
 import * as extractManager from './extractManager.js';
+import * as installManager from './installManager.js';
 
 export const STRUCTOR_URLS = [
 	'/structor',
@@ -249,204 +247,22 @@ export function extractNamespaces(options) {
 	return extractManager.extractNamespaces(namespaces, dependencies, dirPath);
 }
 
+export function getMarketList(options) {
+	return installManager.getMarketList();
+}
+
 export function preInstall(options) {
-
-	let existingNamespaceDirs = [];
-	let namespacesSrcDirPath;
-
 	const {dirPath, url} = options;
+	return installManager.preInstall(dirPath, url);
+}
 
-	let modulesSrcDirPath;
-	let namespacesMeta;
-	let componentTree;
-	let startPromise;
-
-	if (dirPath) {
-		namespacesSrcDirPath = dirPath;
-		startPromise = Promise.resolve();
-	} else if (url) {
-		// todo: download and unpack from GH
-		startPromise = Promise.resolve();
-	}
-	return startPromise
-		.then(() => {
-			modulesSrcDirPath = path.join(namespacesSrcDirPath, 'modules');
-			return commons.readJson(path.join(namespacesSrcDirPath, 'structor-namespaces.json'))
-		})
-		.then(metaObj => {
-			namespacesMeta = metaObj;
-		})
-		.then(() => {
-			return storage.getComponentTree()
-				.then(tree => {
-					componentTree = tree;
-				});
-		})
-		.then(() => {
-			return commons.readDirectoryFlat(modulesSrcDirPath)
-				.then(foundFiles => {
-					const {dirs} = foundFiles;
-					if (!dirs || dirs.length <= 0) {
-						throw Error('Modules directory is empty');
-					}
-					return dirs;
-				})
-		})
-		.then((modulesDirs) => {
-			modulesDirs.forEach(module => {
-				if (componentTree.modules && componentTree.modules[module.name]) {
-					existingNamespaceDirs.push(module.name);
-				}
-			});
-		})
-		.then(() => {
-			return {
-				namespacesSrcDirPath,
-				existingNamespaceDirs,
-			};
-		});
+export function cancelInstall(options) {
+	return installManager.cleanDistr();
 }
 
 export function installFromLocalDir(options) {
 	const {dirPath} = options;
-	const namespacesFilePath = path.join(dirPath, 'structor-namespaces.json');
-	const modulesSrcDirPath = path.join(dirPath, 'modules');
-	const defaultsSrcDirPath = path.join(dirPath, 'defaults');
-	const docsSrcDirPath = path.join(dirPath, 'docs');
-	const modulesDestDirPath = path.join(config.appDirPath(), 'modules');
-	const defaultsDestDirPath = config.componentDefaultsDirPath();
-	const docsDestDirPath = config.docsComponentsDirPath();
-	let namespacesMeta;
-	let componentTree;
-	return commons.readJson(namespacesFilePath)
-		.then(metaObj => {
-			namespacesMeta = metaObj;
-		})
-		.then(() => {
-			return storage.installDependencies(namespacesMeta.dependencies);
-		})
-		.then(() => {
-			return storage.getComponentTree();
-		})
-		.then(tree => {
-			componentTree = tree;
-			let rewriteTasks = [];
-			let globalReducerSourceCode = componentTree.reducersSourceCode;
-			let globalSagasSourceCode = componentTree.sagasSourceCode;
-			let moduleReducerFilePath;
-			let moduleSagasFilePath;
-			forOwn(namespacesMeta.namespaces, (value, prop) => {
-				moduleReducerFilePath = path.join(modulesSrcDirPath, prop, 'reducer.js');
-				moduleSagasFilePath = path.join(modulesSrcDirPath, prop, 'sagas.js');
-				rewriteTasks.push(
-					commons.isExisting(moduleReducerFilePath)
-						.then(() => {
-							return commons.isExisting(moduleSagasFilePath)
-						})
-						.then(() => {
-							globalReducerSourceCode = gengine.injectReducer(
-								globalReducerSourceCode,
-								value.reducerPropName,
-								`${value.reducerPropName}Reducer`,
-								path.join('modules', prop, 'reducer.js')
-							);
-							globalSagasSourceCode = gengine.injectSaga(
-								globalSagasSourceCode,
-								`${prop}Sagas`,
-								path.join('modules', prop, 'sagas.js')
-							);
-						})
-				);
-			});
-			return Promise.all(rewriteTasks)
-				.then(() => {
-					return commons.writeFile(componentTree.reducersFilePath, globalReducerSourceCode);
-				})
-				.then(() => {
-					return commons.writeFile(componentTree.sagasFilePath, globalSagasSourceCode);
-				});
-		})
-		.then(() => {
-			return commons.readDirectoryFlat(modulesSrcDirPath)
-				.then(foundFiles => {
-					const {dirs} = foundFiles;
-					if (!dirs || dirs.length <= 0) {
-						throw Error('Modules directory is empty');
-					}
-					return dirs;
-				})
-		})
-		.then(modulesDirs => {
-			let copyTasks = [];
-			modulesDirs.forEach(module => {
-				const destDirPath = path.join(modulesDestDirPath, module.name);
-				copyTasks.push(
-					commons.removeFile(destDirPath)
-						.then(() => {
-							return commons.copyFile(module.path, destDirPath);
-						})
-				);
-			});
-			return Promise.all(copyTasks);
-		})
-		.then(() => {
-			return commons.readDirectoryFlat(defaultsSrcDirPath)
-				.then(foundFiles => {
-					const {dirs} = foundFiles;
-					if (!dirs || dirs.length <= 0) {
-						throw Error('Defaults directory is empty');
-					}
-					return dirs;
-				})
-		})
-		.then(defaultsDirs => {
-			let copyTasks = [];
-			let componentsIndexSourceCode = componentTree.indexSourceCode;
-			defaultsDirs.forEach(dirItem => {
-				const destDirPath = path.join(defaultsDestDirPath, dirItem.name);
-				copyTasks.push(
-					commons.removeFile(destDirPath)
-						.then(() => {
-							return commons.copyFile(dirItem.path, destDirPath);
-						})
-						.then(() => {
-							componentsIndexSourceCode = gengine.injectNamespaceComponent(
-								componentsIndexSourceCode,
-								dirItem.name,
-								path.join('modules', dirItem.name)
-							);
-							return commons.writeFile(
-								componentTree.indexFilePath,
-								componentsIndexSourceCode
-							);
-						})
-				);
-			});
-			return Promise.all(copyTasks);
-		})
-		.then(() => {
-			return commons.readDirectoryFlat(docsSrcDirPath)
-				.then(foundFiles => {
-					const {dirs} = foundFiles;
-					if (!dirs || dirs.length <= 0) {
-						throw Error('Docs directory is empty');
-					}
-					return dirs;
-				})
-		})
-		.then(docsDirs => {
-			let copyTasks = [];
-			docsDirs.forEach(dirItem => {
-				const destDirPath = path.join(docsDestDirPath, dirItem.name);
-				copyTasks.push(
-					commons.removeFile(destDirPath)
-						.then(() => {
-							return commons.copyFile(dirItem.path, destDirPath);
-						})
-				);
-			});
-			return Promise.all(copyTasks);
-		});
+	return installManager.installFromDir(dirPath);
 }
 
 export function getScaffoldGenerators(options) {

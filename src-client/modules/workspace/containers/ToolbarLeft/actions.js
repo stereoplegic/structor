@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 import { bindActionCreators } from 'redux';
-import { success, failed, timeout, close} from 'modules/app/containers/AppMessage/actions';
+import { success } from 'modules/app/containers/AppMessage/actions';
 import {
     reloadPage,
     setEditModeOn,
     setLivePreviewModeOn,
-    saveModel,
-    exportModel
+    saveModel
 } from 'modules/workspace/containers/DeskPage/actions';
 import {
     toggleLibraryPanel,
@@ -28,8 +27,6 @@ import {
     toggleQuickOptions,
     togglePageTreeview
 } from 'modules/workspace/containers/Desk/actions';
-import { signOut } from 'modules/app/containers/AppContainer/actions'
-import { showModal } from 'modules/app/containers/SignInModal/actions';
 import { showModal as proxyShowModal } from 'modules/app/containers/ProxySetupModal/actions';
 
 export const saveProject = () => (dispatch, getState) => {
@@ -42,12 +39,9 @@ export const containerActions = (dispatch) => bindActionCreators({
     setEditModeOn,
     setLivePreviewModeOn,
     saveProject,
-    exportModel,
     toggleLibraryPanel,
     togglePageListPanel,
     toggleQuickOptions,
     togglePageTreeview,
-    showModal,
-    signOut,
     proxyShowModal,
 }, dispatch);
