@@ -88,14 +88,13 @@
     "validator": "5.2.0"
   },
   "keywords": [
+    "visual",
     "react",
-    "boilerplate",
-    "gui",
     "components",
+    "ui",
+    "builder",
     "generator",
     "editor",
-    "visual",
-    "builder",
     "hot-reload",
     "structor"
   ]

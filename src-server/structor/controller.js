@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Alexander Pustovalov
+ * Copyright 2017 Alexander Pustovalov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import httpProxy from 'http-proxy';
 import {sortBy} from 'lodash';
 import {config, storage, commons, gengine} from 'structor-commons';
 import * as gengineManager from '../commons/gengine';
-import * as clientManager from '../commons/clientManager.js';
 import * as middlewareCompilerManager from './middlewareCompilerManager.js';
 import * as extractManager from './extractManager.js';
 import * as installManager from './installManager.js';
@@ -165,22 +164,6 @@ export function writeComponentSourceCode(options) {
 
 export function saveProjectModel(options) {
 	return storage.writeProjectJsonModel(options.model);
-}
-
-export function initUserCredentialsByToken(options) {
-	return clientManager.initUserCredentialsByToken(options.token);
-}
-
-export function initUserCredentials(options) {
-	return clientManager.initUserCredentials(options.username, options.password);
-}
-
-export function removeUserCredentials(options) {
-	return clientManager.removeAuthToken();
-}
-
-export function getProjectsGallery() {
-	return clientManager.getAllProjects();
 }
 
 export function pregenerate(options) {

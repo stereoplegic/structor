@@ -1,6 +1,6 @@
 
 /*
- * Copyright 2015 Alexander Pustovalov
+ * Copyright 2017 Alexander Pustovalov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

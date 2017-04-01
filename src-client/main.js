@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Alexander Pustovalov
+ * Copyright 2017 Alexander Pustovalov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,9 +35,6 @@ import myMiddleware from 'redux/middleware.js';
 import { handleCompilerMessage } from 'modules/app/containers/AppContainer/actions.js';
 
 import {MainFrame} from 'components/index';
-
-window.serviceUrl = 'https://helmetrex.com';
-// window.serviceUrl = 'http://localhost';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, applyMiddleware(myMiddleware, sagaMiddleware, thunk));
