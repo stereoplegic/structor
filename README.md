@@ -24,7 +24,7 @@ Structor - React UI Builder.
 * NodeJS  >5
 * Webpack >2.2.x
 
-#### [Structor's User Guide](https://github.com/ipselon/structor/blob/dev-05/docs/README.md) 
+#### [Structor's User Guide](https://github.com/ipselon/structor/blob/master/docs/README.md) 
 
 ### License
 Apache License, Version 2.0 (Apache-2.0)
