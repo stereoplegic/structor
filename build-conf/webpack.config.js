@@ -1,3 +1,4 @@
+var path = require("path");
 var webpack = require("webpack");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -8,7 +9,7 @@ module.exports = [
             main: './src-client/main.js'
         },
         output: {
-            path: './static',
+            path: path.resolve(__dirname, '../static'),
             filename: '[name].js'
         },
         module: {

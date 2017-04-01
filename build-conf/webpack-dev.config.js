@@ -8,7 +8,6 @@ module.exports = [
             main: './src-client/main.js'
         },
         output: {
-            // path: './static',
             path: '/Users/ipselon/Development/projects/structor/test/node_modules/structor/static',
             filename: '[name].js'
         },

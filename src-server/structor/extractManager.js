@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
+import path from 'path';
 import {includes, isEmpty, forOwn} from 'lodash';
 import {config, storage, commons, gengine} from 'structor-commons';
+import * as gengineManager from '../commons/gengine.js';
+import * as sandboxCompilerManager from './sandboxCompilerManager.js';
 
 // namespacesMeta = {
 // 	namespaces: {

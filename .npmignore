@@ -4,7 +4,8 @@ build-conf
 docs
 images
 node_modules
-src
+src-client
+src-server
 test
 .gitignore
 structor.iml
