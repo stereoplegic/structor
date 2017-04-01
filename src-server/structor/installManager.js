@@ -15,7 +15,7 @@
  */
 
 import path from 'path';
-import {forOwn} from 'lodash';
+import {forOwn, pick} from 'lodash';
 import {config, commons, gengine, storage} from 'structor-commons';
 import * as client from '../commons/clientGH.js';
 
@@ -276,46 +276,63 @@ export function installFromDir(dirPath) {
 export function getMarketList() {
 	return client.get('https://raw.githubusercontent.com/ipselon/structor-market/master/index.json')
 		.then(marketIndex => {
-			console.log(JSON.stringify(marketIndex));
-			let marketIndexArray = [];
-			let sequence = Promise.resolve();
-			if (marketIndex && marketIndex.length > 0) {
-				marketIndex.forEach(item => {
-					const {gitHubRepo, gitHubOwner} = item;
-					if (gitHubRepo && gitHubOwner) {
-						sequence = sequence.then(() => {
-							return client.get(`https://api.github.com/repos/${gitHubOwner}/${gitHubRepo}`)
-								.then(repoDataInfo => {
-									const {
-										description,
-										html_url,
-										stargazers_count,
-										open_issues_count
-									} = repoDataInfo;
-									marketIndexArray.push({
-										gitHubRepo,
-										gitHubOwner,
-										description,
-										html_url,
-										stargazers_count,
-										open_issues_count
-									});
-								})
-								.catch(error => {
-									marketIndexArray.push({
-										gitHubRepo,
-										gitHubOwner,
-										error: '' + error,
-									});
-								});
+			return marketIndex;
+		})
+}
+
+export function getGHRepoInfo(gitHubRepo, gitHubOwner) {
+	const repoUrl = `https://api.github.com/repos/${gitHubOwner}/${gitHubRepo}`;
+	return client.get(repoUrl)
+		.then(repoDataInfo => {
+			return {
+				gitHubRepo,
+				gitHubOwner,
+				...pick(
+					repoDataInfo,
+					[
+						'description',
+						'html_url',
+						'stargazers_count',
+						'open_issues_count'
+					]
+				)
+			};
+		})
+		.then(repoDataInfo => {
+			return client.get(`${repoUrl}/releases`)
+				.then(releasesList => {
+					let releases = [];
+					if (releasesList && releasesList.length > 0) {
+						releasesList.forEach(releaseItem => {
+							releases.push({
+								...pick(releaseItem, ['name', 'tarball_url'])
+							});
 						});
 					}
-				});
-			}
-			return sequence.then(() => {
-				console.log(JSON.stringify(marketIndexArray, null, 4));
-				return marketIndexArray
-			});
+					return Object.assign({}, repoDataInfo, {releases});
+				})
 		})
+		.then(repoDataInfo => {
+			return client.get(`${repoUrl}/contents`)
+				.then(contentList => {
+					let screenshotUrl;
+					if (contentList && contentList.length > 0) {
+						let screenshotRef = contentList.find(i => i.name && i.name.indexOf('screenshot') >= 0);
+						if (screenshotRef) {
+							screenshotUrl = screenshotRef['download_url'];
+						}
+					}
+					return Object.assign({}, repoDataInfo, {screenshotUrl});
+				})
+		})
+		.catch(error => {
+			console.log(error);
+			return {
+				gitHubRepo,
+				gitHubOwner,
+				error: '' + error,
+			};
+		});
+
 }
 

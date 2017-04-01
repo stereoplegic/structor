@@ -17,6 +17,7 @@
 import express from 'express';
 import rewrite from 'express-urlrewrite';
 import httpProxy from 'http-proxy';
+import {sortBy} from 'lodash';
 import {config, storage, commons, gengine} from 'structor-commons';
 import * as gengineManager from '../commons/gengine';
 import * as clientManager from '../commons/clientManager.js';
@@ -249,6 +250,11 @@ export function extractNamespaces(options) {
 
 export function getMarketList(options) {
 	return installManager.getMarketList();
+}
+
+export function getGHRepoInfo(options) {
+	const {gitHubRepo, gitHubOwner} = options;
+	return installManager.getGHRepoInfo(gitHubRepo, gitHubOwner);
 }
 
 export function preInstall(options) {

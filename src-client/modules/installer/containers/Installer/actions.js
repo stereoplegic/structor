@@ -25,9 +25,14 @@ import {
 
 export const GET_MARKET_INDEX_LIST = "Installer/GET_MARKET_INDEX_LIST";
 export const SET_MARKET_INDEX_LIST = "Installer/SET_MARKET_INDEX_LIST";
+
 export const PRE_INSTALL_NAMESPACES = "Installer/PRE_INSTALL_NAMESPACES";
 export const CANCEL_INSTALL_NAMESPACES = "Installer/CANCEL_INSTALL_NAMESPACES";
 export const INSTALL_NAMESPACES = "Installer/INSTALL_NAMESPACES";
+
+export const SEARCH_NAMESPACES = "Installer/SEARCH_NAMESPACES";
+export const CLEAR_SEARCH_NAMESPACES = "Installer/CLEAR_SEARCH_NAMESPACES";
+export const SHOW_MORE_NAMESPACES = "Installer/SHOW_MORE_NAMESPACES";
 
 export const getMarketIndexList = () => ({type: GET_MARKET_INDEX_LIST});
 export const setMarketIndexList = (indexList) => ({type: SET_MARKET_INDEX_LIST, payload: {indexList}});
@@ -65,6 +70,24 @@ export const install = (installationOptions) => (dispatch, getState) => {
 	}
 };
 
+export const showMore = () => ({type: SHOW_MORE_NAMESPACES});
+
+export const search = (searchText) => (dispatch, getState) => {
+	if (searchText && searchText.length > 0) {
+		dispatch({type: SEARCH_NAMESPACES, payload: searchText});
+	} else {
+		dispatch(clearSearch());
+	}
+};
+
+export const clearSearch = () => ({type: CLEAR_SEARCH_NAMESPACES});
+
 export const containerActions = (dispatch) => bindActionCreators({
-	hideInstaller, showDirPathModal, installFromUrl, getMarketIndexList
+	hideInstaller,
+	showDirPathModal,
+	installFromUrl,
+	getMarketIndexList,
+	showMore,
+	search,
+	clearSearch
 }, dispatch);

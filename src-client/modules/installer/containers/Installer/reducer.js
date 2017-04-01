@@ -15,26 +15,59 @@
  */
 
 import * as actions from './actions.js';
-import testData from './testData.js';
 
 const initialState = {
-    indexList: [],
-    allNamespaces: testData,
-    filteredNamespaces: testData,
-    searchText: null,
-	limit: 12,
+	marketIndexList: [],
+	filteredIndexList: [],
+	searchText: null,
+	limit: 10,
 };
 
 export default (state = initialState, action = {}) => {
 
-    const {type, payload} = action;
+	const {type, payload} = action;
 
-    if(type === actions.SET_MARKET_INDEX_LIST){
-        return Object.assign({}, state, {
-            indexList: [].concat(payload.indexList)
-        });
-    }
+	if (type === actions.SET_MARKET_INDEX_LIST) {
+		return Object.assign({}, state, {
+			marketIndexList: [].concat(payload.indexList),
+			filteredIndexList: [].concat(payload.indexList),
+		});
+	}
 
-    return state;
+	if (type === actions.SHOW_MORE_NAMESPACES) {
+		return Object.assign({}, state, {limit: state.limit + 10});
+	}
+
+	if (type === actions.SEARCH_NAMESPACES) {
+        const searchWords = payload.trim().split(' ');
+        if (searchWords && searchWords.length > 0) {
+        	const filteredIndexList = state.marketIndexList.filter(i => {
+        		let foundCount = 0;
+        		let trimmedWord;
+        		searchWords.forEach(word => {
+        			trimmedWord = word.trim();
+        			if (trimmedWord.length > 0 &&
+						i.description &&
+						i.description.toUpperCase().indexOf(trimmedWord.toUpperCase()) >= 0) {
+        				foundCount++;
+					}
+				});
+				return foundCount > 0;
+			});
+			return Object.assign({}, state, {
+				filteredIndexList: filteredIndexList || [],
+				searchText: payload,
+			});
+		}
+	}
+
+	if (type === actions.CLEAR_SEARCH_NAMESPACES) {
+		return Object.assign({}, state, {
+			filteredIndexList: [].concat(state.marketIndexList),
+			searchText: '',
+		});
+	}
+
+	return state;
 }
 

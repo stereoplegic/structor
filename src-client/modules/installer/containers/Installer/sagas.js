@@ -37,6 +37,21 @@ function* getMarketIndexList() {
     }
 }
 
+// function* getMarketRepos(indexList) {
+// 	if (indexList && indexList.length > 0) {
+// 		for (let i = 0; i < indexList.length; i++) {
+// 			const {gitHubRepo, gitHubOwner} = indexList[i];
+// 			yield put(actions.getMarketRepoInfo(i, gitHubRepo, gitHubOwner));
+// 			try {
+// 				const repoData = yield call(serverApi.getGHRepoInfo, gitHubRepo, gitHubOwner);
+// 				yield put(actions.setMarketRepoInfo(i, repoData));
+// 			} catch (error) {
+// 				yield put(messageActions.failed('Loading GH repo info. ' + (error.message ? error.message : error)));
+// 			}
+// 		}
+// 	}
+// }
+
 function* installNamespaces() {
     while(true){
         const {payload: {namespacesSrcDirPath}} = yield take(actions.INSTALL_NAMESPACES);

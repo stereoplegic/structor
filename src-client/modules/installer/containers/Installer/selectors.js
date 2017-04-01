@@ -20,8 +20,8 @@ import { createStructuredSelector } from 'reselect';
 // export const filteredNamespacesSelector = state => state.installer.filteredNamespaces;
 
 export const modelSelector = createStructuredSelector({
-    allNamespaces: state => state.installer.allNamespaces,
-    filteredNamespaces: state => state.installer.filteredNamespaces,
+    filteredIndexList: state => state.installer.filteredIndexList,
     searchText: state => state.installer.searchText,
     limit: state => state.installer.limit,
+	marketIndexList: state => state.installer.marketIndexList,
 });

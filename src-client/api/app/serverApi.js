@@ -118,6 +118,10 @@ export function getMarketList() {
 	return invokeStructor('getMarketList', {});
 }
 
+export function getGHRepoInfo(gitHubRepo, gitHubOwner) {
+	return invokeStructor('getGHRepoInfo', {gitHubRepo, gitHubOwner});
+}
+
 export function preInstallFromLocalDir(dirPath) {
 	return invokeStructor('preInstall', {dirPath});
 }
