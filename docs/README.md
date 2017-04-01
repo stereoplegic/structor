@@ -1,4 +1,4 @@
-### Structor Cookbook
+### Structor's User Guide
 
 #### Getting started
 
