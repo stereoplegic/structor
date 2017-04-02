@@ -1,12 +1,12 @@
-### Structor's User Guide
+## Structor's User Guide
 
-#### Getting started
+### Getting started
 
 Structor does not depend on any starter/seed/boilerplate porject. It runs even in an empty folder with `package.json`.
 
 But before you get familiar with Structor we suggest to run a brief tutorial. This tutorial is using our starter project which lets you quickly try all cool features of Structor.
 
-##### Installation
+#### Installation
 
 * Clone or download the repo `structor-starter` from GitHub here: 
 
