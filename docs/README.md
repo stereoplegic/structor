@@ -42,7 +42,7 @@ Now you should see the Structor's workspace. If not please create an issue.
 
 #### Get familiar with Structor's Workspace
 
-After the first opening you'll see the central pane of the workspace where UI components are placed. You may create many such panes and we will call them pages. Actually, they are pages and they behave as real pages in the browser.
+After the first opening you'll see the central pane of the workspace where UI components are placed. You may create many such panes and we will call them pages. Actually, they are pages and they behave as the real pages in the browser.
 
 There are two modes in the workspace. The first mode is an editing mode. In the editing mode a user may manipulate components on the page: cut, paste, duplicate, delete, replace, change style, etc. 
 
@@ -54,9 +54,9 @@ On the left vertical toolbar you may find two buttons which are responsible for 
   <img width="30%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-mode-switch-btns.png" />
 </p>
 
-On this stage of the tutorial the current page is in the edit mode. Consequently you can select a component on the page. There are several way to select component. But now you can just click somewhere on the text element.
+On this stage of the tutorial the current page is in the edit mode.
 
-On a separate note, we should understand what is a component in terms of the Structor's workspace. The page in the workspace consists of multiple React components which are described in JSON format with a simple tree structure.
+On a separate note, we should understand what is a component and component model in terms of the Structor's workspace. The page in the workspace consists of multiple React components which are described in JSON format with a simple tree structure. Consequently, we may tell that a page model (tree) includes many components' models (leaves and branches).
 
 ```json5
 01  "type": "Panel",
@@ -89,12 +89,16 @@ The ***type*** field tells which React component should be rendered. In line `01
 
 **It means that you are able to select and manipulate only the components which are described in page's model. Shortly speaking, you can not select a component or element which is in the React components source code**
 
-Let's start to compose something interesting. If you didn't select some component on the page please do this by clicking on the text element.
+Let's start to compose something interesting. If you didn't select some component on the page please do this by clicking on the text element right in the center of the current page.
 
-As usual we are not able to precisely select something on the Web page by simple clicking on sibling area. That is why Structor presents a few ways to adjust the selection.
+As usual we are not able to precisely select something on the Web page by simple clicking on a sibling area. That is why Structor presents a few ways to adjust the selection.
 
-The firs way is to use a breadcrumbs control in the top toolbar of the workspace. The breadcrumbs control lets you see the path in the page model to the selected component. Also it allows you to select another component from this path by clicking on a path's node. In order to simplify understanding which component corresponds to the node you are going to select, the corresponded component will be highlighted on the age once you hover over the path's node.
+The firs way is to use a breadcrumbs control in the top toolbar of the workspace. The breadcrumbs control lets you see the path in the page model to the selected component. Also it allows you to select another component from this path by clicking on a path's node. In order to simplify understanding which component on the page corresponds to the node you are going to select, the corresponded component will be highlighted on the page once you hover over the path's node.
 
 BTW, when you hovering over the page you may see highlignted borders of the components, that greatly simplify the component hunting on the page.
 
-Now we need to understand why we have to select the component before starting action with it. 
+Also, there is a commonly used way to see the Web page structure in Structor. There is a bottom panel with a tree view representation of the page model. Please find a button on the left vertical toolbar and switch it on:
+
+You can select componenst on the treeview as well as on the breadcrumbs control.
+
+....
