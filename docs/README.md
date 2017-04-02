@@ -337,7 +337,7 @@ Here we are ready to learn how to export the workspace pages and build an applic
 
 #### Exporting pages and building App
 
-This step is not necessary to the projects which have own building process and requre to add components manually into appliation pages. Structor Starter App does not have a sophisitcated app building process in terms of granularity, optimisation, etc. This step is mostly for the learning purpose. But it greatly helps to generate the entire pages for Web Application which may be constantly changed in the Structor workspace.
+This step is not necessary to the projects which have own building process and requre to add components manually into appliation pages. Structor Starter App does not have a sophisticated app building process in terms of granularity, optimisation, etc. This step is mostly for the learning purpose. But it greatly helps to generate the pages for Web Application which may be constantly changed in the Structor workspace.
 
 Click on the button with book icon on on the left vertical toolbar. This will show us a list of available pages. We were not discussing how pages can be created in Structor because this is a pretty simple action. 
 
