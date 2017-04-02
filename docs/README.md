@@ -1,5 +1,8 @@
 ## Structor's User Guide
 
+* Getting Started
+* Many other chapters explaining how Structor works and how it helps in building a React/Redux applications...
+
 ### Getting started
 
 Structor does not depend on any starter/seed/boilerplate porject. It runs even in an empty folder with `package.json`.
@@ -34,7 +37,7 @@ npm run structor
 
 > http://localhost:2222/structor
 
-Now you should see the Structor's workspace. If not please create an issue.
+Now you should see the Structor's workspace. If not, please create an issue.
 
 <p align="left">
   <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-first-opening.png" />
@@ -42,7 +45,7 @@ Now you should see the Structor's workspace. If not please create an issue.
 
 #### Get familiar with Structor's Workspace
 
-After the first opening you'll see the central pane of the workspace where UI components are placed. You may create many such panes and we will call them pages. Actually, they are pages and they behave as the real pages in the browser.
+After the first opening you'll see the workspace pane where UI components are placed. You may create many such panes and we will call them pages. Actually, they are pages and they behave as the real pages in the browser.
 
 There are two modes in the workspace. The first mode is an editing mode. In the editing mode a user may manipulate components on the page: cut, paste, duplicate, delete, replace, change style, etc. 
 
@@ -168,7 +171,7 @@ As we may see, we have a hierarchy of 3 nested divs. You can easily check it out
 Select the innermost `div` and click on the circle button with plus sign on it underneath of the selected component:
 
 <p align="left">
-  <img width="30%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-insert-after-btn.png" />
+  <img width="20%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-insert-after-btn.png" />
 </p>
 
 This action appends a new component after the selected one. Type `button` name in the insertion dialog, and after `button` is appended set its style to `padding: 1em`.
@@ -176,11 +179,190 @@ This action appends a new component after the selected one. Type `button` name i
 Then we have to change the texts of `span` and `button`. Open the bottom treeview panel, and just click on the text - it allows to change text right in the place:
 
 <p align="left">
-  <img width="30%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-change-text-inplace.png" />
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-change-text-inplace.png" />
 </p>
 
-Change `span` text to "Count: 0", and `button` text to "Increase count". As the result of our manipulation should be the following composition:
+Change `span` text to "Count: 0", and `button` text to "Increase count". As the result of our manipulation the following composition should be:
 
 <p align="left">
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-result-composition.png" />
 </p>
+
+On the current stage of this tutorial we already learned:
+* What are page and component models in terms of Structor
+* How to view and navigate the component hierarhy in different ways
+* How to add new components on the page using the library panel and clipboard
+* How to add new components on the page using the quick insertion dialog
+* How to change a component's model style using the quick style panel
+
+In the next stages of the tutorial we will learn how to generate a scaffold for new React component. And how to export pages and build a Web App.
+
+#### Generating React components
+
+Structor ships with a couple source code generators for React component scaffolds. We are not going to discuss here how it works and how it can be customized. So, please keep in mind that any scaffold template may be changed to fit your requirements easily.
+
+Now we are going to generate a scaffold for simple React component which will have equal look and feel as our composition which we made above.
+
+Select the topmost `div` in the hierarchy of the current page, and click `Generate Component` button on the top toolbar of the workspace.
+
+<p align="left">
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/generators-generate-component-btn.png" />
+</p>
+
+We will see a start page of the generator wizard, where we have to choose what component we want to generate.
+
+<p align="left">
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/generators-list.png" />
+</p>
+
+Here we run `react-component` generator. The next step requires to enter a name of new component and/or a namespace for component.
+
+<p align="left">
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/generators-enter-name.png" />
+</p>
+
+On this note we should step aside a bit and try to understand what the source code and its structure we will have after generation. The only requirement from Structor is to use a certain type of the source code structure. We will discuss the structure and motives to use it in the guide's chapters. But on this step please keep in mind the following structure of components possible to use with Structor:
+
+```
+<APP_DIR>
+    components/
+        <COMPONENT_NAME>
+            index.js - React component
+    containers/
+        <CONTAINER_NAME>
+            index.js - Redux container
+            actions.js
+            constants.js
+            reducer.js
+            sagas.js
+            selectors.js
+    modules/
+        <NAMESPACE_NAME>/
+            components/
+                <COMPONENT_NAME>
+                    index.js - React component
+            containers/
+                <CONTAINER_NAME>
+                    index.js - Redux container
+                    actions.js
+                    constants.js
+                    reducer.js
+                    sagas.js
+                    selectors.js
+            index.js - components and containers index
+            reducer.js - composition of containers' reducers
+            sagas.js - composition of containers' sagas
+```
+
+> As far as Stuctor may manipulate a significant amount of the components they may have conflicting names (equal names), to avoid this situation we are using namespaces. More about motives to use `modules` structure along with `components` and `containers` please read here: [Additional Guidelines For (Redux) Project Structure](https://jaysoo.ca/2016/12/12/additional-guidelines-for-project-structure/#what-to-do-with-common-components)
+
+Enter `Counter` as a new name of React component, and enter `Tutorial` as a namespace. We are going to create a new namespace with `Counter` component. Although we can create a component without any namespace and place it just in `components` folder, but we should create the namespace in order to learn how to extract and install namespaces using Structor.
+
+Next step gives us options for a few variants of the future scaffold. We are leaving all options as they are and proceeding to the next step.
+
+Here is a preview of the generated source code.
+
+<p align="left">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/generators-source-review.png" />
+</p>
+
+Click to install the source code. After the Webpack compiler finished switch to the preview mode and try to click on the `Increase counter` button. The counter will not be increased. That is why we need to change the source code to make it something valuable.
+
+Open `index.js` file in the directory:
+```
+<PROJECT_DIR>/app/modules/Tutorial/components/Counter
+```
+
+And replace generated code with the following example (you may do your changes as well). Also, please observe that your changes are applied in the preview page almost immediatelly.
+
+```javascript
+/**
+ *
+ * Counter
+ *
+ */
+
+import React, { Component, PropTypes } from 'react';
+
+class Counter extends Component { // eslint-disable-line react/prefer-stateless-function
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      counterValue: 0,
+    };
+  }
+
+  handleIncrease = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    this.setState({counterValue: this.state.counterValue + 1});
+  };
+
+  render() {
+    const {counterValue} = this.state; // eslint-disable-line
+    return (
+      <div style={{ padding: '1em', flexDirection: 'row', justifyContent: 'center', display: 'flex' }}>
+        <div>
+          <div>
+            <span>Count: {counterValue}</span>
+          </div>
+          <button
+            style={{ padding: '1em' }}
+            onClick={this.handleIncrease}
+          >
+            <span>Increase count</span>
+          </button>
+        </div>
+      </div>
+      ); // eslint-disable-line
+  }
+}
+
+export default Counter;
+```
+
+Now clicking on the button will increase the counter value.
+
+<p align="left">
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/generators-component-preview.png" />
+</p>
+
+On this stage we learned:
+* What the source code structure is used by Structor
+* How to generate the source code of simple React component
+* Hot reloading is working in the Structor workspace for any mode
+
+Here we are ready to learn how to export the workspace pages and build an application in Structor Starter App.
+
+#### Exporting pages and building App
+
+This step is not necessary to the projects which have own building process and requre to add components manually into appliation pages. Structor Starter App does not have a sophisitcated app building process in terms of granularity, optimisation, etc. This step is mostly for the learning purpose. But it greatly helps to generate the entire pages for Web Application which may be constantly changed in the Structor workspace.
+
+Click on the button with book icon on on the left vertical toolbar. This will show us a list of available pages. We were not discussing how pages can be created in Structor because this is a pretty simple action. 
+
+In the top of the list we may see two buttons: `Export Pages` and `Export App`. `Export Pages` responsible for generating the source code for selected pages. And `Export App` button generates not only the pages' source code, but also the source code for entry point in terms of Webpack compiler.
+
+<p align="left">
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/export-page-list-panel.png" />
+</p>
+
+As far as we are going to build application, we are choosing `Export App`. The modal dialog will worn us about what files will be generated and if there are some existing they will be rewritten.
+
+After we saw a green message about a successfull exporting, we may find new folder `<APP_DIR>/routes` along with other files for React/Redux application. Please find the compiled bundle of the application in `<PROJECT_DIR>/build` directory.
+
+Go to the terminal and run following command:
+```
+npm run start:production
+```
+
+This command initiates a building process of our application and starts an Express server instance on `3000` port. After the server is started we may open `http://localhost:3000` address in our browser.
+
+On this stage we learned:
+* How to export pages and generate the files for building an app
+
+In the next stage we are going to learn how to extract the source code of namespaces as sharable Structor namespaces lib. And how to install such libs from Structor Market or from a local directory.
+
+...
+
+
