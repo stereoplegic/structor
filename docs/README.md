@@ -1,6 +1,6 @@
 ## Structor's User Guide
 
-* Getting Started
+* [Getting Started](https://github.com/ipselon/structor/blob/master/docs/README.md#getting-started)
 * Many other chapters explaining how Structor works and how it helps in building a React/Redux applications...
 
 ### Getting started
