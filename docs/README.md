@@ -1,6 +1,6 @@
 ## Structor's User Guide
 
-* Getting Started
+* [Getting Started](https://github.com/ipselon/structor/blob/master/docs/README.md#getting-started)
 * Designing UI components
     * Component model
     * Model manipulation on workspace
