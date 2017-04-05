@@ -41,7 +41,7 @@ npm install
 ```
 * Run command:
 ```
-npm install strunctor
+npm install structor
 ```
 * When the following prompt is appeared choose `app` as a directory where the source code will be located.
 > Specify a directory name where the source code of the generated components will be.
