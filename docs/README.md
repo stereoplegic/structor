@@ -1,7 +1,27 @@
 ## Structor's User Guide
 
 * Getting Started
-* Many other chapters explaining how Structor works and how it helps in building a React/Redux applications...
+* Designing UI components
+    * Component model
+    * Model manipulation on workspace
+    * Multiple selection
+    * Library panel
+    * Quick style panel
+    * Treeview panel
+    * Routing
+* The code structure
+    * Component encapsulation
+    * Redux storage
+    * The source code generating
+    * Add existing components
+* Namespaces
+    * Why namespaces
+    * Extract namespaces
+    * Install namespaces
+    * Marketplace
+* Exporting
+    * Export pages
+    * Export application
 
 ### Getting started
 
