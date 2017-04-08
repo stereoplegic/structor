@@ -1,13 +1,13 @@
 ## Structor's User Guide
 
 * [Getting Started](https://github.com/ipselon/structor/blob/master/docs/README.md#getting-started)
-* [Designing UI](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#designing-ui)
-    * [A component model](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#a-component-model)
-    * [Combine and modify component models](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#combine-and-modify-component-models)
-       * [How to select a component](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-select-a-component)
-       * [How to paste new component from library](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-paste-new-component-from-library)
-       * [How to cut, copy and paste components](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-cut-copy-and-paste-components)
-    * [Navigation through pages](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#navigation-through-pages)
+* [Designing UI](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#designing-ui)
+    * [A component model](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#a-component-model)
+    * [Combine and modify component models](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#combine-and-modify-component-models)
+       * [How to select a component](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#how-to-select-a-component)
+       * [How to paste new component from library](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#how-to-paste-new-component-from-library)
+       * [How to cut, copy and paste components](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#how-to-cut-copy-and-paste-components)
+    * [Navigation through pages](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#navigation-through-pages)
 * The code structure
     * Component encapsulation
     * Redux storage
@@ -64,7 +64,7 @@ Also, we can open this dialog by clicking on `Edit` button on the top toolbar.
 Find a JSON editor in `Properties` tab in the dialog.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-options-dialog.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/design-ui-options-dialog.png" />
 </p>
 
 Another way to add or change property in the model is to use the `Quick Style` panel. 
@@ -72,7 +72,7 @@ Click on the button with brush icon on the left vertical toolbar. Go to the `Pro
 There you can add or change properties one by one.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-quick-style-panel.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/design-ui-quick-style-panel.png" />
 </p>
 
 Once we changed the properties in the model, Structor applies immediately these changes on the page. 
@@ -103,7 +103,7 @@ The second, we can see how components are nested in `Breadcrumbs` control on the
 Here we can select any component in the path by clicking on it.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-treeview-panel.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/design-ui-treeview-panel.png" />
 </p>
 
 And of course, we can just click on the component right on the page. 
@@ -132,7 +132,7 @@ ___Clipboard___ is a buffer for component models.
 Find a clipboard control on the top toolbar where you can see what components are in the clipboard at this moment.
   
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-library-panel.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/design-ui-library-panel.png" />
 </p>
     
 Now we can paste model from clipboard into the page as a sibling or as a child of any selected component, 
@@ -140,14 +140,14 @@ or replace it with the clipboard content.
 Just find controls `Before`, `First`, `Last`, `After`, `Replace` on the following screenshot:
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-paste-controls.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/design-ui-paste-controls.png" />
 </p>
  
 Also, here is a convenient way to place a component in the hierarchy - 
 a small circle placeholders in page's tree view, clicking by which we can place there a new component.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-treeview-panel-placeholders.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/design-ui-treeview-panel-placeholders.png" />
 </p>
 
 Additionally, there is one quick way to add new component on the page:
@@ -157,7 +157,7 @@ Additionally, there is one quick way to add new component on the page:
 * Type the name of component in the appeared dialog. And click `Submit`.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-quick-add-dialog.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/design-ui-quick-add-dialog.png" />
 </p>
 
 **Important** You are able to add new models to the component in the library. 
@@ -168,7 +168,7 @@ This is very helpful in case you want to share your library models on Structor M
 Please read about how to extract the library in "Namespaces" chapter.
  
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-savemodel-dialog.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/design-ui-savemodel-dialog.png" />
 </p>
 
 ##### How to cut, copy and paste components
@@ -179,7 +179,7 @@ That will allow us to paste component from clipboard in any other place.
 Find highlighted buttons, which cut and copy components into the clipboard, on the following screenshot:
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-copy-paste-controls.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/design-ui-copy-paste-controls.png" />
 </p>
 
 Additionally, Structor lets select, copy, cut and paste multiple components on the page. 
@@ -193,7 +193,7 @@ Clipboard is able to hold not only a single component's model, but multiple mode
 And now you may paste the clipboard content somewhere else.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-multiple-selection.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/design-ui-multiple-selection.png" />
 </p>
 
 #### Navigation through pages
@@ -206,7 +206,7 @@ Also, there is a page control on the top toolbar where we can add new pages, cha
 and delete the current page.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-page-controls.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/design-ui-page-controls.png" />
 </p>
 
 As far as the page has the address, we can link it to another page and navigate between pages right in the preview mode. 
