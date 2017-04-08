@@ -69,7 +69,9 @@ Another way to add or change property in the model is to use the `Quick Style` p
 Click on the button with brush icon on the left vertical toolbar. Go to the `Props` tab in the appeared panel. 
 There you can add or change properties one by one.
 
-[image with quick style panel and props open]
+<p align="left">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-quick-style-panel.png" />
+</p>
 
 Once we changed the properties in the model, Structor applies immediately these changes on the page. 
 It does not require any extra compilation or rebuilding of the page.
@@ -90,8 +92,6 @@ Structor has a few ways to select a component on the page.
 
 The first, we may see the tree structure of the page by clicking on the button with code sign icon in the left vertical toolbar.
  
-[image of the workspace with treeview pane open and button is designated]
-
 Here we can:
 * see properties applied to the component,
 * edit text right in place, 
@@ -99,6 +99,10 @@ Here we can:
 
 The second, we can see how components are nested in `Breadcrumbs` control on the top toolbar. 
 Here we can select any component in the path by clicking on it.
+
+<p align="left">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-treeview-panel.png" />
+</p>
 
 And of course, we can just click on the component right on the page. 
 Useful: the hovering over a component shows the boundaries of the component and its name. 
@@ -125,18 +129,24 @@ By clicking on an item in the group we are copying the component model into a cl
 ___Clipboard___ is a buffer for component models. 
 Find a clipboard control on the top toolbar where you can see what components are in the clipboard at this moment.
   
-[image with clipboard control designated]
+<p align="left">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-library-panel.png" />
+</p>
     
 Now we can paste model from clipboard into the page as a sibling or as a child of any selected component, 
 or replace it with the clipboard content. 
 Just find controls `Before`, `First`, `Last`, `After`, `Replace` on the following screenshot:
 
-[image with paste controls designated]
+<p align="left">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-paste-controls.png" />
+</p>
  
 Also, here is a convenient way to place a component in the hierarchy - 
 a small circle placeholders in page's tree view, clicking by which we can place there a new component.
 
-[image of treeview panel with placeholders designated]
+<p align="left">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-treeview-panel-placeholders.png" />
+</p>
 
 Additionally, there is one quick way to add new component on the page:
 * Make sure that the clipboard is empty (if not just click on close icon on the clipboard control in the top toolbar)
@@ -144,7 +154,9 @@ Additionally, there is one quick way to add new component on the page:
 * Click on one of pasting buttons: `Before`, `First`, `Last`, `After`, `Replace` or on placeholders in the tree view.
 * Type the name of component in the appeared dialog. And click `Submit`.
 
-[image of quick add dialog]
+<p align="left">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-quick-add-dialog.png" />
+</p>
 
 **Important** You are able to add new models to the component in the library. 
 Just select a component you want to have a new model 
@@ -153,7 +165,9 @@ and click on `Save Model` button on the top toolbar. That will lets you to save 
 This is very helpful in case you want to share your library models on Structor Market. 
 Please read about how to extract the library in "Namespaces" chapter.
  
-[image of save model dialog]
+<p align="left">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-savemodel-dialog.png" />
+</p>
 
 ##### How to cut, copy and paste components
 
@@ -162,7 +176,9 @@ That will allow us to paste component from clipboard in any other place.
 
 Find highlighted buttons, which cut and copy components into the clipboard, on the following screenshot:
 
-[image with cut & copy buttons designated]
+<p align="left">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-copy-paste-controls.png" />
+</p>
 
 Additionally, Structor lets select, copy, cut and paste multiple components on the page. 
 To select multiple components we have to press `Ctrl` or `Command` and click on the component. 
@@ -174,6 +190,10 @@ Clipboard is able to hold not only a single component's model, but multiple mode
 
 And now you may paste the clipboard content somewhere else.
 
+<p align="left">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-multiple-selection.png" />
+</p>
+
 #### Routing between pages
 
 As you already know, the workspace can have many pages. 
@@ -183,7 +203,9 @@ There is a panel with pages list, where we can switch the current page to anothe
 Also, there is a page control on the top toolbar where we can add new pages, change the width of page's viewport, 
 and delete the current page.
 
-[image with page list panel and page control designated]
+<p align="left">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-page-controls.png" />
+</p>
 
 As far as the page has the address, we can link it to another page and navigate between pages right in the preview mode. 
 Place a `Link` component from React Router somewhere on one page. 
