@@ -26,9 +26,8 @@
       
 #### A component model
 
-The page in the workspace is a combination of React component models. 
-A model is a description used by Structor in order to render a React component and 
-apply specified properties the component.
+A component model is a metadata used by Structor which tells 
+how to render a React component and what properties should be applied to the component.
 Each model is written in JSON format and have a pretty simple structure:
 
 ```json5  
