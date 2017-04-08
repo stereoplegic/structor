@@ -85,7 +85,7 @@ We may find this file in Structor's meta folder here: `.structor/desk/model.json
 #### Combine and modify component models
 
 Structor's workspace lets us combine any amount of models on the page. 
-It suggests many ways to combine and modify a page model.
+It is suggested to use several ways to combine and modify a page model.
 First of all, we have to select a component on the page - this selection should serve as a starting point of any combination. 
 
 ##### How to select a component
