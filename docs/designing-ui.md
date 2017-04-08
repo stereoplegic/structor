@@ -26,7 +26,7 @@
       
 #### A component model
 
-A component model is a metadata used by Structor which tells 
+A component model is a metadata used by Structor, it tells 
 how to render a React component and what properties should be applied to the component.
 Each model is written in JSON format and have a pretty simple structure:
 
