@@ -4,7 +4,10 @@
 * Designing UI
     * A component model
     * Combine and modify component models
-    * Routing between pages
+       * How to select a component
+       * How to paste new component from library
+       * How to cut, copy and paste components
+    * Navigation through pages
 * The code structure
     * Component encapsulation
     * Redux storage
@@ -194,7 +197,7 @@ And now you may paste the clipboard content somewhere else.
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-multiple-selection.png" />
 </p>
 
-#### Routing between pages
+#### Navigation through pages
 
 As you already know, the workspace can have many pages. 
 Each page in the workspace has own address, and we can navigate between pages.
