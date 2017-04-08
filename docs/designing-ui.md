@@ -1,13 +1,13 @@
 ## Structor's User Guide
 
 * [Getting Started](https://github.com/ipselon/structor/blob/master/docs/README.md#getting-started)
-* Designing UI
-    * A component model
-    * Combine and modify component models
-       * How to select a component
-       * How to paste new component from library
-       * How to cut, copy and paste components
-    * Navigation through pages
+* [Designing UI](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#designing-ui)
+    * [A component model](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#a-component-model)
+    * [Combine and modify component models](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#combine-and-modify-component-models)
+       * [How to select a component](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-select-a-component)
+       * [How to paste new component from library](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-paste-new-component-from-library)
+       * [How to cut, copy and paste components](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-cut-copy-and-paste-components)
+    * [Navigation through pages](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#navigation-through-pages)
 * The code structure
     * Component encapsulation
     * Redux storage
