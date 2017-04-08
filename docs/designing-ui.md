@@ -62,7 +62,7 @@ Also, we can open this dialog by clicking on `Edit` button on the top toolbar.
 Find a JSON editor in `Properties` tab in the dialog.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-selected-component.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-options-dialog.png" />
 </p>
 
 Another way to add or change property in the model is to use the `Quick Style` panel. 
