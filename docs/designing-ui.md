@@ -54,7 +54,7 @@ Adding, removing, replacing models in the tree can be done right in the workspac
 
 ___Note___ You have to select a component on the page before starting any modification of the model. 
 
-In practice a selecting of some component on the page is the selecting of a model in the tree.
+In practice, a selecting of some component on the page is the selecting of a model in the tree.
 Structor lets us modify any selected model through the tools in the workspace, 
 such as: `Component Options` dialog, `Quick Style` panel. 
 
