@@ -1,4 +1,4 @@
-## Structor's User Guide
+# Structor's User Guide
 
 * [Getting Started](https://github.com/ipselon/structor/tree/dev-05/docs#getting-started)
 * [Designing UI](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#designing-ui)
@@ -8,17 +8,17 @@
        * [How to paste new component from library](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-paste-new-component-from-library)
        * [How to cut, copy and paste components](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-cut-copy-and-paste-components)
     * [Navigation through pages](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#navigation-through-pages)
-* [Working with code]()
-    * Dev environment
-    * The code structure
-    * Component library
-       * React components in library
-       * Redux containers in library
-       * Component default models
-    * Generating the source code
-       * React component scaffold
-       * Redux container scaffold
-    * Troubleshooting
+* [Working with code](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#working-with-code)
+    * [Dev environment](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#dev-environment)
+    * [The code structure](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#the-code-structure)
+    * [Component library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#component-library)
+       * [React components in library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#react-components-in-library)
+       * [Redux containers in library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#redux-containers-in-library)
+       * [Component default models](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#component-default-models)
+    * [Generating the source code](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#generating-the-source-code)
+       * [React component scaffold](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#react-component-scaffold)
+       * [Redux container scaffold](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#redux-container-scaffold)
+    * [Troubleshooting](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#troubleshooting)
 * Structor Market
     * Install namespaces
     * Extract namespaces
@@ -26,7 +26,7 @@
     * Export pages
     * Export application
 
-### Working with code
+## Working with code
 
 This chapter assumes that you have a basic knowledge of React, Redux and Redux Saga, Webpack and Hot Reloading, 
 
@@ -44,7 +44,7 @@ follow the rules for the source code structure which is described here.
 Although, by using Structor only as a playground for React components, just like React Storybook, 
 you are cutting out the major capabilities of Structor.
 
-#### Dev environment
+### Dev environment
 
 Structor runs own Express server on 2222 port. However we can set another port using `p` option, for example: 
 `npm run structor -p 3443`
@@ -75,7 +75,7 @@ Taking in account all above, we can say that Stuctor runs as a standalone applic
 And it does not depend on any seed or boilerplate project. It can be utilized with any existing React Web application project. 
 However the only one requirement is to use the Webpack version > 2.2.x.   
 
-#### The code structure
+### The code structure
 
 As we already know, it is recommended to use a component/container file structure in a React application. 
 Moreover, each component will be encapsulated in a self-contained structure. You may read about such structure in 
@@ -84,17 +84,17 @@ or read docs for [React Boilerpate](https://github.com/react-boilerplate/react-b
  
 A self-contained structure may be described by the following schema:
 ```
-    components/
-        <COMPONENT_NAME>
-            index.js - React component
-    containers/
-        <CONTAINER_NAME>
-            index.js - Redux container
-            actions.js
-            constants.js
-            reducer.js
-            sagas.js
-            selectors.js
+components/
+    <COMPONENT_NAME>
+        index.js - React component
+containers/
+    <CONTAINER_NAME>
+        index.js - Redux container
+        actions.js
+        constants.js
+        reducer.js
+        sagas.js
+        selectors.js
 ```
 
 It does not mean that we can not add extra files in there or remove some files, 
@@ -107,33 +107,33 @@ In this case we should encapsulate conflicting components in namespaces.
 Read [Additional Guidelines For (Redux) Project Structure](https://jaysoo.ca/2016/12/12/additional-guidelines-for-project-structure/) 
 article about such an approach. Then our structure will look as following:
 ```
-    components/
-        <COMPONENT_NAME>
-            index.js - React component
-    containers/
-        <CONTAINER_NAME>
-            index.js - Redux container
-            actions.js
-            constants.js
-            reducer.js
-            sagas.js
-            selectors.js
-    modules/
-        <NAMESPACE_NAME>/
-            components/
-                <COMPONENT_NAME>
-                    index.js - React component
-            containers/
-                <CONTAINER_NAME>
-                    index.js - Redux container
-                    actions.js
-                    constants.js
-                    reducer.js
-                    sagas.js
-                    selectors.js
-            index.js - namespace components and containers index
-            reducer.js - composition of containers reducers in namespace
-            sagas.js - composition of containers' sagas in namespace
+components/
+    <COMPONENT_NAME>
+        index.js - React component
+containers/
+    <CONTAINER_NAME>
+        index.js - Redux container
+        actions.js
+        constants.js
+        reducer.js
+        sagas.js
+        selectors.js
+modules/
+    <NAMESPACE_NAME>/
+        components/
+            <COMPONENT_NAME>
+                index.js - React component
+        containers/
+            <CONTAINER_NAME>
+                index.js - Redux container
+                actions.js
+                constants.js
+                reducer.js
+                sagas.js
+                selectors.js
+        index.js - namespace components and containers index
+        reducer.js - composition of containers reducers in namespace
+        sagas.js - composition of containers' sagas in namespace
 ```
 
 Using this structure for project components is important if we are going to use Structor's generators 
@@ -144,7 +144,7 @@ For example: `import Button from 'components/Button'`.
 This works because Webpack configuration (`.structor/webpack.base.js`) defines `PROJECT_APP_DIR` folder as 
 a module in `resolve.modules` settings.
 
-#### Component library
+### Component library
 
 Any React component included into `.structor/app/components.js` file appears in `Component Library` panel in the Stuctor's workspace. 
 Let's review the format of this file. Below is an initial file content right after the installation.  
@@ -162,15 +162,15 @@ export {
 
 As we can see, this is a regular JS file which makes reexporting of components. 
 
-##### React components in library
+#### React components in library
 
 Let's see how it will look if there a React component is included. 
 Assuming that we are using the file structure described above. 
 
 ```
-    components/
-        Button
-            index.js
+components/
+    Button
+        index.js
 ```
 
 And the `components.js` file will be:
@@ -199,15 +199,15 @@ export {
 But how it will look if we want to add another `Button` component? We can do that using a namespace module. 
 See how the file structure should be in this case:
 ```
-    components/
-        Button/
-            index.js
-    modules/
-        mylib/
-            components/
-                Button/
-                    index.js
-            index.js
+components/
+    Button/
+        index.js
+modules/
+    mylib/
+        components/
+            Button/
+                index.js
+        index.js
 ```
 
 And `components.js` file is:
@@ -227,7 +227,7 @@ export {
 ```
 
 Additionally, we need to review the content of namespace's `index.js` file (`modules/mylib/index.js`).
-```
+```javascript
 import Button from './components/Button';              
 export {
     Button
@@ -245,7 +245,7 @@ Please find it on a screenshot below:
 **Note** It is required to use described format of `component.js` and namespace's `index.js` files - 
 they are parsed by Structor in order to discover components for the library. 
  
-##### Redux containers in library
+#### Redux containers in library
 
 Including Redux containers into library has a few additional steps. 
 We need to modify `components.js` file along with `reducers.js` and `sagas.js` in `.structor/app` folder.
@@ -253,14 +253,14 @@ We need to modify `components.js` file along with `reducers.js` and `sagas.js` i
 Let's start from Redux container which is not in any namespace.
 
 ```
-    containers/
-        SmartPanel/
-            index.js
-            actions.js
-            constants.js
-            reducer.js
-            sagas.js
-            selectors.js
+containers/
+    SmartPanel/
+        index.js
+        actions.js
+        constants.js
+        reducer.js
+        sagas.js
+        selectors.js
 ```
 
 Adding `SmartPanel` component in `components.js` file in the same way as it was for React component. 
@@ -289,13 +289,13 @@ Now we need to inject container's reducer and sagas by editing `.structor/app/re
 
 Changes in `reducers.js` file:
 
-```
+```javascript
 import smartPanelReducer from 'containers/SmartPanel/reducer.js';
 export default { smartPanel: smartPanelReducer };
 ```
 
 And `sagas.js` should be:
-```
+```javascript
 import SmartPanelSagas from 'containers/SmartPanel/sagas.js';
 export default [...SmartPanelSagas];
 ```
@@ -308,9 +308,8 @@ It will be a bit more complicated to add Redux container from a namespace. As yo
 Similarly the namespace has own `sagas.js` and `reducer.js` files. Let's review them first in order to understand why we need them.
 
 Namespace's `sagas.js` file is just an index file which gathers all sagas in the namespace and expose it as an array.
-```
-import SmartPanelSagas from './containers/SmartPanel/sagas.js';
-                
+```javascript
+import SmartPanelSagas from './containers/SmartPanel/sagas.js';           
 export default [
     ...SmartPanelSagas
 ];
@@ -324,7 +323,7 @@ globalState -> namespaceState -> containerState
 ```
 
 So, namespace's `reducer.js` file will include the following:
-```
+```javascript
 import { combineReducers } from 'redux';
 import smartPanelReducer from './containers/SmartPanel/reducer.js';
                 
@@ -335,7 +334,7 @@ export default combineReducers({
 
 Consequently, containers in namespace should select state from namespace endpoint rather than directly from global state. 
 For example we can create a selector in our `SmartPanel` container like this:
-```
+```javascript
 const selectSmartpanel = () => (state) => state.mylib.smartPanel;
 ```
 
@@ -343,7 +342,7 @@ Adding namespace's reducer and sagas is the same as in container without namespa
 except that we are adding the entire namespace reducer.
 
 `.structor/app/reducers.js`:
-```
+```javascript
 import smartPanelReducer from 'containers/SmartPanel/reducer.js';
 import mylibReducer from 'modules/mylib/reducer.js';
 export default {
@@ -353,7 +352,7 @@ export default {
 ```
 
 `.structor/app/sagas.js`:
-```
+```javascript
 import SmartPanelSagas from 'containers/SmartPanel/sagas.js';
 import mylibSagas from 'modules/mylib/sagas.js';
 export default [
@@ -362,7 +361,7 @@ export default [
 ];
 ```
 
-##### Component default models
+#### Component default models
 
 We already discussed in [Designing UI] chapter how Structor renders pages with components in its workspace. 
 And we mentioned in [A component model] section that there should be a model definition for each component in the library.
@@ -384,7 +383,7 @@ Don't worry about adding model files for components you added manually into the 
 Structor will render your component with the default model definition. 
 But if you want to create more models in the library you always can create it easily by `Save Model` action in the Structor's workspace.
 
-#### Generating the source code
+### Generating the source code
 
 In previous section we understand what structure of files is preferable to use with Structor. 
 
@@ -405,7 +404,7 @@ Generator uses `lodash` template for generating the output files, and it's easy 
 Find generator's templates in folder: `.structor/gengine/scaffolds/<generator name>/templates`.
 
 
-##### React component scaffold
+#### React component scaffold
 
 Before we start let's understand why Structor makes code generation is extremely useful.
 
@@ -455,7 +454,7 @@ dependencies for Webpack compiler. Here you might see that generator made exactl
 file as we saw in previous section. Also, there are additional JSON file for a new component model.
   
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-library-component-preview.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-component-preview.png" />
 </p>
 
 Now click `Install component` button to write the code into project's file structure.
@@ -464,7 +463,7 @@ Now click `Install component` button to write the code into project's file struc
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-library-shows-new.png" />
 </p>
 
-##### Redux container scaffold
+#### Redux container scaffold
 
 The same result we would get in case we chose `redux-container` generator. 
 Additionally, you'll be prompted to enter a reducer key name property under which container's reducer 
@@ -481,7 +480,7 @@ Also there will be a bit more generated files at the preview stage.
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-library-shows-container.png" />
 </p>
 
-#### Troubleshooting
+### Troubleshooting
 
 In case you see that Structor is loading a page too long, or there is an error in the console which tells that Structor endpoint is not found (404).
 Then you can switch Structor to the verbose mode and see the Webpack output in the terminal console. 
