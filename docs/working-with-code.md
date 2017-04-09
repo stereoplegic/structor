@@ -29,10 +29,10 @@
 
 ## Working with code
 
-This chapter assumes that you have a basic knowledge of React, Redux and Redux Saga, Webpack and Hot Reloading, 
+This chapter assumes that you have a basic knowledge of React, Redux and Redux Saga, Webpack and Hot Reloading. 
 
 Also, it assumes that you understand what is a component model in terms of Structor. 
-If not, please read "Designing UI" chapter of this guide. 
+If not, please read [Designing UI](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#designing-ui) chapter of this guide. 
   
 During the installation Structor is asking to provide a directory name where the source code of all components is 
 or will be in the project. 
