@@ -1,24 +1,24 @@
 # Structor's User Guide
 
-* [Getting Started](https://github.com/ipselon/structor/tree/dev-05/docs#getting-started)
-* [Designing UI](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#designing-ui)
-    * [A component model](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#a-component-model)
-    * [Combine and modify component models](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#combine-and-modify-component-models)
-       * [How to select a component](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-select-a-component)
-       * [How to paste new component from library](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-paste-new-component-from-library)
-       * [How to cut, copy and paste components](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-cut-copy-and-paste-components)
-    * [Navigation through pages](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#navigation-through-pages)
-* [Working with code](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#working-with-code)
-    * [Dev environment](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#dev-environment)
-    * [The code structure](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#the-code-structure)
-    * [Component library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#component-library)
-       * [React components in library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#react-components-in-library)
-       * [Redux containers in library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#redux-containers-in-library)
-       * [Component default models](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#component-default-models)
-    * [Generating the source code](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#generating-the-source-code)
-       * [React component scaffold](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#react-component-scaffold)
-       * [Redux container scaffold](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#redux-container-scaffold)
-    * [Troubleshooting](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#troubleshooting)
+* [Getting Started](https://github.com/ipselon/structor/blob/master/docs#getting-started)
+* [Designing UI](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#designing-ui)
+    * [A component model](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#a-component-model)
+    * [Combine and modify component models](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#combine-and-modify-component-models)
+       * [How to select a component](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#how-to-select-a-component)
+       * [How to paste new component from library](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#how-to-paste-new-component-from-library)
+       * [How to cut, copy and paste components](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#how-to-cut-copy-and-paste-components)
+    * [Navigation through pages](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#navigation-through-pages)
+* [Working with code](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#working-with-code)
+    * [Dev environment](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#dev-environment)
+    * [The code structure](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#the-code-structure)
+    * [Component library](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#component-library)
+       * [React components in library](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#react-components-in-library)
+       * [Redux containers in library](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#redux-containers-in-library)
+       * [Component default models](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#component-default-models)
+    * [Generating the source code](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#generating-the-source-code)
+       * [React component scaffold](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#react-component-scaffold)
+       * [Redux container scaffold](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#redux-container-scaffold)
+    * [Troubleshooting](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#troubleshooting)
 * Structor Market
     * Install namespaces
     * Extract namespaces
@@ -192,7 +192,7 @@ export {
 `Component Library` panel will show `Button` component in `Components` group: 
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-library-shows-button.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/source-code-library-shows-button.png" />
 </p>
 
 ***Component in namespace***
@@ -240,7 +240,7 @@ But how `Component Library` panel will show two `Button` components?
 Please find it on the screenshot below:
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-library-shows-two-buttons.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/source-code-library-shows-two-buttons.png" />
 </p>
 
 **Note** It is required to use described format of `component.js` and namespace's `index.js` files - 
@@ -283,7 +283,7 @@ export {
 After Structor discovered that a new record appeared we will see `SmartPanel` in `Components` group in `Component Library` panel.
  
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-library-shows-container-1.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/source-code-library-shows-container-1.png" />
 </p> 
 
 Now we need to inject container's reducer and sagas by editing `.structor/app/reducers.js` and `.structor/app/sagas.js`.
@@ -365,9 +365,9 @@ export default [
 
 #### Component default models
 
-We already discussed in [Designing UI](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#designing-ui) 
+We already discussed in [Designing UI](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#designing-ui) 
 chapter how Structor renders pages with components in its workspace. 
-And we mentioned in [A component model](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#a-component-model) 
+And we mentioned in [A component model](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#a-component-model) 
 section that there should be a model definition for each component in the library.
    
 Such definitions, or it's more accurate to say metadata, of component models are located in `.structor/defaults` folder.
@@ -425,26 +425,26 @@ and even resolves conflicting names from different namespaces.
 Select any component on the page and click on `Generate Component` button in the top toolbar. 
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-generate-component-button.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/source-code-generate-component-button.png" />
 </p>
 
 We will see a generator wizard page. Here we should choose what component we want to have in the result. 
 As we are going to generate simple React component, let's choose `react-component` generator.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-generator-list.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/source-code-generator-list.png" />
 </p>
 
 In the next step we should enter the name of our future component. Also, there is the possibility to specify a component's namespace.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-enter-component-name.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/source-code-enter-component-name.png" />
 </p>
 
 Then generator asks about additional options which will tell the generator what you want to see in the generated code.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-generator-options.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/source-code-generator-options.png" />
 </p>
 
 * `Select type of component` - that will tell if we want to inherit Pure component or not.
@@ -458,13 +458,13 @@ dependencies for Webpack compiler. Here you might see that generator made exactl
 file as we have seen in previous section. Also, there is additional JSON file for a new component model.
   
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-component-preview.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/source-code-component-preview.png" />
 </p>
 
 Now click `Install component` button to write the code into project's file structure.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-library-shows-new.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/source-code-library-shows-new.png" />
 </p>
 
 #### Redux container scaffold
@@ -475,13 +475,13 @@ will be injected into the global store or the namespace's store in case you spec
 Also there will be a way more generated files at the preview stage.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-container-preview.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/source-code-container-preview.png" />
 </p>
 
 **Note** All generated components or containers will appear in corresponding groups in `Component Library` pane in the Stuctor's workspace. 
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-library-shows-container.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/source-code-library-shows-container.png" />
 </p>
 
 ### Troubleshooting

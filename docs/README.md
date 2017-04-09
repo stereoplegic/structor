@@ -1,24 +1,24 @@
 # Structor's User Guide
 
-* [Getting Started](https://github.com/ipselon/structor/tree/dev-05/docs#getting-started)
-* [Designing UI](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#designing-ui)
-    * [A component model](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#a-component-model)
-    * [Combine and modify component models](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#combine-and-modify-component-models)
-       * [How to select a component](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-select-a-component)
-       * [How to paste new component from library](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-paste-new-component-from-library)
-       * [How to cut, copy and paste components](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-cut-copy-and-paste-components)
-    * [Navigation through pages](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#navigation-through-pages)
-* [Working with code](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#working-with-code)
-    * [Dev environment](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#dev-environment)
-    * [The code structure](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#the-code-structure)
-    * [Component library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#component-library)
-       * [React components in library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#react-components-in-library)
-       * [Redux containers in library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#redux-containers-in-library)
-       * [Component default models](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#component-default-models)
-    * [Generating the source code](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#generating-the-source-code)
-       * [React component scaffold](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#react-component-scaffold)
-       * [Redux container scaffold](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#redux-container-scaffold)
-    * [Troubleshooting](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#troubleshooting)
+* [Getting Started](https://github.com/ipselon/structor/blob/master/docs#getting-started)
+* [Designing UI](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#designing-ui)
+    * [A component model](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#a-component-model)
+    * [Combine and modify component models](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#combine-and-modify-component-models)
+       * [How to select a component](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#how-to-select-a-component)
+       * [How to paste new component from library](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#how-to-paste-new-component-from-library)
+       * [How to cut, copy and paste components](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#how-to-cut-copy-and-paste-components)
+    * [Navigation through pages](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#navigation-through-pages)
+* [Working with code](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#working-with-code)
+    * [Dev environment](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#dev-environment)
+    * [The code structure](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#the-code-structure)
+    * [Component library](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#component-library)
+       * [React components in library](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#react-components-in-library)
+       * [Redux containers in library](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#redux-containers-in-library)
+       * [Component default models](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#component-default-models)
+    * [Generating the source code](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#generating-the-source-code)
+       * [React component scaffold](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#react-component-scaffold)
+       * [Redux container scaffold](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#redux-container-scaffold)
+    * [Troubleshooting](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#troubleshooting)
 * Structor Market
     * Install namespaces
     * Extract namespaces
@@ -64,7 +64,7 @@ npm run structor
 Now you should see the Structor's workspace. If not, please create an issue.
 
 <p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-first-opening.png" />
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-first-opening.png" />
 </p>
 
 ### Getting familiar with Structor's Workspace
@@ -78,7 +78,7 @@ The second mode is a preview mode. In the preview mode you are able to see how p
 On the left vertical toolbar you may find two buttons which are responsible for switching between modes:
 
 <p align="left">
-  <img width="30%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-mode-switch-btns.png" />
+  <img width="30%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-mode-switch-btns.png" />
 </p>
 
 On this stage of the tutorial the current page is in the edit mode.
@@ -119,7 +119,7 @@ The ***type*** field tells which React component should be rendered. In line `01
 Let's start to compose something interesting. If you didn't select some component on the page yet, please do this by clicking on the text element right in the center of the current page.
 
 <p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-selected-component.png" />
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-selected-component.png" />
 </p>
 
 As usual we are not able to precisely select something on the Web page by simple clicking on a sibling area. That is why Structor presents a few ways to adjust the selection.
@@ -127,7 +127,7 @@ As usual we are not able to precisely select something on the Web page by simple
 The firs way is to use a breadcrumbs control in the top toolbar of the workspace. The breadcrumbs control lets you see the path in the page model to the selected component. Also it allows you to select another component from this path by clicking on a path's node. In order to simplify understanding which component on the page corresponds to the node you are going to select, the corresponded component will be highlighted on the page once you hover over the path's node.
 
 <p align="left">
-  <img width="30%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-breadcrumbs-control.png" />
+  <img width="30%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-breadcrumbs-control.png" />
 </p>
 
 > BTW, when you hovering over the page you may see highlignted borders of the components, that greatly simplify the component hunting on the page.
@@ -135,7 +135,7 @@ The firs way is to use a breadcrumbs control in the top toolbar of the workspace
 Also, there is a commonly used way to see the page structure in Structor. There is a bottom panel with a tree view representation of the page model. You can select components in the treeview as well as in the breadcrumbs control. Please find a button on the left vertical toolbar and switch it on:
 
 <p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-bottom-treeview.png" />
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-bottom-treeview.png" />
 </p>
 
 Now please select `h3` element on the page. We are going to replace this component with a simple HTML `div`. 
@@ -143,7 +143,7 @@ Now please select `h3` element on the page. We are going to replace this compone
 There are also a couple ways to add new component on the page. One way is to pick up needed component in a library panel. Click on the button with plus icon on the vertical left toolbar to see the library panel:
 
 <p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-library-panel.png" />
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-library-panel.png" />
 </p>
 
 The current version of Structor ships with a couple of React components and with many HTML elements in its library. Open `HTML` group in the library panel and find `div` item in the list. Then just click on it - you'll see the green message which tells that `div` component was copied into a clipboard.
@@ -155,15 +155,15 @@ The clipboard is a buffer which may temporary hold one or many components (pleas
 Having copied `div` into the clipboard we can replace `h3` with the clipboard by clicking on `Replace` button. Click on one of the following `Replace` buttons on the workspace:
 
 <p align="left">
-  <img width="20%" src="https://github.com/ipselon/structor/blob/dev-05/docs/img/structor-workspace-replace-btn-component.png" />
+  <img width="20%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-replace-btn-component.png" />
 </p>
 <br/>
 <p align="left">
-  <img width="20%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-replace-btn-toolbar.png" />
+  <img width="20%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-replace-btn-toolbar.png" />
 </p>
 <br/>
 <p align="left">
-  <img width="20%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-replace-btn-treeview.png" />
+  <img width="20%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-replace-btn-treeview.png" />
 </p>
 
 Keep `div` component selected. Now we try to change style of this `div`. We will use a quick style panel to make it faster. However, there is a way to change JSON component's model through the component editor.
@@ -173,13 +173,13 @@ Click on the button with brush icon on the left vertical toolbar. It opens a rig
 * __Box Model__ `padding: 1em`
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-quickstyle-panel.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-quickstyle-panel.png" />
 </p>
 
 Now we will replace `span` element inside of the `div` by a tuple of components nested in each other. Clear the clipboard by clicking on `New in clibpoard` label.
 
 <p align="left">
-  <img width="30%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-clear-clipboard.png" />
+  <img width="30%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-clear-clipboard.png" />
 </p>
 
 Be sure that clipboard is empty, then select `span` inside of the `div` and click on `Replace` button. We'll see a dialog where we can type a name of component from the library which will be placed insead of `span`. Additionaly, we can type a series of components delimited by dot that lets us add multiple components nested in each other.
@@ -187,7 +187,7 @@ Be sure that clipboard is empty, then select `span` inside of the `div` and clic
 Type two `div` components: `div`.`div` and submit action.
 
 <p align="left">
-  <img width="40%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-tuple-inserting.png" />
+  <img width="40%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-tuple-inserting.png" />
 </p>
 
 As we may see, we have a hierarchy of 3 nested divs. You can easily check it out on the bottom panel in treeview.
@@ -195,7 +195,7 @@ As we may see, we have a hierarchy of 3 nested divs. You can easily check it out
 Select the innermost `div` and click on the circle button with plus sign on it underneath of the selected component:
 
 <p align="left">
-  <img width="20%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-insert-after-btn.png" />
+  <img width="20%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-insert-after-btn.png" />
 </p>
 
 This action appends a new component after the selected one. Type `button` name in the insertion dialog, and after `button` is appended set its style to `padding: 1em`.
@@ -203,13 +203,13 @@ This action appends a new component after the selected one. Type `button` name i
 Then we have to change the texts of `span` and `button`. Open the bottom treeview panel, and just click on the text - it allows to change text right in the place:
 
 <p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-change-text-inplace.png" />
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-change-text-inplace.png" />
 </p>
 
 Change `span` text to "Count: 0", and `button` text to "Increase count". As the result of our manipulation the following composition should be:
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-result-composition.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-result-composition.png" />
 </p>
 
 On the current stage of this tutorial we already learned:
@@ -230,19 +230,19 @@ Now we are going to generate a scaffold for simple React component which will ha
 Select the topmost `div` in the hierarchy of the current page, and click `Generate Component` button on the top toolbar of the workspace.
 
 <p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/generators-generate-component-btn.png" />
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/generators-generate-component-btn.png" />
 </p>
 
 We will see a start page of the generator wizard, where we have to choose what component we want to generate.
 
 <p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/generators-list.png" />
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/generators-list.png" />
 </p>
 
 Here we run `react-component` generator. The next step requires to enter a name of new component and/or a namespace for component.
 
 <p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/generators-enter-name.png" />
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/generators-enter-name.png" />
 </p>
 
 On this note we should step aside a bit and try to understand what the source code and its structure we will have after generation. The only requirement from Structor is to use a certain type of the source code structure. We will discuss the structure and motives to use it in the guide's chapters. But on this step please keep in mind the following structure of components possible to use with Structor:
@@ -287,7 +287,7 @@ Next step gives us options for a few variants of the future scaffold. We are lea
 Here is a preview of the generated source code.
 
 <p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/generators-source-review.png" />
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/generators-source-review.png" />
 </p>
 
 Click to install the source code. After the Webpack compiler finished switch to the preview mode and try to click on the `Increase counter` button. The counter will not be increased. That is why we need to change the source code to make it something valuable.
@@ -349,7 +349,7 @@ export default Counter;
 Now clicking on the button will increase the counter value.
 
 <p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/generators-component-preview.png" />
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/generators-component-preview.png" />
 </p>
 
 On this stage we learned:
@@ -368,7 +368,7 @@ Click on the button with book icon on on the left vertical toolbar. This will sh
 In the top of the list we may see two buttons: `Export Pages` and `Export App`. `Export Pages` responsible for generating the source code for selected pages. And `Export App` button generates not only the pages' source code, but also the source code for entry point in terms of Webpack compiler.
 
 <p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/export-page-list-panel.png" />
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/export-page-list-panel.png" />
 </p>
 
 As far as we are going to build application, we are choosing `Export App`. The modal dialog will worn us about what files will be generated and if there are some existing they will be rewritten.
