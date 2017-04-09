@@ -392,7 +392,7 @@ But if you want to create more models in the library you always can create it ea
 In previous section we learned about what the file structure is recommended to use with Structor. 
 
 Although, you may not follow that rules if you are not going to generate new components by source code 
-generators or install new components from Structor Market, and skip this section as well.
+generators or install new components from Structor Market.
 
 But if you decide to give a shot for Srtuctor's generators, this section will help you understand this powerful feature of Stuctor.
 
