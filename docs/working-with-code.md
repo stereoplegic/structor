@@ -22,6 +22,7 @@
 * Structor Market
     * Install namespaces
     * Extract namespaces
+    * Publish namespaces
 * Exporting
     * Export pages
     * Export application
@@ -98,10 +99,10 @@ containers/
 ```
 
 It does not mean that we can not add extra files in there or remove some files, 
-the only requirement is to keep files inside of components folder.
+the only requirement is to keep files inside of component's folder.
 
 Such structure gives big advantages in extending and refactoring a complex Web application. 
-But there is an issue when the application grows bigger and components may have conflicting names.
+But there is an issue when the application grows bigger - components may have conflicting names.
 
 In this case we should encapsulate conflicting components in namespaces. 
 Read [Additional Guidelines For (Redux) Project Structure](https://jaysoo.ca/2016/12/12/additional-guidelines-for-project-structure/) 
@@ -236,7 +237,7 @@ export {
  
 As we can see, it has the same structure as `components.js` file has. 
 But how `Component Library` panel will show two `Button` components?
-Please find it on a screenshot below:
+Please find it on the screenshot below:
 
 <p align="left">
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-library-shows-two-buttons.png" />
@@ -263,8 +264,8 @@ containers/
         selectors.js
 ```
 
-Adding `SmartPanel` component in `components.js` file in the same way as it was for React component. 
-The only difference is that path to the component should start from `containers` folder.
+Add `SmartPanel` component in `components.js` file in the same way as it was for React component. 
+The only difference is that path to the component should start with `containers` folder.
  
 ```javascript
 import {
@@ -279,7 +280,7 @@ export {
 };
 ```
 
-After Structor discovered that a new record appeared we will see `SmartPanel` in `Components` group on `Component Library` panel.
+After Structor discovered that a new record appeared we will see `SmartPanel` in `Components` group in `Component Library` panel.
  
 <p align="left">
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-library-shows-container-1.png" />
@@ -304,7 +305,7 @@ From now `SmartPanel` reducer is connected to the global state. As a reminder, S
 
 ***Container in namespace***
 
-It will be a bit more complicated to add Redux container from a namespace. As you already noticed, a namespace uses own index files for components.
+It will be a bit more complicated to add Redux container from a namespace. As you already noticed, a namespace uses own index file for components.
 Similarly the namespace has own `sagas.js` and `reducer.js` files. Let's review them first in order to understand why we need them.
 
 Namespace's `sagas.js` file is just an index file which gathers all sagas in the namespace and expose it as an array.
@@ -315,7 +316,8 @@ export default [
 ];
 ```
 
-On contrary, a namespace's `reducer.js` file is a combination of reducers in namespace in a single endpoint in the global Redux state. 
+On contrary, a namespace's `reducer.js` file provides a combination of reducers of the namespace, 
+which is injected as a single endpoint in the global Redux state. 
 It means that reducer of each container will be injected into a namespace state, 
 then the namespace's state will be injected into the global state. It looks like the following schema:
 ```
@@ -333,13 +335,13 @@ export default combineReducers({
 ```
 
 Consequently, containers in namespace should select state from namespace endpoint rather than directly from global state. 
-For example we can create a selector in our `SmartPanel` container like this:
+For example, we can create a selector in our `SmartPanel` container like this:
 ```javascript
 const selectSmartpanel = () => (state) => state.mylib.smartPanel;
 ```
 
-Adding namespace's reducer and sagas is the same as in container without namespace 
-except that we are adding the entire namespace reducer.
+Adding namespace's reducer and sagas is similar to the adding a container without namespace, 
+except that we are adding the namespace reducer in this case.
 
 `.structor/app/reducers.js`:
 ```javascript
@@ -363,10 +365,12 @@ export default [
 
 #### Component default models
 
-We already discussed in [Designing UI] chapter how Structor renders pages with components in its workspace. 
-And we mentioned in [A component model] section that there should be a model definition for each component in the library.
+We already discussed in [Designing UI](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#designing-ui) 
+chapter how Structor renders pages with components in its workspace. 
+And we mentioned in [A component model](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#a-component-model) 
+section that there should be a model definition for each component in the library.
    
-Such definitions or it's more accurate to say metadata files of component models are located in `.structor/defaults` folder.
+Such definitions, or it's more accurate to say metadata, of component models are located in `.structor/defaults` folder.
 Here we can find JSON files for each component accordingly. Models for namespaces are in nested folders.
 
 ```
@@ -379,13 +383,13 @@ Here we can find JSON files for each component accordingly. Models for namespace
          SmartPanel.json
 ```
 
-Don't worry about adding model files for components you added manually into the lib. 
+Don't worry about adding model files for components you added manually - 
 Structor will render your component with the default model definition. 
 But if you want to create more models in the library you always can create it easily by `Save Model` action in the Structor's workspace.
 
 ### Generating the source code
 
-In previous section we understand what structure of files is preferable to use with Structor. 
+In previous section we understand what the file structure is recommended to use with Structor. 
 
 Although, you may not follow that rules if you are not going to generate new components by source code 
 generators or install new components from Structor Market, and skip this section as well.
@@ -443,15 +447,15 @@ Then generator asks about additional options which will tell the generator what 
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-generator-options.png" />
 </p>
 
-* Select type of component - that will tell if we want to inherit Pure component or not.
-* Add default constructor to the source code - include in the code a constructor
-* Inject children into the source code of the component - you may not include children into the source code, 
-in this case we will get an empty component with the same model. This is useful if you want to create kind of layout grid component for Stuctor.
-* Add an example of the property declaration in the source code - adds example of property declaration in the React component.
+* `Select type of component` - that will tell if we want to inherit Pure component or not.
+* `Add default constructor to the source code` - include in the code a constructor
+* `Inject children into the source code of the component` - you may not include children into the source code, 
+in this case we will get an empty component with the same model. This is useful if you want to create kind of a layout grid component for Stuctor.
+* `Add an example of the property declaration in the source code` - adds example of property declaration in the React component.
  
-The next step will show us all source code files which was generated or modified in order to respect 
+The next step will show us all source code files which were generated or modified in order to respect 
 dependencies for Webpack compiler. Here you might see that generator made exactly the same changes in `.structor/app/components.js` 
-file as we saw in previous section. Also, there are additional JSON file for a new component model.
+file as we have seen in previous section. Also, there is additional JSON file for a new component model.
   
 <p align="left">
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-component-preview.png" />
@@ -467,8 +471,8 @@ Now click `Install component` button to write the code into project's file struc
 
 The same result we would get in case we chose `redux-container` generator. 
 Additionally, you'll be prompted to enter a reducer key name property under which container's reducer 
-will be injected into the global store.
-Also there will be a bit more generated files at the preview stage.
+will be injected into the global store or the namespace's store in case you specify the namespace.
+Also there will be a way more generated files at the preview stage.
 
 <p align="left">
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/source-code-container-preview.png" />

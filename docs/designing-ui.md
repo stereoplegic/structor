@@ -1,6 +1,6 @@
-## Structor's User Guide
+# Structor's User Guide
 
-* [Getting Started](https://github.com/ipselon/structor/blob/master/docs/README.md#getting-started)
+* [Getting Started](https://github.com/ipselon/structor/tree/dev-05/docs#getting-started)
 * [Designing UI](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#designing-ui)
     * [A component model](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#a-component-model)
     * [Combine and modify component models](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#combine-and-modify-component-models)
@@ -8,23 +8,28 @@
        * [How to paste new component from library](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-paste-new-component-from-library)
        * [How to cut, copy and paste components](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-cut-copy-and-paste-components)
     * [Navigation through pages](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#navigation-through-pages)
-* The code structure
-    * Component encapsulation
-    * Redux storage
-    * The source code generating
-    * Add existing components
-* Namespaces
-    * Why namespaces
-    * Extract namespaces
+* [Working with code](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#working-with-code)
+    * [Dev environment](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#dev-environment)
+    * [The code structure](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#the-code-structure)
+    * [Component library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#component-library)
+       * [React components in library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#react-components-in-library)
+       * [Redux containers in library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#redux-containers-in-library)
+       * [Component default models](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#component-default-models)
+    * [Generating the source code](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#generating-the-source-code)
+       * [React component scaffold](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#react-component-scaffold)
+       * [Redux container scaffold](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#redux-container-scaffold)
+    * [Troubleshooting](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#troubleshooting)
+* Structor Market
     * Install namespaces
-    * Marketplace
+    * Extract namespaces
+    * Publish namespaces
 * Exporting
     * Export pages
     * Export application
     
-### Designing UI
+## Designing UI
       
-#### A component model
+### A component model
 
 A component model is a metadata used by Structor, it tells 
 how to render a React component and what properties should be applied to the component.
@@ -82,13 +87,13 @@ A different trees of models are encapsulated into pages in terms of Structor's w
 Structor can hold many pages, and their models are placed in one JSON file.
 We may find this file in Structor's meta folder here: `.structor/desk/model.json`;
 
-#### Combine and modify component models
+### Combine and modify component models
 
 Structor's workspace lets us combine any amount of models on the page. 
 It is suggested to use several ways to combine and modify a page model.
 First of all, we have to select a component on the page - this selection should serve as a starting point of a combination. 
 
-##### How to select a component
+#### How to select a component
  
 Structor has a few ways to select a component on the page. 
 
@@ -110,7 +115,7 @@ And of course, we can just click on the component right on the page.
 Useful: the hovering over a component shows the boundaries of the component and its name. 
 That helps find components on the page quicker.
 
-##### How to paste new component from library
+#### How to paste new component from library
 
 Where we can find components which can be placed onto the page? There is a library of components. 
 Literally, this is a list of models and each of the model can be pasted into the page's tree.
@@ -171,7 +176,7 @@ Please read about how to extract the library in "Namespaces" chapter.
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-savemodel-dialog.png" />
 </p>
 
-##### How to cut, copy and paste components
+#### How to cut, copy and paste components
 
 As well as we copied components from library we are able to cut or copy any component on the page into the clipboard. 
 That will allow us to paste component from clipboard in any other place. 
@@ -196,7 +201,7 @@ And now you may paste the clipboard content somewhere else.
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/design-ui-multiple-selection.png" />
 </p>
 
-#### Navigation through pages
+### Navigation through pages
 
 As you already know, the workspace can have many pages. 
 Each page in the workspace has own address, and we can navigate between pages.

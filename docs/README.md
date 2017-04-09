@@ -1,4 +1,4 @@
-## Structor's User Guide
+# Structor's User Guide
 
 * [Getting Started](https://github.com/ipselon/structor/tree/dev-05/docs#getting-started)
 * [Designing UI](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#designing-ui)
@@ -8,27 +8,32 @@
        * [How to paste new component from library](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-paste-new-component-from-library)
        * [How to cut, copy and paste components](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#how-to-cut-copy-and-paste-components)
     * [Navigation through pages](https://github.com/ipselon/structor/blob/dev-05/docs/designing-ui.md#navigation-through-pages)
-* The code structure
-    * Component encapsulation
-    * Redux storage
-    * The source code generating
-    * Add existing components
-* Namespaces
-    * Why namespaces
-    * Extract namespaces
+* [Working with code](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#working-with-code)
+    * [Dev environment](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#dev-environment)
+    * [The code structure](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#the-code-structure)
+    * [Component library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#component-library)
+       * [React components in library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#react-components-in-library)
+       * [Redux containers in library](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#redux-containers-in-library)
+       * [Component default models](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#component-default-models)
+    * [Generating the source code](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#generating-the-source-code)
+       * [React component scaffold](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#react-component-scaffold)
+       * [Redux container scaffold](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#redux-container-scaffold)
+    * [Troubleshooting](https://github.com/ipselon/structor/blob/dev-05/docs/working-with-code.md#troubleshooting)
+* Structor Market
     * Install namespaces
-    * Marketplace
+    * Extract namespaces
+    * Publish namespaces
 * Exporting
     * Export pages
     * Export application
 
-### Getting started
+## Getting started
 
 Structor does not depend on any starter/seed/boilerplate porject. It runs even in an empty folder with `package.json`.
 
 But before you get familiar with Structor we suggest to run a brief tutorial. This tutorial is using our starter project which lets you quickly try all cool features of Structor.
 
-#### Installation
+### Installation
 
 * Clone or download the repo `structor-starter` from GitHub here: 
 
@@ -62,7 +67,7 @@ Now you should see the Structor's workspace. If not, please create an issue.
   <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/dev-05/docs/img/structor-workspace-first-opening.png" />
 </p>
 
-#### Get familiar with Structor's Workspace
+### Getting familiar with Structor's Workspace
 
 After the first opening you'll see the workspace pane where UI components are placed. You may create many such panes and we will call them pages. Actually, they are pages and they behave as the real pages in the browser.
 
@@ -216,7 +221,7 @@ On the current stage of this tutorial we already learned:
 
 In the next stages of the tutorial we will learn how to generate a scaffold for new React component. And how to export pages and build a Web App.
 
-#### Generating React components
+### Generating React components
 
 Structor ships with a couple source code generators for React component scaffolds. We are not going to discuss here how it works and how it can be customized. So, please keep in mind that any scaffold template may be changed to fit your requirements easily.
 
@@ -354,7 +359,7 @@ On this stage we learned:
 
 Here we are ready to learn how to export the workspace pages and build an application in Structor Starter App.
 
-#### Exporting pages and building App
+### Exporting pages and building App
 
 This step is not necessary to the projects which have own building process and requre to add components manually into appliation pages. Structor Starter App does not have a sophisticated app building process in terms of granularity, optimisation, etc. This step is mostly for the learning purpose. But it greatly helps to generate the pages for Web Application which may be constantly changed in the Structor workspace.
 
