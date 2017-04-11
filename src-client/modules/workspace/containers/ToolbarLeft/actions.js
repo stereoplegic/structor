@@ -13,35 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { bindActionCreators } from 'redux';
-import { success } from 'modules/app/containers/AppMessage/actions';
+import { bindActionCreators } from 'redux'
+import { success } from 'modules/app/containers/AppMessage/actions'
 import {
-    reloadPage,
-    setEditModeOn,
-    setLivePreviewModeOn,
-    saveModel
-} from 'modules/workspace/containers/DeskPage/actions';
+  reloadPage,
+  setEditModeOn,
+  setLivePreviewModeOn,
+  saveModel
+} from 'modules/workspace/containers/DeskPage/actions'
 import {
-    toggleLibraryPanel,
-    togglePageListPanel,
-    toggleQuickOptions,
-    togglePageTreeview
-} from 'modules/workspace/containers/Desk/actions';
-import { showModal as proxyShowModal } from 'modules/app/containers/ProxySetupModal/actions';
+  toggleLibraryPanel,
+  togglePageListPanel,
+  toggleQuickOptions,
+  togglePageTreeview
+} from 'modules/workspace/containers/Desk/actions'
+import { showModal as proxyShowModal } from 'modules/app/containers/ProxySetupModal/actions'
+import { showModal as showAboutModal } from 'modules/app/containers/InformationModal/actions'
 
 export const saveProject = () => (dispatch, getState) => {
-    dispatch(saveModel());
-    dispatch(success('Project has been saved successfully.'));
-};
+  dispatch(saveModel())
+  dispatch(success('Project has been saved successfully.'))
+}
 
 export const containerActions = (dispatch) => bindActionCreators({
-    reloadPage,
-    setEditModeOn,
-    setLivePreviewModeOn,
-    saveProject,
-    toggleLibraryPanel,
-    togglePageListPanel,
-    toggleQuickOptions,
-    togglePageTreeview,
-    proxyShowModal,
-}, dispatch);
+  reloadPage,
+  setEditModeOn,
+  setLivePreviewModeOn,
+  saveProject,
+  toggleLibraryPanel,
+  togglePageListPanel,
+  toggleQuickOptions,
+  togglePageTreeview,
+  proxyShowModal,
+  showAboutModal,
+}, dispatch)

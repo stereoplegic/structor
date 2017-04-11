@@ -39,12 +39,23 @@ const btnGroupStyle = {
     'textAlign': 'center'
 };
 
+const getAboutText = (version) => `
+<h3 class="text-center">Structor - React UI Builder</h3>
+<h5 class="text-center">${version}</h5>
+<h5 class="text-center">Apache License, Version 2.0</h5>
+<hr/>
+#### Created by <a href="https://www.linkedin.com/in/apustovalov" target="_blank">Alex Pustovalov</a> 
+<i class="fa fa-envelope-o"></i> <a href="mailto:apustovalov@gmail.com">apustovalov@gmail.com</a>\n\n
+<i class="fa fa-twitter"></i> <a href="https://twitter.com/alex_pustovalov" target="_blank">@alex_pustovalov</a>
+`;
+
 class Container extends Component {
 
     constructor(props) {
         super(props);
         this.handleSaveProject = this.handleSaveProject.bind(this);
         this.handleProxyModal = this.handleProxyModal.bind(this);
+        this.handleShowAboutModal = this.handleShowAboutModal.bind(this);
     }
 
     handleSaveProject(e) {
@@ -57,6 +68,12 @@ class Container extends Component {
         e.preventDefault();
         e.stopPropagation();
         this.props.proxyShowModal();
+    }
+
+    handleShowAboutModal(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.props.showAboutModal(getAboutText(this.props.version));
     }
 
     render(){
@@ -73,6 +90,13 @@ class Container extends Component {
                             <span className="fa fa-bars" style={{fontSize: 32}} />
                         </a>
                         <ul className="dropdown-menu" role="menu">
+                            <li>
+                                <a href="#" onClick={this.handleShowAboutModal}>
+                                    <span className="fa fa-info fa-fw" />
+                                    &nbsp;About
+                                </a>
+                            </li>
+                            <li className="divider" />
                             <li>
                                 <a href="#" onClick={this.handleSaveProject}>
                                     <span className="fa fa-save fa-fw" />

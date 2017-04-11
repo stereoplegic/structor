@@ -79,13 +79,14 @@ class NamespaceCard extends Component {
 	}
 
 	render() {
-		const {style, repoData} = this.props;
+		const {style, repoData, currentVersion} = this.props;
 		const {
 			gitHubRepo,
 			gitHubOwner,
 			description,
 			screenshotUrl,
-			releases
+			releases,
+			structorVersion
 		} = repoData;
 		const repoUrl = `https://github.com/${gitHubOwner}/${gitHubRepo}`;
 		return (
@@ -119,7 +120,7 @@ class NamespaceCard extends Component {
 									<ul className="dropdown-menu">
 										{releases.map((release, index) => {
 											return (
-												<li>
+												<li key={release.name + index}>
 													<a
 														href="#"
 														data-url={release.tarballUrl}
@@ -158,6 +159,18 @@ class NamespaceCard extends Component {
 						</div>
 						<div style={containerStyle}>
 							<div style={installBtnSectionStyle}>
+								<span
+									style={{marginRight: '0.5em'}}
+									title="Compatible Structor version with this package"
+								>
+									Structor version:
+								</span>
+								<span
+									className={structorVersion === currentVersion ? "text-success" : "text-danger"}
+									title={structorVersion === currentVersion ? "Structor version is compatible" : "Structor version is not compatible"}
+								>
+									{structorVersion}
+								</span>
 							</div>
 							<div style={bottomToolbarStyle}>
 								<div style={{marginLeft: '0.5em'}}>

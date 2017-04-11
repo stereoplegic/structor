@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-import { createStructuredSelector } from 'reselect';
+import { createStructuredSelector } from 'reselect'
 // import { userAccountSelector } from 'modules/app/containers/AppContainer/selectors';
+import { versionSelector } from 'modules/app/containers/AppContainer/selectors';
 
 // export const filteredNamespacesSelector = state => state.installer.filteredNamespaces;
 
 export const modelSelector = createStructuredSelector({
-    filteredIndexList: state => state.installer.filteredIndexList,
-    searchText: state => state.installer.searchText,
-    limit: state => state.installer.limit,
-	marketIndexList: state => state.installer.marketIndexList,
-});
+  filteredIndexList: state => state.installer.filteredIndexList,
+  searchText: state => state.installer.searchText,
+  limit: state => state.installer.limit,
+  marketIndexList: state => state.installer.marketIndexList,
+  version: versionSelector,
+})

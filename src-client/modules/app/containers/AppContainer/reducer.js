@@ -29,7 +29,6 @@ export default (state = initialState, action = {}) => {
 
     if(type === actions.SET_PROJECT_INFO){
         return Object.assign({}, state, {
-            proxyURL: payload.project.conf.proxyURL,
             paths: payload.project.paths,
             packageConfig: payload.server.packageConf
         });
