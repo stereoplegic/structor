@@ -29,21 +29,19 @@ import {
 import {CLIPBOARD_EMPTY} from 'modules/workspace/containers/ClipboardIndicator/actions';
 import { modeMap } from 'modules/workspace/containers/QuickAppendModal/actions';
 
-var scrollToSelected = function($frameWindow, key){
+const scrollToSelected = function($frameWindow, key){
     setTimeout((function(_frameWindow){
         return function(){
             let $selected = _frameWindow.find('#' + key);
             if($selected && $selected.length > 0){
-                var diff = ($selected.offset().top + _frameWindow.scrollTop()) - _frameWindow.offset().top;
-                var margin = parseInt(_frameWindow.css("height"))/5;
+                const diff = ($selected.offset().top + _frameWindow.scrollTop()) - _frameWindow.offset().top;
+                const margin = parseInt(_frameWindow.css("height"))/5;
                 //_frameWindow[0].scrollTop = (diff - margin);
                 //console.log("Scroll to " + (diff - margin));
                 _frameWindow.animate(
                     { scrollTop: (diff - margin) },
                     300
                 );
-                diff = null;
-                margin = null;
             }
             $selected = null;
         }
