@@ -8,16 +8,15 @@ Structor - React UI Builder.
 [![npm downloads](https://img.shields.io/npm/dt/structor.svg?style=flat)](https://www.npmjs.com/package/structor)
 
 #### What Structor is:
-* **Structor is a visual editor (WYSIWYG editor)** - construct a React component of any complexity combining components and styling them right on the page.
-* **Structor is a scaffolding tool** - it lets you generate scaffolds of React components, Redux containers/reducers/selectors and sagas.
-* **Structor is a library tool** - you may install the source code of pre-created components from [Structor Market](https://github.com/ipselon/structor-market).
-* **Structor is a playground tool** - it uses own Webpack Dev server to compile components, and that allows you to develop UI components in isolation from the application.    
+* **a visual editor** - construct a React component of any complexity combining components and styling them right on the page.
+* **a scaffolding tool** - it lets you generate scaffolds of React components, Redux containers/reducers/selectors and sagas.
+* **a library tool** - you may install the source code of pre-created components from [Structor Market](https://github.com/ipselon/structor-market).
+* **a playground tool** - it uses own Webpack Dev server to compile components, and that allows you to develop UI components in isolation from the application.    
 
 #### What Structor is not:
 
-* Structor is not a graphical Web design tool.
-* Structor is not a Web site/Web app/Web pages generator tool.
-* Structor does not modify the source code of your project.
+* a graphical Web design tool.
+* a Web site/Web app/Web pages generator tool.
 
 #### Requirements:
 
@@ -25,6 +24,10 @@ Structor - React UI Builder.
 * Webpack >2.2.x
 
 #### [Structor's User Guide](https://github.com/ipselon/structor/blob/master/docs/README.md) 
+
+#### Sponsors
+
+Many thanks to Vlad Magdalin ([@callmevlad](https://twitter.com/callmevlad)) for his support on [Patreon](https://www.patreon.com/ipselon)
 
 ### License
 Apache License, Version 2.0 (Apache-2.0)
