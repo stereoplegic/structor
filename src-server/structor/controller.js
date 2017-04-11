@@ -127,6 +127,7 @@ export function getModel() {
 }
 
 export function getConfig() {
+
 	return Promise.resolve(config.asObject());
 }
 

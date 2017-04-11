@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { createStructuredSelector } from 'reselect';
+import { createStructuredSelector } from 'reselect'
+import { versionSelector } from 'modules/app/containers/AppContainer/selectors'
 
 export const modelSelector = createStructuredSelector({
-    componentModel: state => state.toolbarLeft,
-    userAccountModel: state => state.appContainer.userAccount,
-    deskPageModel: state => state.deskPage,
-    deskModel: state => state.desk
+  componentModel: state => state.toolbarLeft,
+  userAccountModel: state => state.appContainer.userAccount,
+  deskPageModel: state => state.deskPage,
+  deskModel: state => state.desk,
+  version: versionSelector,
 });

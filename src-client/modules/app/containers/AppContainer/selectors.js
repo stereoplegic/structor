@@ -17,6 +17,7 @@ import { createStructuredSelector } from 'reselect';
 
 export const userAccountSelector = state => state.appContainer.userAccount;
 export const projectPathsSelector = state => state.appContainer.paths;
+export const versionSelector = state => state.appContainer.packageConfig.version;
 
 export const modelSelector = createStructuredSelector({
     componentModel: state => state.appContainer
