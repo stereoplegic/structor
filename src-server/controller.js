@@ -20,7 +20,7 @@ import http from 'http'
 import path from 'path'
 import bodyParser from 'body-parser'
 
-import { config, commons } from 'structor-commons'
+import { config } from 'structor-commons'
 
 import * as structorController from './structor/controller.js'
 // import * as sandboxController from './sandbox/controller.js';
@@ -102,13 +102,6 @@ export function initServer (options) {
           // initSandboxController();
         }
       }
-    })
-    .then(() => {
-      const structorPackageFilePath = path.join(serverDirPath, 'package.json');
-      return commons.readJson(structorPackageFilePath)
-        .then(packageConfig => {
-          console.log('Structor version: ', packageConfig.version);
-        });
     })
     .catch(e => {
       printError('Error happened during server initialization:', e)
