@@ -110,7 +110,7 @@ class Container extends Component {
                             </span>
                         </li>
                     );
-                    const showNumber = 5;
+                    const showNumber = 3;
                     const componentNumber = parentsList.length - 1;
                     const lastIndex = componentNumber - 1;
                     let restNumber = componentNumber > showNumber ? componentNumber - showNumber : 0;

@@ -60,6 +60,7 @@ export const pasteBefore = (targetKey) => (dispatch, getState) => {
         resultKeys = graphApi.copyPasteBeforeOrAfter(false);
     } else if(clipboardMode === CLIPBOARD_NEW){
         resultKeys = graphApi.fromBufferBeforeOrAfter(false);
+        dispatch(removeClipboardKeys());
     }
     if(resultKeys && resultKeys.length > 0){
         dispatch(setSelectedKeys(resultKeys));
@@ -81,6 +82,7 @@ export const pasteAfter = (targetKey) => (dispatch, getState) => {
         resultKeys = graphApi.copyPasteBeforeOrAfter(true);
     } else if(clipboardMode === CLIPBOARD_NEW){
         resultKeys = graphApi.fromBufferBeforeOrAfter(true);
+        dispatch(removeClipboardKeys());
     }
     if(resultKeys && resultKeys.length > 0){
         dispatch(setSelectedKeys(resultKeys));
@@ -102,6 +104,7 @@ export const pasteFirst = (targetKey) => (dispatch, getState) => {
         resultKeys = graphApi.copyPasteFirstOrLast(true);
     } else if(clipboardMode === CLIPBOARD_NEW){
         resultKeys = graphApi.fromBufferFirstOrLast(true);
+        dispatch(removeClipboardKeys());
     }
     if(resultKeys && resultKeys.length > 0){
         dispatch(setSelectedKeys(resultKeys));
@@ -123,6 +126,7 @@ export const pasteLast = (targetKey) => (dispatch, getState) => {
         resultKeys = graphApi.copyPasteFirstOrLast(false);
     } else if(clipboardMode === CLIPBOARD_NEW){
         resultKeys = graphApi.fromBufferFirstOrLast(false);
+        dispatch(removeClipboardKeys());
     }
     if(resultKeys && resultKeys.length > 0){
         dispatch(setSelectedKeys(resultKeys));
@@ -144,6 +148,7 @@ export const pasteReplace = (targetKey) => (dispatch, getState) => {
         resultKeys = graphApi.copyPasteReplace();
     } else if(clipboardMode === CLIPBOARD_NEW){
         resultKeys = graphApi.fromBufferReplace();
+        dispatch(removeClipboardKeys());
     }
     if(resultKeys && resultKeys.length > 0){
         dispatch(setSelectedKeys(resultKeys));

@@ -79,7 +79,6 @@ class Container extends Component {
                     title="Append components before selected component">
                     <span style={wideButtonLabelStyle} >
                         <i className="umy-icon-arrow-plus-down" />
-                        <span style={{marginLeft: '0.3em'}}>Before</span>
                     </span>
                 </button>
                 <button
@@ -89,8 +88,7 @@ class Container extends Component {
                     onClick={this.handleButtonClick}
                     title="Insert components into selected component as the first child">
                     <span style={wideButtonLabelStyle}>
-                        <i className="umy-icon-arrow-plus-up" />
-                        <span style={{marginLeft: '0.3em'}}>First</span>
+                        <span className="umy-icon-arrow-plus-up rotate-clockwise" />
                     </span>
                 </button>
                 <button
@@ -110,8 +108,7 @@ class Container extends Component {
                     onClick={this.handleButtonClick}
                     title="Insert components into selected component as the last child">
                     <span style={wideButtonLabelStyle}>
-                        <i className="umy-icon-arrow-plus-down" />
-                        <span style={{marginLeft: '0.3em'}}>Last</span>
+                        <i className="umy-icon-arrow-plus-down rotate-clockwise" />
                     </span>
                 </button>
                 <button
@@ -122,7 +119,6 @@ class Container extends Component {
                     title="Append components after selected component">
                     <span style={wideButtonLabelStyle}>
                         <i className="umy-icon-arrow-plus-up" />
-                        <span style={{marginLeft: '0.3em'}}>After</span>
                     </span>
                 </button>
             </div>

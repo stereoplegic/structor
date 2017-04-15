@@ -601,3 +601,19 @@ body {
 .dimension-border-bottom:hover {
     background-color: rgba(0, 0, 0, 0.05);
 }
+
+.rotate-clockwise {
+    /* Safari */
+    -webkit-transform: rotate(90deg);
+    /* Firefox */
+    -moz-transform: rotate(90deg);
+    /* IE */
+    -ms-transform: rotate(90deg);
+    /* Opera */
+    -o-transform: rotate(90deg);
+
+    transform: rotate(90deg);
+    display: inline-block;
+    vertical-align: top;
+    margin: .2em 0 0 0;
+}
