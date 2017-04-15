@@ -1,6 +1,6 @@
 # Structor's User Guide
 
-* [Getting Started](https://github.com/ipselon/structor/tree/dev-05/docs#getting-started)
+* [Getting Started](https://github.com/ipselon/structor/blob/master/docs#getting-started)
 * [Designing UI](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#designing-ui)
     * [A component model](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#a-component-model)
     * [Combine and modify component models](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#combine-and-modify-component-models)
@@ -19,10 +19,9 @@
        * [React component scaffold](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#react-component-scaffold)
        * [Redux container scaffold](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#redux-container-scaffold)
     * [Troubleshooting](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#troubleshooting)
-* Structor Market
-    * Install namespaces
-    * Extract namespaces
-    * Publish namespaces
+* [Structor Market](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#structor-market)
+    * [Installing component packages](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#installing-component-packages)
+    * [Publishing components on the market](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#publishing-components-on-the-market)
 * Exporting
     * Export pages
     * Export application

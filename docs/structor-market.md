@@ -19,9 +19,9 @@
        * [React component scaffold](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#react-component-scaffold)
        * [Redux container scaffold](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#redux-container-scaffold)
     * [Troubleshooting](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#troubleshooting)
-* Structor Market
-    * Installing component packages
-    * Publishing components on the market
+* [Structor Market](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#structor-market)
+    * [Installing component packages](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#installing-component-packages)
+    * [Publishing components on the market](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#publishing-components-on-the-market)
 * Exporting
     * Export pages
     * Export application
@@ -33,7 +33,7 @@ Structor Market is a GitHub repository with an index list of repositories on Git
 the source code of React components for Srtuctor.
 
 Once you published your components on the market, 
-they became accessible to other developers thought the market gallery in Structor. 
+they became accessible to other developers through the market gallery in Structor. 
 
 ### Installing component packages
 
