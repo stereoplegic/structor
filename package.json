@@ -1,6 +1,6 @@
 {
   "name": "structor",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Structor: React UI Builder",
   "main": "structor.js",
   "scripts": {
@@ -64,7 +64,7 @@
     "request": "^2.70.0",
     "reselect": "^2.5.4",
     "socket.io": "1.4.5",
-    "structor-commons": "0.0.2",
+    "structor-commons": "0.0.3",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^2.2.1",
