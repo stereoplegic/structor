@@ -25,13 +25,13 @@ ___Install components -> Prototype UI -> Generate source code -> Extract compone
 
 <hr/>
 
-#### Sponsors
-
-Many thanks to Vlad Magdalin ([@callmevlad](https://twitter.com/callmevlad)) for his support on [Patreon](https://www.patreon.com/ipselon)
-
 #### Created by
 
 [Alex Pustovalov](https://twitter.com/alex_pustovalov)
+
+#### Sponsors
+
+Many thanks to Vlad Magdalin ([@callmevlad](https://twitter.com/callmevlad)) for his support on [Patreon](https://www.patreon.com/ipselon)
 
 ### License
 Apache License, Version 2.0 (Apache-2.0)
