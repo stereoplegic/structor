@@ -23,6 +23,8 @@ ___Install components -> Prototype UI -> Generate source code -> Extract compone
 
 #### [Structor's User Guide](https://github.com/ipselon/structor/blob/master/docs/README.md) 
 
+<hr/>
+
 #### Sponsors
 
 Many thanks to Vlad Magdalin ([@callmevlad](https://twitter.com/callmevlad)) for his support on [Patreon](https://www.patreon.com/ipselon)
