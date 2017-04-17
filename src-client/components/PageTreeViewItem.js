@@ -14,125 +14,147 @@
  * limitations under the License.
  */
 
-import React, { Component, PropTypes } from 'react';
-import { print } from 'api';
+import React, { Component, PropTypes } from 'react'
+import { print } from 'api'
 
-const linkStyle = {outline: 'none', color: '#2185D0'};
-const propsStyle = {margin: '0 0 0 0.5em', fontWeight: '200', cursor: 'pointer'};
-const namespaceStyle = {margin: '0 0 0 0.3em'};
+const linkStyle = {outline: 'none', color: '#2185D0'}
+const propsStyle = {margin: '0 0 0 0.5em', fontWeight: '200', cursor: 'pointer'}
+const namespaceStyle = {margin: '0 0 0 0.3em'}
 
 class PageTreeViewItem extends Component {
 
-    constructor(props) {
-        super(props);
+  constructor (props) {
+    super(props)
+  }
+
+  handleClick = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (this.props.onSelect) {
+      this.props.onSelect(this.props.itemKey, e.metaKey || e.ctrlKey)
+    }
+  }
+
+  render () {
+
+    let content = null
+
+    const {isSelected, isForCutting, isForCopying, itemKey, children, type, namespace, modelProps} = this.props
+    const {onMouseEnter, onMouseLeave} = this.props
+
+    let className
+    if (isSelected) {
+      className = 'umy-treeview-list-item-selected'
+    } else if (isForCopying) {
+      className = 'umy-treeview-list-item-for-copying'
+    } else if (isForCutting) {
+      className = 'umy-treeview-list-item-for-cutting'
+    } else {
+      className = 'umy-treeview-list-item'
     }
 
-    handleClick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (this.props.onSelect) {
-            this.props.onSelect(this.props.itemKey, e.metaKey || e.ctrlKey);
-        }
-    };
-
-    render() {
-
-        let content = null;
-
-        const { isSelected, isForCutting, isForCopying, itemKey, children, type, namespace, modelProps } = this.props;
-        const {onMouseEnter, onMouseLeave} = this.props;
-
-        let className;
-        if(isSelected){
-            className = 'umy-treeview-list-item-selected';
-        } else if(isForCopying){
-            className = 'umy-treeview-list-item-for-copying';
-        } else if(isForCutting){
-            className = 'umy-treeview-list-item-for-cutting';
-        } else {
-            className = 'umy-treeview-list-item';
-        }
-
-        const label = (<span>{type}</span>);
-        const namespaceLabel = namespace ?
-            (<span className="text-muted" style={namespaceStyle}>{'[' + namespace + ']'}</span>) : null;
-        let props = print.printProps(modelProps);
-        if (children && children.length > 0) {
-            content = (
-                <li id={itemKey}
-                    className={className}>
-                    <span>{'<'}</span>
-                    <a key={'toplink'}
-                       href="#"
-                       onClick={this.handleClick}
-                       style={linkStyle}
-                       data-key={itemKey}
-                       onMouseEnter={onMouseEnter}
-                       onMouseLeave={onMouseLeave}
-                    >
-                        {label}
-                        {namespaceLabel}
-                    </a>
-                    { props && <span className="text-muted"
-                                    onClick={this.handleClick}
-                                    style={propsStyle}>{props}</span> }
-                    <span>{'>'}</span>
-                    {children}
-                    <span>{'</'}</span>
-                    <a key={'bottomlink'}
-                       href="#"
-                       onClick={this.handleClick}
-                       style={linkStyle}
-                       data-key={itemKey}
-                       onMouseEnter={onMouseEnter}
-                       onMouseLeave={onMouseLeave}
-                    >
-                        {label}
-                    </a>
-                    <span>{'>'}</span>
-                </li>
-            );
-        } else {
-            content = (
-                <li id={itemKey}
-                    className={className}>
-                    <span>{'<'}</span>
-                    <a href="#"
-                       onClick={this.handleClick}
-                       style={linkStyle}
-                       data-key={itemKey}
-                       onMouseEnter={onMouseEnter}
-                       onMouseLeave={onMouseLeave}
-                    >
-                        {label}
-                        {namespaceLabel}
-                    </a>
-                    { props && <span className="text-muted"
-                                     onClick={this.handleClick}
-                                     style={propsStyle}>{props}</span> }
-                    <span>{' />'}</span>
-                </li>
-            );
-        }
-
-        return content;
+    const label = (<span>{type}</span>)
+    const namespaceLabel = namespace ? (
+      <span className="text-muted" style={namespaceStyle}>{'[' + namespace + ']'}</span>) : null
+    let props = print.printProps(modelProps)
+    if (children && children.length > 0) {
+      let topTagWrapperStyle = {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: '0.2em'
+      }
+      let bottomTagWrapperStyle = {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: '0.2em'
+      }
+      if (children.length === 1 && children[0].props.onChangeText) {
+        topTagWrapperStyle.paddingBottom = '0px';
+        bottomTagWrapperStyle.paddingTop = '0px';
+      }
+      content = (
+        <li
+          id={itemKey}
+          className={className}
+        >
+          <div style={topTagWrapperStyle}>
+            <span>{'<'}</span>
+            <a key={'toplink'}
+               href="#"
+               onClick={this.handleClick}
+               style={linkStyle}
+               data-key={itemKey}
+               onMouseEnter={onMouseEnter}
+               onMouseLeave={onMouseLeave}
+            >
+              {label}
+              {namespaceLabel}
+            </a>
+            { props && <span className="text-muted"
+                             onClick={this.handleClick}
+                             style={propsStyle}>{props}</span> }
+            <span>{'>'}</span>
+          </div>
+          {children}
+          <div style={bottomTagWrapperStyle}>
+            <span>{'</'}</span>
+            <a key={'bottomlink'}
+               href="#"
+               onClick={this.handleClick}
+               style={linkStyle}
+               data-key={itemKey}
+               onMouseEnter={onMouseEnter}
+               onMouseLeave={onMouseLeave}
+            >
+              {label}
+            </a>
+            <span>{'>'}</span>
+          </div>
+        </li>
+      )
+    } else {
+      content = (
+        <li id={itemKey}
+            className={className}>
+          <span>{'<'}</span>
+          <a href="#"
+             onClick={this.handleClick}
+             style={linkStyle}
+             data-key={itemKey}
+             onMouseEnter={onMouseEnter}
+             onMouseLeave={onMouseLeave}
+          >
+            {label}
+            {namespaceLabel}
+          </a>
+          { props && <span className="text-muted"
+                           onClick={this.handleClick}
+                           style={propsStyle}>{props}</span> }
+          <span>{' />'}</span>
+        </li>
+      )
     }
+
+    return content
+  }
 }
 
 PageTreeViewItem.defaultProps = {
-    itemKey: undefined,
-    isSelected: false,
-    onSelect: undefined,
-    type: undefined,
-    namespace: undefined
-};
+  itemKey: undefined,
+  isSelected: false,
+  onSelect: undefined,
+  type: undefined,
+  namespace: undefined
+}
 PageTreeViewItem.propTypes = {
-    itemKey: PropTypes.string.isRequired,
-    inSelected: PropTypes.bool,
-    onSelect: PropTypes.func,
-    type: PropTypes.string.isRequired,
-    namespace: PropTypes.string
-};
+  itemKey: PropTypes.string.isRequired,
+  inSelected: PropTypes.bool,
+  onSelect: PropTypes.func,
+  type: PropTypes.string.isRequired,
+  namespace: PropTypes.string
+}
 
-export default PageTreeViewItem;
+export default PageTreeViewItem
 

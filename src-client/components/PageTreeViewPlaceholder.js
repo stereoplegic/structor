@@ -32,20 +32,18 @@ class PageTreeViewPlaceholder extends Component {
 	};
 
 	render() {
-		let style = {marginLeft: '-1.75em'};
-		if(this.props.isTopLevelPlace){
-			style.marginLeft = '-.45em';
-		}
 		return (
 			<li
 				className="treeview-placeholder-base"
-				style={style}
-				title="Paste component from clipboard">
-				<div className="treeview-placeholder">
+				title="Paste component here"
+			>
+				<div
+					className="treeview-placeholder"
+					onClick={this.handleClick}
+				>
+					<i className="fa fa-plus treeview-placeholder-icon"	/>
 					<div className="treeview-placeholder-line" />
-					<div
-						className="treeview-placeholder-circle"
-						onClick={this.handleClick} />
+					<div className="treeview-placeholder-circle" />
 				</div>
 			</li>
 		);
