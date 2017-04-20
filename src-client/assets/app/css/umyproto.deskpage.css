@@ -319,8 +319,6 @@ body {
 .umy-treeview-list-item {
     position: relative;
     padding-left: 3px;
-    padding-top: 0.2em;
-    padding-bottom: 0.2em;
     white-space: nowrap;
     font-size: 14px;
     letter-spacing: 0px;
@@ -332,9 +330,6 @@ body {
     border-radius: 3px;
     position: relative;
     padding-left: 3px;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-
     white-space: nowrap;
     font-size: 14px;
     letter-spacing: 0px;
@@ -346,8 +341,6 @@ body {
     border-radius: 3px;
     position: relative;
     padding-left: 3px;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
     white-space: nowrap;
     font-size: 14px;
     letter-spacing: 0px;
@@ -359,8 +352,6 @@ body {
     border-radius: 3px;
     position: relative;
     padding-left: 3px;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
     white-space: nowrap;
     font-size: 14px;
     letter-spacing: 0px;
@@ -504,6 +495,14 @@ body {
     border-radius: 50%;
     background-color: rgba(240, 173, 78, 0.1);
     border: 1px solid rgba(205, 205, 205, 0.5);
+}
+
+.treeview-panel-button {
+    opacity: 0.7;
+}
+
+.treeview-panel-button:hover {
+    opacity: 1;
 }
 
 .dimension-box {
