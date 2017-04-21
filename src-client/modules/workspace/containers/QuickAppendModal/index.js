@@ -24,100 +24,102 @@ import { Modal, Button } from 'react-bootstrap';
 
 class Container extends Component {
 
-    constructor(props) {
-        super(props);
-        this.handleClose = this.handleClose.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.state = {
-            errors: []
-        };
-    }
+  constructor (props) {
+    super(props);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      errors: []
+    };
+  }
 
-    handleClose(e){
-        if(e){
-            e.stopPropagation();
-            e.preventDefault();
-        }
-        this.setState({
-            errors: []
+  handleClose (e) {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    this.setState({
+      errors: []
+    });
+    this.props.hideModal();
+  }
+
+  handleSubmit () {
+    const {submit, componentModel: {appendMode}, componentNames} = this.props;
+    const tuple = this.input.getText();
+    if (tuple) {
+      const parts = tuple.split('.');
+      if (parts && parts.length > 0) {
+        let errors = [];
+        parts.forEach(part => {
+          if (componentNames.findIndex(i => i === part) < 0) {
+            errors.push(`"${part}" component was not found`);
+          }
         });
-        this.props.hideModal();
-    }
-
-    handleSubmit(){
-        const {submit, componentModel: {appendMode}, componentNames} = this.props;
-        const tuple = this.input.getText();
-        if(tuple){
-            const parts = tuple.split('.');
-            if(parts && parts.length > 0){
-                let errors = [];
-                parts.forEach(part => {
-                    if(componentNames.findIndex(i => i === part) < 0){
-                        errors.push(`"${part}" component was not found`);
-                    }
-                });
-                if(errors.length > 0){
-                    this.setState({
-                        errors: errors
-                    });
-                } else {
-                    submit(tuple, appendMode);
-                }
-            } else {
-                this.setState({
-                    errors: ['Empty value is now allowed']
-                });
-            }
+        if (errors.length > 0) {
+          this.setState({
+            errors: errors
+          });
         } else {
-            this.setState({
-                errors: ['Empty value is now allowed']
-            });
+          submit(tuple, appendMode);
         }
+      } else {
+        this.setState({
+          errors: ['Empty value is now allowed']
+        });
+      }
+    } else {
+      this.setState({
+        errors: ['Empty value is now allowed']
+      });
     }
+  }
 
-    render() {
-        const { componentModel: {show, appendMode}, componentNames, hideModal } = this.props;
-        const {errors} = this.state;
-        return (
-            <Modal show={show}
-                   onHide={hideModal}
-                   dialogClassName="umy-modal-overlay umy-modal-middlesize"
-                   backdrop={true}
-                   keyboard={false}
-                   bsSize="large"
-                   ref="dialog"
-                   animation={true}>
-                <Modal.Header closeButton={false} aria-labelledby='contained-modal-title'>
-                    <Modal.Title id='contained-modal-title'>{appendMode.label}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {errors && errors.length > 0 &&
-                    <div style={{padding: "0px 1em"}}>
-                        {errors.map((e, index) => {
-                            return (
-                                <p
-                                    key={'error_' + index}
-                                    style={{margin: 0}} className="text-danger">
-                                    {e}
-                                </p>
-                            )
-                        })}
-                    </div>
-                    }
-                    <InputComponentAutocomplete
-                        ref={me => this.input = me}
-                        componentNames={componentNames}
-                        onSubmit={this.handleSubmit}
-                        onCancel={this.handleClose}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.handleClose}>Cancel</Button>
-                    <Button onClick={this.handleSubmit} bsStyle="primary">Submit</Button>
-                </Modal.Footer>
-            </Modal>
-        );
-    }
+  render () {
+    const {componentModel: {show, appendMode}, componentNames, hideModal} = this.props;
+    const {errors} = this.state;
+    return (
+      <Modal
+        show={show}
+        onHide={hideModal}
+        dialogClassName="umy-modal-overlay umy-modal-middlesize"
+        backdrop={true}
+        keyboard={false}
+        bsSize="large"
+        ref="dialog"
+        animation={true}
+      >
+        <Modal.Header closeButton={false} aria-labelledby='contained-modal-title'>
+          <Modal.Title id='contained-modal-title'>{appendMode.label}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {errors && errors.length > 0 &&
+          <div style={{padding: '0px 1em'}}>
+            {errors.map((e, index) => {
+              return (
+                <p
+                  key={'error_' + index}
+                  style={{margin: 0}} className="text-danger">
+                  {e}
+                </p>
+              );
+            })}
+          </div>
+          }
+          <InputComponentAutocomplete
+            ref={me => this.input = me}
+            componentNames={componentNames}
+            onSubmit={this.handleSubmit}
+            onCancel={this.handleClose}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.handleClose}>Cancel</Button>
+          <Button onClick={this.handleSubmit} bsStyle="primary">Submit</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
 }
 
 export default connect(modelSelector, containerActions)(Container);

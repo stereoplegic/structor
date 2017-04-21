@@ -20,6 +20,11 @@ import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 import { modeMap } from 'modules/workspace/containers/QuickAppendModal/actions';
 
+const wideButtonLabelStyle = {
+  margin: '0 0.5em',
+  fontSize: '11px'
+};
+
 class Container extends Component {
 
   constructor (props) {
@@ -64,11 +69,6 @@ class Container extends Component {
   render () {
     const {selectionBreadcrumbsModel: {selectedKeys}} = this.props;
 
-    const wideButtonLabelStyle = {
-      margin: '0 0.5em',
-      fontSize: '11px'
-    };
-
     let controlGroup = (
       <div className="btn-group" role="group">
         <button
@@ -78,9 +78,9 @@ class Container extends Component {
           onClick={this.handleButtonClick}
           title="Append components before selected component">
           <span style={wideButtonLabelStyle}>
-              <i className="umy-icon-arrow-plus-down"/>
+              <i className="umy-icon-arrow-plus-down" />
+              <span style={{marginLeft: '0.5em'}}>Before</span>
           </span>
-          <span>Before</span>
         </button>
         <button
           className="btn btn-default btn-xs"
@@ -90,9 +90,9 @@ class Container extends Component {
           title="Insert components into selected component as the first child"
         >
           <span style={wideButtonLabelStyle}>
-              <span className="umy-icon-arrow-plus-up rotate-clockwise"/>|
+              <i className="umy-icon-arrow-plus-up rotate-clockwise" />|
+            <span style={{marginLeft: '0.5em'}}>First</span>
           </span>
-          <span>First</span>
         </button>
         <button
           className="btn btn-default btn-xs"
@@ -102,9 +102,9 @@ class Container extends Component {
           title="Replace selected component"
         >
           <span style={wideButtonLabelStyle}>
-              <i className="umy-icon-replace"/>
+            <i className="umy-icon-replace" />
+            <span style={{marginLeft: '0.5em'}}>Replace</span>
           </span>
-          <span>Replace</span>
         </button>
         <button
           className="btn btn-default btn-xs"
@@ -114,9 +114,9 @@ class Container extends Component {
           title="Insert components into selected component as the last child"
         >
           <span style={wideButtonLabelStyle}>
-              |<i style={{marginTop: '.6em'}} className="umy-icon-arrow-plus-down rotate-clockwise"/>
+            |<i style={{marginTop: '.6em'}} className="umy-icon-arrow-plus-down rotate-clockwise" />
+            <span style={{marginLeft: '0.5em'}}>Last</span>
           </span>
-          <span>Last</span>
         </button>
         <button
           className="btn btn-default btn-xs"
@@ -126,9 +126,9 @@ class Container extends Component {
           title="Append components after selected component"
         >
           <span style={wideButtonLabelStyle}>
-              <i className="umy-icon-arrow-plus-up"/>
+            <i className="umy-icon-arrow-plus-up" />
+            <span style={{marginLeft: '0.5em'}}>After</span>
           </span>
-          <span>After</span>
         </button>
       </div>
     );

@@ -240,6 +240,14 @@ class InputComponentAutocomplete extends Component {
 				caretPixelPosition = getCaretPixelPosition(this.$textProbe, text.substr(0, caretPosition));
 				const checkText = checkPart.toUpperCase();
 				values = this.props.componentNames.filter(i => i.toUpperCase().indexOf(checkText) >= 0);
+				values.sort((a, b) => {
+					const eq = a.toUpperCase().indexOf(checkText) - b.toUpperCase().indexOf(checkText);
+					if (eq === 0) {
+						return a.length - b.length;
+					} else {
+						return eq;
+					}
+				});
 				if (values.length === 1 && checkText === values[0].toUpperCase()) {
 					values = [];
 				}
@@ -336,7 +344,9 @@ class InputComponentAutocomplete extends Component {
 						style={{marginTop: '1em'}}>
 						<div className="panel-body">
 							<p>Type the name of single component.</p>
-							<p>Or you may type the construction of nested components:<strong>component1.component2.componentN</strong></p>
+							<p>Or you may type the construction of nested components:
+								<strong>&nbsp;component1.component2.componentN</strong>
+							</p>
 							<p>Press enter to submit.</p>
 						</div>
 					</div>

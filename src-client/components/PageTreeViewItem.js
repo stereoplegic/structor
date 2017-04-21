@@ -20,6 +20,16 @@ import { print } from 'api';
 const linkStyle = {outline: 'none', color: '#2185D0'};
 const propsStyle = {margin: '0 0 0 0.5em', fontWeight: '200', cursor: 'pointer'};
 const namespaceStyle = {margin: '0 0 0 0.3em'};
+const topTagWrapperStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+};
+const bottomTagWrapperStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+};
 
 class PageTreeViewItem extends Component {
 
@@ -48,7 +58,7 @@ class PageTreeViewItem extends Component {
       type,
       namespace,
       modelProps,
-      isPadding
+      beforeNamePlaceholder
     } = this.props;
     const {onMouseEnter, onMouseLeave} = this.props;
 
@@ -65,37 +75,18 @@ class PageTreeViewItem extends Component {
 
     const label = (<span>{type}</span>);
     const namespaceLabel = namespace ? (
-      <span className="text-muted" style={namespaceStyle}>{'[' + namespace + ']'}</span>) : null;
+      <span className="text-muted" style={namespaceStyle}>{'[' + namespace + ']'}</span>)
+      : null;
     let props = print.printProps(modelProps);
-    const listItemStyle = {
-      paddingTop: isPadding ? "0.2em" : "0px",
-      paddingBottom: isPadding ? "0.2em" : "0px",
-    };
     if (children && children.length > 0) {
-      let topTagWrapperStyle = {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingBottom: isPadding ? '0.2em' : '0px',
-      };
-      let bottomTagWrapperStyle = {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingTop: isPadding ? '0.2em' : '0px',
-      };
-      if (children.length === 1 && children[0].props.onChangeText) {
-        topTagWrapperStyle.paddingBottom = '0px';
-        bottomTagWrapperStyle.paddingTop = '0px';
-      }
       content = (
         <li
           id={itemKey}
           className={className}
-          style={listItemStyle}
         >
           <div style={topTagWrapperStyle}>
             <span>{'<'}</span>
+            {beforeNamePlaceholder}
             <a key={'toplink'}
                href="#"
                onClick={this.handleClick}
@@ -107,14 +98,21 @@ class PageTreeViewItem extends Component {
               {label}
               {namespaceLabel}
             </a>
-            { props && <span className="text-muted"
-                             onClick={this.handleClick}
-                             style={propsStyle}>{props}</span> }
+            { props &&
+            <span
+              className="text-muted"
+              onClick={this.handleClick}
+              style={propsStyle}
+            >
+              {props}
+              </span>
+            }
             <span>{'>'}</span>
           </div>
           {children}
           <div style={bottomTagWrapperStyle}>
             <span>{'</'}</span>
+            {beforeNamePlaceholder}
             <a key={'bottomlink'}
                href="#"
                onClick={this.handleClick}
@@ -134,23 +132,25 @@ class PageTreeViewItem extends Component {
         <li
           id={itemKey}
           className={className}
-          style={listItemStyle}
         >
-          <span>{'<'}</span>
-          <a href="#"
-             onClick={this.handleClick}
-             style={linkStyle}
-             data-key={itemKey}
-             onMouseEnter={onMouseEnter}
-             onMouseLeave={onMouseLeave}
-          >
-            {label}
-            {namespaceLabel}
-          </a>
-          { props && <span className="text-muted"
-                           onClick={this.handleClick}
-                           style={propsStyle}>{props}</span> }
-          <span>{' />'}</span>
+          <div style={topTagWrapperStyle}>
+            <span>{'<'}</span>
+            {beforeNamePlaceholder}
+            <a href="#"
+               onClick={this.handleClick}
+               style={linkStyle}
+               data-key={itemKey}
+               onMouseEnter={onMouseEnter}
+               onMouseLeave={onMouseLeave}
+            >
+              {label}
+              {namespaceLabel}
+            </a>
+            { props && <span className="text-muted"
+                             onClick={this.handleClick}
+                             style={propsStyle}>{props}</span> }
+            <span>{' />'}</span>
+          </div>
         </li>
       );
     }

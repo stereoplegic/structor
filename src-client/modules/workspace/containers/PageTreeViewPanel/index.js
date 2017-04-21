@@ -24,7 +24,8 @@ import { graphApi } from 'api/index';
 import {
   PageTreeViewItem,
   PageTreeViewItemText,
-  PageTreeViewPlaceholder
+  PageTreeViewPlaceholder,
+  PlaceholderCircle
 } from 'components';
 import { CLIPBOARD_EMPTY } from 'modules/workspace/containers/ClipboardIndicator/actions';
 import { modeMap } from 'modules/workspace/containers/QuickAppendModal/actions';
@@ -104,18 +105,22 @@ class Container extends Component {
   }
 
   handlePlaceholderClick = (type) => (nodeKey) => {
-    const {clipboardMode, pasteAfter, pasteBefore, showQuickAppend} = this.props;
+    const {clipboardMode, pasteAfter, pasteBefore, pasteReplace, showQuickAppend} = this.props;
     if (clipboardMode !== CLIPBOARD_EMPTY) {
       if (type === 'pasteAfter') {
         pasteAfter(nodeKey);
       } else if (type === 'pasteBefore') {
         pasteBefore(nodeKey);
+      } else if (type === 'pasteReplace') {
+        pasteReplace(nodeKey);
       }
     } else {
       if (type === 'pasteAfter') {
         showQuickAppend(modeMap.addAfter, nodeKey);
       } else if (type === 'pasteBefore') {
         showQuickAppend(modeMap.addBefore, nodeKey);
+      } else if (type === 'pasteReplace') {
+        showQuickAppend(modeMap.replace, nodeKey);
       }
     }
   };
@@ -157,7 +162,11 @@ class Container extends Component {
             <PageTreeViewPlaceholder
               key={'treeItemPlaceholder' + node.key}
               itemKey={node.key}
-              onClick={this.handlePlaceholderClick('pasteAfter')}/>
+              title="Place component after selected"
+              onClick={this.handlePlaceholderClick('pasteAfter')}
+              onMouseEnter={this.handleSetHighlightSelectedKey}
+              onMouseLeave={this.handleRemoveHighlightSelectedKey}
+            />
           );
         }
       });
@@ -167,7 +176,8 @@ class Container extends Component {
           itemKey={graphNode.key}
           key={'text' + graphNode.key}
           onChangeText={this.handleChangeText}
-          textValue={modelNode.text}/>
+          textValue={modelNode.text}
+        />
       );
     }
 
@@ -181,13 +191,30 @@ class Container extends Component {
           <PageTreeViewPlaceholder
             key={'firstItemPlaceholder' + graphNode.children[0].key}
             itemKey={graphNode.children[0].key}
-            onClick={this.handlePlaceholderClick('pasteBefore')}/>
+            title="Place component before selected"
+            onClick={this.handlePlaceholderClick('pasteBefore')}
+            onMouseEnter={this.handleSetHighlightSelectedKey}
+            onMouseLeave={this.handleRemoveHighlightSelectedKey}
+          />
           }
           {children}
         </ul>
       );
     }
-
+    let replacePlaceholder = null;
+    if (isInsertionModeOn) {
+      replacePlaceholder = (
+        <PlaceholderCircle
+          key={'replacePlaceholder' + graphNode.key}
+          itemKey={graphNode.key}
+          onClick={this.handlePlaceholderClick('pasteReplace')}
+          iconClassName="fa fa-refresh"
+          title="Replace selected component"
+          onMouseEnter={this.handleSetHighlightSelectedKey}
+          onMouseLeave={this.handleRemoveHighlightSelectedKey}
+        />
+      );
+    }
     return (
       <PageTreeViewItem
         key={'treeItem' + graphNode.key}
@@ -202,6 +229,7 @@ class Container extends Component {
         onMouseEnter={this.handleSetHighlightSelectedKey}
         onMouseLeave={this.handleRemoveHighlightSelectedKey}
         isPadding={isInsertionModeOn}
+        beforeNamePlaceholder={replacePlaceholder}
       >
         {inner}
       </PageTreeViewItem>
@@ -233,7 +261,11 @@ class Container extends Component {
               key={'treeItemPlaceholder' + child.key}
               isTopLevelPlace={true}
               itemKey={child.key}
-              onClick={this.handlePlaceholderClick('pasteAfter')}/>
+              title="Place component after selected"
+              onClick={this.handlePlaceholderClick('pasteAfter')}
+              onMouseEnter={this.handleSetHighlightSelectedKey}
+              onMouseLeave={this.handleRemoveHighlightSelectedKey}
+            />
           );
         }
       });
@@ -247,7 +279,11 @@ class Container extends Component {
             key={'firstItemPlaceholder'}
             isTopLevelPlace={true}
             itemKey={pageGraph.children[0].key}
-            onClick={this.handlePlaceholderClick('pasteBefore')}/>
+            title="Place component before selected"
+            onClick={this.handlePlaceholderClick('pasteBefore')}
+            onMouseEnter={this.handleSetHighlightSelectedKey}
+            onMouseLeave={this.handleRemoveHighlightSelectedKey}
+          />
           }
           {listItems}
         </ul>

@@ -15,18 +15,12 @@
  */
 import React, {Component} from 'react';
 
-const lineStyle = {
-	height: '0.8em',
-};
-
 const holderStyle = {
-	width: '1em',
-	height: '1em',
-  marginLeft: '2em',
-	marginTop: '-.1em',
+  width: '1em',
+  height: '1em',
 };
 
-class PageTreeViewPlaceholder extends Component {
+class PlaceholderCircle extends Component {
 
 	constructor(props) {
 		super(props);
@@ -43,27 +37,25 @@ class PageTreeViewPlaceholder extends Component {
 	};
 
 	render() {
-		const {iconClassName, itemKey, title, onMouseEnter, onMouseLeave} = this.props;
+		const {iconClassName, title, itemKey, onMouseEnter, onMouseLeave} = this.props;
 		const icon = iconClassName ? iconClassName : 'fa fa-plus';
-		return (
-			<li style={lineStyle}>
-				<div
-					className="treeview-placeholder"
-					title={title || "Paste component here"}
-					style={holderStyle}
-					data-key={itemKey}
-					onClick={this.handleClick}
-					onMouseEnter={onMouseEnter}
-					onMouseLeave={onMouseLeave}
-				>
-					<div className="treeview-placeholder-base">
-						<i className={icon + " treeview-placeholder-icon"} />
-						<div className="treeview-placeholder-bar" />
-					</div>
+    return (
+			<div
+				className="treeview-placeholder"
+				title={title || "Place component here"}
+				style={holderStyle}
+				data-key={itemKey}
+				onClick={this.handleClick}
+				onMouseEnter={onMouseEnter}
+				onMouseLeave={onMouseLeave}
+			>
+				<div className="treeview-placeholder-base">
+					<i className={icon + " treeview-placeholder-icon"} />
+					<div className="treeview-placeholder-circle" />
 				</div>
-			</li>
-		);
+			</div>
+    );
 	}
 }
 
-export default PageTreeViewPlaceholder;
+export default PlaceholderCircle;

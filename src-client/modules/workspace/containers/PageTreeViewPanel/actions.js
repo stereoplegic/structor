@@ -15,26 +15,32 @@
  */
 import { bindActionCreators } from 'redux';
 import { setSelectedKey, } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
-import { pasteBefore, pasteAfter } from 'modules/workspace/containers/ClipboardControls/actions';
-import { serverApi, graphApi } from 'api';
+import { pasteBefore, pasteAfter, pasteReplace } from 'modules/workspace/containers/ClipboardControls/actions';
+import { graphApi } from 'api';
 import { pushHistory } from 'modules/workspace/containers/HistoryControls/actions';
 import { updatePage } from 'modules/workspace/containers/DeskPage/actions';
 import {
-    showModal as showQuickAppend
+  showModal as showQuickAppend
 } from 'modules/workspace/containers/QuickAppendModal/actions';
 import {
-    setHighlightSelectedKey
+  setHighlightSelectedKey
 } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
 
 export const changeText = (newText, selectedKey) => (dispatch, getState) => {
-    let node = graphApi.getNode(selectedKey);
-    if (node) {
-        dispatch(pushHistory());
-        node.modelNode.text = newText;
-        dispatch(updatePage());
-    }
+  let node = graphApi.getNode(selectedKey);
+  if (node) {
+    dispatch(pushHistory());
+    node.modelNode.text = newText;
+    dispatch(updatePage());
+  }
 };
 
 export const containerActions = (dispatch) => bindActionCreators({
-    setSelectedKey, changeText, pasteBefore, pasteAfter, showQuickAppend, setHighlightSelectedKey
+  setSelectedKey,
+  changeText,
+  pasteBefore,
+  pasteAfter,
+  pasteReplace,
+  showQuickAppend,
+  setHighlightSelectedKey
 }, dispatch);

@@ -109,27 +109,27 @@ class Container extends Component {
         return (
             <div style={this.props.style}>
                 <div className="btn-group-vertical btn-group-xs">
-                    <button
-                        className="btn btn-default"
-                        disabled={selectedKeys.length <= 0}
-                        onClick={this.handleButtonClick('pasteBefore')}
-                        title="Append components before selected component">
-                        <span className="umy-icon-arrow-plus-down" />
-                    </button>
-                    <button
-                        className="btn btn-default"
-                        disabled={selectedKeys.length <= 0}
-                        onClick={this.handleButtonClick('pasteFirst')}
-                        title="Insert components into selected component as the first child">
-                        <span className="umy-icon-arrow-plus-up rotate-clockwise" />
-                    </button>
-                    <button
-                        className="btn btn-default"
-                        disabled={selectedKeys.length <= 0}
-                        onClick={this.handleButtonClick('pasteReplace')}
-                        title="Replace selected component">
-                        <span className="umy-icon-replace" />
-                    </button>
+                    {/*<button*/}
+                        {/*className="btn btn-default"*/}
+                        {/*disabled={selectedKeys.length <= 0}*/}
+                        {/*onClick={this.handleButtonClick('pasteBefore')}*/}
+                        {/*title="Append components before selected component">*/}
+                        {/*<span className="umy-icon-arrow-plus-down" />*/}
+                    {/*</button>*/}
+                    {/*<button*/}
+                        {/*className="btn btn-default"*/}
+                        {/*disabled={selectedKeys.length <= 0}*/}
+                        {/*onClick={this.handleButtonClick('pasteFirst')}*/}
+                        {/*title="Insert components into selected component as the first child">*/}
+                        {/*<span className="umy-icon-arrow-plus-up rotate-clockwise" />*/}
+                    {/*</button>*/}
+                    {/*<button*/}
+                        {/*className="btn btn-default"*/}
+                        {/*disabled={selectedKeys.length <= 0}*/}
+                        {/*onClick={this.handleButtonClick('pasteReplace')}*/}
+                        {/*title="Replace selected component">*/}
+                        {/*<span className="umy-icon-replace" />*/}
+                    {/*</button>*/}
                     <button
                         className="btn btn-default"
                         disabled={selectedKeys.length <= 0}
@@ -172,20 +172,20 @@ class Container extends Component {
                         title="Delete selected components">
                         <span className="fa fa-trash-o" />
                     </button>
-                    <button
-                        className="btn btn-default"
-                        disabled={selectedKeys.length <= 0}
-                        onClick={this.handleButtonClick('pasteLast')}
-                        title="Insert components into selected component as the last child">
-                        <span className="umy-icon-arrow-plus-down rotate-clockwise" />
-                    </button>
-                    <button
-                        className="btn btn-default"
-                        disabled={selectedKeys.length <= 0}
-                        onClick={this.handleButtonClick('pasteAfter')}
-                        title="Append components after selected component">
-                        <span className="umy-icon-arrow-plus-up" />
-                    </button>
+                    {/*<button*/}
+                        {/*className="btn btn-default"*/}
+                        {/*disabled={selectedKeys.length <= 0}*/}
+                        {/*onClick={this.handleButtonClick('pasteLast')}*/}
+                        {/*title="Insert components into selected component as the last child">*/}
+                        {/*<span className="umy-icon-arrow-plus-down rotate-clockwise" />*/}
+                    {/*</button>*/}
+                    {/*<button*/}
+                        {/*className="btn btn-default"*/}
+                        {/*disabled={selectedKeys.length <= 0}*/}
+                        {/*onClick={this.handleButtonClick('pasteAfter')}*/}
+                        {/*title="Append components after selected component">*/}
+                        {/*<span className="umy-icon-arrow-plus-up" />*/}
+                    {/*</button>*/}
                 </div>
             </div>
         );
