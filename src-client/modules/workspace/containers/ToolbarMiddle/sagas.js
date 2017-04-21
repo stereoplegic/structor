@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { createStructuredSelector } from 'reselect';
+// main saga
+export default function* mainSaga() {
+    //yield [fork(getProjectInfo)];
 
-export const modelSelector = createStructuredSelector({
-});
-
+};

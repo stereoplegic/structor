@@ -23,6 +23,7 @@ import { coockiesApi } from 'api';
 import DeskPage from 'modules/workspace/containers/DeskPage';
 import ToolbarLeft from 'modules/workspace/containers/ToolbarLeft';
 import ToolbarTop from 'modules/workspace/containers/ToolbarTop';
+import ToolbarMiddle from 'modules/workspace/containers/ToolbarMiddle'
 import PageTreeViewPanel from 'modules/workspace/containers/PageTreeViewPanel';
 import ToolbarSelection from 'modules/workspace/containers/ToolbarSelection';
 import LibraryPanel from 'modules/workspace/containers/LibraryPanel';
@@ -161,29 +162,49 @@ class Container extends Component {
       padding: '0 0 5px 0',
     };
 
-    let topComponent = null;
-    let topPanelHeight = 0;
     let breadcrumbsComponent = null;
+    let middleToolbarComponent = null;
+    let selectionToolbarComponent = null;
+    let topPanelHeight = 0;
 
     if (!deskPageModel.isLivePreviewModeOn) {
-      let toolbarTopStyle = {
-        position: 'absolute',
-        top: '0px',
-        left: 'calc(4em + ' + leftPanelWidth + 'px)',
-        right: '5px',
-        height: '3em'
-      };
-      topComponent = <ToolbarTop style={toolbarTopStyle}/>;
-      topPanelHeight = 3;
 
-      let breadcrumbsTopStyle = {
+      if (!componentModel.isPageTreeviewActive) {
+        let breadcrumbsTopStyle = {
+          position: 'absolute',
+          top: '0px',
+          paddingTop: '10px',
+          left: 'calc(4em + ' + leftPanelWidth + 'px)',
+          right: '5px',
+          height: '3em',
+          borderLeft: '1px solid #dbdbdb',
+        };
+        breadcrumbsComponent = (<ToolbarTop style={breadcrumbsTopStyle}/>);
+        topPanelHeight += 3;
+      }
+
+      let middleToolbarStyle = {
         position: 'absolute',
-        top: '3em',
+        top: !!breadcrumbsComponent ? '3em' : '0px',
         left: 'calc(4em + ' + leftPanelWidth + 'px)',
         right: '5px',
-        height: '3em'
+        paddingTop: !!breadcrumbsComponent ? '5px' : '10px',
+        height: '3em',
+        borderLeft: '1px solid #dbdbdb',
       };
-      breadcrumbsComponent = (<ToolbarSelection style={breadcrumbsTopStyle}/>);
+      middleToolbarComponent = (<ToolbarMiddle style={middleToolbarStyle}/>);
+      topPanelHeight += 3;
+
+      let selectionToolbarStyle = {
+        position: 'absolute',
+        top: !!breadcrumbsComponent ? '6em' : '3em',
+        left: 'calc(4em + ' + leftPanelWidth + 'px)',
+        right: '5px',
+        paddingTop: !!breadcrumbsComponent ? '5px' : '5px',
+        height: '3em',
+        borderLeft: '1px solid #dbdbdb',
+      };
+      selectionToolbarComponent = (<ToolbarSelection style={selectionToolbarStyle} />);
       topPanelHeight += 3;
 
     } else {
@@ -249,13 +270,14 @@ class Container extends Component {
     return (
       <div style={{width: '100%', height: '100%'}}>
         {leftBar}
-        {leftPanelWidth > 0 ? <div style={leftPanelStyle}>
+        {leftPanelWidth > 0 &&
+        <div style={leftPanelStyle}>
           {leftPanelInner}
         </div>
-          : null
         }
-        {topComponent}
         {breadcrumbsComponent}
+        {middleToolbarComponent}
+        {selectionToolbarComponent}
         <div style={bodyContainerStyle}>
           <div style={bodyStyle}>
             {pageFrame}
@@ -265,7 +287,7 @@ class Container extends Component {
           }
           {bottomPanelHeight > 0 ? <div style={bottomPanelStyle}>
             <button
-              className="btn-default btn-xs treeview-panel-button"
+              className="btn-default btn-xs"
               style={{
                 padding: '0.2em',
                 position: 'absolute',
@@ -283,7 +305,7 @@ class Container extends Component {
             </button>
             <button
               className={
-                "btn-xs treeview-panel-button" +
+                "btn-xs" +
                 (componentModel.bottomPanelInsertionMode ? " btn-primary" : " btn-default")
               }
               style={{
@@ -302,21 +324,38 @@ class Container extends Component {
               <span className='fa fa-indent fa-fw'/>
             </button>
             <button
-              className="btn-default btn-xs treeview-panel-button"
               style={{
-                padding: '0.2em',
+                padding: '0.1em',
                 position: 'absolute',
-                top: '-1.2em',
-                left: 'calc(50% - 1em)',
-                width: '2em',
-                height: '2em',
-                borderRadius: '50%',
+                top: '-1em',
+                left: 'calc(50% - 1.5em)',
+                width: '3em',
+                height: '1.5em',
+                cursor: 'ns-resize',
+                border: '1px solid #dcdcdc',
+                borderRadius: '3px',
+                backgroundColor: '#fff',
                 zIndex: 1030
               }}
               onMouseDown={this.handleButtonMouseDown}
               title="Resize tree view panel"
             >
-              <span className='fa fa-arrows-v fa-fw'/>
+              <span style={{
+                position: 'absolute',
+                top: '.4em',
+                left: '.5em',
+                height: '0',
+                right: '.5em',
+                borderTop: '1px solid #dcdcdc',
+              }}/>
+              <span style={{
+                position: 'absolute',
+                top: '.8em',
+                left: '.5em',
+                height: '0',
+                right: '.5em',
+                borderTop: '1px solid #dcdcdc',
+              }}/>
             </button>
             <PageTreeViewToolbar
               style={{

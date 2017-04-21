@@ -53,7 +53,9 @@ class Container extends Component {
                     title="Create new page">
                     <span
                         style={buttonLabelStyle}
-                        className="fa fa-plus" />
+                        className="fa fa-plus"
+                    />
+                    <span>Add page</span>
                 </button>
                 <button
                     key="copyPageButton"
@@ -62,7 +64,9 @@ class Container extends Component {
                     title="Clone current page">
                     <span
                         style={buttonLabelStyle}
-                        className="fa fa-copy" />
+                        className="fa fa-copy"
+                    />
+                    <span>Clone page</span>
                 </button>
                 <div
                     key="pageWidthButton"
@@ -71,6 +75,7 @@ class Container extends Component {
                     <button
                         className="btn btn-default btn-xs dropdown-toggle"
                         data-toggle="dropdown">
+                        <span>Width</span>
                         <span style={buttonLabelStyle}>{deskModel.iframeWidth}</span>
                         <span className="caret" />
                         &nbsp;&nbsp;

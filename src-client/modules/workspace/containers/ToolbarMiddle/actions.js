@@ -14,8 +14,3 @@
  * limitations under the License.
  */
 
-import { createStructuredSelector } from 'reselect';
-
-export const modelSelector = createStructuredSelector({
-});
-

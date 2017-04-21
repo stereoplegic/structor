@@ -18,45 +18,37 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 
-import PageListControls from 'modules/workspace/containers/PageListControls';
-import PageViewControls from 'modules/workspace/containers/PageViewControls';
-import ComponentControls from 'modules/workspace/containers/ComponentControls';
-import ClipboardIndicator from 'modules/workspace/containers/ClipboardIndicator';
+import SelectionBreadcrumbs from 'modules/workspace/containers/SelectionBreadcrumbs';
 
 const containerStyle = {
-    paddingTop: '10px',
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
-    alignItems: 'center',
-    width: '150em'
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'nowrap',
+  alignItems: 'center',
+  width: '150em',
 };
 
-const controlsGroupStyle = {
-    padding: '0px',
-    margin: '0px 0px 0px 0.5em'
+const breadCrumbsStyle = {
+  padding: '0px',
+  margin: '0px 0.5em 0 0.5em'
 };
 
 class Container extends Component {
 
-    constructor(props) {
-        super(props);
-    }
+  constructor (props) {
+    super(props);
+  }
 
-    render(){
-        return (
-            <div style={this.props.style}>
-                <div style={containerStyle}>
-                    <PageListControls style={controlsGroupStyle} />
-                    <PageViewControls style={controlsGroupStyle} />
-                    <ComponentControls style={controlsGroupStyle} />
-                    <ClipboardIndicator style={controlsGroupStyle} />
-                </div>
-            </div>
-        );
-    }
+  render () {
+    return (
+      <div style={this.props.style}>
+        <div style={containerStyle}>
+          <SelectionBreadcrumbs style={breadCrumbsStyle}/>
+        </div>
+      </div>
+    );
+  }
 }
-
 
 export default connect(modelSelector)(Container);
 

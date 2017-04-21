@@ -18,10 +18,9 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 
-import SelectionControls from 'modules/workspace/containers/SelectionControls';
-import ClipboardControls from 'modules/workspace/containers/ClipboardControls';
-import HistoryControls from 'modules/workspace/containers/HistoryControls';
-import ClipboardIndicator from 'modules/workspace/containers/ClipboardIndicator';
+import PageListControls from 'modules/workspace/containers/PageListControls';
+import PageViewControls from 'modules/workspace/containers/PageViewControls';
+import ComponentControls from 'modules/workspace/containers/ComponentControls';
 
 const containerStyle = {
   display: 'flex',
@@ -46,10 +45,9 @@ class Container extends Component {
     return (
       <div style={this.props.style}>
         <div style={containerStyle}>
-          <HistoryControls style={controlsGroupStyle}/>
-          <SelectionControls style={controlsGroupStyle}/>
-          <ClipboardControls style={controlsGroupStyle}/>
-          <ClipboardIndicator style={controlsGroupStyle}/>
+          <PageListControls style={controlsGroupStyle}/>
+          <PageViewControls style={controlsGroupStyle}/>
+          <ComponentControls style={controlsGroupStyle}/>
         </div>
       </div>
     );

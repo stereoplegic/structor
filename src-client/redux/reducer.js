@@ -25,14 +25,15 @@ import deskReducer from 'modules/workspace/containers/Desk/reducer';
 import deskPageReducer from 'modules/workspace/containers/DeskPage/reducer';
 import toolbarLeftReducer from 'modules/workspace/containers/ToolbarLeft/reducer';
 import toolbarTopReducer from 'modules/workspace/containers/ToolbarTop/reducer';
+import toolbarMiddleReducer from 'modules/workspace/containers/ToolbarMiddle/reducer';
+import toolbarSelectionReducer from 'modules/workspace/containers/ToolbarSelection/reducer';
+import selectionBreadcrumbsReducer from 'modules/workspace/containers/SelectionBreadcrumbs/reducer';
 import pageExportControlsReducer from 'modules/workspace/containers/PageExportControls/reducer';
 import pageListControlsReducer from 'modules/workspace/containers/PageListControls/reducer';
 import pageListPanelReducer from 'modules/workspace/containers/PageListPanel/reducer';
 import pageViewControlsReducer from 'modules/workspace/containers/PageViewControls/reducer';
 import pageOptionsModalReducer from 'modules/workspace/containers/PageOptionsModal/reducer';
 import pageTreeViewPanelReducer from 'modules/workspace/containers/PageTreeViewPanel/reducer';
-import toolbarSelectionReducer from 'modules/workspace/containers/ToolbarSelection/reducer';
-import selectionBreadcrumbsReducer from 'modules/workspace/containers/SelectionBreadcrumbs/reducer';
 import selectionControlsReducer from 'modules/workspace/containers/SelectionControls/reducer';
 import clipboardControlsReducer from 'modules/workspace/containers/ClipboardControls/reducer';
 import clipboardIndicatorReducer from 'modules/workspace/containers/ClipboardIndicator/reducer';
@@ -74,6 +75,7 @@ const reducer = combineReducers({
     pageOptionsModal: pageOptionsModalReducer,
     pageTreeViewPanel: pageTreeViewPanelReducer,
     toolbarSelection: toolbarSelectionReducer,
+    toolbarMiddle: toolbarMiddleReducer,
     selectionBreadcrumbs: selectionBreadcrumbsReducer,
     selectionControls: selectionControlsReducer,
     clipboardControls: clipboardControlsReducer,

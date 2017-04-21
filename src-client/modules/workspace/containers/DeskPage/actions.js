@@ -98,7 +98,9 @@ export const loadModel = (model) => (dispatch, getState) => {
   dispatch(setPages(pageList));
 
   const deskSettings = coockiesApi.getDeskSettings();
-  if (deskSettings && deskSettings.currentPagePath) {
+  if (deskSettings &&
+    deskSettings.currentPagePath &&
+    pageList.findIndex(i => i.pagePath === deskSettings.currentPagePath) >= 0) {
     dispatch(changePageRouteFeedback(deskSettings.currentPagePath));
   } else {
     dispatch(changePageRouteFeedback(pageList[0].pagePath));
