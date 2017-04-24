@@ -70,33 +70,35 @@ class PageTreeViewItemText extends Component {
         let content = null;
         if(this.state.isEditable === true){
             content = (
-                <span
+                <div
                     ref="textItemElement"
                     className='text-danger'
                     style={{position: 'relative', fontWeight: '200'}}>
-
                     {this.props.textValue}
-
                     <ContentEditable
                         onChange={this.handleChange}
                         onBlur={this.handleBlur}
-                        html={this.state.textValue} />
-                </span>
+                        html={this.state.textValue}
+                    />
+                </div>
             );
         } else {
             content = (
-                <span
+                <div
                     ref="textItemElement"
                     className='text-danger'
                     style={{position: 'relative', fontWeight: '200'}}
-                    onClick={this.handleTextClick}>
-
+                    onClick={this.handleTextClick}
+                >
                     {this.props.textValue ? this.props.textValue : <small>empty</small>}
-                </span>
+                </div>
             );
         }
-
-        return content;
+        return (
+          <div style={{marginLeft: '1em', width: 'calc(100% - 1em)'}}>
+            {content}
+          </div>
+        );
     }
 
 

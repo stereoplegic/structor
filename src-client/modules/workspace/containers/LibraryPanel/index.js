@@ -24,7 +24,7 @@ import {recentGroupKey, noGroupGroupKey, htmlGroupKey} from './constants';
 import LibraryControls from "modules/workspace/containers/LibraryControls";
 
 const topToolbarStyle = {
-	paddingTop: '10px',
+	padding: '10px 0',
 	display: 'flex',
 	flexDirection: 'row',
 	flexWrap: 'nowrap',
@@ -48,7 +48,7 @@ const panelContainerStyle = {
 
 const listContainerStyle = {
 	position: 'absolute',
-	top: '6em',
+	top: '7em',
 	left: 0,
 	bottom: 0,
 	right: '5px',
@@ -426,12 +426,10 @@ class Container extends Component {
 
 		return (
 			<div style={panelContainerStyle}>
-				<div style={{height: '3em'}}>
-					<div style={topToolbarStyle}>
-						<LibraryControls
-							style={topToolbarGroupStyle}
-						/>
-					</div>
+				<div style={topToolbarStyle}>
+					<LibraryControls
+						style={topToolbarGroupStyle}
+					/>
 				</div>
 				<div className="input-group input-group-sm">
 					<input

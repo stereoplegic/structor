@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 
 import appContainerReducer from 'modules/app/containers/AppContainer/reducer';
 import appSpinnerReducer from 'modules/app/containers/AppSpinner/reducer';
@@ -25,14 +25,15 @@ import deskReducer from 'modules/workspace/containers/Desk/reducer';
 import deskPageReducer from 'modules/workspace/containers/DeskPage/reducer';
 import toolbarLeftReducer from 'modules/workspace/containers/ToolbarLeft/reducer';
 import toolbarTopReducer from 'modules/workspace/containers/ToolbarTop/reducer';
+import toolbarMiddleReducer from 'modules/workspace/containers/ToolbarMiddle/reducer';
+import toolbarSelectionReducer from 'modules/workspace/containers/ToolbarSelection/reducer';
+import selectionBreadcrumbsReducer from 'modules/workspace/containers/SelectionBreadcrumbs/reducer';
 import pageExportControlsReducer from 'modules/workspace/containers/PageExportControls/reducer';
 import pageListControlsReducer from 'modules/workspace/containers/PageListControls/reducer';
 import pageListPanelReducer from 'modules/workspace/containers/PageListPanel/reducer';
 import pageViewControlsReducer from 'modules/workspace/containers/PageViewControls/reducer';
 import pageOptionsModalReducer from 'modules/workspace/containers/PageOptionsModal/reducer';
 import pageTreeViewPanelReducer from 'modules/workspace/containers/PageTreeViewPanel/reducer';
-import toolbarSelectionReducer from 'modules/workspace/containers/ToolbarSelection/reducer';
-import selectionBreadcrumbsReducer from 'modules/workspace/containers/SelectionBreadcrumbs/reducer';
 import selectionControlsReducer from 'modules/workspace/containers/SelectionControls/reducer';
 import clipboardControlsReducer from 'modules/workspace/containers/ClipboardControls/reducer';
 import clipboardIndicatorReducer from 'modules/workspace/containers/ClipboardIndicator/reducer';
@@ -56,48 +57,51 @@ import extractorReducer from 'modules/extractor/containers/Extractor/reducer';
 import namespaceListReducer from 'modules/extractor/containers/NamespaceList/reducer';
 import extractListReducer from 'modules/extractor/containers/ExtractList/reducer';
 import selectDirectoryModalReducer from 'modules/installer/containers/SelectDirectoryModal/reducer';
+import componentReadmePanelReducer from 'modules/workspace/containers/ComponentReadmePanel/reducer';
 
 const reducer = combineReducers({
-    appContainer: appContainerReducer,
-    appSpinner: appSpinnerReducer,
-    appMessage: appMessageReducer,
-    confirmationModal: confirmationModalReducer,
-    informationModal: informationModalReducer,
-    desk: deskReducer,
-    deskPage: deskPageReducer,
-    toolbarLeft: toolbarLeftReducer,
-    toolbarTop: toolbarTopReducer,
-    pageExportControls: pageExportControlsReducer,
-    pageListControls: pageListControlsReducer,
-    pageListPanel: pageListPanelReducer,
-    pageViewControls: pageViewControlsReducer,
-    pageOptionsModal: pageOptionsModalReducer,
-    pageTreeViewPanel: pageTreeViewPanelReducer,
-    toolbarSelection: toolbarSelectionReducer,
-    selectionBreadcrumbs: selectionBreadcrumbsReducer,
-    selectionControls: selectionControlsReducer,
-    clipboardControls: clipboardControlsReducer,
-    clipboardIndicator: clipboardIndicatorReducer,
-    historyControls: historyControlsReducer,
-    libraryControls: libraryControlsReducer,
-    libraryPanel: libraryPanelReducer,
-    componentOptionsModal: componentOptionsModalReducer,
-    componentControls: componentControlsReducer,
-    componentOptionsPanel: componentOptionsPanelReducer,
-    generator: generatorReducer,
-    generatorList: generatorListReducer,
-    generatorBriefPanel: generatorBriefPanelReducer,
-    metadataForm: metadataFormReducer,
-    sourceFilesList: sourceFilesListReducer,
-    proxySetupModal: proxySetupModalReducer,
-    pageTreeViewToolbar: pageTreeViewToolbarReducer,
-    quickAppendModal: quickAppendModalReducer,
-    saveDefaultModelModal: saveDefaultModelModalReducer,
-    installer: installerReducer,
-    extractor: extractorReducer,
-    namespaceList: namespaceListReducer,
-    extractList: extractListReducer,
-    selectDirectoryModal: selectDirectoryModalReducer,
+  appContainer: appContainerReducer,
+  appSpinner: appSpinnerReducer,
+  appMessage: appMessageReducer,
+  confirmationModal: confirmationModalReducer,
+  informationModal: informationModalReducer,
+  desk: deskReducer,
+  deskPage: deskPageReducer,
+  toolbarLeft: toolbarLeftReducer,
+  toolbarTop: toolbarTopReducer,
+  pageExportControls: pageExportControlsReducer,
+  pageListControls: pageListControlsReducer,
+  pageListPanel: pageListPanelReducer,
+  pageViewControls: pageViewControlsReducer,
+  pageOptionsModal: pageOptionsModalReducer,
+  pageTreeViewPanel: pageTreeViewPanelReducer,
+  toolbarSelection: toolbarSelectionReducer,
+  toolbarMiddle: toolbarMiddleReducer,
+  selectionBreadcrumbs: selectionBreadcrumbsReducer,
+  selectionControls: selectionControlsReducer,
+  clipboardControls: clipboardControlsReducer,
+  clipboardIndicator: clipboardIndicatorReducer,
+  historyControls: historyControlsReducer,
+  libraryControls: libraryControlsReducer,
+  libraryPanel: libraryPanelReducer,
+  componentOptionsModal: componentOptionsModalReducer,
+  componentControls: componentControlsReducer,
+  componentOptionsPanel: componentOptionsPanelReducer,
+  generator: generatorReducer,
+  generatorList: generatorListReducer,
+  generatorBriefPanel: generatorBriefPanelReducer,
+  metadataForm: metadataFormReducer,
+  sourceFilesList: sourceFilesListReducer,
+  proxySetupModal: proxySetupModalReducer,
+  pageTreeViewToolbar: pageTreeViewToolbarReducer,
+  quickAppendModal: quickAppendModalReducer,
+  saveDefaultModelModal: saveDefaultModelModalReducer,
+  installer: installerReducer,
+  extractor: extractorReducer,
+  namespaceList: namespaceListReducer,
+  extractList: extractListReducer,
+  selectDirectoryModal: selectDirectoryModalReducer,
+  componentReadmePanel: componentReadmePanelReducer,
 });
 
 export default reducer;

@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-require('babel-register')
-import express from 'express'
-import http from 'http'
-import path from 'path'
-import bodyParser from 'body-parser'
+require('babel-register');
+import express from 'express';
+import http from 'http';
+import path from 'path';
+import bodyParser from 'body-parser';
 
-import { config } from 'structor-commons'
+import { config } from 'structor-commons';
 
-import * as structorController from './structor/controller.js'
+import * as structorController from './structor/controller.js';
 // import * as sandboxController from './sandbox/controller.js';
 // import * as downloadController from './download/controller.js';
 
@@ -33,92 +33,92 @@ let server = {
   app: undefined,
   appServer: undefined,
   proxy: undefined
-}
+};
 
-let serverDirPath = undefined
-let projectDirPath = undefined
+let serverDirPath = undefined;
+let projectDirPath = undefined;
 
 function printError (message, error) {
   if (message) {
-    console.log(message)
+    console.log(message);
   }
-  console.error(error.message ? error.message : error)
+  console.error(error.message ? error.message : error);
 }
 
 function callControllerMethod (controller, req, res) {
-  let methodName = req.body.methodName
-  let data = req.body.data || {}
+  let methodName = req.body.methodName;
+  let data = req.body.data || {};
   //console.log('Calling controller method: ' + methodName);
   if (controller[methodName]) {
     controller[methodName](data)
       .then(response => {
         if (response === undefined) {
-          res.send({data: null})
+          res.send({data: null});
         } else if (response.error) {
-          res.send({error: true, errors: response.errors})
+          res.send({error: true, errors: response.errors});
         } else {
-          res.send({data: response})
+          res.send({data: response});
         }
       })
       .catch(err => {
-        let errorMessage = err.message ? err.message : err
-        res.send({error: true, errors: [errorMessage]})
-      })
+        let errorMessage = err.message ? err.message : err;
+        res.send({error: true, errors: [errorMessage]});
+      });
   } else {
-    res.send({error: true, errors: ['Server does not have method: ' + methodName]})
+    res.send({error: true, errors: ['Server does not have method: ' + methodName]});
   }
 }
 
 export function initServer (options) {
-  const {serverDir, projectDir, portNumber, debugMode, io} = options
-  serverDirPath = serverDir
-  projectDirPath = projectDir
+  const {serverDir, projectDir, portNumber, debugMode, io} = options;
+  serverDirPath = serverDir;
+  projectDirPath = projectDir;
   return config.init(projectDir, serverDir, debugMode)
     .then(status => {
       if (status) {
 
-        server.app = express()
-        server.app.use('/structor', express.static(path.join(serverDirPath, 'static')))
+        server.app = express();
+        server.app.use('/structor', express.static(path.join(serverDirPath, 'static')));
 
-        server.appServer = http.createServer(server.app)
+        server.appServer = http.createServer(server.app);
         if (io) {
-          server.ioSocket = io(server.appServer)
+          server.ioSocket = io(server.appServer);
           server.ioSocket.on('connection', socket => {
-            server.ioSocketClient = socket
-            server.ioSocketClient.emit('invitation', 'Hello from server.')
-          })
+            server.ioSocketClient = socket;
+            server.ioSocketClient.emit('invitation', 'Hello from server.');
+          });
         }
 
         server.appServer.listen(portNumber, () => {
           if (status === config.READY) {
-            console.log('Structor has been started successfully.')
-            console.log(`\nOpen in the browser: http://localhost:${portNumber}/structor\n`)
+            console.log('Structor has been started successfully.');
+            console.log(`\nOpen in the browser: http://localhost:${portNumber}/structor\n`);
           }
-        })
+        });
 
         // initDownloadController();
         if (status === config.READY) {
-          initStructorController()
+          initStructorController();
           // initSandboxController();
         }
       }
     })
     .catch(e => {
-      printError('Error happened during server initialization:', e)
-    })
+      printError('Error happened during server initialization:', e);
+    });
 }
 
 function reinitServer () {
   return config.init(projectDirPath)
     .then(status => {
       if (status === config.READY) {
-        initStructorController()
+        initStructorController();
         // initSandboxController();
       } else {
-        throw Error('Server reinitialization should not be provided in empty directory.')
+        throw Error('Server reinitialization should not be provided in empty directory.');
       }
-      return 'OK'
-    })
+      return 'OK';
+    });
 }
 
 // function initDownloadController(){
@@ -131,9 +131,9 @@ function reinitServer () {
 
 function initStructorController () {
   server.app.post('/structor-invoke', bodyParser.json({limit: '50mb'}), (req, res) => {
-    callControllerMethod(structorController, req, res)
-  })
-  structorController.setServer(server)
+    callControllerMethod(structorController, req, res);
+  });
+  structorController.setServer(server);
 }
 //
 // function initSandboxController(){

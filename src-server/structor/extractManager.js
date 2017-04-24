@@ -37,7 +37,37 @@ import * as sandboxCompilerManager from './sandboxCompilerManager.js';
 //
 // };
 
-export function getDependentNamespaces(componentTree, checkingNamespaces, resultNamespaces = [], resultModules = []) {
+export function getNamespacesInPages(componentTree, projectModel, pages) {
+	let resultNamespaces = [];
+	if (pages && pages.length > 0 && projectModel && projectModel.pages) {
+		let modelComponentList = [];
+		projectModel.pages.forEach(pageModel => {
+			if (includes(pages, pageModel.pagePath)) {
+        modelComponentList = modelComponentList.concat(gengine.getModelComponentList(componentTree, pageModel));
+			}
+		});
+    if (modelComponentList && modelComponentList.length > 0) {
+      // find all components out of any namespace
+      const filtered = modelComponentList.filter(item => {
+        return !item.namespace
+      });
+      if (filtered && filtered.length > 0) {
+        throw Error('Selected pages are including components out of any namespace.');
+      }
+      modelComponentList.forEach(item => {
+        if (!includes(resultNamespaces, item.namespace)) {
+          resultNamespaces.push(item.namespace);
+        }
+      });
+    }
+	}
+	return resultNamespaces;
+}
+
+export function getDependentNamespaces(componentTree,
+																			 checkingNamespaces,
+																			 resultNamespaces = [],
+																			 resultModules = []) {
 	let newNamespaces = [];
 	resultNamespaces = resultNamespaces.concat(checkingNamespaces);
 	let combinedModel = gengine.combineAllModulesComponents(componentTree, checkingNamespaces);
@@ -94,7 +124,7 @@ export function getDependentNamespaces(componentTree, checkingNamespaces, result
 		})
 }
 
-export function getAllDependencies(namespaces) {
+export function getAllDependencies(namespaces, pages) {
 	let result = {
 		dependencies: {
 			packages: [],
@@ -104,9 +134,13 @@ export function getAllDependencies(namespaces) {
 	return storage.getComponentTree()
 		.then(tree => {
 			componentTree = tree;
+			return storage.readProjectJsonModel();
 		})
-		.then(() => {
-			return getDependentNamespaces(componentTree, namespaces);
+		.then(projectModel => {
+			return getNamespacesInPages(componentTree, projectModel, pages);
+		})
+		.then(pagesNamespaces => {
+			return getDependentNamespaces(componentTree, [].concat(namespaces, pagesNamespaces));
 		})
 		.then(deps => {
 			const {depNamespaces, modules} = deps;
@@ -131,7 +165,7 @@ export function getAllDependencies(namespaces) {
 		});
 }
 
-export function extractNamespaces(namespaces, dependencies, dirPath) {
+export function extractNamespaces(namespaces, dependencies, pages, dirPath) {
 	const sandboxGeneratorPath = config.sandboxGeneratorDirPath();
 	const sandboxModulesDirPath = path.join(config.sandboxDirPath(), 'modules');
 
@@ -139,6 +173,7 @@ export function extractNamespaces(namespaces, dependencies, dirPath) {
 	const extractSrcDirPath = path.join(extractDirPath, 'modules');
 	const extractDefaultsDirPath = path.join(extractDirPath, 'defaults');
 	const extractDocsDirPath = path.join(extractDirPath, 'docs');
+	const extractStructorDirPath = path.join(extractDirPath, '.structor');
 
 	let generatorData = {
 		namespaces,
@@ -210,6 +245,21 @@ export function extractNamespaces(namespaces, dependencies, dirPath) {
 				}
 			});
 			return Promise.all(copyTasks);
+		})
+		.then(() => {
+			if (pages && pages.length > 0) {
+        return storage.readProjectJsonModel().then(model => {
+        	let extractedModel = {pages: []};
+        	if (model && model.pages) {
+        		model.pages.forEach(page => {
+        			if (includes(pages, page.pagePath)) {
+								extractedModel.pages.push(page);
+							}
+						});
+					}
+					return commons.writeJson(path.join(extractStructorDirPath, 'model.json'), extractedModel);
+        });
+			}
 		})
 		.then(() => {
 			return commons.writeJson(path.join(extractDirPath, 'structor-namespaces.json'), structorNamespaces);

@@ -22,51 +22,56 @@ import { setSelectedKey } from 'modules/workspace/containers/SelectionBreadcrumb
 import { updatePage } from 'modules/workspace/containers/DeskPage/actions';
 import { failed } from 'modules/app/containers/AppMessage/actions';
 
-export const DELETE_OPTION = "ComponentOptionsPanel/DELETE_OPTION";
-export const CHANGE_OPTION = "ComponentOptionsPanel/CHANGE_OPTION";
-export const ADD_OPTION = "ComponentOptionsPanel/ADD_OPTION";
-export const SET_ACTIVE_TAB = "ComponentOptionsPanel/SET_ACTIVE_TAB";
-export const TOGGLE_STYLE_SECTION = "ComponentOptionsPanel/TOGGLE_STYLE_SECTION";
+export const SET_ACTIVE_TAB = 'ComponentOptionsPanel/SET_ACTIVE_TAB';
+export const TOGGLE_STYLE_SECTION = 'ComponentOptionsPanel/TOGGLE_STYLE_SECTION';
+export const TOGGLE_FAVORITE = 'ComponentOptionsPanel/TOGGLE_FAVORITE';
+export const UPDATE_OPTIONS_PANEL_STATE = 'ComponentOptionsPanel/UPDATE_OPTIONS_PANEL_STATE';
 
 export const deleteOption = (componentObject, optionPath) => (dispatch, getState) => {
-    const {key} = componentObject;
-    let node = graphApi.getNode(key);
-    if (node) {
-        let oldProps = node.modelNode.props || {};
-        let newProps = utils.delex(utils.fulex(oldProps), optionPath);
-        if(newProps.style && isEmpty(newProps.style)) {
-            delete newProps.style;
-        }
-        dispatch(pushHistory());
-        node.modelNode.props = newProps;
-        dispatch(setSelectedKey(key));
-        dispatch(updatePage());
-    } else {
-        dispatch(failed('Component with key ' + key + ' was not found.'));
+  const {key} = componentObject;
+  let node = graphApi.getNode(key);
+  if (node) {
+    let oldProps = node.modelNode.props || {};
+    let newProps = utils.delex(utils.fulex(oldProps), optionPath);
+    if (newProps.style && isEmpty(newProps.style)) {
+      delete newProps.style;
     }
+    dispatch(pushHistory());
+    node.modelNode.props = newProps;
+    dispatch(setSelectedKey(key));
+    dispatch(updatePage());
+  } else {
+    dispatch(failed('Component with key ' + key + ' was not found.'));
+  }
 };
 
 export const changeOption = (componentObject, optionObject) => (dispatch, getState) => {
-    const {key} = componentObject;
-    let node = graphApi.getNode(key);
-    if (node) {
-        let oldProps = node.modelNode.props || {};
-        let newProps = merge({}, oldProps, optionObject);
-        if(newProps.style && isEmpty(newProps.style)) {
-            delete newProps.style;
-        }
-        dispatch(pushHistory());
-        node.modelNode.props = newProps;
-        dispatch(setSelectedKey(key));
-        dispatch(updatePage());
-    } else {
-        dispatch(failed('Component with key ' + key + ' was not found.'));
+  const {key} = componentObject;
+  let node = graphApi.getNode(key);
+  if (node) {
+    let oldProps = node.modelNode.props || {};
+    let newProps = merge({}, oldProps, optionObject);
+    if (newProps.style && isEmpty(newProps.style)) {
+      delete newProps.style;
     }
+    dispatch(pushHistory());
+    node.modelNode.props = newProps;
+    dispatch(setSelectedKey(key));
+    dispatch(updatePage());
+  } else {
+    dispatch(failed('Component with key ' + key + ' was not found.'));
+  }
 };
 
 export const setActiveTab = (activeTab) => ({type: SET_ACTIVE_TAB, payload: activeTab});
 export const toggleStyleSection = (sectionKey) => ({type: TOGGLE_STYLE_SECTION, payload: sectionKey});
+export const toggleFavorite = (stylePath) => ({type: TOGGLE_FAVORITE, payload: stylePath});
+export const updateOptionsPanelState = (newState) => ({type: UPDATE_OPTIONS_PANEL_STATE, payload: newState});
 
 export const containerActions = (dispatch) => bindActionCreators({
-    deleteOption, changeOption, setActiveTab, toggleStyleSection
+  deleteOption,
+  changeOption,
+  setActiveTab,
+  toggleStyleSection,
+  toggleFavorite,
 }, dispatch);

@@ -24,88 +24,88 @@ import { DirPathInput } from 'components';
 
 class Container extends Component {
 
-    constructor(props) {
-        super(props);
-        this.handleCancel = this.handleCancel.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.state = {error: ''};
-    }
+  constructor (props) {
+    super(props);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {error: ''};
+  }
 
-    componentDidUpdate(prevProps, prevState) {
-    	if (this.props.show && !prevProps.show) {
-    		this.dirPathInput.focus();
-		}
-	}
-
-    handleCancel(e){
-        if (e) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-        const { hideModal } = this.props;
-        hideModal();
-		this.clearError();
+  componentDidUpdate (prevProps, prevState) {
+    if (this.props.show && !prevProps.show) {
+      this.dirPathInput.focus();
     }
+  }
 
-    handleSubmit(e){
-        if (e) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-        const dirPath = this.dirPathInput.getValue();
-        if (dirPath && dirPath.length > 0) {
-			const { submitModal } = this.props;
-			submitModal(dirPath);
-			this.clearError();
-        } else {
-            this.setState({error: 'Directory path should not be empty'});
-        }
+  handleCancel (e) {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
     }
+    const {hideModal} = this.props;
+    hideModal();
+    this.clearError();
+  }
 
-    clearError() {
-        this.setState({error: ''});
+  handleSubmit (e) {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
     }
+    const dirPath = this.dirPathInput.getValue();
+    if (dirPath && dirPath.length > 0) {
+      const {submitModal} = this.props;
+      submitModal(dirPath);
+      this.clearError();
+    } else {
+      this.setState({error: 'Directory path should not be empty'});
+    }
+  }
 
-    render() {
-        const { show, dirPath, recentDirPaths } = this.props;
-        const { error } = this.state;
-		return (
-            <Modal
-                show={show}
-                onHide={this.handleCancel}
-                dialogClassName="umy-modal-overlay umy-modal-middlesize"
-                backdrop={true}
-                keyboard={true}
-                bsSize="large"
-                ref="dialog"
-                animation={true}
-            >
-                <Modal.Header
-                    closeButton={false}
-                    aria-labelledby='contained-modal-title'
-                >
-                    <Modal.Title id='contained-modal-title'>Directory Path</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {error &&
-                        <Alert bsStyle="danger">{error}</Alert>
-                    }
-                    <DirPathInput
-                        ref={me => this.dirPathInput = me}
-                        dirPath={dirPath}
-                        label="Namespaces package directory path"
-                        isAutoComplete={true}
-                        options={recentDirPaths}
-						onEnterKey={this.handleSubmit}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.handleCancel}>Cancel</Button>
-                    <Button onClick={this.handleSubmit} bsStyle="primary">Submit</Button>
-                </Modal.Footer>
-            </Modal>
-        );
-    }
+  clearError () {
+    this.setState({error: ''});
+  }
+
+  render () {
+    const {show, dirPath, recentDirPaths} = this.props;
+    const {error} = this.state;
+    return (
+      <Modal
+        show={show}
+        onHide={this.handleCancel}
+        dialogClassName="umy-modal-overlay"
+        backdrop={true}
+        keyboard={true}
+        bsSize="large"
+        ref="dialog"
+        animation={true}
+      >
+        <Modal.Header
+          closeButton={false}
+          aria-labelledby='contained-modal-title'
+        >
+          <Modal.Title id='contained-modal-title'>Directory Path</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {error &&
+          <Alert bsStyle="danger">{error}</Alert>
+          }
+          <DirPathInput
+            ref={me => this.dirPathInput = me}
+            dirPath={dirPath}
+            label="Namespaces package directory path"
+            isAutoComplete={true}
+            options={recentDirPaths}
+            onEnterKey={this.handleSubmit}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.handleCancel}>Cancel</Button>
+          <Button onClick={this.handleSubmit} bsStyle="primary">Submit</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
 
 }
 

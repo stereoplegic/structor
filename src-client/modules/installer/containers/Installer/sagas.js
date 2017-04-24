@@ -62,6 +62,8 @@ function* installNamespaces() {
 		try {
 			yield call(serverApi.installFromLocalDir, namespacesSrcDirPath);
 			yield call(delay, 10000);
+      const model = yield call(serverApi.getProjectModel);
+      yield put(deskPageActions.loadModel(model || {}));
 			yield put(appContainerActions.hideInstaller());
 			yield put(deskPageActions.reloadPage());
 			yield put(messageActions.success('Namespaces have been installed successfully.'));

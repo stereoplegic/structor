@@ -65,6 +65,7 @@ function* getProjectStatus(){
                 yield put(actions.setProjectInfo(projectInfo));
 
                 yield put(actions.showDesk());
+                yield put(actions.setupDesk());
             } else {
                 yield put(messageActions.failed('Loading error of the current project'));
             }

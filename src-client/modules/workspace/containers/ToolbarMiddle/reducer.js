@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-import { createStructuredSelector } from 'reselect';
-import { availableNamespacesSelector } from 'modules/workspace/containers/LibraryPanel/selectors';
-import { pagesSelector } from 'modules/workspace/containers/DeskPage/selectors';
-import { selectedNamespacesSelector, selectedPagesSelector } from 'modules/extractor/containers/Extractor/selectors';
+import * as actions from './actions.js';
 
-export const modelSelector = createStructuredSelector({
-  availableNamespaces: availableNamespacesSelector,
-  availablePages: pagesSelector,
-  selectedNamespaces: selectedNamespacesSelector,
-  selectedPages: selectedPagesSelector,
-});
+const initialState = {
+
+};
+
+export default (state = initialState, action = {}) => {
+
+    const {type, payload} = action;
+
+    return state;
+}
+

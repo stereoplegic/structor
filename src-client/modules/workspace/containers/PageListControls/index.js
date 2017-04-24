@@ -24,8 +24,8 @@ import { graphApi } from 'api';
 
 const makeTitle = (title) => {
     let adoptedTitle = title;
-    if (adoptedTitle && adoptedTitle.length > 50) {
-        adoptedTitle = adoptedTitle.substr(0, 50) + '...';
+    if (adoptedTitle && adoptedTitle.length > 70) {
+        adoptedTitle = adoptedTitle.substr(0, 70) + '...';
     }
     return adoptedTitle;
 };

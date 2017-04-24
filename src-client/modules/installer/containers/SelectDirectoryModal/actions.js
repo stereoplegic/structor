@@ -18,21 +18,21 @@ import { bindActionCreators } from 'redux';
 import { coockiesApi } from 'api';
 import { installFromDir } from 'modules/installer/containers/Installer/actions';
 
-export const HIDE_MODAL = "SelectDirectoryModal/HIDE_MODAL";
-export const SHOW_MODAL = "SelectDirectoryModal/SHOW_MODAL";
-export const SUBMIT_MODAL = "SelectDirectoryModal/SUBMIT_MODAL";
+export const HIDE_MODAL = 'SelectDirectoryModal/HIDE_MODAL';
+export const SHOW_MODAL = 'SelectDirectoryModal/SHOW_MODAL';
+export const SUBMIT_MODAL = 'SelectDirectoryModal/SUBMIT_MODAL';
 
 export const hideModal = () => ({type: HIDE_MODAL});
 export const showModal = () => (dispatch, getState) => {
-    const recentDirPaths = coockiesApi.getRecentInstallerDirPaths();
-    dispatch({type: SHOW_MODAL, payload: {recentDirPaths}});
+  const recentDirPaths = coockiesApi.getRecentInstallerDirPaths();
+  dispatch({type: SHOW_MODAL, payload: {recentDirPaths}});
 };
 export const submitModal = (dirPath) => (dispatch, getState) => {
-    coockiesApi.addToRecentInstallerDirPaths(dirPath);
-    dispatch({type: SUBMIT_MODAL, payload: {dirPath}});
-	dispatch(installFromDir(dirPath));
+  coockiesApi.addToRecentInstallerDirPaths(dirPath);
+  dispatch({type: SUBMIT_MODAL, payload: {dirPath}});
+  dispatch(installFromDir(dirPath));
 };
 
 export const containerActions = (dispatch) => bindActionCreators({
-    hideModal, submitModal
+  hideModal, submitModal
 }, dispatch);

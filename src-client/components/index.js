@@ -34,6 +34,7 @@ export PageComponentForm from './PageComponentForm';
 export PageTreeViewItem from './PageTreeViewItem';
 export PageTreeViewItemText from './PageTreeViewItemText';
 export PageTreeViewPlaceholder from './PageTreeViewPlaceholder';
+export PlaceholderCircle from './PlaceholderCircle';
 export ProxyInput from './ProxyInput';
 export StyleNumberInput from './StyleNumberInput';
 export StyleOptionSelect from './StyleOptionSelect';

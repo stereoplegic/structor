@@ -15,31 +15,52 @@
  */
 
 import * as actions from './actions.js';
-import {initialExpandedStyleGroups} from './constants';
+import { initialExpandedStyleGroups } from './constants';
 
 const initialState = {
-    activeTab: 1,
-    expandedStyleSections: initialExpandedStyleGroups,
+  activeTab: 1,
+  expandedStyleSections: initialExpandedStyleGroups,
+  favoriteStylePaths: [],
 };
 
 export default (state = initialState, action = {}) => {
 
-    const {type, payload} = action;
+  const {type, payload} = action;
 
-    if(type === actions.SET_ACTIVE_TAB){
-        return Object.assign({}, state, {
-            activeTab: payload
-        });
+  if (type === actions.SET_ACTIVE_TAB) {
+    return Object.assign({}, state, {
+      activeTab: payload
+    });
+  }
+
+  if (type === actions.TOGGLE_STYLE_SECTION) {
+    let newExpandedStyleSections = Object.assign({}, state.expandedStyleSections);
+    newExpandedStyleSections[payload] = !newExpandedStyleSections[payload];
+    return Object.assign({}, state, {
+      expandedStyleSections: newExpandedStyleSections
+    });
+  }
+
+  if (type === actions.TOGGLE_FAVORITE) {
+    let favoriteStylePaths = [].concat(state.favoriteStylePaths);
+    const foundInex = favoriteStylePaths.findIndex(i => i === payload);
+    if (foundInex >= 0) {
+      favoriteStylePaths.splice(foundInex, 1);
+    } else {
+      favoriteStylePaths.push(payload);
     }
+    return Object.assign({}, state, {favoriteStylePaths});
+  }
 
-    if(type === actions.TOGGLE_STYLE_SECTION){
-        let newExpandedStyleSections = Object.assign({}, state.expandedStyleSections);
-        newExpandedStyleSections[payload] = !newExpandedStyleSections[payload];
-        return Object.assign({}, state, {
-            expandedStyleSections: newExpandedStyleSections
-        });
-    }
+  if (type === actions.UPDATE_OPTIONS_PANEL_STATE) {
+    const {expandedStyleSections, favoriteStylePaths, activeTab} = payload;
+    return Object.assign({}, state, {
+      expandedStyleSections,
+      favoriteStylePaths,
+      activeTab
+    });
+  }
 
-    return state;
-}
+  return state;
+};
 

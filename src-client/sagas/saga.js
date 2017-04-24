@@ -25,6 +25,7 @@ import saveDefaultModelModalSaga from 'modules/workspace/containers/SaveDefaultM
 import pageExportControlsSaga from 'modules/workspace/containers/PageExportControls/sagas';
 import extractorSaga from 'modules/extractor/containers/Extractor/sagas';
 import installerSaga from 'modules/installer/containers/Installer/sagas';
+import componentReadmePanelSaga from 'modules/workspace/containers/ComponentReadmePanel/sagas';
 
 export default function* mainSaga(){
     yield fork(appContainerSaga);
@@ -38,4 +39,5 @@ export default function* mainSaga(){
     yield fork(pageExportControlsSaga);
     yield fork(extractorSaga);
     yield fork(installerSaga);
+    yield fork(componentReadmePanelSaga);
 }

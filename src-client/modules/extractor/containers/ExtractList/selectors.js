@@ -15,17 +15,18 @@
  */
 
 import { createStructuredSelector } from 'reselect';
-import {availableNamespacesSelector} from 'modules/workspace/containers/LibraryPanel/selectors';
-import {projectPathsSelector} from 'modules/app/containers/AppContainer/selectors';
 import {
-    selectedNamespacesSelector,
-    dependentNamespacesSelector,
-    dependenciesSelector
+  selectedNamespacesSelector,
+  dependentNamespacesSelector,
+  dependenciesSelector,
+  recentDirPathsSelector,
+  selectedPagesSelector
 } from 'modules/extractor/containers/Extractor/selectors';
 
 export const modelSelector = createStructuredSelector({
-    selectedNamespaces: selectedNamespacesSelector,
-	dependentNamespaces: dependentNamespacesSelector,
-	dependencies: dependenciesSelector,
-	projectPaths: projectPathsSelector,
+  selectedNamespaces: selectedNamespacesSelector,
+  dependentNamespaces: dependentNamespacesSelector,
+  dependencies: dependenciesSelector,
+  recentDirPaths: recentDirPathsSelector,
+  selectedPages: selectedPagesSelector,
 });

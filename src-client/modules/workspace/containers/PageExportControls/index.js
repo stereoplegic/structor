@@ -55,7 +55,7 @@ class Container extends Component {
             >
                 <div className="btn-group">
                     <button
-                        className="btn btn-default btn-xs"
+                        className="btn btn-default btn-sm"
                         onClick={this.onExportPages}
                         title="Generate the source code of selected pages and routes"
                         disabled={!selectedPages || selectedPages.length <= 0}
@@ -68,7 +68,7 @@ class Container extends Component {
                 </div>
                 <div className="btn-group">
                     <button
-                        className="btn btn-default btn-xs"
+                        className="btn btn-default btn-sm"
                         onClick={this.onExportApp}
                         title="Generate the source code of selected pages and routes along with application files"
                         disabled={!selectedPages || selectedPages.length <= 0}

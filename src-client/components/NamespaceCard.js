@@ -105,8 +105,8 @@ class NamespaceCard extends Component {
 									>
 										<i className="fa fa-download"/>
 										<span style={{marginLeft: '0.5em'}}>
-                                    		Install
-                                		</span>
+											Install
+										</span>
 									</button>
 									<button
 										type="button"
@@ -152,7 +152,7 @@ class NamespaceCard extends Component {
 								/>
 							</div>
 							<div style={mainSectionStyle}>
-								<h4 style={{wordBreak: 'break-all'}}>
+								<h4>
 									{description}
 								</h4>
 							</div>

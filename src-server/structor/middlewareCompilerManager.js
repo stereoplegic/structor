@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import {cloneDeep} from 'lodash';
+import { cloneDeep } from 'lodash';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackBuilderMiddleware from './webpackBuilderMiddleware.js';
-import {config} from 'structor-commons';
+import { config } from 'structor-commons';
 
 let compiler = undefined;
 let devMiddleware = undefined;
@@ -27,65 +27,65 @@ let hotMiddleware = undefined;
 let builderMiddleware = undefined;
 let webpackConfig = undefined;
 
-export function getDevMiddlewareCompiler() {
-    if (compiler === undefined) {
-        try{
-            webpackConfig = require(config.webpackConfigFilePath());
-            webpackConfig = cloneDeep(webpackConfig);
-            compiler = webpack(webpackConfig);
-            if(config.getDebugMode()){
-                console.log('Webpack configuration:');
-                console.log(JSON.stringify(webpackConfig, null, 4));
-            }
-        } catch(e){
-            throw Error('Webpack config was not found. ' + e);
-        }
-
+export function getDevMiddlewareCompiler () {
+  if (compiler === undefined) {
+    try {
+      webpackConfig = require(config.webpackConfigFilePath());
+      webpackConfig = cloneDeep(webpackConfig);
+      compiler = webpack(webpackConfig);
+      if (config.getDebugMode()) {
+        console.log('Webpack configuration:');
+        console.log(JSON.stringify(webpackConfig, null, 4));
+      }
+    } catch (e) {
+      throw Error('Webpack config was not found. ' + e);
     }
-    return compiler;
+
+  }
+  return compiler;
 }
 
-export function getDevMiddleware() {
-    if (devMiddleware === undefined) {
-        devMiddleware = webpackDevMiddleware(
-            getDevMiddlewareCompiler(),
-            {
-                noInfo: !config.getDebugMode(),
-                quiet: !config.getDebugMode(),
-                lazy: false,
-                publicPath: webpackConfig ? webpackConfig.output.publicPath : '/structor-dev/__build__'
-            }
-        );
-    }
-    return devMiddleware;
+export function getDevMiddleware () {
+  if (devMiddleware === undefined) {
+    devMiddleware = webpackDevMiddleware(
+      getDevMiddlewareCompiler(),
+      {
+        noInfo: !config.getDebugMode(),
+        quiet: !config.getDebugMode(),
+        lazy: false,
+        publicPath: webpackConfig ? webpackConfig.output.publicPath : '/structor-dev/__build__'
+      }
+    );
+  }
+  return devMiddleware;
 }
 
-export function getHotMiddleware() {
-    if (hotMiddleware === undefined) {
-        hotMiddleware = webpackHotMiddleware(
-            getDevMiddlewareCompiler(),
-            {
-                log: console.log,
-                overlay: false,
-                reload: true,
-                noInfo: false,
-                quiet: false,
-                path: '/structor-dev/a'
-                // dynamicPublicPath: true
-            }
-        );
-    }
-    return hotMiddleware;
+export function getHotMiddleware () {
+  if (hotMiddleware === undefined) {
+    hotMiddleware = webpackHotMiddleware(
+      getDevMiddlewareCompiler(),
+      {
+        log: console.log,
+        overlay: false,
+        reload: true,
+        noInfo: false,
+        quiet: false,
+        path: '/structor-dev/a'
+        // dynamicPublicPath: true
+      }
+    );
+  }
+  return hotMiddleware;
 }
 
-export function getBuilderMiddleware(opts) {
-    if (builderMiddleware === undefined) {
-        builderMiddleware = webpackBuilderMiddleware(
-            getDevMiddlewareCompiler(),
-            opts
-        );
-    }
-    return builderMiddleware;
+export function getBuilderMiddleware (opts) {
+  if (builderMiddleware === undefined) {
+    builderMiddleware = webpackBuilderMiddleware(
+      getDevMiddlewareCompiler(),
+      opts
+    );
+  }
+  return builderMiddleware;
 }
 
 

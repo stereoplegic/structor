@@ -26,6 +26,14 @@ import {
 } from './actions.js';
 import { graphApi } from 'api';
 
+const makeTitle = (componentName) => {
+  let titleComponentName = componentName;
+  if(titleComponentName && titleComponentName.length > 30){
+    titleComponentName = titleComponentName.substr(0, 27) + '...';
+  }
+  return titleComponentName;
+};
+
 class Container extends Component {
 
     constructor(props) {
@@ -87,9 +95,9 @@ class Container extends Component {
                     const {modelNode} = clipboardNode;
                     clipboardContent = (
                     <span style={activeStyle}>
-                        <span>{modelNode.type}</span>
+                        <span>{makeTitle(modelNode.type)}</span>
                         {modelNode.namespace &&
-                        <span style={{marginLeft: '0.3em'}}>{'[' + modelNode.namespace + ']'}</span>
+                        <span style={{marginLeft: '0.3em'}}>{'[' + makeTitle(modelNode.namespace) + ']'}</span>
                         }
                     </span>
                     );

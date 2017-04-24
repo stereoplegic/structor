@@ -64,6 +64,10 @@ export function loadComponentOptions(componentName, namespace, sourceCodeFilePat
 		});
 }
 
+export function loadComponentReadmeText(componentName, namespace) {
+  return invokeStructor('getComponentNotes', {componentName, namespace});
+}
+
 export function writeComponentSource(sourceCodeFilePath, sourceCode) {
 	return invokeStructor('writeComponentSourceCode', {filePath: sourceCodeFilePath, sourceCode});
 }
@@ -106,12 +110,12 @@ export function generateApplication(pagesModel, hasApplicationFiles) {
     return invokeStructor('generateApplication', {pagesModel, hasApplicationFiles});
 }
 
-export function preExtractNamespaces(namespaces) {
-	return invokeStructor('preExtractNamespaces', {namespaces});
+export function preExtractNamespaces(namespaces, pages) {
+	return invokeStructor('preExtractNamespaces', {namespaces, pages});
 }
 
-export function extractNamespaces(namespaces, dependencies, dirPath) {
-	return invokeStructor('extractNamespaces', {namespaces, dependencies, dirPath});
+export function extractNamespaces(namespaces, dependencies, pages, dirPath) {
+	return invokeStructor('extractNamespaces', {namespaces, dependencies, pages, dirPath});
 }
 
 export function getMarketList() {

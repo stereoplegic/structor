@@ -43,7 +43,7 @@ const toolbarSectionStyle = {
     marginBottom: '1em'
 };
 
-const TITLE_STEP_1 = 'Select namespaces to extract';
+const TITLE_STEP_1 = 'Select namespaces and pages to extract';
 const TITLE_STEP_2 = 'Review dependencies';
 const TITLE_STEP_3 = 'Extract namespaces';
 

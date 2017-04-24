@@ -51,18 +51,20 @@ class Container extends Component {
                     className="btn btn-default btn-xs"
                     onClick={this.handleShowModal(ADD_NEW)}
                     title="Create new page">
-                    <span
-                        style={buttonLabelStyle}
-                        className="fa fa-plus" />
+                    <span style={buttonLabelStyle}>
+                        <i className="fa fa-plus" />
+                        <span style={{marginLeft: '0.5em'}}>Add Page</span>
+                    </span>
                 </button>
                 <button
                     key="copyPageButton"
                     className="btn btn-default btn-xs"
                     onClick={this.handleShowModal(DUPLICATE)}
                     title="Clone current page">
-                    <span
-                        style={buttonLabelStyle}
-                        className="fa fa-copy" />
+                    <span style={buttonLabelStyle}>
+                        <i className="fa fa-copy" />
+                        <span style={{marginLeft: '0.5em'}}>Clone Page</span>
+                    </span>
                 </button>
                 <div
                     key="pageWidthButton"
@@ -71,6 +73,7 @@ class Container extends Component {
                     <button
                         className="btn btn-default btn-xs dropdown-toggle"
                         data-toggle="dropdown">
+                        <span style={{marginLeft: '0.5em'}}>Width</span>
                         <span style={buttonLabelStyle}>{deskModel.iframeWidth}</span>
                         <span className="caret" />
                         &nbsp;&nbsp;

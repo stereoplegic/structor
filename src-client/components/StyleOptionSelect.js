@@ -54,6 +54,7 @@ class StyleOptionSelect extends Component {
 		super(props);
 		this.state = getStateObject(props.valueObject, props.path);
 		this.handleToggleOption = this.handleToggleOption.bind(this);
+		this.handleToggleFavorite = this.handleToggleFavorite.bind(this);
 		this.handleChangeValue = this.handleChangeValue.bind(this);
 	}
 
@@ -68,6 +69,13 @@ class StyleOptionSelect extends Component {
 		onSet(path, checked);
 	}
 
+  handleToggleFavorite(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    const {path, onToggleFavorite} = this.props;
+    onToggleFavorite(path);
+  }
+
 	handleChangeValue(e) {
 		const newValue = e.currentTarget.dataset.val;
 		let valueObject = set({}, this.props.path, newValue);
@@ -75,7 +83,7 @@ class StyleOptionSelect extends Component {
 	}
 
 	render() {
-		const {isSet, valueList} = this.props;
+		const {isSet, valueList, isFavorite} = this.props;
 		const {label, value} = this.state;
 		return (
 			<div style={this.props.style}>
@@ -84,10 +92,21 @@ class StyleOptionSelect extends Component {
 						type="checkbox"
 						style={checkBoxStyle}
 						checked={isSet}
-						onChange={this.handleToggleOption}/>
-					<p style={labelStyle}>
-						{isSet ? <strong>{label}</strong> : <span className="text-muted">{label}</span>}
-					</p>
+						onChange={this.handleToggleOption}
+					/>
+					<div style={{flexGrow: 1}}>
+						<p style={labelStyle}>
+              {isSet ? <strong>{label}</strong> : <span className="text-muted">{label}</span>}
+						</p>
+					</div>
+					<div style={{flexGrow: 0}}>
+						<i
+							className={"fa " + (isFavorite ? "fa-heart" : "fa-heart-o")}
+							style={{cursor: 'pointer'}}
+							title={isFavorite ? "Remove from the favorites list" : "Add to the favorites list"}
+							onClick={this.handleToggleFavorite}
+						/>
+					</div>
 				</div>
 				{isSet &&
 				<div style={rowContainerStyle}>

@@ -163,7 +163,8 @@ body {
     background-color: #ffffff;
     color: #000000;
     outline: 1px solid #f0ad4e;
-    z-index: 100;
+    z-index: 1010;
+    width: 100%;
 }
 
 .umy-grid-text-edited {
@@ -305,6 +306,7 @@ body {
     -webkit-padding-start: 0;
     padding: 0 0 0 1em;
     list-style: none;
+    display: inline-block;
 }
 
 .umy-treeview-list-selected {
@@ -313,6 +315,7 @@ body {
     -webkit-padding-start: 0;
     padding: 0 0 0 1em;
     list-style: none;
+    display: inline-block;
 }
 
 .umy-treeview-list-item {
@@ -320,7 +323,7 @@ body {
     padding-left: 3px;
     white-space: nowrap;
     font-size: 14px;
-    letter-spacing: 0px;
+    letter-spacing: 0;
 }
 
 .umy-treeview-list-item-selected {
@@ -425,62 +428,99 @@ body {
     box-shadow:         inset 0px -7px 4px 0px rgba(255, 255, 255, 0.64);
 }
 
+.treeview-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1000;
+    cursor: pointer;
+}
+
 .treeview-placeholder-base {
     margin: 0;
     padding: 0;
     position: relative;
-    height: 0;
+    height: 1px;
+    right: 1px;
 }
 
 .treeview-placeholder-line {
     display: none;
     margin: 0;
     padding: 0;
+    height: 0;
+    border-top: 1px dotted #999;
+    width: 200px;
     position: absolute;
-    height: 0.2em;
-    border-top: 1px solid #999;
-    border-bottom: 1px solid #999;
-    border-right: 1px solid #999;
-    background-color: rgb(240, 173, 78);
-    border-bottom-right-radius: 3px;
-    border-top-right-radius: 3px;
-    top: .6em;
-    left: 1.3em;
-    width: 300px;
+    top: 0;
+    left: 0.5em;
 }
 
-.treeview-placeholder {
+.treeview-placeholder-icon {
     position: absolute;
-    top: -0.7em;
-    left: 0;
-    width: 1.4em;
-    height: 1.4em;
-    padding: 0.3em;
+    font-size: .7em;
+    top: -.4em;
+    left: -.4em;
+    width: 1em;
+    height: 1em;
     z-index: 1000;
+    display: none;
+}
+
+.treeview-placeholder-circle {
+    position: absolute;
+    top: -.4em;
+    left: -.4em;
+    width: .8em;
+    height: .8em;
     border-radius: 50%;
-    cursor: pointer;
+    /*background-color: rgba(240, 173, 78, 0.1);*/
+    border: 1px solid rgba(205, 205, 205, 0.5);
 }
 
-.treeview-placeholder:hover {
-    padding: 0.1em;
+.treeview-placeholder-bar {
+    position: absolute;
+    top: -.4em;
+    left: -.4em;
+    width: 2em;
+    height: .8em;
+    border-radius: 0.3em;
+    /*background-color: rgba(240, 173, 78, 0.1);*/
+    border: 1px solid rgba(205, 205, 205, 0.5);
 }
 
-.treeview-placeholder:hover > .treeview-placeholder-circle {
+.treeview-placeholder:hover > .treeview-placeholder-base > .treeview-placeholder-circle {
+    top: -.6em;
+    left: -.6em;
     width: 1.2em;
     height: 1.2em;
     border: 1px solid #999;
     background-color: rgb(240, 173, 78);
 }
-.treeview-placeholder:hover > .treeview-placeholder-line {
+
+.treeview-placeholder:hover > .treeview-placeholder-base > .treeview-placeholder-bar {
+    top: -.6em;
+    left: -.6em;
+    height: 1.2em;
+    border: 1px solid #999;
+    background-color: rgb(240, 173, 78);
+}
+
+.treeview-placeholder:hover > .treeview-placeholder-base > .treeview-placeholder-line {
     display: block;
 }
 
-.treeview-placeholder-circle {
-    width: .8em;
-    height: .8em;
-    border-radius: 50%;
-    background-color: rgba(240, 173, 78, 0.1);
-    border: 1px solid rgba(205, 205, 205, 0.5);
+.treeview-placeholder:hover > .treeview-placeholder-base > .treeview-placeholder-icon {
+    display: block;
+}
+
+.treeview-panel-button {
+    opacity: 0.7;
+}
+
+.treeview-panel-button:hover {
+    opacity: 1;
 }
 
 .dimension-box {

@@ -53,7 +53,7 @@ class Container extends Component {
             >
                 <div className="btn-group">
                     <button
-                        className="btn btn-default btn-xs"
+                        className="btn btn-default btn-sm"
                         onClick={this.onInstall}
                         title="Install new components"
                     >
@@ -65,7 +65,7 @@ class Container extends Component {
                 </div>
                 <div className="btn-group">
                     <button
-                        className="btn btn-default btn-xs"
+                        className="btn btn-default btn-sm"
                         onClick={this.onExtract}
                         title="Publish components"
                     >

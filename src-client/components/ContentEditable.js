@@ -78,7 +78,7 @@ class ContentEditable extends Component {
 
     render(){
         return (
-            <span
+            <div
                 ref="editableElement"
                 className='umy-grid-text-editable'
                 onInput={this.emitChange}
@@ -86,10 +86,9 @@ class ContentEditable extends Component {
                 onKeyDown={this.handleOnKeyDown}
                 contentEditable
                 dangerouslySetInnerHTML={{__html: this.props.html}}>
-            </span>
+            </div>
         );
     }
-
 }
 
 ContentEditable.defaultProps = {

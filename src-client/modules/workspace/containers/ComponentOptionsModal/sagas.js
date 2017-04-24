@@ -18,7 +18,7 @@ import { fork, take, call, put, race, cancel } from 'redux-saga/effects';
 import { SagaCancellationException } from 'redux-saga';
 import * as actions from './actions.js';
 import * as spinnerActions from 'modules/app/containers/AppSpinner/actions';
-import * as messageActions from 'modules/app/containers/AppMessage/actions.js';
+import * as messageActions from 'modules/app/containers/AppMessage/actions';
 import { serverApi, graphApi } from 'api';
 import { pushHistory } from 'modules/workspace/containers/HistoryControls/actions';
 import { updatePage } from 'modules/workspace/containers/DeskPage/actions';

@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-import { createStructuredSelector } from 'reselect';
-import { availableNamespacesSelector } from 'modules/workspace/containers/LibraryPanel/selectors';
-import { pagesSelector } from 'modules/workspace/containers/DeskPage/selectors';
-import { selectedNamespacesSelector, selectedPagesSelector } from 'modules/extractor/containers/Extractor/selectors';
+// main saga
+export default function* mainSaga() {
+    //yield [fork(getProjectInfo)];
 
-export const modelSelector = createStructuredSelector({
-  availableNamespaces: availableNamespacesSelector,
-  availablePages: pagesSelector,
-  selectedNamespaces: selectedNamespacesSelector,
-  selectedPages: selectedPagesSelector,
-});
+};

@@ -17,35 +17,53 @@
 import * as actions from './actions.js';
 
 const initialState = {
-	stage: actions.STAGE1,
-    selectedNamespaces: [],
-    dependentNamespaces: [],
-    dependencies: {}
+  stage: actions.STAGE1,
+  selectedNamespaces: [],
+  selectedPages: [],
+  dependentNamespaces: [],
+  dependencies: {},
+  recentDirPaths: [],
 };
 
 export default (state = initialState, action = {}) => {
 
-    const {type, payload} = action;
+  const {type, payload} = action;
 
-    if(type === actions.STEP_TO_STAGE){
-        return Object.assign({}, state, {
-            stage: payload
-        });
-    }
+  if (type === actions.STEP_TO_STAGE) {
+    return Object.assign({}, state, {
+      stage: payload
+    });
+  }
 
-    if(type === actions.SET_SELECTED_NAMESPACES){
-        return Object.assign({}, state, {
-            selectedNamespaces: [].concat(payload),
-        });
-    }
+  if (type === actions.SET_SELECTED_NAMESPACES) {
+    return Object.assign({}, state, {
+      selectedNamespaces: [].concat(payload),
+    });
+  }
 
-    if(type === actions.SET_PREEXTRACTED_DATA){
-        return Object.assign({}, state, {
-            dependentNamespaces: [].concat(payload.namespaces),
-            dependencies: Object.assign({}, payload.dependencies),
-        });
-    }
+  if (type === actions.SET_SELECTED_PAGES) {
+    return Object.assign({}, state, {
+      selectedPages: [].concat(payload),
+    });
+  }
 
-    return state;
-}
+  if (type === actions.SET_PREEXTRACTED_DATA) {
+    return Object.assign({}, state, {
+      dependentNamespaces: [].concat(payload.namespaces),
+      dependencies: Object.assign({}, payload.dependencies),
+      recentDirPaths: [].concat(payload.recentDirPaths),
+    });
+  }
+
+  if (type === actions.CLEAR_DATA) {
+    return Object.assign({}, state, {
+      dependentNamespaces: [],
+      dependencies: {},
+      selectedNamespaces: [],
+      selectedPages: [],
+    });
+  }
+
+  return state;
+};
 
