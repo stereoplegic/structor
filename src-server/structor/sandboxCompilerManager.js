@@ -19,33 +19,33 @@ import { cloneDeep } from 'lodash';
 import webpack from 'webpack';
 import { config } from 'structor-commons';
 
-let compiler = undefined;
-let webpackConfig = undefined;
+let sandboxCompiler = undefined;
+let sandboxWebpackConfig = undefined;
 
 export function compileSandbox () {
-  if (compiler === undefined) {
+  if (sandboxCompiler === undefined) {
     try {
-      webpackConfig = require(config.webpackConfigFilePath());
-      webpackConfig = cloneDeep(webpackConfig);
+      sandboxWebpackConfig = require(config.webpackConfigFilePath());
+      sandboxWebpackConfig = cloneDeep(sandboxWebpackConfig);
       const entryFilePath = path.join(config.sandboxDirPath(), 'index.js');
       const outputDirPath = config.sandboxDirPath();
       const outputFileName = 'bundle.js';
-      webpackConfig.entry = [entryFilePath];
-      webpackConfig.output = {
+      sandboxWebpackConfig.entry = [entryFilePath];
+      sandboxWebpackConfig.output = {
         path: outputDirPath,
         filename: outputFileName
       };
-      webpackConfig.resolve = webpackConfig.resolve || {};
-      webpackConfig.resolve.modules = [config.SANDBOX_DIR, 'node_modules'];
-      webpackConfig.stats = 'errors-only';
-      compiler = webpack(webpackConfig);
+      sandboxWebpackConfig.resolve = sandboxWebpackConfig.resolve || {};
+      sandboxWebpackConfig.resolve.modules = [config.SANDBOX_DIR, 'node_modules'];
+      sandboxWebpackConfig.stats = 'errors-only';
+      sandboxCompiler = webpack(sandboxWebpackConfig);
     } catch (e) {
       throw Error('Webpack config was not found. ' + e);
     }
 
   }
   return new Promise((resolve, reject) => {
-    compiler.run((err, stats) => {
+    sandboxCompiler.run((err, stats) => {
       let jsonStats = stats.toJson({
         // Add asset Information
         assets: false,
@@ -90,7 +90,7 @@ export function compileSandbox () {
       });
       if (err) {
         console.error(err);
-        reject(err);
+        reject(err.message ? err.message : err.toString());
       } else if (jsonStats.errors.length > 0) {
         // console.log(JSON.stringify(jsonStats.modules, null, 4));
         reject(jsonStats.errors.join('\n\n'));

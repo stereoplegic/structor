@@ -78,7 +78,6 @@ export const handleCompilerMessage = (message) => (dispatch, getState) => {
 export const setupDesk = () => (dispatch, getState) => {
   const deskSettings = coockiesApi.getDeskSettings();
   if (deskSettings) {
-    console.log(JSON.stringify(deskSettings));
     const {isEditModeOn, layout, optionsPanel} = deskSettings;
     if (isEditModeOn || isEditModeOn === undefined) {
       dispatch(setEditModeOn());
