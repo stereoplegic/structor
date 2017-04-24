@@ -33,9 +33,7 @@ function* preExtract () {
     const {payload: {namespaces, pages}} = yield take(actions.PREEXTRACT);
     yield put(spinnerActions.started('Searching dependencies'));
     try {
-      console.log('Start preextraction');
       const preExtractedData = yield call(serverApi.preExtractNamespaces, namespaces, pages);
-      console.log('Preextracted data: ', JSON.stringify(preExtractedData, null, 4));
       yield put(actions.setPreExtractedData(preExtractedData));
       yield put(actions.stepToStage(actions.STAGE2));
     } catch (error) {
