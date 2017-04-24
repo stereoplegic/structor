@@ -8,7 +8,7 @@ module.exports = [
             main: './src-client/main.js'
         },
         output: {
-            path: '/Users/ipselon/Development/projects/structor/test/node_modules/structor/static',
+            path: '/Users/ipselon/Development/projects/structor/test-release/node_modules/structor/static',
             filename: '[name].js'
         },
         devtool: 'inline-source-map',

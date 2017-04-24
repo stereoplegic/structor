@@ -203,15 +203,16 @@ export function extractNamespaces (namespaces, dependencies, pages, dirPath) {
     .then(() => {
       let copySequence = Promise.resolve();
       namespaces.forEach(namespace => {
-        namespaceModule = componentTree.modules[namespace];
-        if (namespaceModule && namespaceModule.absolutePath) {
-          copySequence = copySequence.then(() => {
+        copySequence = copySequence.then(() => {
+          namespaceModule = componentTree.modules[namespace];
+          if (namespaceModule && namespaceModule.absolutePath) {
+            const namespaceModuleAbsolutePath = namespaceModule.absolutePath;
             return commons.copyFile(
-              namespaceModule.absolutePath,
+              namespaceModuleAbsolutePath,
               path.join(sandboxModulesDirPath, namespace)
             );
-          });
-        }
+          }
+        });
       });
       return copySequence;
     })
@@ -227,16 +228,16 @@ export function extractNamespaces (namespaces, dependencies, pages, dirPath) {
       let rewriteSequence = Promise.resolve();
       const globalReducerSource = componentTree.reducersSourceCode;
       namespaces.forEach(namespace => {
-        namespaceModule = componentTree.modules[namespace];
-        if (namespaceModule && namespaceModule.absolutePath) {
-          const reducerFilePath = namespaceModule.reducerFilePath;
-          if (reducerFilePath) {
-            const reducerPropertyName =
-              gengine.getReducerPropertyName(globalReducerSource, namespaceModule.reducerImportPath);
-            structorNamespaces.namespaces[namespace] = structorNamespaces.namespaces[namespace] || {};
-            structorNamespaces.namespaces[namespace].reducerPropName = reducerPropertyName;
-          }
-          rewriteSequence = rewriteSequence.then(() => {
+        rewriteSequence = rewriteSequence.then(() => {
+          namespaceModule = componentTree.modules[namespace];
+          if (namespaceModule && namespaceModule.absolutePath) {
+            const reducerFilePath = namespaceModule.reducerFilePath;
+            if (reducerFilePath) {
+              const reducerPropertyName =
+                gengine.getReducerPropertyName(globalReducerSource, namespaceModule.reducerImportPath);
+              structorNamespaces.namespaces[namespace] = structorNamespaces.namespaces[namespace] || {};
+              structorNamespaces.namespaces[namespace].reducerPropName = reducerPropertyName;
+            }
             return commons.copyFile(namespaceModule.absolutePath, path.join(extractSrcDirPath, namespace))
               .then(() => {
                 const docsDirPath = path.join(config.docsComponentsDirPath(), namespace);
@@ -252,8 +253,8 @@ export function extractNamespaces (namespaces, dependencies, pages, dirPath) {
                     console.error('Copying defaults. ', err);
                   });
               });
-          });
-        }
+          }
+        });
       });
       return rewriteSequence;
     })
