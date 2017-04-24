@@ -15,88 +15,88 @@
  */
 
 import path from 'path';
-import {cloneDeep} from 'lodash';
+import { cloneDeep } from 'lodash';
 import webpack from 'webpack';
-import {config} from 'structor-commons';
+import { config } from 'structor-commons';
 
 let compiler = undefined;
 let webpackConfig = undefined;
 
-export function compileSandbox() {
-	if (compiler === undefined) {
-		try {
-			webpackConfig = require(config.webpackConfigFilePath());
-			webpackConfig = cloneDeep(webpackConfig);
-			const entryFilePath = path.join(config.sandboxDirPath(), 'index.js');
-			const outputDirPath = config.sandboxDirPath();
-			const outputFileName = 'bundle.js';
-			webpackConfig.entry = [entryFilePath];
-			webpackConfig.output = {
-				path: outputDirPath,
-				filename: outputFileName
-			};
-			webpackConfig.resolve = webpackConfig.resolve || {};
-			webpackConfig.resolve.modules = [config.SANDBOX_DIR, 'node_modules'];
-			webpackConfig.stats = 'errors-only';
-			compiler = webpack(webpackConfig);
-		} catch (e) {
-			throw Error('Webpack config was not found. ' + e);
-		}
+export function compileSandbox () {
+  if (compiler === undefined) {
+    try {
+      webpackConfig = require(config.webpackConfigFilePath());
+      webpackConfig = cloneDeep(webpackConfig);
+      const entryFilePath = path.join(config.sandboxDirPath(), 'index.js');
+      const outputDirPath = config.sandboxDirPath();
+      const outputFileName = 'bundle.js';
+      webpackConfig.entry = [entryFilePath];
+      webpackConfig.output = {
+        path: outputDirPath,
+        filename: outputFileName
+      };
+      webpackConfig.resolve = webpackConfig.resolve || {};
+      webpackConfig.resolve.modules = [config.SANDBOX_DIR, 'node_modules'];
+      webpackConfig.stats = 'errors-only';
+      compiler = webpack(webpackConfig);
+    } catch (e) {
+      throw Error('Webpack config was not found. ' + e);
+    }
 
-	}
-	return new Promise((resolve, reject) => {
-		compiler.run((err, stats) => {
-			let jsonStats = stats.toJson({
-				// Add asset Information
-				assets: false,
-				// Sort assets by a field
-				assetsSort: "field",
-				// Add information about cached (not built) modules
-				cached: false,
-				// Add children information
-				children: false,
-				// Add chunk information (setting this to `false` allows for a less verbose output)
-				chunks: false,
-				// Add built modules information to chunk information
-				chunkModules: false,
-				// Add the origins of chunks and chunk merging info
-				chunkOrigins: false,
-				// Sort the chunks by a field
-				chunksSort: "field",
-				// `webpack --colors` equivalent
-				colors: false,
-				// Add errors
-				errors: true,
-				// Add details to errors (like resolving log)
-				errorDetails: false,
-				// Add the hash of the compilation
-				hash: false,
-				// Add built modules information
-				modules: true,
-				// Sort the modules by a field
-				modulesSort: "field",
-				// Add public path information
-				publicPath: false,
-				// Add information about the reasons why modules are included
-				reasons: false,
-				// Add the source code of modules
-				source: false,
-				// Add timing information
-				timings: false,
-				// Add webpack version information
-				version: false,
-				// Add warnings
-				warnings: false
-			});
-			if (err) {
-				console.error(err);
-				reject(err);
-			} else if (jsonStats.errors.length > 0) {
-				// console.log(JSON.stringify(jsonStats.modules, null, 4));
-				reject(jsonStats.errors.join('\n\n'));
-			} else {
-				resolve();
-			}
-		});
-	});
+  }
+  return new Promise((resolve, reject) => {
+    compiler.run((err, stats) => {
+      let jsonStats = stats.toJson({
+        // Add asset Information
+        assets: false,
+        // Sort assets by a field
+        assetsSort: 'field',
+        // Add information about cached (not built) modules
+        cached: false,
+        // Add children information
+        children: false,
+        // Add chunk information (setting this to `false` allows for a less verbose output)
+        chunks: false,
+        // Add built modules information to chunk information
+        chunkModules: false,
+        // Add the origins of chunks and chunk merging info
+        chunkOrigins: false,
+        // Sort the chunks by a field
+        chunksSort: 'field',
+        // `webpack --colors` equivalent
+        colors: false,
+        // Add errors
+        errors: true,
+        // Add details to errors (like resolving log)
+        errorDetails: false,
+        // Add the hash of the compilation
+        hash: false,
+        // Add built modules information
+        modules: true,
+        // Sort the modules by a field
+        modulesSort: 'field',
+        // Add public path information
+        publicPath: false,
+        // Add information about the reasons why modules are included
+        reasons: false,
+        // Add the source code of modules
+        source: false,
+        // Add timing information
+        timings: false,
+        // Add webpack version information
+        version: false,
+        // Add warnings
+        warnings: false
+      });
+      if (err) {
+        console.error(err);
+        reject(err);
+      } else if (jsonStats.errors.length > 0) {
+        // console.log(JSON.stringify(jsonStats.modules, null, 4));
+        reject(jsonStats.errors.join('\n\n'));
+      } else {
+        resolve();
+      }
+    });
+  });
 }

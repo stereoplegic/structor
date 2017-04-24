@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { bindActionCreators } from 'redux';
 
-import { createStructuredSelector } from 'reselect';
-import { availableNamespacesSelector } from 'modules/workspace/containers/LibraryPanel/selectors';
-import { pagesSelector } from 'modules/workspace/containers/DeskPage/selectors';
-import { selectedNamespacesSelector, selectedPagesSelector } from 'modules/extractor/containers/Extractor/selectors';
+export const LOAD_README_TEXT = "ComponentReadmePanel/LOAD_README_TEXT";
+export const SET_README_TEXT = "ComponentReadmePanel/SET_README_TEXT";
 
-export const modelSelector = createStructuredSelector({
-  availableNamespaces: availableNamespacesSelector,
-  availablePages: pagesSelector,
-  selectedNamespaces: selectedNamespacesSelector,
-  selectedPages: selectedPagesSelector,
-});
+export const loadReadmeText = (componentName, namespace) =>
+  ({type: LOAD_README_TEXT, payload: {componentName, namespace}});
+export const setReadmeText = (readmeText) =>
+  ({type: SET_README_TEXT, payload: readmeText});
+
+export const containerActions = (dispatch) => bindActionCreators({
+  loadReadmeText
+}, dispatch);

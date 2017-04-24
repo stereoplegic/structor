@@ -18,8 +18,10 @@ import { createStructuredSelector } from 'reselect';
 import { userAccountSelector } from 'modules/app/containers/AppContainer/selectors';
 
 export const selectedNamespacesSelector = state => state.extractor.selectedNamespaces;
+export const selectedPagesSelector = state => state.extractor.selectedPages;
 export const dependentNamespacesSelector = state => state.extractor.dependentNamespaces;
 export const dependenciesSelector = state => state.extractor.dependencies;
+export const recentDirPathsSelector = state => state.extractor.recentDirPaths;
 
 export const modelSelector = createStructuredSelector({
     stage: state => state.extractor.stage

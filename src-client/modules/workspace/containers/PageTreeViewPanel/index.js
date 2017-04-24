@@ -49,6 +49,15 @@ const scrollToSelected = function ($frameWindow, key) {
   })($frameWindow), 0);
 };
 
+const panelStyle = {
+  padding: '2em 1em 1em 2em',
+  height: '100%',
+  overflow: 'auto',
+  border: '1px solid #DBDBDB',
+  borderRadius: '3px',
+  position: 'relative'
+};
+
 class Container extends Component {
 
   constructor (props) {
@@ -61,7 +70,7 @@ class Container extends Component {
   }
 
   componentDidMount () {
-    this.$frameWindow = $(this.refs.panelElement);
+    this.$frameWindow = $(this.panelElement);
     this.scrollToSelected();
   }
 
@@ -145,7 +154,7 @@ class Container extends Component {
 
     let inner = [];
     const modelNode = graphNode.modelNode;
-    const {clipboardMode, pasteAfter, pasteBefore, setSelectedKey, isInsertionModeOn} = this.props;
+    const {setSelectedKey, isInsertionModeOn} = this.props;
 
     let innerProps = [];
     if (graphNode.props) {
@@ -183,9 +192,12 @@ class Container extends Component {
 
     if (innerProps.length > 0 || children.length > 0) {
       inner.push(
-        <ul id={graphNode.key}
-            key={'list' + graphNode.key}
-            className={graphNode.selected ? 'umy-treeview-list-selected' : 'umy-treeview-list'}>
+        <ul
+          id={graphNode.key}
+          key={'list' + graphNode.key}
+          style={{display: 'block'}}
+          className={graphNode.selected ? 'umy-treeview-list-selected' : 'umy-treeview-list'}
+        >
           {innerProps}
           {graphNode.children && graphNode.children.length > 0 && isInsertionModeOn &&
           <PageTreeViewPlaceholder
@@ -241,15 +253,6 @@ class Container extends Component {
     const {deskPageModel, isInsertionModeOn} = this.props;
     const pageGraph = graphApi.getWrappedModelByPagePath(deskPageModel.currentPagePath);
 
-    let style = {
-      padding: '2em 1em 1em 2em',
-      height: '100%',
-      overflow: 'auto',
-      border: '1px solid #DBDBDB',
-      borderRadius: '3px',
-      position: 'relative'
-    };
-
     let listItems = [];
     if (pageGraph) {
       let length = pageGraph.children.length;
@@ -272,21 +275,29 @@ class Container extends Component {
     }
 
     return (
-      <div ref="panelElement" style={style}>
-        <ul className='umy-treeview-list' style={{border: 0}}>
-          {pageGraph.children.length > 0 && isInsertionModeOn &&
-          <PageTreeViewPlaceholder
-            key={'firstItemPlaceholder'}
-            isTopLevelPlace={true}
-            itemKey={pageGraph.children[0].key}
-            title="Place component before selected"
-            onClick={this.handlePlaceholderClick('pasteBefore')}
-            onMouseEnter={this.handleSetHighlightSelectedKey}
-            onMouseLeave={this.handleRemoveHighlightSelectedKey}
-          />
-          }
-          {listItems}
-        </ul>
+      <div
+        ref={me => this.panelElement = me}
+        style={panelStyle}
+      >
+        <div>
+          <ul
+            className='umy-treeview-list'
+            style={{border: 0}}
+          >
+            {pageGraph.children.length > 0 && isInsertionModeOn &&
+            <PageTreeViewPlaceholder
+              key={'firstItemPlaceholder'}
+              isTopLevelPlace={true}
+              itemKey={pageGraph.children[0].key}
+              title="Place component before selected"
+              onClick={this.handlePlaceholderClick('pasteBefore')}
+              onMouseEnter={this.handleSetHighlightSelectedKey}
+              onMouseLeave={this.handleRemoveHighlightSelectedKey}
+            />
+            }
+            {listItems}
+          </ul>
+        </div>
       </div>
     );
   }

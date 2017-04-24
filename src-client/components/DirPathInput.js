@@ -18,113 +18,113 @@ import React, { Component, PropTypes } from 'react';
 
 class DirPathInput extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            dirPathValue: this.props.dirPath || ''
-        };
-        this.handleClearValue = this.handleClearValue.bind(this);
-        this.handleChangeValue = this.handleChangeValue.bind(this);
-        this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
-    }
+  constructor (props) {
+    super(props);
+    this.state = {
+      dirPathValue: this.props.dirPath || ''
+    };
+    this.handleClearValue = this.handleClearValue.bind(this);
+    this.handleChangeValue = this.handleChangeValue.bind(this);
+    this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
+  }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({dirPathValue: nextProps.dirPath});
-    }
+  componentWillReceiveProps (nextProps) {
+    this.setState({dirPathValue: nextProps.dirPath});
+  }
 
-    getValue(){
-        return this.state.dirPathValue;
-    }
+  getValue () {
+    return this.state.dirPathValue;
+  }
 
-    focus() {
-        this.inputElement.focus();
-    }
-    
-    handleClearValue(e){
-        e.stopPropagation();
-        e.preventDefault();
-        this.setState({
-            dirPathValue: ''
-        });
-    }
-    
-    handleChangeValue(e){
-        this.setState({
-            dirPathValue: this.inputElement.value
-        });
-    }
+  focus () {
+    this.inputElement.focus();
+  }
 
-	handleOnKeyDown(e) {
-		if (e.keyCode == 13) {
-		    const {onEnterKey} = this.props;
-		    if (onEnterKey) {
-		        onEnterKey();
-            }
-		}
-	}
+  handleClearValue (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.setState({
+      dirPathValue: ''
+    });
+  }
 
-	render() {
-        const {label, isAutoComplete, options} = this.props;
-        const {dirPathValue} = this.state;
-		let dirsDataOptions = [];
-		if (options && options.length > 0) {
-			options.forEach((name, index) => {
-				dirsDataOptions.push(
-                    <option key={'' + index}>{name}</option>
-				)
-			});
-		}
-		return (
-            <div>
-                <label htmlFor="inputElement">{label}</label>
-                <div className="input-group">
-                    <span className="input-group-addon">
-                        Path:
-                    </span>
-                    <input
-                        ref={me => this.inputElement = me}
-                        value={dirPathValue || ''}
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter directory path"
-                        onChange={this.handleChangeValue}
-                        list="dirPathInputOptions"
-                        autoComplete={isAutoComplete}
-                        onKeyDown={this.handleOnKeyDown}
-                    />
-                    {isAutoComplete && dirsDataOptions.length > 0 &&
-                        <datalist id="dirPathInputOptions">
-                            {dirsDataOptions}
-                        </datalist>
-                    }
-                    <span className="input-group-btn">
+  handleChangeValue (e) {
+    this.setState({
+      dirPathValue: this.inputElement.value
+    });
+  }
+
+  handleOnKeyDown (e) {
+    if (e.keyCode == 13) {
+      const {onEnterKey} = this.props;
+      if (onEnterKey) {
+        onEnterKey();
+      }
+    }
+  }
+
+  render () {
+    const {label, isAutoComplete, options} = this.props;
+    const {dirPathValue} = this.state;
+    let dirsDataOptions = [];
+    if (options && options.length > 0) {
+      options.forEach((name, index) => {
+        dirsDataOptions.push(
+          <option key={'' + index}>{name}</option>
+        );
+      });
+    }
+    return (
+      <div>
+        <label htmlFor="inputElement">{label}</label>
+        <div className="input-group">
+          <span className="input-group-addon">
+              Path:
+          </span>
+          <input
+            ref={me => this.inputElement = me}
+            value={dirPathValue || ''}
+            type="text"
+            className="form-control"
+            placeholder="Enter directory path"
+            onChange={this.handleChangeValue}
+            list="dirPathInputOptions"
+            autoComplete={isAutoComplete}
+            onKeyDown={this.handleOnKeyDown}
+          />
+          {isAutoComplete && dirsDataOptions.length > 0 &&
+          <datalist id="dirPathInputOptions">
+            {dirsDataOptions}
+          </datalist>
+          }
+          <span className="input-group-btn">
                         <button
-                            className="btn btn-default"
-                            onClick={this.handleClearValue}>
+                          className="btn btn-default"
+                          onClick={this.handleClearValue}>
                             <span className="fa fa-times"/>
                         </button>
                     </span>
-                </div>
-            </div>
-        );
-    }
+        </div>
+      </div>
+    );
+  }
 
 }
 
 DirPathInput.propTypes = {
-    dirPath: PropTypes.string,
-    label: PropTypes.string,
-    isAutoComplete: PropTypes.bool,
-    options: PropTypes.array,
-    onEnterKey: PropTypes.func,
+  dirPath: PropTypes.string,
+  label: PropTypes.string,
+  isAutoComplete: PropTypes.bool,
+  options: PropTypes.array,
+  onEnterKey: PropTypes.func,
 };
 
 DirPathInput.defaultProps = {
-	dirPath: null,
-    label: 'Proxy URL:',
-    isAutoComplete: false,
-    options: [],
-    onEnterKey: null,
+  dirPath: null,
+  label: 'Proxy URL:',
+  isAutoComplete: false,
+  options: [],
+  onEnterKey: null,
 };
 
 export default DirPathInput;

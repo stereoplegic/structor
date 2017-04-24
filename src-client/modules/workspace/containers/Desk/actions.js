@@ -22,6 +22,7 @@ export const TOGGLE_PAGE_TREEVIEW = 'Desk/TOGGLE_PAGE_TREEVIEW';
 export const TOGGLE_QUICK_OPTIONS = 'Desk/TOGGLE_QUICK_OPTIONS';
 export const SET_BOTTOM_PANEL_HEIGHT = 'Desk/SET_BOTTOM_PANEL_HEIGHT';
 export const TOGGLE_BOTTOM_PANEL_INSERTION_MODE = 'Desk/TOGGLE_BOTTOM_PANEL_INSERTION_MODE';
+export const TOGGLE_BOTTOM_RIGHT_PANEL = 'Desk/TOGGLE_BOTTOM_RIGHT_PANEL';
 export const UPDATE_DESK_LAYOUT = 'Desk/UPDATE_DESK_LAYOUT';
 
 export const MAX_BOTTOM_PANEL_HEIGHT = 450;
@@ -35,11 +36,13 @@ export const changeViewportWidth = (width) => ({type: CHANGE_VIEWPORT_WIDTH, pay
 export const toggleLibraryPanel = () => ({type: TOGGLE_LIBRARY_PANEL});
 export const setBottomPanelHeight = (height) => ({type: SET_BOTTOM_PANEL_HEIGHT, payload: height});
 export const toggleBottomPanelInsertionMode = () => ({type: TOGGLE_BOTTOM_PANEL_INSERTION_MODE});
+export const toggleBottomRightPanel = () => ({type: TOGGLE_BOTTOM_RIGHT_PANEL});
 export const updateDeskLayout = (options) => ({type: UPDATE_DESK_LAYOUT, payload: options});
 
 export const containerActions = (dispatch) => bindActionCreators({
   changeViewportWidth,
   togglePageTreeview,
   setBottomPanelHeight,
-  toggleBottomPanelInsertionMode
+  toggleBottomPanelInsertionMode,
+  toggleBottomRightPanel,
 }, dispatch);

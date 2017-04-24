@@ -306,6 +306,7 @@ body {
     -webkit-padding-start: 0;
     padding: 0 0 0 1em;
     list-style: none;
+    display: inline-block;
 }
 
 .umy-treeview-list-selected {
@@ -314,6 +315,7 @@ body {
     -webkit-padding-start: 0;
     padding: 0 0 0 1em;
     list-style: none;
+    display: inline-block;
 }
 
 .umy-treeview-list-item {
@@ -321,7 +323,7 @@ body {
     padding-left: 3px;
     white-space: nowrap;
     font-size: 14px;
-    letter-spacing: 0px;
+    letter-spacing: 0;
 }
 
 .umy-treeview-list-item-selected {
@@ -473,7 +475,7 @@ body {
     width: .8em;
     height: .8em;
     border-radius: 50%;
-    background-color: rgba(240, 173, 78, 0.1);
+    /*background-color: rgba(240, 173, 78, 0.1);*/
     border: 1px solid rgba(205, 205, 205, 0.5);
 }
 
@@ -484,7 +486,7 @@ body {
     width: 2em;
     height: .8em;
     border-radius: 0.3em;
-    background-color: rgba(240, 173, 78, 0.1);
+    /*background-color: rgba(240, 173, 78, 0.1);*/
     border: 1px solid rgba(205, 205, 205, 0.5);
 }
 

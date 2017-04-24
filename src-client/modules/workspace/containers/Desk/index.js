@@ -30,6 +30,7 @@ import LibraryPanel from 'modules/workspace/containers/LibraryPanel';
 import PageListPanel from 'modules/workspace/containers/PageListPanel';
 import ComponentOptionsPanel from 'modules/workspace/containers/ComponentOptionsPanel';
 import PageTreeViewToolbar from 'modules/workspace/containers/PageTreeViewToolbar';
+import ComponentReadmePanel from 'modules/workspace/containers/ComponentReadmePanel'
 
 class Container extends Component {
 
@@ -37,6 +38,7 @@ class Container extends Component {
     super(props);
     this.handleTogglePageTreeView = this.handleTogglePageTreeView.bind(this);
     this.handleToggleInsertionModePageTreeView = this.handleToggleInsertionModePageTreeView.bind(this);
+    this.handleToggleBottomRightPanel = this.handleToggleBottomRightPanel.bind(this);
     this.handleButtonMouseDown = this.handleButtonMouseDown.bind(this);
     this.handleButtonMouseUp = this.handleButtonMouseUp.bind(this);
     this.handleButtonMouseMove = this.handleButtonMouseMove.bind(this);
@@ -87,6 +89,14 @@ class Container extends Component {
     this.props.toggleBottomPanelInsertionMode();
   }
 
+  handleToggleBottomRightPanel(e) {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    this.props.toggleBottomRightPanel();
+  }
+
   handleButtonMouseDown(e) {
     this.setState({isMouseDown: true, clientY: e.clientY});
   }
@@ -129,12 +139,18 @@ class Container extends Component {
     }
 
     let bottomPanelHeight = 0;
-    let bottomPanelInner = null;
+    let bottomLeftPanelInner = null;
+    let bottomRightPanelInner = null;
     if (componentModel.isPageTreeviewActive && !deskPageModel.isLivePreviewModeOn) {
       bottomPanelHeight = treeViewHeight;
-      bottomPanelInner = (
+      bottomLeftPanelInner = (
         <PageTreeViewPanel isInsertionModeOn={componentModel.bottomPanelInsertionMode} />
       );
+      if (componentModel.bottomRightPanelActive) {
+        bottomRightPanelInner = (
+          <ComponentReadmePanel />
+        );
+      }
     }
 
     let rightPanelWidth = 0;
@@ -152,13 +168,29 @@ class Container extends Component {
       width: leftPanelWidth + 'px',
     };
 
-    let bottomPanelStyle = {
+    let bottomWrapperPanelStyle = {
       position: 'absolute',
       left: '0px',
-      // left: 'calc(4em + ' + leftPanelWidth +'px)',
       right: '0px',
       bottom: '0px',
       height: bottomPanelHeight + 'px',
+    };
+
+    let bottomLeftPanelStyle = {
+      position: 'absolute',
+      left: '0px',
+      width: componentModel.bottomRightPanelActive ? '50%' : '100%',
+      bottom: '0px',
+      top: '0px',
+      padding: '0 0 5px 0',
+    };
+
+    let bottomRightPanelStyle = {
+      position: 'absolute',
+      width: '50%',
+      top: '0px',
+      right: '0px',
+      bottom: '0px',
       padding: '0 0 5px 0',
     };
 
@@ -285,7 +317,8 @@ class Container extends Component {
           {isMouseDown &&
             <div style={Object.assign({}, bodyStyle, {zIndex: 100})} />
           }
-          {bottomPanelHeight > 0 ? <div style={bottomPanelStyle}>
+          {bottomPanelHeight > 0 &&
+          <div style={bottomWrapperPanelStyle}>
             <button
               className="btn-default btn-xs"
               style={{
@@ -324,6 +357,26 @@ class Container extends Component {
               <span className='fa fa-indent fa-fw'/>
             </button>
             <button
+              className={
+                "btn-xs" +
+                (componentModel.bottomRightPanelActive ? " btn-primary" : " btn-default")
+              }
+              style={{
+                padding: '0.2em',
+                position: 'absolute',
+                top: '-1.2em',
+                left: '4.2em',
+                width: '2em',
+                height: '2em',
+                borderRadius: '50%',
+                zIndex: 1030
+              }}
+              onClick={this.handleToggleBottomRightPanel}
+              title="Toggle component readme"
+            >
+              <span className='fa fa-file-text-o fa-fw'/>
+            </button>
+            <button
               style={{
                 padding: '0.1em',
                 position: 'absolute',
@@ -357,23 +410,29 @@ class Container extends Component {
                 borderTop: '1px solid #dcdcdc',
               }}/>
             </button>
-            <PageTreeViewToolbar
-              style={{
-                position: 'absolute',
-                top: '3em',
-                left: '2px',
-                zIndex: 1030
-              }}
-            />
-            {bottomPanelInner}
+            <div style={bottomLeftPanelStyle}>
+              <PageTreeViewToolbar
+                style={{
+                  position: 'absolute',
+                  top: '3em',
+                  left: '2px',
+                  zIndex: 1030
+                }}
+              />
+              {bottomLeftPanelInner}
+            </div>
+            {bottomRightPanelInner &&
+            <div style={bottomRightPanelStyle}>
+              {bottomRightPanelInner}
+            </div>
+            }
           </div>
-            : null
           }
         </div>
-        {rightPanelWidth > 0 ? <div style={rightPanelStyle}>
+        {rightPanelWidth > 0 &&
+        <div style={rightPanelStyle}>
           {rightPanelInner}
         </div>
-          : null
         }
       </div>
     );

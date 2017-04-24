@@ -26,6 +26,7 @@ import {
 } from 'modules/workspace/containers/DeskPage/actions';
 import { updateDeskLayout } from 'modules/workspace/containers/Desk/actions';
 import { loadComponents } from 'modules/workspace/containers/LibraryPanel/actions';
+import { updateOptionsPanelState } from 'modules/workspace/containers/ComponentOptionsPanel/actions';
 
 export const GET_PROJECT_STATUS = 'AppContainer/GET_PROJECT_STATUS';
 export const SET_PROJECT_INFO = 'AppContainer/SET_PROJECT_INFO';
@@ -78,7 +79,7 @@ export const setupDesk = () => (dispatch, getState) => {
   const deskSettings = coockiesApi.getDeskSettings();
   if (deskSettings) {
     console.log(JSON.stringify(deskSettings));
-    const {isEditModeOn, layout} = deskSettings;
+    const {isEditModeOn, layout, optionsPanel} = deskSettings;
     if (isEditModeOn || isEditModeOn === undefined) {
       dispatch(setEditModeOn());
     } else {
@@ -86,6 +87,9 @@ export const setupDesk = () => (dispatch, getState) => {
     }
     if (layout) {
       dispatch(updateDeskLayout(layout));
+    }
+    if (optionsPanel) {
+      dispatch(updateOptionsPanelState(optionsPanel));
     }
   }
 };

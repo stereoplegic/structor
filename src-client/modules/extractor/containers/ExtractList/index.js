@@ -21,7 +21,7 @@ import {modelSelector} from './selectors.js';
 import {containerActions} from './actions.js';
 
 import {Grid, Row, Col} from 'react-bootstrap';
-import {ListGroup, ListGroupItem} from 'react-bootstrap';
+import {DirPathInput} from 'components';
 
 const labelContainerStyle = {
 	display: 'flex',
@@ -50,23 +50,27 @@ class Container extends Component {
 	handleExtract(e) {
 		e.stopPropagation();
 		e.preventDefault();
-		const {dependentNamespaces, dependencies, projectPaths, extract} = this.props;
-		const {dir} = projectPaths;
-		extract(dependentNamespaces, dependencies, dir + '_namespaces');
+		const {dependentNamespaces, dependencies, selectedPages, extract} = this.props;
+		extract(dependentNamespaces, dependencies, selectedPages, this.dirPathInput.getValue());
 	}
 
 	render() {
-		const {dependentNamespaces, dependencies, selectedNamespaces, projectPaths} = this.props;
+		const {dependentNamespaces, dependencies, selectedNamespaces, recentDirPaths} = this.props;
 		let addedNamespaces = difference(dependentNamespaces, selectedNamespaces);
-		const {dir} = projectPaths;
 		const {packages} = dependencies ? dependencies : null;
 		return (
 			<Grid fluid={ true }>
 				<Row style={{position: 'relative'}}>
 					<Col xs={ 12 } md={ 8 } sm={ 12 } lg={ 8 } mdOffset={2} lgOffset={2}>
-						<h4>The source code of the listed namespaces will be saved into the directory:</h4>
 						<div className="alert alert-info" role="alert">
-							<samp>{dir + '_namespaces'}</samp>
+							<DirPathInput
+								ref={me => this.dirPathInput = me}
+								dirPath={recentDirPaths[0]}
+								label="The source code of the listed namespaces will be saved into the directory:"
+								isAutoComplete={true}
+								options={recentDirPaths}
+								onEnterKey={() => {}}
+							/>
 						</div>
 					</Col>
 				</Row>

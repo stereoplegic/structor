@@ -28,51 +28,52 @@ import * as selectionBreadcrumbsActions from 'modules/workspace/containers/Selec
 import { serverApi, graphApi, coockiesApi } from 'api';
 import * as historyActions from 'modules/workspace/containers/HistoryControls/actions';
 
-function* preExtract(){
-    while(true){
-        const {payload} = yield take(actions.PREEXTRACT);
-        yield put(spinnerActions.started('Searching dependencies'));
-        try {
-            const preExtractedData = yield call(serverApi.preExtractNamespaces, payload);
-            yield put(actions.setPreExtractedData(preExtractedData));
-            yield put(actions.stepToStage(actions.STAGE2));
-        } catch(error) {
-            yield put(messageActions.failed((error.message ? error.message : error)));
-        }
-        yield put(spinnerActions.done('Searching dependencies'));
+function* preExtract () {
+  while (true) {
+    const {payload: {namespaces, pages}} = yield take(actions.PREEXTRACT);
+    yield put(spinnerActions.started('Searching dependencies'));
+    try {
+      const preExtractedData = yield call(serverApi.preExtractNamespaces, namespaces, pages);
+      yield put(actions.setPreExtractedData(preExtractedData));
+      yield put(actions.stepToStage(actions.STAGE2));
+    } catch (error) {
+      yield put(messageActions.failed((error.message ? error.message : error)));
     }
+    yield put(spinnerActions.done('Searching dependencies'));
+  }
 }
 
-function* extract(){
-    while(true){
-        const {payload: {namespaces, dependencies, dirPath}} = yield take(actions.EXTRACT);
-        yield put(spinnerActions.started('Extracting the source code'));
-        try {
-            yield call(
-                serverApi.extractNamespaces,
-                namespaces,
-                dependencies,
-                dirPath
-            );
-			yield put(actions.hide());
-			yield put(
-			    messageActions.success(
-			        'The source code has been extracted successfully. Find extracted namespaces in ' + dirPath
-                )
-            );
-        } catch(error) {
-            yield put(
-                messageActions.failed(
-					'Extracting the source code. ' + (error.message ? error.message : error)
-                )
-            );
-        }
-        yield put(spinnerActions.done('Extracting the source code'));
+function* extract () {
+  while (true) {
+    const {payload: {namespaces, dependencies, pages, dirPath}} = yield take(actions.EXTRACT);
+    yield put(spinnerActions.started('Extracting the source code'));
+    try {
+      yield call(
+        serverApi.extractNamespaces,
+        namespaces,
+        dependencies,
+        pages,
+        dirPath
+      );
+      yield put(actions.hide());
+      yield put(
+        messageActions.success(
+          'The source code has been extracted successfully. Find extracted namespaces in ' + dirPath
+        )
+      );
+    } catch (error) {
+      yield put(
+        messageActions.failed(
+          'Extracting the source code. ' + (error.message ? error.message : error)
+        )
+      );
     }
+    yield put(spinnerActions.done('Extracting the source code'));
+  }
 }
 
 // main saga
-export default function* mainSaga() {
-    yield fork(preExtract);
-    yield fork(extract);
+export default function* mainSaga () {
+  yield fork(preExtract);
+  yield fork(extract);
 };

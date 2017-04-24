@@ -27,6 +27,7 @@ const initialState = {
   isQuickOptionsActive: false,
   isPageListPanelActive: false,
   bottomPanelInsertionMode: true,
+  bottomRightPanelActive: false,
   bottomPanelHeight: MIN_BOTTOM_PANEL_HEIGHT + 100,
 };
 
@@ -77,6 +78,12 @@ export default (state = initialState, action = {}) => {
   if (type === actions.TOGGLE_BOTTOM_PANEL_INSERTION_MODE) {
     return Object.assign({}, state, {
       bottomPanelInsertionMode: !state.bottomPanelInsertionMode
+    });
+  }
+
+  if (type === actions.TOGGLE_BOTTOM_RIGHT_PANEL) {
+    return Object.assign({}, state, {
+      bottomRightPanelActive: !state.bottomRightPanelActive
     });
   }
 

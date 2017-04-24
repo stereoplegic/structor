@@ -15,8 +15,8 @@
  */
 
 import { bindActionCreators } from 'redux';
-import { setSelectedNamespaces, preExtract } from 'modules/extractor/containers/Extractor/actions';
+import { setSelectedNamespaces, setSelectedPages, preExtract } from 'modules/extractor/containers/Extractor/actions';
 
 export const containerActions = (dispatch) => bindActionCreators({
-	setSelectedNamespaces, preExtract
+	setSelectedNamespaces, setSelectedPages, preExtract
 }, dispatch);

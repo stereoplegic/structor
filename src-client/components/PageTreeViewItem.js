@@ -73,9 +73,9 @@ class PageTreeViewItem extends Component {
       className = 'umy-treeview-list-item';
     }
 
-    const label = (<span>{type}</span>);
+    const label = (<div>{type}</div>);
     const namespaceLabel = namespace ? (
-      <span className="text-muted" style={namespaceStyle}>{'[' + namespace + ']'}</span>)
+      <div className="text-muted" style={namespaceStyle}>{'[' + namespace + ']'}</div>)
       : null;
     let props = print.printProps(modelProps);
     if (children && children.length > 0) {
@@ -85,7 +85,7 @@ class PageTreeViewItem extends Component {
           className={className}
         >
           <div style={topTagWrapperStyle}>
-            <span>{'<'}</span>
+            <div>{'<'}</div>
             {beforeNamePlaceholder}
             <a key={'toplink'}
                href="#"
@@ -95,23 +95,25 @@ class PageTreeViewItem extends Component {
                onMouseEnter={onMouseEnter}
                onMouseLeave={onMouseLeave}
             >
-              {label}
-              {namespaceLabel}
+              <div style={topTagWrapperStyle}>
+                {label}
+                {namespaceLabel}
+              </div>
             </a>
             { props &&
-            <span
+            <div
               className="text-muted"
               onClick={this.handleClick}
               style={propsStyle}
             >
-              {props}
-              </span>
+              <span>{props}</span>
+            </div>
             }
-            <span>{'>'}</span>
+            <div>{'>'}</div>
           </div>
           {children}
           <div style={bottomTagWrapperStyle}>
-            <span>{'</'}</span>
+            <div>{'</'}</div>
             {beforeNamePlaceholder}
             <a key={'bottomlink'}
                href="#"
@@ -123,7 +125,7 @@ class PageTreeViewItem extends Component {
             >
               {label}
             </a>
-            <span>{'>'}</span>
+            <div>{'>'}</div>
           </div>
         </li>
       );
@@ -134,7 +136,7 @@ class PageTreeViewItem extends Component {
           className={className}
         >
           <div style={topTagWrapperStyle}>
-            <span>{'<'}</span>
+            <div>{'<'}</div>
             {beforeNamePlaceholder}
             <a href="#"
                onClick={this.handleClick}
@@ -143,13 +145,20 @@ class PageTreeViewItem extends Component {
                onMouseEnter={onMouseEnter}
                onMouseLeave={onMouseLeave}
             >
-              {label}
-              {namespaceLabel}
+              <div style={topTagWrapperStyle}>
+                {label}
+                {namespaceLabel}
+              </div>
             </a>
-            { props && <span className="text-muted"
-                             onClick={this.handleClick}
-                             style={propsStyle}>{props}</span> }
-            <span>{' />'}</span>
+            { props &&
+            <div
+              className="text-muted"
+              onClick={this.handleClick}
+              style={propsStyle}>
+              {props}
+            </div>
+            }
+            <div>{' />'}</div>
           </div>
         </li>
       );

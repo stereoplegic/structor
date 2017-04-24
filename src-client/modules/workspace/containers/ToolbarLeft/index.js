@@ -91,13 +91,6 @@ class Container extends Component {
                         </a>
                         <ul className="dropdown-menu" role="menu">
                             <li>
-                                <a href="#" onClick={this.handleShowAboutModal}>
-                                    <span className="fa fa-info fa-fw" />
-                                    &nbsp;About
-                                </a>
-                            </li>
-                            <li className="divider" />
-                            <li>
                                 <a href="#" onClick={this.handleSaveProject}>
                                     <span className="fa fa-save fa-fw" />
                                     &nbsp;Save project
@@ -108,6 +101,13 @@ class Container extends Component {
                                 <a href="#" onClick={this.handleProxyModal}>
                                     <span className="fa fa-gears fa-fw" />
                                     &nbsp;Proxy settings
+                                </a>
+                            </li>
+                            <li className="divider" />
+                            <li>
+                                <a href="#" onClick={this.handleShowAboutModal}>
+                                    <span className="fa fa-info fa-fw" />
+                                    &nbsp;About
                                 </a>
                             </li>
                         </ul>

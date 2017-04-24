@@ -102,6 +102,7 @@ class StyleSizeInput extends Component {
 
 		this.handleChangeInputValue = this.handleChangeInputValue.bind(this);
 		this.handleToggleOption = this.handleToggleOption.bind(this);
+		this.handleToggleFavorite = this.handleToggleFavorite.bind(this);
 		this.handleChangeUnits = this.handleChangeUnits.bind(this);
 		this.changeValueByMouse = this.changeValueByMouse.bind(this);
 		this.changeValue = this.changeValue.bind(this);
@@ -135,6 +136,13 @@ class StyleSizeInput extends Component {
 		const checked = e.currentTarget.checked;
 		onSet(path, checked);
 	}
+
+  handleToggleFavorite(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    const {path, onToggleFavorite} = this.props;
+    onToggleFavorite(path);
+  }
 
 	handleChangeUnits(e) {
 		const newUnits = e.currentTarget.dataset.units;
@@ -180,7 +188,7 @@ class StyleSizeInput extends Component {
 	}
 
 	render() {
-		const {isSet} = this.props;
+		const {isSet, isFavorite} = this.props;
 		const {label, units, value} = this.state;
 		return (
 			<div style={this.props.style}>
@@ -190,9 +198,19 @@ class StyleSizeInput extends Component {
 						style={checkBoxStyle}
 						checked={isSet}
 						onChange={this.handleToggleOption}/>
-					<p style={labelStyle}>
-						{isSet ? <strong>{label}</strong> : <span className="text-muted">{label}</span>}
-					</p>
+					<div style={{flexGrow: 1}}>
+						<p style={labelStyle}>
+              {isSet ? <strong>{label}</strong> : <span className="text-muted">{label}</span>}
+						</p>
+					</div>
+					<div style={{flexGrow: 0}}>
+						<i
+							className={"fa " + (isFavorite ? "fa-heart" : "fa-heart-o")}
+							style={{cursor: 'pointer'}}
+							title={isFavorite ? "Remove from the favorites list" : "Add to the favorites list"}
+							onClick={this.handleToggleFavorite}
+						/>
+					</div>
 				</div>
 				{isSet &&
 				<div style={rowContainerStyle}>

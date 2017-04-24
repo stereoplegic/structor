@@ -19,6 +19,7 @@ export ClipboardIndicator from 'modules/workspace/containers/ClipboardIndicator'
 export ComponentControls from 'modules/workspace/containers/ComponentControls';
 export ComponentOptionsModal from 'modules/workspace/containers/ComponentOptionsModal';
 export ComponentOptionsPanel from 'modules/workspace/containers/ComponentOptionsPanel';
+export ComponentReadmePanel from 'modules/workspace/containers/ComponentReadmePanel';
 export Desk from 'modules/workspace/containers/Desk';
 export DeskPage from 'modules/workspace/containers/DeskPage';
 export HistoryControls from 'modules/workspace/containers/HistoryControls';
