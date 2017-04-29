@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
@@ -22,67 +22,67 @@ import { containerActions } from './actions.js';
 
 class Container extends Component {
 
-    constructor(props) {
-        super(props);
+  constructor (props) {
+    super(props);
+  }
+
+  componentDidMount () {
+    this._mountNode = document.createElement('div');
+    this._mountNode.style['z-index'] = '9999';
+    document.body.appendChild(this._mountNode);
+    ReactDOM.render(this._overlay, this._mountNode);
+  }
+
+  componentWillUnmount () {
+    ReactDOM.unmountComponentAtNode(this._mountNode);
+    this._mountNode = null;
+  }
+
+  componentDidUpdate () {
+    if (this._mountNode) {
+      ReactDOM.render(this._overlay, this._mountNode);
     }
+  }
 
-    componentDidMount() {
-        this._mountNode = document.createElement('div');
-        this._mountNode.style['z-index'] = '9999';
-        document.body.appendChild(this._mountNode);
-        ReactDOM.render(this._overlay, this._mountNode);
-    }
+  render () {
+    const {componentModel: {tasks}} = this.props;
+    const tasksCount = tasks.size;
+    if (tasksCount > 0) {
 
-    componentWillUnmount() {
-        ReactDOM.unmountComponentAtNode(this._mountNode);
-        this._mountNode = null;
-    }
-
-    componentDidUpdate() {
-        if (this._mountNode) {
-            ReactDOM.render(this._overlay, this._mountNode);
-        }
-    }
-
-    render() {
-        const { componentModel: { tasks } } = this.props;
-        const tasksCount = tasks.size;
-        if (tasksCount > 0) {
-
-            const itemStyle = {
-                backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                color: '#ffffff',
-                borderRadius: '5px',
-                padding: '0.7em'
-            };
-            let tasksList = [];
-            tasks.forEach((value, key) => {
-                tasksList.push(
-                    <h5 key={key} style={itemStyle}>
-                        <i className="fa fa-spinner fa-pulse" />
-                        <span style={{marginLeft: '0.5em'}}>{key}</span>
-                    </h5>
-                );
-            });
-            this._overlay = (
-                <div style={{position: 'fixed', top: '0px', left: '0px', right: '0px', bottom: '0px', zIndex: '9999'}}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%'}}>
-                        <div style={{display: 'block'}} >
-                            {tasksList}
-                        </div>
-                    </div>
-                </div>
-            );
-        } else {
-            this._overlay = (
-                <span />
-            );
-        }
-        return (
-            <span />
+      const itemStyle = {
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        color: '#ffffff',
+        borderRadius: '5px',
+        padding: '0.7em'
+      };
+      let tasksList = [];
+      tasks.forEach((value, key) => {
+        tasksList.push(
+          <h5 key={key} style={itemStyle}>
+            <i className="fa fa-spinner fa-pulse"/>
+            <span style={{marginLeft: '0.5em'}}>{key}</span>
+          </h5>
         );
+      });
+      this._overlay = (
+        <div style={{position: 'fixed', top: '0px', left: '0px', right: '0px', bottom: '0px', zIndex: '9999'}}>
+          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%'}}>
+            <div style={{display: 'block'}}>
+              {tasksList}
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      this._overlay = (
+        <span />
+      );
     }
+    return (
+      <span />
+    );
+  }
 
 }
 
-export default connect(modelSelector, containerActions)(Container)
+export default connect(modelSelector, containerActions)(Container);

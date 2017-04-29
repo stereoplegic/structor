@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 import { bindActionCreators } from 'redux';
-import { success, failed} from 'modules/app/containers/AppMessage/actions';
 import {
-    setForCuttingKeys,
-    setForCopyingKeys,
-    resetClipboardKeys
+  setForCuttingKeys,
+  setForCopyingKeys,
+  resetClipboardKeys
 } from 'modules/workspace/containers/ClipboardIndicator/actions';
 import { graphApi } from 'api';
 import { pushHistory } from 'modules/workspace/containers/HistoryControls/actions';
@@ -26,29 +25,29 @@ import { updatePage } from 'modules/workspace/containers/DeskPage/actions';
 import { removeSelectedKeys, setSelectedKeys } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
 
 export const cloneSelected = () => (dispatch, getState) => {
-    dispatch(pushHistory());
-    let resultKeys = graphApi.cloneSelected();
-    if(resultKeys && resultKeys.length > 0){
-        dispatch(setSelectedKeys(resultKeys));
-        dispatch(updatePage());
-    }
+  dispatch(pushHistory());
+  let resultKeys = graphApi.cloneSelected();
+  if (resultKeys && resultKeys.length > 0) {
+    dispatch(setSelectedKeys(resultKeys));
+    dispatch(updatePage());
+  }
 };
 
 export const moveSelected = (isUp) => (dispatch, getState) => {
-    dispatch(pushHistory());
-    graphApi.moveSelected(isUp);
-    dispatch(updatePage());
+  dispatch(pushHistory());
+  graphApi.moveSelected(isUp);
+  dispatch(updatePage());
 };
 
 export const deleteSelected = () => (dispatch, getState) => {
-    dispatch(pushHistory());
-    const resultKeys = graphApi.deleteSelected();
-    dispatch(resetClipboardKeys());
-    dispatch(removeSelectedKeys());
-    dispatch(setSelectedKeys(resultKeys));
-    dispatch(updatePage());
+  dispatch(pushHistory());
+  const resultKeys = graphApi.deleteSelected();
+  dispatch(resetClipboardKeys());
+  dispatch(removeSelectedKeys());
+  dispatch(setSelectedKeys(resultKeys));
+  dispatch(updatePage());
 };
 
 export const containerActions = (dispatch) => bindActionCreators({
-    setForCuttingKeys, setForCopyingKeys, cloneSelected, moveSelected, deleteSelected
+  setForCuttingKeys, setForCopyingKeys, cloneSelected, moveSelected, deleteSelected
 }, dispatch);

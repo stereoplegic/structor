@@ -31,13 +31,13 @@ import {
 } from 'modules/workspace/containers/ClipboardControls/actions';
 import {
   setSelectedKey,
-  resetSelectedKeys
+  resetSelectedKeys,
+  setSelectedParentKey
 } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
 import {
   cloneSelected,
   deleteSelected
 } from 'modules/workspace/containers/SelectionControls/actions';
-import { loadOptionsAndShowModal } from 'modules/workspace/containers/ComponentOptionsModal/actions';
 import { pushHistory, popHistory } from 'modules/workspace/containers/HistoryControls/actions';
 import { showModal as showQuickAppend } from 'modules/workspace/containers/QuickAppendModal/actions';
 
@@ -208,7 +208,7 @@ export const containerActions = (dispatch) => bindActionCreators({
   loadPage,
   pageLoaded,
   setSelectedKey,
-  loadOptionsAndShowModal,
+  setSelectedParentKey,
   changePageRouteFeedback,
   setForCuttingKeys,
   setForCopyingKeys,

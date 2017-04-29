@@ -14,76 +14,77 @@
  * limitations under the License.
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class ProxyInput extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            urlValue: this.props.urlValue || ''
-        };
-        this.handleClearUrlValue = this.handleClearUrlValue.bind(this);
-        this.handleChangeUrlValue = this.handleChangeUrlValue.bind(this);
-    }
+  constructor (props) {
+    super(props);
+    this.state = {
+      urlValue: this.props.urlValue || ''
+    };
+    this.handleClearUrlValue = this.handleClearUrlValue.bind(this);
+    this.handleChangeUrlValue = this.handleChangeUrlValue.bind(this);
+  }
 
-    getUrlValue(){
-        return this.inputElement.value;
-    }
-    
-    handleClearUrlValue(e){
-        e.stopPropagation();
-        e.preventDefault();
-        this.setState({
-            urlValue: ''
-        });
-    }
-    
-    handleChangeUrlValue(e){
-        this.setState({
-            urlValue: this.inputElement.value
-        });
-    }
+  getUrlValue () {
+    return this.inputElement.value;
+  }
 
-    render() {
-        return (
-            <div>
-                <label htmlFor="inputElement">{this.props.label}</label>
-                <div className="input-group">
+  handleClearUrlValue (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.setState({
+      urlValue: ''
+    });
+  }
+
+  handleChangeUrlValue (e) {
+    this.setState({
+      urlValue: this.inputElement.value
+    });
+  }
+
+  render () {
+    return (
+      <div>
+        <label htmlFor="inputElement">{this.props.label}</label>
+        <div className="input-group">
                     <span className="input-group-addon">
                         URL:
                     </span>
-                    <input
-                        ref={me => this.inputElement = me}
-                        value={this.state.urlValue}
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter value"
-                        onChange={this.handleChangeUrlValue}
-                    >
-                    </input>
-                    <span className="input-group-btn">
+          <input
+            ref={me => this.inputElement = me}
+            value={this.state.urlValue}
+            type="text"
+            className="form-control"
+            placeholder="Enter value"
+            onChange={this.handleChangeUrlValue}
+          >
+          </input>
+          <span className="input-group-btn">
                         <button
-                            className="btn btn-default"
-                            onClick={this.handleClearUrlValue}>
+                          className="btn btn-default"
+                          onClick={this.handleClearUrlValue}>
                             <span className="fa fa-times"/>
                         </button>
                     </span>
-                </div>
-            </div>
-        );
-    }
+        </div>
+      </div>
+    );
+  }
 
 }
 
 ProxyInput.propTypes = {
-    urlValue: PropTypes.string,
-    label: PropTypes.string
+  urlValue: PropTypes.string,
+  label: PropTypes.string
 };
 
 ProxyInput.defaultProps = {
-    urlValue: null,
-    label: 'Proxy URL:'
+  urlValue: null,
+  label: 'Proxy URL:'
 };
 
 export default ProxyInput;

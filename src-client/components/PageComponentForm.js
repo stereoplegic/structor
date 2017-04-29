@@ -14,85 +14,90 @@
  * limitations under the License.
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { uniqueId } from 'lodash';
 import { Panel } from 'react-bootstrap';
 
 class PageComponentForm extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            pagePath: this.props.pagePath,
-            pageTitle: this.props.pageTitle
-        };
-        this.validatePagePath = this.validatePagePath.bind(this);
-        this.handlePagePathChange = this.handlePagePathChange.bind(this);
-    }
+  constructor (props) {
+    super(props);
+    this.state = {
+      pagePath: this.props.pagePath,
+      pageTitle: this.props.pageTitle
+    };
+    this.validatePagePath = this.validatePagePath.bind(this);
+    this.handlePagePathChange = this.handlePagePathChange.bind(this);
+  }
 
-    getOptions() {
-        return {
-            pageName: uniqueId('Page'),
-            pagePath: this.state.pagePath,
-            pageTitle: this.state.pageTitle,
-            makeIndexRoute: this.refs.pageIndexCheckbox.checked
-        };
-    }
+  getOptions () {
+    return {
+      pageName: uniqueId('Page'),
+      pagePath: this.state.pagePath,
+      pageTitle: this.state.pageTitle,
+      makeIndexRoute: this.refs.pageIndexCheckbox.checked
+    };
+  }
 
-    validatePagePath() {
-        const { pagePath } = this.state;
-        if (pagePath && pagePath.length > 0 && pagePath.charAt(0) === '/') {
-            return 'has-success';
-        } else {
-            return 'has-error';
-        }
+  validatePagePath () {
+    const {pagePath} = this.state;
+    if (pagePath && pagePath.length > 0 && pagePath.charAt(0) === '/') {
+      return 'has-success';
+    } else {
+      return 'has-error';
     }
+  }
 
-    handlePagePathChange() {
-        this.setState({
-            pagePath: this.refs.pagePathInput.value
-        });
-    }
+  handlePagePathChange () {
+    this.setState({
+      pagePath: this.refs.pagePathInput.value
+    });
+  }
 
-    render() {
-        return (
-            <table style={{width: '100%'}}>
-                <tbody>
-                <tr>
-                    <td style={{width: '1em'}} />
-                    <td style={{height: '100%', verticalAlign: 'top'}}>
-                        <div className={'form-group ' + this.validatePagePath()}>
-                            <label htmlFor='pagePathElement'>Route path:</label>
-                            <input id='pagePathElement'
-                                   ref='pagePathInput'
-                                   className="form-control input-sm"
-                                   type="text"
-                                   placeholder='Path'
-                                   value={this.state.pagePath}
-                                   onChange={this.handlePagePathChange}
-                                />
-                        </div>
-                        <div className="form-group text-left">
-                            <label htmlFor='pageIndexCheckbox'>
-                                <input id='pageIndexCheckbox'
-                                       ref='pageIndexCheckbox'
-                                       style={{ display: 'inline-block' }}
-                                       type="checkbox" />
-                                <span>&nbsp;&nbsp;make index route</span>
-                            </label>
-                        </div>
-                        <Panel>
-                            <p>Route path possible values:</p>
-                            <p><strong>/hello </strong><small>// matches /hello</small></p>
-                            <p><strong>/hello/:name </strong><small>// matches /hello/michael and /hello/ryan</small></p>
-                        </Panel>
-                    </td>
-                    <td style={{width: '1em'}} />
-                </tr>
-                </tbody>
-            </table>
-        );
-    }
+  render () {
+    return (
+      <table style={{width: '100%'}}>
+        <tbody>
+        <tr>
+          <td style={{width: '1em'}}/>
+          <td style={{height: '100%', verticalAlign: 'top'}}>
+            <div className={'form-group ' + this.validatePagePath()}>
+              <label htmlFor='pagePathElement'>Route path:</label>
+              <input id='pagePathElement'
+                     ref='pagePathInput'
+                     className="form-control input-sm"
+                     type="text"
+                     placeholder='Path'
+                     value={this.state.pagePath}
+                     onChange={this.handlePagePathChange}
+              />
+            </div>
+            <div className="form-group text-left">
+              <label htmlFor='pageIndexCheckbox'>
+                <input id='pageIndexCheckbox'
+                       ref='pageIndexCheckbox'
+                       style={{display: 'inline-block'}}
+                       type="checkbox"/>
+                <span>&nbsp;&nbsp;make index route</span>
+              </label>
+            </div>
+            <Panel>
+              <p>Route path possible values:</p>
+              <p><strong>/hello </strong>
+                <small>// matches /hello</small>
+              </p>
+              <p><strong>/hello/:name </strong>
+                <small>// matches /hello/michael and /hello/ryan</small>
+              </p>
+            </Panel>
+          </td>
+          <td style={{width: '1em'}}/>
+        </tr>
+        </tbody>
+      </table>
+    );
+  }
 }
 
 export default PageComponentForm;

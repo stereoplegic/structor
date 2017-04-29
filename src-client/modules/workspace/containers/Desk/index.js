@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions, MAX_BOTTOM_PANEL_HEIGHT, MIN_BOTTOM_PANEL_HEIGHT } from './actions.js';
@@ -201,23 +201,20 @@ class Container extends Component {
 
     if (!deskPageModel.isLivePreviewModeOn) {
 
-      if (!componentModel.isPageTreeviewActive) {
-        let breadcrumbsTopStyle = {
-          position: 'absolute',
-          top: '0px',
-          paddingTop: '10px',
-          left: 'calc(4em + ' + leftPanelWidth + 'px)',
-          right: '5px',
-          height: '3em',
-          borderLeft: '1px solid #dbdbdb',
-        };
-        breadcrumbsComponent = (<ToolbarTop style={breadcrumbsTopStyle}/>);
-        topPanelHeight += 3;
-      }
+      let breadcrumbsTopStyle = {
+        position: 'absolute',
+        top: '0px',
+        paddingTop: '10px',
+        left: 'calc(4em + ' + leftPanelWidth + 'px)',
+        right: '5px',
+        height: '3em',
+        borderLeft: '1px solid #dbdbdb',
+      };
+      breadcrumbsComponent = (<ToolbarTop style={breadcrumbsTopStyle}/>);
 
       let middleToolbarStyle = {
         position: 'absolute',
-        top: !!breadcrumbsComponent ? '3em' : '0px',
+        top: '3em',
         left: 'calc(4em + ' + leftPanelWidth + 'px)',
         right: '5px',
         paddingTop: !!breadcrumbsComponent ? '5px' : '10px',
@@ -225,11 +222,10 @@ class Container extends Component {
         borderLeft: '1px solid #dbdbdb',
       };
       middleToolbarComponent = (<ToolbarMiddle style={middleToolbarStyle}/>);
-      topPanelHeight += 3;
 
       let selectionToolbarStyle = {
         position: 'absolute',
-        top: !!breadcrumbsComponent ? '6em' : '3em',
+        top: '6em',
         left: 'calc(4em + ' + leftPanelWidth + 'px)',
         right: '5px',
         paddingTop: !!breadcrumbsComponent ? '5px' : '5px',
@@ -237,7 +233,8 @@ class Container extends Component {
         borderLeft: '1px solid #dbdbdb',
       };
       selectionToolbarComponent = (<ToolbarSelection style={selectionToolbarStyle} />);
-      topPanelHeight += 3;
+
+      topPanelHeight = 9;
 
     } else {
       topPanelHeight = 0.3;

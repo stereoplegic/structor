@@ -14,117 +14,116 @@
  * limitations under the License.
  */
 
-import _ from 'lodash';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Collapse, Panel } from 'react-bootstrap';
 import { getStylePropList } from 'api/utils/styleProps.js';
 
 class CollapsiblePlusOptionInput extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {};
-        this.styleProps = getStylePropList();
-        this.handleToggle = this.handleToggle.bind(this);
-        this.handleCommit = this.handleCommit.bind(this);
-        this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
+  constructor (props) {
+    super(props);
+    this.state = {};
+    this.styleProps = getStylePropList();
+    this.handleToggle = this.handleToggle.bind(this);
+    this.handleCommit = this.handleCommit.bind(this);
+    this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
+  }
+
+  handleToggle (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (this.props.onToggle) {
+      this.props.onToggle();
     }
+    this.setState({open: !this.state.open});
+  }
 
-    handleToggle(e){
-        e.preventDefault();
-        e.stopPropagation();
-        if(this.props.onToggle){
-            this.props.onToggle();
-        }
-        this.setState({open: !this.state.open});
+  handleCommit (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.handleToggle(e);
+    if (this.props.onCommit) {
+      this.props.onCommit({
+        path: this.refs.inputPath.value,
+        value: this.refs.inputValue.value
+      });
     }
+  }
 
-    handleCommit(e){
-        e.preventDefault();
-        e.stopPropagation();
-        this.handleToggle(e);
-        if(this.props.onCommit){
-            this.props.onCommit({
-                path: this.refs.inputPath.value,
-                value: this.refs.inputValue.value
-            });
-        }
+  handleOnKeyDown (e) {
+    if (e.keyCode == 27) {
+      this.handleToggle(e);
     }
+  }
 
+  render () {
 
-    handleOnKeyDown(e){
-        if(e.keyCode == 27){
-            this.handleToggle(e);
-        }
-    }
+    //let addInputStyle = {
+    //    height: '1.55em',
+    //    paddingTop: '2px',
+    //    paddingBottom: '2px',
+    //    marginBottom: '0.5em'
+    //};
 
-    render(){
+    let styleOptions = [];
+    this.styleProps.forEach(style => {
+      styleOptions.push(
+        <option key={style}>{style}</option>
+      );
+    });
 
-        //let addInputStyle = {
-        //    height: '1.55em',
-        //    paddingTop: '2px',
-        //    paddingBottom: '2px',
-        //    marginBottom: '0.5em'
-        //};
+    return (
+      <div style={this.props.style}>
+        <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
+          <button role="button"
+                  style={{margin: '0 1em'}}
+                  className="btn btn-default btn-xs"
+                  onClick={this.handleToggle}>
+            <span className="fa fa-plus"></span>
+            <span>&nbsp;Add property</span>
+          </button>
+        </div>
 
-        let styleOptions = [];
-        this.styleProps.forEach(style => {
-            styleOptions.push(
-                <option key={style}>{style}</option>
-            );
-        });
-
-        return (
-            <div style={this.props.style}>
-                <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                    <button role="button"
-                            style={{margin: '0 1em'}}
-                            className="btn btn-default btn-xs"
-                            onClick={this.handleToggle}>
-                        <span className="fa fa-plus"></span>
-                        <span>&nbsp;Add property</span>
-                    </button>
-                </div>
-
-                <Collapse in={this.state.open} onEntered={() => {this.refs.inputPath.focus();}}>
-                    <div style={{position: 'relative'}}>
-                        <form onSubmit={this.handleCommit}>
-                            <Panel>
-                                <label>Property path</label>
-                                <input ref="inputPath"
-                                       placeholder="prop[.prop]"
-                                       type="text"
-                                       autoComplete="on"
-                                       list="styleOptions"
-                                       className="form-control"
-                                       onKeyDown={this.handleOnKeyDown}/>
-                                <label style={{marginTop: '5px'}}>Property value</label>
-                                <input ref="inputValue"
-                                       type="text"
-                                       className="form-control"
-                                       onKeyDown={this.handleOnKeyDown}/>
-                                <button
-                                    role="button"
-                                    type="submit"
-                                    className="btn btn-default btn-xs btn-block"
-                                    style={{marginTop: '10px'}}>
-                                    <span>Add</span>
-                                </button>
-                            </Panel>
-                            <datalist id="styleOptions">
-                                {styleOptions}
-                            </datalist>
-                        </form>
-                    </div>
-                </Collapse>
-            </div>
-        );
-    }
+        <Collapse in={this.state.open} onEntered={() => {this.refs.inputPath.focus();}}>
+          <div style={{position: 'relative'}}>
+            <form onSubmit={this.handleCommit}>
+              <Panel>
+                <label>Property path</label>
+                <input ref="inputPath"
+                       placeholder="prop[.prop]"
+                       type="text"
+                       autoComplete="on"
+                       list="styleOptions"
+                       className="form-control"
+                       onKeyDown={this.handleOnKeyDown}/>
+                <label style={{marginTop: '5px'}}>Property value</label>
+                <input ref="inputValue"
+                       type="text"
+                       className="form-control"
+                       onKeyDown={this.handleOnKeyDown}/>
+                <button
+                  role="button"
+                  type="submit"
+                  className="btn btn-default btn-xs btn-block"
+                  style={{marginTop: '10px'}}>
+                  <span>Add</span>
+                </button>
+              </Panel>
+              <datalist id="styleOptions">
+                {styleOptions}
+              </datalist>
+            </form>
+          </div>
+        </Collapse>
+      </div>
+    );
+  }
 
 }
 
 CollapsiblePlusOptionInput.defaultProps = {
-    onToggle: null
+  onToggle: null
 };
 
 export default CollapsiblePlusOptionInput;

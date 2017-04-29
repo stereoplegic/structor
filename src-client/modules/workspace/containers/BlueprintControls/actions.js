@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-import * as actions from './actions.js';
+import { bindActionCreators } from 'redux';
+import { coockiesApi } from 'api';
+import { updatePage } from 'modules/workspace/containers/DeskPage/actions';
 
-const initialState = {
-  historyCounter: 0
+export const SET_SHOW_BUTTONS = 'BlueprintControls/SET_SHOW_BUTTONS';
+
+export const setShowButtons = (showBlueprintButtons) => (dispatch, getState) => {
+  coockiesApi.saveDeskSettings({showBlueprintButtons});
+  dispatch({type: SET_SHOW_BUTTONS, payload: showBlueprintButtons});
+  dispatch(updatePage());
 };
 
-export default (state = initialState, action = {}) => {
-
-  const {type, payload} = action;
-  if (type === actions.UPDATE_HISTORY_COUNTER) {
-    return Object.assign({}, state, {
-      historyCounter: state.historyCounter + 1
-    });
-  }
-  return state;
-};
-
+export const containerActions = (dispatch) => bindActionCreators({
+  setShowButtons
+}, dispatch);

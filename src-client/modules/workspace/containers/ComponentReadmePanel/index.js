@@ -27,6 +27,7 @@ const panelStyle = {
   border: '1px solid #DBDBDB',
   borderRadius: '3px',
   position: 'relative',
+  backgroundColor: '#fff',
 };
 
 class Container extends Component {

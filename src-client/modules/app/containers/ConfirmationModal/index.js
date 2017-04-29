@@ -15,7 +15,7 @@
  */
 
 import marked from 'marked';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
@@ -25,69 +25,69 @@ import { ProxyInput } from 'components';
 
 class Container extends Component {
 
-    constructor(props) {
-        super(props);
-        this.handleCancel = this.handleCancel.bind(this);
-        this.handleAccept = this.handleAccept.bind(this);
-    }
+  constructor (props) {
+    super(props);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleAccept = this.handleAccept.bind(this);
+  }
 
-    handleCancel(e){
-        if (e) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-        const { componentModel: {cancel}, hideModal } = this.props;
-        if (cancel) {
-            cancel();
-        }
-        hideModal();
+  handleCancel (e) {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
     }
+    const {componentModel: {cancel}, hideModal} = this.props;
+    if (cancel) {
+      cancel();
+    }
+    hideModal();
+  }
 
-    handleAccept(e){
-        if (e) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-        const { componentModel: {accept}, hideModal } = this.props;
-        if (accept) {
-            accept();
-        }
-        hideModal();
+  handleAccept (e) {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
     }
+    const {componentModel: {accept}, hideModal} = this.props;
+    if (accept) {
+      accept();
+    }
+    hideModal();
+  }
 
-    render() {
-        const { componentModel: {show, message} } = this.props;
-        return (
-            <Modal
-                show={show}
-                onHide={this.handleCancel}
-                dialogClassName="umy-modal-overlay umy-modal-middlesize"
-                backdrop={true}
-                keyboard={true}
-                bsSize="large"
-                ref="dialog"
-                animation={true}
-            >
-                <Modal.Header
-                    closeButton={false}
-                    aria-labelledby='contained-modal-title'
-                >
-                    <Modal.Title id='contained-modal-title'>Confirm</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div style={{padding: "1em", wordBreak: 'break-all'}}>
-                        {message &&
-                            <div dangerouslySetInnerHTML={{__html: marked(message)}} />
-                        }
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.handleCancel}>Cancel</Button>
-                    <Button onClick={this.handleAccept} bsStyle="primary">OK</Button>
-                </Modal.Footer>
-            </Modal>
-        );
-    }
+  render () {
+    const {componentModel: {show, message}} = this.props;
+    return (
+      <Modal
+        show={show}
+        onHide={this.handleCancel}
+        dialogClassName="umy-modal-overlay umy-modal-middlesize"
+        backdrop={true}
+        keyboard={true}
+        bsSize="large"
+        ref="dialog"
+        animation={true}
+      >
+        <Modal.Header
+          closeButton={false}
+          aria-labelledby='contained-modal-title'
+        >
+          <Modal.Title id='contained-modal-title'>Confirm</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div style={{padding: '1em', wordBreak: 'break-all'}}>
+            {message &&
+            <div dangerouslySetInnerHTML={{__html: marked(message)}}/>
+            }
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.handleCancel}>Cancel</Button>
+          <Button onClick={this.handleAccept} bsStyle="primary">OK</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
 
 }
 

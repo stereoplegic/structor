@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 
-import * as actions from './actions.js';
+import { createStructuredSelector } from 'reselect';
 
-const initialState = {
-  historyCounter: 0
-};
+export const showBlueprintButtonsSelector = state => state.blueprintControls.showBlueprintButtons;
 
-export default (state = initialState, action = {}) => {
-
-  const {type, payload} = action;
-  if (type === actions.UPDATE_HISTORY_COUNTER) {
-    return Object.assign({}, state, {
-      historyCounter: state.historyCounter + 1
-    });
-  }
-  return state;
-};
+export const modelSelector = createStructuredSelector({
+    showBlueprintButtons: showBlueprintButtonsSelector,
+});
 

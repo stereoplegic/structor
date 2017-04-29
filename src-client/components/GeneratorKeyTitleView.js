@@ -14,44 +14,45 @@
  * limitations under the License.
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class GeneratorKeyTitleView extends Component {
 
-    constructor(props, content) {
-        super(props, content);
-    }
+  constructor (props, content) {
+    super(props, content);
+  }
 
-    render() {
-        const {generatorKey} = this.props;
-        if(generatorKey && generatorKey.length > 0 && generatorKey.indexOf('.') > 0){
-            let parts = generatorKey.split('.');
-            let partsItems = [];
-            for(let i = 0; i < parts.length; i++){
-                if(i != parts.length - 1){
-                    partsItems.push(
-                        <span key={'part' + i}>{parts[i]}</span>
-                    );
-                    partsItems.push(
-                        <span key={'dot' + i} className="text-muted" style={{margin: '0 0.3em'}}>{'/'}</span>
-                    );
-                } else {
-                    partsItems.push(
-                        <span key={'name' + i} className="text-danger">{parts[i]}</span>
-                    );
-                }
-            }
-            return <span style={this.props.style}>{partsItems}</span>;
+  render () {
+    const {generatorKey} = this.props;
+    if (generatorKey && generatorKey.length > 0 && generatorKey.indexOf('.') > 0) {
+      let parts = generatorKey.split('.');
+      let partsItems = [];
+      for (let i = 0; i < parts.length; i++) {
+        if (i != parts.length - 1) {
+          partsItems.push(
+            <span key={'part' + i}>{parts[i]}</span>
+          );
+          partsItems.push(
+            <span key={'dot' + i} className="text-muted" style={{margin: '0 0.3em'}}>{'/'}</span>
+          );
         } else {
-            return <span style={this.props.style}>{generatorKey}</span>
+          partsItems.push(
+            <span key={'name' + i} className="text-danger">{parts[i]}</span>
+          );
         }
+      }
+      return <span style={this.props.style}>{partsItems}</span>;
+    } else {
+      return <span style={this.props.style}>{generatorKey}</span>;
     }
+  }
 }
 GeneratorKeyTitleView.defaultProps = {
-    generatorKey: ''
+  generatorKey: ''
 };
 GeneratorKeyTitleView.propTypes = {
-    generatorKey: PropTypes.string
+  generatorKey: PropTypes.string
 };
 
 export default GeneratorKeyTitleView;

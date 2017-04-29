@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
@@ -225,7 +225,7 @@ class Container extends Component {
                         <span>Selected:&nbsp;&nbsp;</span>
                     </span>
         );
-        const lastShowIndex = selectedKeys.length > 5 ? 5 : selectedKeys.length;
+        const lastShowIndex = selectedKeys.length > 3 ? 3 : selectedKeys.length;
         let graphNode;
         let componentTitle;
         for (let i = 0; i < lastShowIndex; i++) {

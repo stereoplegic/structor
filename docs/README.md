@@ -305,7 +305,7 @@ And replace generated code with the following example (you may do your changes a
  *
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 
 class Counter extends Component { // eslint-disable-line react/prefer-stateless-function
 

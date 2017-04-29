@@ -17,17 +17,19 @@
 import * as actions from './actions.js';
 
 const initialState = {
-  historyCounter: 0
+  showBlueprintButtons: true,
 };
 
 export default (state = initialState, action = {}) => {
 
   const {type, payload} = action;
-  if (type === actions.UPDATE_HISTORY_COUNTER) {
+
+  if (type === actions.SET_SHOW_BUTTONS) {
     return Object.assign({}, state, {
-      historyCounter: state.historyCounter + 1
+      showBlueprintButtons: payload,
     });
   }
+
   return state;
 };
 

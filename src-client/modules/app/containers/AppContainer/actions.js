@@ -21,12 +21,12 @@ import {
   setReloadPageRequest,
   executeReloadPageRequest,
   setEditModeOn,
-  setLivePreviewModeOn,
-  changePageRoute
+  setLivePreviewModeOn
 } from 'modules/workspace/containers/DeskPage/actions';
 import { updateDeskLayout } from 'modules/workspace/containers/Desk/actions';
 import { loadComponents } from 'modules/workspace/containers/LibraryPanel/actions';
 import { updateOptionsPanelState } from 'modules/workspace/containers/ComponentOptionsPanel/actions';
+import { setShowButtons } from 'modules/workspace/containers/BlueprintControls/actions';
 
 export const GET_PROJECT_STATUS = 'AppContainer/GET_PROJECT_STATUS';
 export const SET_PROJECT_INFO = 'AppContainer/SET_PROJECT_INFO';
@@ -78,7 +78,7 @@ export const handleCompilerMessage = (message) => (dispatch, getState) => {
 export const setupDesk = () => (dispatch, getState) => {
   const deskSettings = coockiesApi.getDeskSettings();
   if (deskSettings) {
-    const {isEditModeOn, layout, optionsPanel} = deskSettings;
+    const {isEditModeOn, layout, optionsPanel, showBlueprintButtons} = deskSettings;
     if (isEditModeOn || isEditModeOn === undefined) {
       dispatch(setEditModeOn());
     } else {
@@ -89,6 +89,9 @@ export const setupDesk = () => (dispatch, getState) => {
     }
     if (optionsPanel) {
       dispatch(updateOptionsPanelState(optionsPanel));
+    }
+    if (showBlueprintButtons !== undefined) {
+      dispatch(setShowButtons(showBlueprintButtons));
     }
   }
 };

@@ -16,7 +16,7 @@
 
 import validator from 'validator';
 import {isEmpty} from 'lodash';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';

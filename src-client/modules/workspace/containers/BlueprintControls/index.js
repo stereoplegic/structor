@@ -18,26 +18,30 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
-import { graphApi } from 'api';
 
-const buttonLabelStyle = {
+const buttonIconStyle = {
   margin: '0 0.5em'
+};
+const buttonLabelStyle = {
+  marginRight: '0.5em'
 };
 
 class Container extends Component {
 
   constructor (props) {
     super(props);
-    this.handlePopHistory = this.handlePopHistory.bind(this);
+    this.toggleShowButtons = this.toggleShowButtons.bind(this);
   }
 
-  handlePopHistory(e) {
-    e.preventDefault();
+  toggleShowButtons (e) {
     e.stopPropagation();
-    this.props.popHistory();
+    e.preventDefault();
+    const {setShowButtons, showBlueprintButtons} = this.props;
+    setShowButtons(!showBlueprintButtons);
   }
 
   render () {
+    const {showBlueprintButtons} = this.props;
     return (
       <div
         style={this.props.style}
@@ -45,14 +49,14 @@ class Container extends Component {
         role="group"
       >
         <button
-          className="btn btn-default btn-xs"
-          disabled={graphApi.getHistorySize() <= 0}
-          onClick={this.handlePopHistory}
+          className={'btn btn-xs ' + (showBlueprintButtons ? 'btn-primary' : 'btn-default')}
+          onClick={this.toggleShowButtons}
           title="Undo the last action">
           <span
-            style={buttonLabelStyle}
-            className="fa fa-undo"
+            style={buttonIconStyle}
+            className="fa fa-crosshairs"
           />
+          <span style={buttonLabelStyle}>Blueprint Buttons</span>
         </button>
       </div>
     );

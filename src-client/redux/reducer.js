@@ -58,6 +58,7 @@ import namespaceListReducer from 'modules/extractor/containers/NamespaceList/red
 import extractListReducer from 'modules/extractor/containers/ExtractList/reducer';
 import selectDirectoryModalReducer from 'modules/installer/containers/SelectDirectoryModal/reducer';
 import componentReadmePanelReducer from 'modules/workspace/containers/ComponentReadmePanel/reducer';
+import blueprintControlsReducer from 'modules/workspace/containers/BlueprintControls/reducer';
 
 const reducer = combineReducers({
   appContainer: appContainerReducer,
@@ -102,6 +103,7 @@ const reducer = combineReducers({
   extractList: extractListReducer,
   selectDirectoryModal: selectDirectoryModalReducer,
   componentReadmePanel: componentReadmePanelReducer,
+  blueprintControls: blueprintControlsReducer,
 });
 
 export default reducer;
