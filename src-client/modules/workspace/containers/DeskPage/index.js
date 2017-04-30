@@ -20,9 +20,7 @@ import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 import { modeMap } from '../QuickAppendModal/actions.js';
-
 import { graphApi } from 'api';
-import { CLIPBOARD_CUT } from 'modules/workspace/containers/ClipboardControls/actions';
 
 let lastWaitTimer = undefined;
 const wait = (testFunc, launchFunc) => {
@@ -215,8 +213,18 @@ class Container extends Component {
   }
 
   handleComponentClick (key, isModifier) {
-    const {setSelectedKey} = this.props;
-    setSelectedKey(key, isModifier);
+    const {
+      selectionBreadcrumbsModel: {selectedKeys},
+      setSelectedKey,
+      loadOptionsAndShowModal,
+      currentComponent,
+      showBlueprintButtons
+    } = this.props;
+    if (!showBlueprintButtons && selectedKeys && selectedKeys.length > 0 && includes(selectedKeys, key)) {
+      loadOptionsAndShowModal(currentComponent);
+    } else {
+      setSelectedKey(key, isModifier);
+    }
   }
 
   handlePathnameChanged (pathname) {

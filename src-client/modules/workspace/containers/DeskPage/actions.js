@@ -38,6 +38,7 @@ import {
   cloneSelected,
   deleteSelected
 } from 'modules/workspace/containers/SelectionControls/actions';
+import { loadOptionsAndShowModal } from 'modules/workspace/containers/ComponentOptionsModal/actions';
 import { pushHistory, popHistory } from 'modules/workspace/containers/HistoryControls/actions';
 import { showModal as showQuickAppend } from 'modules/workspace/containers/QuickAppendModal/actions';
 
@@ -206,6 +207,7 @@ export const resetPages = () => (dispatch, getState) => {
 
 export const containerActions = (dispatch) => bindActionCreators({
   loadPage,
+  loadOptionsAndShowModal,
   pageLoaded,
   setSelectedKey,
   setSelectedParentKey,
