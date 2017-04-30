@@ -1,20 +1,18 @@
-# Structor - React UI Builder.
-___Install Components -> Prototype UI -> Generate Source Sode -> Build Application___
+<p align="center">
+  <img width="40%" src="https://raw.githubusercontent.com/ipselon/structor/master/structor-logo-big.png" />
+</p>
+
+<h1 align="center">Structor - React UI Builder.</h1>
+<h3 align="center">Install Components&nbsp;&nbsp;>&nbsp;&nbsp;Prototype UI&nbsp;&nbsp;>&nbsp;&nbsp;Generate Source Sode&nbsp;&nbsp;>&nbsp;&nbsp;Build Application</h3>
 
 [![facebook group](https://img.shields.io/badge/facebook%20group-join-blue.svg?style=flat)](https://www.facebook.com/groups/structor/)
 [![npm version](https://img.shields.io/npm/v/structor.svg?style=flat)](https://www.npmjs.com/package/structor)
 [![npm downloads](https://img.shields.io/npm/dt/structor.svg?style=flat)](https://www.npmjs.com/package/structor)
 
-<p align="center">
-  <img width="40%" src="https://raw.githubusercontent.com/ipselon/structor/master/structor-logo-big.png" />
-</p>
-
-
-## Structor Is
-* **Prototyping tool** - construct a React component of any complexity combining components and styling them right on the page.
-* **Scaffolding tool** - it lets you generate scaffolds of React components, Redux containers/reducers/selectors and sagas.
-* **Library** - you may install presets of components from [Structor Market](https://github.com/ipselon/structor-market).
-* **Playground** - it uses own Webpack Dev server to compile components, and that allows you to develop UI components in isolation from the application.
+* **Library** - install presets of components from [Structor Market](https://github.com/ipselon/structor-market).
+* **Prototyping** - construct React components of any complexity right on the page.
+* **Scaffolding** - generate scaffolds for React components, Redux containers/reducers/selectors and sagas.
+* **Playground** - develop UI components in isolation from the application using a separate Webpack Dev server with hot-reloading.
 
 ## Requirements
 * NodeJS  > 5
