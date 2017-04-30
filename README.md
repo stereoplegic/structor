@@ -1,5 +1,5 @@
 # Structor - React UI Builder.
-___Install components -> Prototype UI -> Generate source code -> Extract components -> Publish___
+___Install Components -> Prototype UI -> Generate Source Sode -> Build Application___
 
 [![facebook group](https://img.shields.io/badge/facebook%20group-join-blue.svg?style=flat)](https://www.facebook.com/groups/structor/)
 [![npm version](https://img.shields.io/npm/v/structor.svg?style=flat)](https://www.npmjs.com/package/structor)
