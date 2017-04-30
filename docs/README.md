@@ -28,9 +28,10 @@
 
 ## Getting started
 
-Structor does not depend on any starter/seed/boilerplate porject. It runs even in an empty folder with `package.json`.
+Structor does not depend on any starter/seed/boilerplate project. It runs even in an empty folder with `package.json`.
 
-But before you get familiar with Structor we suggest to run a brief tutorial. This tutorial is using our starter project which lets you quickly try all cool features of Structor.
+But before you get familiar with Structor we suggest to run through a brief tutorial. 
+This tutorial is using our starter project which lets you quickly try all cool features of Structor.
 
 ### Installation
 
@@ -46,20 +47,21 @@ npm install
 ```
 npm install structor
 ```
-* When the following prompt is appeared choose `app` as a directory where the source code will be located.
-> Specify a directory name where the source code of the generated components will be.
- If the directory does not exist in the current project structure it will be created.
- (app)
- 
+* When the prompt is appeared in the command line, choose `app` as a directory where the source code will be located.
+```
+Specify a directory name where the source code of the generated components will be.
+If the directory does not exist in the current project structure it will be created.
+(app)
+```
 * From this point you are able to start Structor:
 ```
 npm run structor
 ```
 
 * Open the following address in the browser:
-
-> http://localhost:2222/structor
-
+```
+http://localhost:2222/structor
+```
 Now you should see the Structor's workspace. If not, please create an issue.
 
 <p align="left">
