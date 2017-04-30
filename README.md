@@ -6,7 +6,7 @@ ___Install components -> Prototype UI -> Generate source code -> Extract compone
 [![npm downloads](https://img.shields.io/npm/dt/structor.svg?style=flat)](https://www.npmjs.com/package/structor)
 
 <p align="center">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/structor-logo-big.png" />
+  <img width="40%" src="https://raw.githubusercontent.com/ipselon/structor/master/structor-logo-big.png" />
 </p>
 
 
