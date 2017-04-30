@@ -2,7 +2,7 @@
   <img width="40%" src="https://raw.githubusercontent.com/ipselon/structor/master/structor-logo-big.png" />
 </p>
 
-<h1 align="center">Structor - React UI Builder.</h1>
+<h1 align="center">Structor - React UI Builder</h1>
 <h3 align="center">Install Components&nbsp;&nbsp;>&nbsp;&nbsp;Prototype UI&nbsp;&nbsp;>&nbsp;&nbsp;Generate Source Sode&nbsp;&nbsp;>&nbsp;&nbsp;Build Application</h3>
 
 * **Library** - install presets of components from [Structor Market](https://github.com/ipselon/structor-market).
