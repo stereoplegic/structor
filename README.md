@@ -18,12 +18,15 @@
 * Webpack > 2.2.x
 * React > 15.5.4
 
-## Documentation & Tutorials
-[Structor's User Guide](https://github.com/ipselon/structor/blob/master/docs/README.md) 
+## [Structor's User Guide](https://github.com/ipselon/structor/blob/master/docs/README.md) 
 
 ## Ask Questions
 
-[![facebook group](https://img.shields.io/badge/facebook%20group-join-blue.svg?style=flat)](https://www.facebook.com/groups/structor/)
+[![facebook group](https://img.shields.io/badge/facebook%20group-join-blue.svg?style=social)](https://www.facebook.com/groups/structor/)
+
+## Get news from Structor Market
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/StructorMarket.svg?style=social&label=follow @StructorMarket)](https://twitter.com/StructorMarket)
 
 <hr/>
 
