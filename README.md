@@ -24,10 +24,6 @@
 
 [![facebook group](https://img.shields.io/badge/facebook%20group-join-blue.svg?style=social)](https://www.facebook.com/groups/structor/)
 
-## Get news from Structor Market
-
-[![Twitter Follow](https://img.shields.io/twitter/follow/StructorMarket.svg?style=social&label=follow @StructorMarket)](https://twitter.com/StructorMarket)
-
 <hr/>
 
 #### Created By
