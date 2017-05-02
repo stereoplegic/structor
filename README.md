@@ -13,14 +13,14 @@
 * **Scaffolding** - generate scaffolds for React components, Redux containers/reducers/selectors and sagas.
 * **Playground** - develop UI components in isolation from the application using a separate Webpack Dev server with hot-reloading.
 
-## Requirements
+### Requirements
 * NodeJS  > 5
 * Webpack > 2.2.x
 * React > 15.5.4
 
-## [Structor's User Guide](https://github.com/ipselon/structor/blob/master/docs/README.md) 
+### [Structor's User Guide](https://github.com/ipselon/structor/blob/master/docs/README.md) 
 
-## Ask Questions
+### Ask Questions
 
 [![facebook group](https://img.shields.io/badge/facebook%20group-join-blue.svg?style=social)](https://www.facebook.com/groups/structor/)
 

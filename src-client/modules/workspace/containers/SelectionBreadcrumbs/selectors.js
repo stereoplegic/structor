@@ -20,21 +20,21 @@ import { graphApi } from 'api';
 export const selectedKeysSelector = state => state.selectionBreadcrumbs.selectedKeys;
 
 export const selectedComponentModelSelector = createSelector(
-    selectedKeysSelector,
-    (keys) => {
-        let result = undefined;
-        if(keys && keys.length === 1){
-            const selectedNode = graphApi.getNode(keys[0]);
-            if (selectedNode) {
-                const {modelNode} = selectedNode;
-                result = modelNode;
-            }
-        }
-        return result;
+  selectedKeysSelector,
+  (keys) => {
+    let result = undefined;
+    if (keys && keys.length === 1) {
+      const selectedNode = graphApi.getNode(keys[0]);
+      if (selectedNode) {
+        const {modelNode} = selectedNode;
+        result = modelNode;
+      }
     }
+    return result;
+  }
 );
 
 export const modelSelector = createStructuredSelector({
-    componentModel: state => state.selectionBreadcrumbs
+  componentModel: state => state.selectionBreadcrumbs
 });
 

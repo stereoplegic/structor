@@ -15,7 +15,7 @@
  */
 
 // main saga
-export default function* mainSaga() {
-    //yield [fork(getProjectInfo)];
+export default function* mainSaga () {
+  //yield [fork(getProjectInfo)];
 
 };

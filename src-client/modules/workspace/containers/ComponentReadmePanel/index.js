@@ -47,7 +47,7 @@ class Container extends Component {
   componentWillReceiveProps (nextProps) {
     const {currentComponent, loadReadmeText} = this.props;
     const {currentComponent: nextComponent} = nextProps;
-    if (currentComponent !== nextComponent) {
+    if (nextComponent && currentComponent !== nextComponent) {
       const {componentName, namespace} = nextComponent;
       loadReadmeText(componentName, namespace);
     }
