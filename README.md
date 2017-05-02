@@ -1,3 +1,7 @@
+[![npm version](https://img.shields.io/npm/v/structor.svg?style=flat)](https://www.npmjs.com/package/structor)
+[![npm downloads](https://img.shields.io/npm/dt/structor.svg?style=flat)](https://www.npmjs.com/package/structor)
+
+
 <p align="center">
   <img width="40%" src="https://raw.githubusercontent.com/ipselon/structor/master/structor-logo-big.png" />
 </p>
@@ -5,8 +9,8 @@
 <h1 align="center">Structor - React UI Builder</h1>
 <h3 align="center">Install Components&nbsp;&nbsp;>&nbsp;&nbsp;Prototype UI&nbsp;&nbsp;>&nbsp;&nbsp;Generate Source Sode&nbsp;&nbsp;>&nbsp;&nbsp;Build Application</h3>
 
-[![npm version](https://img.shields.io/npm/v/structor.svg?style=flat)](https://www.npmjs.com/package/structor)
-[![npm downloads](https://img.shields.io/npm/dt/structor.svg?style=flat)](https://www.npmjs.com/package/structor)
+<br/>
+<br/>
 
 * **Library** - install presets of components from [Structor Market](https://github.com/ipselon/structor-market).
 * **Prototyping** - construct React components of any complexity right on the page.
