@@ -294,6 +294,8 @@ export function installFromDir (dirPath) {
                     foundIndex = projectModel.pages.findIndex(i => i.pagePath === page.pagePath);
                     if (foundIndex < 0) {
                       projectModel.pages.push(page);
+                    } else {
+                      projectModel.pages[foundIndex] = page;
                     }
                   });
                   return commons.writeJson(modelFilePath, projectModel);
