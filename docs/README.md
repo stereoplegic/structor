@@ -64,15 +64,17 @@ http://localhost:2222/structor
 ```
 Now you should see the Structor's workspace. If not, please create an issue.
 
-<p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-first-opening.png" />
+<p align="center">
+  <img width="60%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-first-opening.png" />
 </p>
 
 ### Getting familiar with Structor's Workspace
 
-After the first opening you'll see the workspace pane where UI components are placed. You may create many such panes and we will call them pages. Actually, they are pages and they behave as the real pages in the browser.
+After the first opening you'll see the workspace page. We may call it a page bacause it behaves as the real pages in the browser. But there are two modes in the workspace. 
 
-There are two modes in the workspace. The first mode is an editing mode. In the editing mode a user may manipulate components on the page: cut, paste, duplicate, delete, replace, change style, etc. 
+The first mode is an editing mode. In the editing mode we can cut, paste, duplicate, delete, replace, change style of any component on the page. 
+
+> On a separate note, we should understand what is a component and component model in terms of the Structor's workspace. The page in the workspace consists of multiple React components. Although, the page is not a React component itself, as you may thought, the page is just a tree of components models which are written in JSON. See detailed explanation of what is a component model in section [A component model](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#a-component-model) of this guide.
 
 The second mode is a preview mode. In the preview mode you are able to see how page look and try how it works in the browser.
 
@@ -82,171 +84,107 @@ On the left vertical toolbar you may find two buttons which are responsible for 
   <img width="30%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-mode-switch-btns.png" />
 </p>
 
-On this stage of the tutorial the current page is in the edit mode.
+On this stage of the tutorial the current page should be in the edit mode. If not, please set edit mode on.
 
-On a separate note, we should understand what is a component and component model in terms of the Structor's workspace. The page in the workspace consists of multiple React components which are described in JSON format with a simple tree structure. Consequently, we may tell that a page model (tree) includes many components' models (leaves and branches).
+### Installing component presets
 
-```json5
-01  "type": "Panel",
-02  "children": [
-03      {
-04        "type": "Input",
-05        "props": {
-06          "type": "text",
-07          "hasFeedback": true,
-08          "placeholder": "Enter value",
-09          "label": "Label for input"
-10        }
-11      },
-12      {
-13        "type": "Button",
-14        "props": {
-15          "bsStyle": "default"
-16        },
-17        "children": [
-18          {
-19            "type": "span",
-20            "text": "Default"
-21          }
-22        ]
-23      }
-24  ]
-```
+However we can work in Structor with only those components which are shipped with Structor distribution, in this tutorial we will install a package of [Material UI](https://github.com/ipselon/mui-next-spkg) components from [Structor Market](https://github.com/ipselon/structor-market).
 
-The ***type*** field tells which React component should be rendered. In line `01` of the model we can see that type has a value of ***Panel***. ***Panel*** is a one of the components in the application source code.
+Activate a library button with plus icon as it is shown on the screenshot below. The library panel show the groups of available components in the current project. Find the `Install` button at the top of the left-side panel and click on it.
 
-**It means that you are able to select and manipulate only the components which are described in page's model. Shortly speaking, you can not select a component or element which is in the React component source code**
-
-Let's start to compose something interesting. If you didn't select some component on the page yet, please do this by clicking on the text element right in the center of the current page.
-
-<p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-selected-component.png" />
+<p align="center">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-open-library.png" />
 </p>
 
-As usual we are not able to precisely select something on the Web page by simple clicking on a sibling area. That is why Structor presents a few ways to adjust the selection.
+We are forwarded to the Structor Market gallery, here we can see what packages of component presets are avaialble to install. Let's install a `mui-next-spkg` package, which includes components from the next version of Material UI lib.
 
-The firs way is to use a breadcrumbs control in the top toolbar of the workspace. The breadcrumbs control lets you see the path in the page model to the selected component. Also it allows you to select another component from this path by clicking on a path's node. In order to simplify understanding which component on the page corresponds to the node you are going to select, the corresponded component will be highlighted on the page once you hover over the path's node.
-
-<p align="left">
-  <img width="30%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-breadcrumbs-control.png" />
+<p align="center">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-install-package.png" />
 </p>
 
-> BTW, when you hovering over the page you may see highlignted borders of the components, that greatly simplify the component hunting on the page.
+Installation process will take some time because Structor installs dependencies via npm. Once package is installed we will see new pages in the workspace and new groups of components. Just try to open othe pages through the page selector component in the top toolbar.
 
-Also, there is a commonly used way to see the page structure in Structor. There is a bottom panel with a tree view representation of the page model. You can select components in the treeview as well as in the breadcrumbs control. Please find a button on the left vertical toolbar and switch it on:
-
-<p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-bottom-treeview.png" />
+<p align="center">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-page-switcher.png" />
 </p>
 
-Now please select `h3` element on the page. We are going to replace this component with a simple HTML `div`. 
+### Composing a new component
 
-There are also a couple ways to add new component on the page. One way is to pick up needed component in a library panel. Click on the button with plus icon on the vertical left toolbar to see the library panel:
+Let's start to compose something interesting. Make sure that the current page is `/home` page and click somewhere on the text in the center of the page. You'll see that a border appeared around some area - this is a selected componet. There is a few ways to understand what the component is selected now.
 
-<p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-library-panel.png" />
+We may find a breadcrumbs control at the top of the workspace as it is shown on the screenshot below. Or you can take a look at the blueprint buttons which appeared at the place you clicked. 
+
+<p align="center">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-breadcrumbs.png" />
 </p>
 
-The current version of Structor ships with a couple of React components and with many HTML elements in its library. Open `HTML` group in the library panel and find `div` item in the list. Then just click on it - you'll see the green message which tells that `div` component was copied into a clipboard.
+Additionally, there is more sophisticated method which will show us the entire structure of the page. There is a bottom panel with the components tree on the current page. Click on the button with code icon on the left vertical toolbar as it is shown on the screenshot below.
 
-The clipboard is a buffer which may temporary hold one or many components (please find about multiple selection in [Multiple Selection] section) until you clear the clipboard.
-
-> As you can see, we are using a _Copy & Paste_ approach instead of a _Drag and Drop_ as many other similar tools do.
-
-Having copied `div` into the clipboard we can replace `h3` with the clipboard by clicking on `Replace` button. Click on one of the following `Replace` buttons on the workspace:
-
-<p align="left">
-  <img width="20%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-replace-btn-component.png" />
-</p>
-<br/>
-<p align="left">
-  <img width="20%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-replace-btn-toolbar.png" />
-</p>
-<br/>
-<p align="left">
-  <img width="20%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-replace-btn-treeview.png" />
+<p align="center">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-treeview-panel.png" />
 </p>
 
-Keep `div` component selected. Now we try to change style of this `div`. We will use a quick style panel to make it faster. However, there is a way to change JSON component's model through the component editor.
+Moving mouse cursor around on the page will show us a boundaries of components. Let's place the some components from library onto the page.
 
-Click on the button with brush icon on the left vertical toolbar. It opens a rightside panel with quick CSS styles which may be applied to the selected component's model. Set the following styles:
-* __Layout__ `display: flex`, `flexDirection: row`, `justifyContent: center`
-* __Box Model__ `padding: 1em`
+There is a requirement in the Material UI lib to place `MuiThemeProvider` as a root component of any MUI components combination. So, we can find a `ThemeProvider` component in the `MUI` group (this is preset of `MuiThemeProvider` here) and place it as a container for our future combination. 
 
-<p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-quickstyle-panel.png" />
+Just open the `MUI` group and click on `ThemeProvider` item in the list. We will see that there is a sublist. The sublist in the library shows that this component has several models of the same component. Let's click on `default` model and see that `ThemeProvider` component's model was copied to clipboard.
+
+<p align="center">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-treeview-panel.png" />
 </p>
 
-Now we will replace `span` element inside of the `div` by a tuple of components nested in each other. Clear the clipboard by clicking on `New in clibpoard` label.
+Now we have to replace `h3` component in the tree with the component from clipboard. If you do not have `h3` selected, select it by clicking on it on the page or just select on the treeview (or in the breadcrumbs control).
 
-<p align="left">
-  <img width="30%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-clear-clipboard.png" />
+<p align="center">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-add-component.png" />
 </p>
 
-Be sure that clipboard is empty, then select `span` inside of the `div` and click on `Replace` button. We'll see a dialog where we can type a name of component from the library which will be placed insead of `span`. Additionaly, we can type a series of components delimited by dot that lets us add multiple components nested in each other.
+Then find `Replace` button in the top toolbar, or find a blueprint button on the page which tells `Replace selected`
 
-Type two `div` components: `div`.`div` and submit action.
-
-<p align="left">
-  <img width="40%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-tuple-inserting.png" />
+<p align="center">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-replace-buttons.png" />
 </p>
 
-As we may see, we have a hierarchy of 3 nested divs. You can easily check it out on the bottom panel in treeview.
+As the result we will have the composition as it is shown on the screenshot below.
 
-Select the innermost `div` and click on the circle button with plus sign on it underneath of the selected component:
-
-<p align="left">
-  <img width="20%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-insert-after-btn.png" />
+<p align="center">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-component-replaced.png" />
 </p>
 
-This action appends a new component after the selected one. Type `button` name in the insertion dialog, and after `button` is appended set its style to `padding: 1em`.
+Now replace a `Placeholder` component on the page with `raised primary` model of `Button` component. And then place `h2` component (from __HTML__ group) before `Button` inside of `LayoutItem` component. 
 
-Then we have to change the texts of `span` and `button`. Open the bottom treeview panel, and just click on the text - it allows to change text right in the place:
+Placing a component before or after another component can be made in the same manner as we were replacing components - you have to select component from the library and then use `Before`, `After` buttons in the top toolbar or blueprint buttons.
 
-<p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-change-text-inplace.png" />
+In the result we should have the following composition:
+
+<p align="center">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-composed-ui.png" />
 </p>
 
-Change `span` text to "Count: 0", and `button` text to "Increase count". As the result of our manipulation the following composition should be:
+### Creating the component
 
-<p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-workspace-result-composition.png" />
-</p>
-
-On the current stage of this tutorial we already learned:
-* What are page and component models in terms of Structor
-* How to view and navigate the component hierarhy in different ways
-* How to add new components on the page using the library panel and clipboard
-* How to add new components on the page using the quick insertion dialog
-* How to change a component's model style using the quick style panel
-
-In the next stages of the tutorial we will learn how to generate a scaffold for new React component. And how to export pages and build a Web App.
-
-### Generating React components
-
-Structor ships with a couple source code generators for React component scaffolds. We are not going to discuss here how it works and how it can be customized. So, please keep in mind that any scaffold template may be changed to fit your requirements easily.
+Structor ships with a couple source code generators for React component scaffolds. We are not going to discuss here how it works and how it can be customized. Although, please keep in mind that any scaffold template may be changed to fit your requirements easily.
 
 Now we are going to generate a scaffold for simple React component which will have equal look and feel as our composition which we made above.
 
-Select the topmost `div` in the hierarchy of the current page, and click `Generate Component` button on the top toolbar of the workspace.
+Select the topmost `div` in the hierarchy of the current page, and click `Generate Component` button on the top toolbar of the workspace. We will see a start page of the generator wizard, where we have to choose what component we want to generate.
 
-<p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/generators-generate-component-btn.png" />
+> __Note__: You may choose any component on the page as a root node to generate a new React component. But in this tutorial we will select the topmost one.
+
+Here we will choose a `react-component` generator - click on `Generate` button.
+
+<p align="center">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-generators-list.png" />
 </p>
 
-We will see a start page of the generator wizard, where we have to choose what component we want to generate.
-
-<p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/generators-list.png" />
-</p>
-
-Here we run `react-component` generator. The next step requires to enter a name of new component and/or a namespace for component.
+ The next step requires to enter a name of new component and/or a namespace for component.
 
 <p align="left">
   <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/generators-enter-name.png" />
 </p>
 
-On this note we should step aside a bit and try to understand what the source code and its structure we will have after generation. The only requirement from Structor is to use a certain type of the source code structure. We will discuss the structure and motives to use it in the guide's chapters. But on this step please keep in mind the following structure of components possible to use with Structor:
+On this note we should step aside a bit and try to understand what the source code and its structure we will have after generation. The only requirement from Structor is to use a certain type of the source code structure. We will discuss the structure and motives to use it in the [The code structure](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#the-code-structure) guide's chapters. But on this step please keep in mind the following structure of components which is possible to use with Structor:
 
 ```
 <APP_DIR>
@@ -279,115 +217,135 @@ On this note we should step aside a bit and try to understand what the source co
             sagas.js - composition of containers' sagas
 ```
 
-> As far as Stuctor may manipulate a significant amount of the components they may have conflicting names (equal names), to avoid this situation we are using namespaces. More about motives to use `modules` structure along with `components` and `containers` please read here: [Additional Guidelines For (Redux) Project Structure](https://jaysoo.ca/2016/12/12/additional-guidelines-for-project-structure/#what-to-do-with-common-components)
+Enter `Counter` as a new name of React component, and enter `Tutorial` as a namespace. We are going to create a new namespace with `Counter` component. Although, we can create a component without any namespace that puts it in `components` folder.
 
-Enter `Counter` as a new name of React component, and enter `Tutorial` as a namespace. We are going to create a new namespace with `Counter` component. Although we can create a component without any namespace and place it just in `components` folder, but we should create the namespace in order to learn how to extract and install namespaces using Structor.
+Next step gives us options for a few variants of the future scaffold. Let's leave the options as they are and proceed to the next step.
 
-Next step gives us options for a few variants of the future scaffold. We are leaving all options as they are and proceeding to the next step.
+Here is a preview of the generated source code. After reviewing just click on `Install component` button.
 
-Here is a preview of the generated source code.
-
-<p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/generators-source-review.png" />
+<p align="center">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-generated-code.png" />
 </p>
 
-Click to install the source code. After the Webpack compiler finished switch to the preview mode and try to click on the `Increase counter` button. The counter will not be increased. That is why we need to change the source code to make it something valuable.
 
-Open `index.js` file in the directory:
+Nowc we have to switch to the preview mode and try to click on the button - nothing happened. That is why we need to change the source code to make it something valuable.
+
+Open `index.js` file in the directory...
 ```
 <PROJECT_DIR>/app/modules/Tutorial/components/Counter
 ```
 
-And replace generated code with the following example (you may do your changes as well). Also, please observe that your changes are applied in the preview page almost immediatelly.
+...and made chages in generated code as it is shown below. Also, please observe that your changes are applied in the preview page almost immediatelly.
 
-```javascript
+```diff
 /**
- *
- * Counter
- *
- */
+*
+* Counter
+*
+*/
 
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-class Counter extends Component { // eslint-disable-line react/prefer-stateless-function
+import PropTypes from "prop-types";
 
+import {
+  ThemeProvider,
+  LayoutContainer,
+  LayoutItem,
+  Button
+} from "modules/MUI";
+
+const style = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: "1em"
+};
+
+class Counter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      counterValue: 0,
+--      exampleValue: ""
+++      counterValue: 0, 
     };
   }
 
-  handleIncrease = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    this.setState({counterValue: this.state.counterValue + 1});
-  };
+++  handleIncrease = (e) => {
+++    e.stopPropagation();
+++    e.preventDefault();
+++    this.setState({counterValue: this.state.counterValue + 1});
+++  };
 
   render() {
-    const {counterValue} = this.state; // eslint-disable-line
+--    const { exampleValue } = this.state; // eslint-disable-line
+--    const { exampleProp } = this.props; // eslint-disable-line
+++    const {counterValue} = this.state; // eslint-disable-line
     return (
-      <div style={{ padding: '1em', flexDirection: 'row', justifyContent: 'center', display: 'flex' }}>
+      <div style={style}>
+
         <div>
-          <div>
-            <span>Count: {counterValue}</span>
-          </div>
-          <button
-            style={{ padding: '1em' }}
-            onClick={this.handleIncrease}
-          >
-            <span>Increase count</span>
-          </button>
+          <ThemeProvider>
+            <LayoutContainer gutter={24}>
+              <LayoutItem xs={12}>
+--                <h2><span>Empty h2</span></h2>
+++                <h2><span>Count: {counterValue}</span></h2>
+--                <Button raised={true} primary={true}>
+++                <Button 
+++                  onClick={this.handleIncrease} 
+++                  raised={true} 
+++                  primary={true}
+++                >
+                  <span>Button</span>
+                </Button>
+              </LayoutItem>
+            </LayoutContainer>
+          </ThemeProvider>
         </div>
+
       </div>
-      ); // eslint-disable-line
+    );
   }
 }
+
+Counter.propTypes = {
+  exampleProp: PropTypes.string
+};
+Counter.defaultProps = {
+  exampleProp: ""
+};
 
 export default Counter;
 ```
 
-Now clicking on the button will increase the counter value.
+Switch again to the preview mode and try to click on the button - you will see that the counter value is increasing.
 
 <p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/generators-component-preview.png" />
+  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-component-preview.png" />
 </p>
-
-On this stage we learned:
-* What the source code structure is used by Structor
-* How to generate the source code of simple React component
-* Hot reloading is working in the Structor workspace for any mode
-
-Here we are ready to learn how to export the workspace pages and build an application in Structor Starter App.
 
 ### Exporting pages and building App
 
-This step is not necessary to the projects which have own building process and requre to add components manually into appliation pages. Structor Starter App does not have a sophisticated app building process in terms of granularity, optimisation, etc. This step is mostly for the learning purpose. But it greatly helps to generate the pages for Web Application which may be constantly changed in the Structor workspace.
+This step is not necessary to the projects which have own building process and requre to add components manually into appliation pages. Structor Starter App does not have a sophisticated app building process in terms of granularity, optimisation, etc. This step is mostly for the learning purpose.
 
-Click on the button with book icon on on the left vertical toolbar. This will show us a list of available pages. We were not discussing how pages can be created in Structor because this is a pretty simple action. 
+Click on the button with book icon on on the left vertical toolbar. This will show us a list of available pages.
 
 In the top of the list we may see two buttons: `Export Pages` and `Export App`. `Export Pages` responsible for generating the source code for selected pages. And `Export App` button generates not only the pages' source code, but also the source code for entry point in terms of Webpack compiler.
 
-<p align="left">
-  <img width="50%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/export-page-list-panel.png" />
+<p align="center">
+  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-export-app.png" />
 </p>
 
-As far as we are going to build application, we are choosing `Export App`. The modal dialog will worn us about what files will be generated and if there are some existing they will be rewritten.
+As far as we are going to build application, we are choosing `Export App`. The modal dialog will worn us about what files will be generated.
 
-After we saw a green message about a successfull exporting, we may find new folder `<APP_DIR>/routes` along with other files for React/Redux application. Please find the compiled bundle of the application in `<PROJECT_DIR>/build` directory.
+After we will see a green message about a successfull exporting. Now we can find a new `<APP_DIR>/routes` folder along with files for React/Redux application. Additionally, please find the compiled bundle of the application in `<PROJECT_DIR>/build` directory.
 
-Go to the terminal and run following command:
+Finally we can run our application in the local Express server, go to the terminal and run following command:
 ```
 npm run start:production
 ```
 
 This command initiates a building process of our application and starts an Express server instance on `3000` port. After the server is started we may open `http://localhost:3000` address in our browser.
 
-On this stage we learned:
-* How to export pages and generate the files for building an app
-
-In the next stage we are going to learn how to extract the source code of namespaces as sharable Structor namespaces lib. And how to install such libs from Structor Market or from a local directory.
-
-...
 
 
