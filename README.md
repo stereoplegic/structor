@@ -27,6 +27,7 @@
 ### Ask Questions
 
 [![facebook group](https://img.shields.io/badge/facebook%20group-join-blue.svg?style=social)](https://www.facebook.com/groups/structor/)
++[![Join the chat at https://gitter.im/ipselon/structor](https://badges.gitter.im/ipselon/structor.svg)](https://gitter.im/ipselon/structor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 <hr/>
 
