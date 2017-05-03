@@ -340,7 +340,7 @@ In the top of the list we may see two buttons: `Export Pages` and `Export App`. 
 
 As far as we are going to build application, we are choosing `Export App`. The modal dialog will worn us about what files will be generated.
 
-After we will see a green message about a successfull exporting. Now we can find a new `<APP_DIR>/routes` folder along with files for React/Redux application. Additionally, please find the compiled bundle of the application in `<PROJECT_DIR>/build` directory.
+After we will see a green message about a successful exporting. Now we can find a new `<APP_DIR>/routes` folder along with files for React/Redux application. Additionally, please find the compiled bundle of the application in `<PROJECT_DIR>/build` directory.
 
 Finally we can run our application in the local Express server, go to the terminal and run following command:
 ```
