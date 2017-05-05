@@ -267,17 +267,18 @@ const style = {
 class Counter extends Component {
   constructor(props) {
     super(props);
+++    this.handleIncrease = this.handleIncrease.bind(this);
     this.state = {
 --      exampleValue: ""
 ++      counterValue: 0, 
     };
   }
 
-++  handleIncrease = (e) => {
+++  handleIncrease(e) {
 ++    e.stopPropagation();
 ++    e.preventDefault();
 ++    this.setState({counterValue: this.state.counterValue + 1});
-++  };
+++  }
 
   render() {
 --    const { exampleValue } = this.state; // eslint-disable-line
@@ -310,12 +311,12 @@ class Counter extends Component {
   }
 }
 
-Counter.propTypes = {
-  exampleProp: PropTypes.string
-};
-Counter.defaultProps = {
-  exampleProp: ""
-};
+-- Counter.propTypes = {
+--   exampleProp: PropTypes.string
+-- };
+-- Counter.defaultProps = {
+--   exampleProp: ""
+-- };
 
 export default Counter;
 ```
