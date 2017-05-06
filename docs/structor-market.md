@@ -20,8 +20,8 @@
        * [Redux container scaffold](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#redux-container-scaffold)
     * [Troubleshooting](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#troubleshooting)
 * [Structor Market](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#structor-market)
-    * [Installing component packages](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#installing-component-packages)
-    * [Publishing components on the market](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#publishing-components-on-the-market)
+    * [Extracting components presets](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#extracting-components-presets)
+    * [Extending existing presets on the market](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#extending-existing-presets-on-the-market)
 * Exporting
     * Export pages
     * Export application
@@ -31,12 +31,14 @@
 If you have not tried to install component presets from Structor Market gallery yet, 
 please go through [Getting Started](https://github.com/ipselon/structor/blob/master/docs#getting-started) tutorial to feel how it works.
  
-When we open the market gallery in Structor we just tell Structor to read the index file 
-of all available repos on GitHub with the packages of component presets.
+When Structor opens the Structor Market gallery it reads an `index.json` file in [structor-market](https://github.com/ipselon/structor-market) repo 
+where all available repos with components presets are listed.
 
-### Extracting components presets
+But how to create a repository with components presets?
 
-Stuctor has a convenient mechanizm for sharing components presets between projects. 
+### Extracting and publishing components presets
+
+Stuctor has a convenient mechanism for sharing components presets between projects. 
 Open the library panel in Structor's workspace and find `Extract` button at the top of the panel.
  
 <p align="center">
@@ -68,7 +70,7 @@ Once files were successfully extracted you may find them in specified directory.
 Now we can install this package into another project right from the local directory. 
 
 If you want to share your package on Structor Market you can create a new repo on GitHub and push there the directory content as it is. 
-Then just make changes in `index.json` with the URL of your repository and create a PR for Structor Market repo. 
+Then just make changes in `index.json` in [structor-market](https://github.com/ipselon/structor-market) repo with the URL of your repository. 
  
 ### Extending existing presets on the market
 
