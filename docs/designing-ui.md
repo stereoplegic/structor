@@ -20,7 +20,7 @@
        * [Redux container scaffold](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#redux-container-scaffold)
     * [Troubleshooting](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#troubleshooting)
 * [Structor Market](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#structor-market)
-    * [Extracting components presets](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#extracting-components-presets)
+    * [Extracting and publishing components presets](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#extracting-and-publishing-components-presets)
     * [Extending existing presets on the market](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#extending-existing-presets-on-the-market)
 * Exporting
     * Export pages
