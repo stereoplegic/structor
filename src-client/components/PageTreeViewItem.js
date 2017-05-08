@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { print } from 'api';
 
 const linkStyle = {outline: 'none', color: '#2185D0'};

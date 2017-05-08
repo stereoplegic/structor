@@ -15,7 +15,8 @@
  */
 
 import { isString, isObject, get, set, startCase } from 'lodash';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { SketchPicker } from 'react-color';
 
 const getStateObject = (valueObject, path) => {
@@ -167,9 +168,9 @@ class StyleSwatchesPicker extends Component {
           </div>
           <div style={{flexGrow: 0}}>
             <i
-              className={"fa " + (isFavorite ? "fa-heart" : "fa-heart-o")}
+              className={'fa text-muted ' + (isFavorite ? 'fa-heart' : 'fa-heart-o')}
               style={{cursor: 'pointer'}}
-              title={isFavorite ? "Remove from the favorites list" : "Add to the favorites list"}
+              title={isFavorite ? 'Remove from the favorites list' : 'Add to the favorites list'}
               onClick={this.handleToggleFavorite}
             />
           </div>

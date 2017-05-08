@@ -14,92 +14,93 @@
  * limitations under the License.
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class ContentEditable extends Component {
 
-    constructor(props) {
-        super(props);
-        this.emitChange = this.emitChange.bind(this);
-        this.handleOnBlur = this.handleOnBlur.bind(this);
-        this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
-    }
+  constructor (props) {
+    super(props);
+    this.emitChange = this.emitChange.bind(this);
+    this.handleOnBlur = this.handleOnBlur.bind(this);
+    this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
+  }
 
-    emitChange(){
+  emitChange () {
 
-        const html = this.refs.editableElement.innerHTML;
-        if (this.props.onChange && html !== this.lastHtml) {
-            this.props.onChange({
-                target: {
-                    value: html
-                }
-            });
+    const html = this.refs.editableElement.innerHTML;
+    if (this.props.onChange && html !== this.lastHtml) {
+      this.props.onChange({
+        target: {
+          value: html
         }
-        this.lastHtml = html;
-
+      });
     }
+    this.lastHtml = html;
 
-    handleOnBlur(){
+  }
 
-        if(this.props.onBlur){
-            this.props.onBlur({
-                target: {
-                    value: this.lastHtml
-                }
-            })
+  handleOnBlur () {
+
+    if (this.props.onBlur) {
+      this.props.onBlur({
+        target: {
+          value: this.lastHtml
         }
-
+      });
     }
 
-    handleOnKeyDown(e){
+  }
 
-        if(e.keyCode == 13 || e.keyCode == 27){
-            this.handleOnBlur();
-        }
+  handleOnKeyDown (e) {
 
+    if (e.keyCode == 13 || e.keyCode == 27) {
+      this.handleOnBlur();
     }
 
-    shouldComponentUpdate(nextProps){
-        return nextProps.html !== this.refs.editableElement.innerHTML;
-    }
+  }
 
-    componentDidUpdate() {
-        var node = this.refs.editableElement;
-        if ( this.props.html !== node.innerHTML ) {
-            node.innerHTML = this.props.html;
-            this.lastHtml = this.props.html;
-        }
-    }
+  shouldComponentUpdate (nextProps) {
+    return nextProps.html !== this.refs.editableElement.innerHTML;
+  }
 
-    componentDidMount(){
-        $(this.refs.editableElement).focus();
-        this.lastHtml = this.props.html;
+  componentDidUpdate () {
+    var node = this.refs.editableElement;
+    if (this.props.html !== node.innerHTML) {
+      node.innerHTML = this.props.html;
+      this.lastHtml = this.props.html;
     }
+  }
 
-    render(){
-        return (
-            <div
-                ref="editableElement"
-                className='umy-grid-text-editable'
-                onInput={this.emitChange}
-                onBlur={this.handleOnBlur}
-                onKeyDown={this.handleOnKeyDown}
-                contentEditable
-                dangerouslySetInnerHTML={{__html: this.props.html}}>
-            </div>
-        );
-    }
+  componentDidMount () {
+    $(this.refs.editableElement).focus();
+    this.lastHtml = this.props.html;
+  }
+
+  render () {
+    return (
+      <div
+        ref="editableElement"
+        className='umy-grid-text-editable'
+        onInput={this.emitChange}
+        onBlur={this.handleOnBlur}
+        onKeyDown={this.handleOnKeyDown}
+        contentEditable
+        dangerouslySetInnerHTML={{__html: this.props.html}}>
+      </div>
+    );
+  }
 }
 
 ContentEditable.defaultProps = {
-    onBlur: undefined,
-    onChange: undefined,
-    html: ''
+  onBlur: undefined,
+  onChange: undefined,
+  html: ''
 };
 ContentEditable.propTypes = {
-    onBlur: PropTypes.func,
-    onChange: PropTypes.func,
-    html: PropTypes.string
+  onBlur: PropTypes.func,
+  onChange: PropTypes.func,
+  html: PropTypes.string
 };
 
 export default ContentEditable;

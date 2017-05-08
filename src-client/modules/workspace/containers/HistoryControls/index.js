@@ -14,37 +14,50 @@
  * limitations under the License.
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 import { graphApi } from 'api';
 
+const buttonLabelStyle = {
+  margin: '0 0.5em'
+};
+
 class Container extends Component {
 
-    constructor(props) {
-        super(props);
-    }
+  constructor (props) {
+    super(props);
+    this.handlePopHistory = this.handlePopHistory.bind(this);
+  }
 
-    render() {
-        const { popHistory } = this.props;
-        const buttonLabelStyle = {
-            margin: '0 0.5em'
-        };
-        return (
-            <div style={this.props.style} className="btn-group" role="group">
-                <button
-                    className="btn btn-default btn-xs"
-                    disabled={graphApi.getHistorySize() <= 0}
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); popHistory(); }}
-                    title="Undo the last action">
-                    <span style={buttonLabelStyle} className="fa fa-undo"></span>
-                </button>
-            </div>
-        );
-    }
+  handlePopHistory(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.popHistory();
+  }
+
+  render () {
+    return (
+      <div
+        style={this.props.style}
+        className="btn-group"
+        role="group"
+      >
+        <button
+          className="btn btn-default btn-xs"
+          disabled={graphApi.getHistorySize() <= 0}
+          onClick={this.handlePopHistory}
+          title="Undo the last action">
+          <span
+            style={buttonLabelStyle}
+            className="fa fa-undo"
+          />
+        </button>
+      </div>
+    );
+  }
 }
-
 
 export default connect(modelSelector, containerActions)(Container);
 

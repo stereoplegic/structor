@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export BlueprintControls from 'modules/workspace/containers/BlueprintControls';
 export ClipboardControls from 'modules/workspace/containers/ClipboardControls';
 export ClipboardIndicator from 'modules/workspace/containers/ClipboardIndicator';
 export ComponentControls from 'modules/workspace/containers/ComponentControls';

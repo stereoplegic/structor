@@ -19,36 +19,36 @@ import { graphApi } from 'api';
 import { removeSelectedKeys } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
 import { removeClipboardKeys } from 'modules/workspace/containers/ClipboardIndicator/actions';
 import {
-    updatePage,
-    saveModel,
-    changePageRoute,
-    resetPages
+  updatePage,
+  saveModel,
+  changePageRoute,
+  resetPages
 } from 'modules/workspace/containers/DeskPage/actions';
 
-export const UPDATE_HISTORY_COUNTER = "HistoryControls/UPDATE_HISTORY_COUNTER";
+export const UPDATE_HISTORY_COUNTER = 'HistoryControls/UPDATE_HISTORY_COUNTER';
 
 export const pushHistory = () => (dispatch, getState) => {
-    const {deskPage: {currentPagePath}} = getState();
-    graphApi.pushHistory(currentPagePath);
-    dispatch(saveModel());
-    dispatch({type: UPDATE_HISTORY_COUNTER});
+  const {deskPage: {currentPagePath}} = getState();
+  graphApi.pushHistory(currentPagePath);
+  dispatch(saveModel());
+  dispatch({type: UPDATE_HISTORY_COUNTER});
 };
 
 export const popHistory = () => (dispatch, getState) => {
-    let historyObject = graphApi.popHistory();
-    if(historyObject){
-        dispatch(removeClipboardKeys());
-        dispatch(removeSelectedKeys());
-        dispatch(resetPages());
-        dispatch(updatePage());
-        const {pagePath} = historyObject;
-        if(pagePath){
-            dispatch(changePageRoute(pagePath));
-        }
-        dispatch({type: UPDATE_HISTORY_COUNTER});
+  let historyObject = graphApi.popHistory();
+  if (historyObject) {
+    dispatch(removeClipboardKeys());
+    dispatch(removeSelectedKeys());
+    dispatch(resetPages());
+    dispatch(updatePage());
+    const {pagePath} = historyObject;
+    if (pagePath) {
+      dispatch(changePageRoute(pagePath));
     }
+    dispatch({type: UPDATE_HISTORY_COUNTER});
+  }
 };
 
 export const containerActions = (dispatch) => bindActionCreators({
-    popHistory
+  popHistory
 }, dispatch);

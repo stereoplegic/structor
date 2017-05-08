@@ -31,7 +31,8 @@ import {
 } from 'modules/workspace/containers/ClipboardControls/actions';
 import {
   setSelectedKey,
-  resetSelectedKeys
+  resetSelectedKeys,
+  setSelectedParentKey
 } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
 import {
   cloneSelected,
@@ -206,9 +207,10 @@ export const resetPages = () => (dispatch, getState) => {
 
 export const containerActions = (dispatch) => bindActionCreators({
   loadPage,
+  loadOptionsAndShowModal,
   pageLoaded,
   setSelectedKey,
-  loadOptionsAndShowModal,
+  setSelectedParentKey,
   changePageRouteFeedback,
   setForCuttingKeys,
   setForCopyingKeys,

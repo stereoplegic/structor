@@ -27,6 +27,7 @@ const panelStyle = {
   border: '1px solid #DBDBDB',
   borderRadius: '3px',
   position: 'relative',
+  backgroundColor: '#fff',
 };
 
 class Container extends Component {
@@ -46,7 +47,7 @@ class Container extends Component {
   componentWillReceiveProps (nextProps) {
     const {currentComponent, loadReadmeText} = this.props;
     const {currentComponent: nextComponent} = nextProps;
-    if (currentComponent !== nextComponent) {
+    if (nextComponent && currentComponent !== nextComponent) {
       const {componentName, namespace} = nextComponent;
       loadReadmeText(componentName, namespace);
     }

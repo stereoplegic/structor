@@ -15,15 +15,12 @@
  */
 
 import { forOwn, includes } from 'lodash';
-import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 import { modeMap } from '../QuickAppendModal/actions.js';
-
 import { graphApi } from 'api';
-import { CLIPBOARD_CUT } from 'modules/workspace/containers/ClipboardControls/actions';
 
 let lastWaitTimer = undefined;
 const wait = (testFunc, launchFunc) => {
@@ -51,24 +48,22 @@ class Container extends Component {
 
   componentDidMount () {
 
-    const domNode = ReactDOM.findDOMNode(this);
     const {componentModel: {pages, currentPagePath}} = this.props;
     if (currentPagePath) {
-      domNode.src = '/structor-deskpage' + currentPagePath;
+      this.frameWindow.src = '/structor-deskpage' + currentPagePath;
     }
 
     const {loadPage, pageLoaded} = this.props;
-    const {setForCuttingKeys, setForCopyingKeys} = this.props;
+    const {setForCuttingKeys, setForCopyingKeys, setSelectedParentKey} = this.props;
     const {pasteBefore, pasteAfter, pasteFirst, pasteLast, pasteReplace} = this.props;
     const {cloneSelected, deleteSelected} = this.props;
     const {showQuickAppend} = this.props;
-    const {loadOptionsAndShowModal} = this.props;
     loadPage();
-    this.contentDocument = domNode.contentDocument;
-    this.contentWindow = domNode.contentWindow;
+    this.contentDocument = this.frameWindow.contentDocument;
+    this.contentWindow = this.frameWindow.contentWindow;
     this.setupShortcuts();
 
-    domNode.onload = ( () => {
+    this.frameWindow.onload = ( () => {
       this.contentWindow.__pages = pages;
       this.contentWindow.onPageDidMount = (page) => {
         this.page = page;
@@ -79,11 +74,7 @@ class Container extends Component {
         page.bindGetPageModel(pathname => graphApi.getWrappedModelByPagePath(pathname));
         page.bindGetMarked(pathname => graphApi.getMarkedKeysByPagePath(pathname));
         page.bindGetMode(() => {return this.props.componentModel.isEditModeOn;});
-
-        page.bindToState('onLoadOptions', (key, isModifier) => {
-          const {currentComponent} = this.props;
-          loadOptionsAndShowModal(currentComponent);
-        });
+        page.bindGetShowBlueprintButtons(() => this.props.showBlueprintButtons);
 
         page.bindToState('onCut', (key, isModifier) => {
           setForCuttingKeys([key]);
@@ -138,47 +129,10 @@ class Container extends Component {
             showQuickAppend(modeMap.replace);
           }
         });
-        //page.bindToState('onWrap', (key, isModifier) => { pasteWrap(key); });
-
-        page.bindToState('isMultipleSelection', () => {
-          const {selectionBreadcrumbsModel: {selectedKeys}} = this.props;
-          return selectedKeys && selectedKeys.length > 1;
+        page.bindToState('onSelectParent', (key, isModifier) => {
+          setSelectedParentKey(key, isModifier);
         });
 
-        page.bindToState('isAvailableToPaste', key => {
-          const {clipboardIndicatorModel: {clipboardMode}} = this.props;
-          return clipboardMode !== CLIPBOARD_CUT || graphApi.isCutPasteAvailable(key);
-        });
-
-        page.bindToState('isClipboardEmpty', () => {
-          // const { clipboardIndicatorModel: {clipboardKeys} } = this.props;
-          // return !clipboardKeys || clipboardKeys.length <= 0;
-          return false;
-        });
-
-        //page.bindToState('isAvailableToWrap', key => {
-        //    const { clipboardIndicatorModel: {clipboardKeys}, selectionBreadcrumbsModel: {selectedKeys} } = this.props;
-        //    return clipboardKeys && selectedKeys && clipboardKeys.length === 1 && selectedKeys.length === 1;
-        //});
-
-        // page.bindToState('quickBefore', (componentName, selectedKey) => {
-        //     showQuickAppend(modeMap.addBefore);
-        // });
-        // page.bindToState('quickAfter', (componentName, selectedKey) => {
-        //     showQuickAppend(modeMap.addAfter);
-        // });
-        // page.bindToState('quickFirst', (componentName, selectedKey) => {
-        //     showQuickAppend(modeMap.insertFirst);
-        // });
-        // page.bindToState('quickLast', (componentName, selectedKey) => {
-        //     showQuickAppend(modeMap.insertLast);
-        // });
-        // page.bindToState('quickReplace', (componentName, selectedKey) => {
-        //     showQuickAppend(modeMap.replace);
-        // });
-        //page.bindToState('quickWrap', (componentName, selectedKey) => {
-        //    quickWrap(componentName, selectedKey);
-        //});
       };
 
       const initPage = () => {
@@ -201,8 +155,7 @@ class Container extends Component {
     const {componentModel} = this.props;
     const {componentModel: newComponentModel} = nextProps;
     if (newComponentModel.reloadPageCounter != componentModel.reloadPageCounter) {
-      var domNode = ReactDOM.findDOMNode(this);
-      domNode.src = '/structor-deskpage' + newComponentModel.currentPagePath;
+      this.frameWindow.src = '/structor-deskpage' + newComponentModel.currentPagePath;
     } else if (newComponentModel.pagePathToChange != null
       && newComponentModel.pagePathToChange != componentModel.pagePathToChange) {
       if (this.contentWindow) {
@@ -264,9 +217,10 @@ class Container extends Component {
       selectionBreadcrumbsModel: {selectedKeys},
       setSelectedKey,
       loadOptionsAndShowModal,
-      currentComponent
+      currentComponent,
+      showBlueprintButtons
     } = this.props;
-    if (selectedKeys && selectedKeys.length > 0 && includes(selectedKeys, key)) {
+    if (!showBlueprintButtons && selectedKeys && selectedKeys.length > 0 && includes(selectedKeys, key)) {
       loadOptionsAndShowModal(currentComponent);
     } else {
       setSelectedKey(key, isModifier);
@@ -375,7 +329,13 @@ class Container extends Component {
   }
 
   render () {
-    return (<iframe style={this.props.style} src="/structor-deskpage"/>);
+    return (
+      <iframe
+        ref={me => this.frameWindow = me}
+        style={this.props.style}
+        src="/structor-deskpage"
+      />
+    );
   }
 
 }

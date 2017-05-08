@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions, STAGE1, STAGE2, STAGE3, STAGE4 } from './actions.js';

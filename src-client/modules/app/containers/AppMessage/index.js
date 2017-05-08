@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import marked from 'marked'
-import React, { Component, PropTypes } from 'react'
-import ReactDOM from 'react-dom'
-import { connect } from 'react-redux'
-import { modelSelector } from './selectors.js'
-import { containerActions, FAILED, TIMEOUT } from './actions.js'
+import marked from 'marked';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
+import { modelSelector } from './selectors.js';
+import { containerActions, FAILED, TIMEOUT } from './actions.js';
 
 const style = {
   position: 'relative',
@@ -31,7 +31,7 @@ const style = {
   padding: '1.5em',
   marginBottom: '0.5em',
   fontSize: '12px'
-}
+};
 const buttonStyle = {
   position: 'absolute',
   top: '0px',
@@ -44,7 +44,7 @@ const buttonStyle = {
   textAlign: 'center',
   cursor: 'pointer',
   fontSize: '18px'
-}
+};
 
 const overlayStyle = {
   position: 'fixed',
@@ -53,53 +53,53 @@ const overlayStyle = {
   right: '0px',
   top: '0px',
   zIndex: '9999'
-}
+};
 
 class Container extends Component {
 
   constructor (props) {
-    super(props)
+    super(props);
   }
 
   componentDidMount () {
-    this._mountNode = document.createElement('div')
-    this._mountNode.style['z-index'] = '9999'
-    document.body.appendChild(this._mountNode)
-    ReactDOM.render(this._overlay, this._mountNode)
+    this._mountNode = document.createElement('div');
+    this._mountNode.style['z-index'] = '9999';
+    document.body.appendChild(this._mountNode);
+    ReactDOM.render(this._overlay, this._mountNode);
   }
 
   componentWillUnmount () {
-    ReactDOM.unmountComponentAtNode(this._mountNode)
-    this._mountNode = null
+    ReactDOM.unmountComponentAtNode(this._mountNode);
+    this._mountNode = null;
   }
 
   componentDidUpdate () {
     if (this._mountNode) {
-      ReactDOM.render(this._overlay, this._mountNode)
+      ReactDOM.render(this._overlay, this._mountNode);
     }
   }
 
   handleShowDetails = (text) => (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    this.props.showModal(text)
-  }
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.showModal(text);
+  };
 
   render () {
-    const {componentModel: {messages}, close} = this.props
+    const {componentModel: {messages}, close} = this.props;
     if (messages.size > 0) {
-      let messagesItems = []
+      let messagesItems = [];
       messages.forEach((item, key) => {
-        let messageStyle = Object.assign({}, style)
+        let messageStyle = Object.assign({}, style);
         if (item.type === FAILED || item.type === TIMEOUT) {
-          messageStyle.backgroundColor = '#C90008'
+          messageStyle.backgroundColor = '#C90008';
         } else {
-          messageStyle.backgroundColor = '#5cb85c'
+          messageStyle.backgroundColor = '#5cb85c';
         }
-        let messageText = item.text
-        let textNeedCut = messageText && messageText.length > 300
+        let messageText = item.text;
+        let textNeedCut = messageText && messageText.length > 300;
         if (textNeedCut) {
-          messageText = messageText.substr(0, 300) + '...'
+          messageText = messageText.substr(0, 300) + '...';
         }
         messagesItems.push(
           <div
@@ -125,11 +125,11 @@ class Container extends Component {
             <span
               style={buttonStyle}
               className="fa fa-times"
-              onClick={() => {close(key)}}
+              onClick={() => {close(key);}}
             />
           </div>
-        )
-      })
+        );
+      });
 
       this._overlay = (
         <div
@@ -140,18 +140,18 @@ class Container extends Component {
           </div>
 
         </div>
-      )
+      );
     } else {
       this._overlay = (
         <span />
-      )
+      );
     }
     return (
       <span />
-    )
+    );
   }
 
 }
 
-export default connect(modelSelector, containerActions)(Container)
+export default connect(modelSelector, containerActions)(Container);
 

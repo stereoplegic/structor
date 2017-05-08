@@ -15,7 +15,7 @@
  */
 
 import { set, has, get, forOwn, isObject, includes } from 'lodash';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { coockiesApi } from 'api';

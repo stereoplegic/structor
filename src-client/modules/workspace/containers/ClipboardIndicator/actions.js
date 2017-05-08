@@ -54,7 +54,7 @@ export const setForCopyingKeys = (keys) => (dispatch, getState) => {
             newKeys.push(key);
         });
     }
-    dispatch(removeSelectedKeys());
+    // dispatch(removeSelectedKeys());
     dispatch({type: RESET_KEYS, payload: {keys: newKeys, mode: CLIPBOARD_COPY}});
 };
 

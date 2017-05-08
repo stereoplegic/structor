@@ -20,70 +20,82 @@
        * [Redux container scaffold](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#redux-container-scaffold)
     * [Troubleshooting](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#troubleshooting)
 * [Structor Market](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#structor-market)
-    * [Installing component packages](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#installing-component-packages)
-    * [Publishing components on the market](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#publishing-components-on-the-market)
+    * [Extracting and publishing components presets](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#extracting-and-publishing-components-presets)
+    * [Extending existing presets on the market](https://github.com/ipselon/structor/blob/master/docs/structor-market.md#extending-existing-presets-on-the-market)
 * Exporting
     * Export pages
     * Export application
 
 ## Structor Market
 
-Besides Structor generates new React components, Structor is also able to publish these components on [Structor Market](https://github.com/ipselon/structor-market).
-Structor Market is a GitHub repository with an index list of repositories on GitHub which include 
-the source code of React components for Srtuctor.
+If you have not tried to install component presets from Structor Market gallery yet, 
+please go through [Getting Started](https://github.com/ipselon/structor/blob/master/docs#getting-started) tutorial to feel how it works.
+ 
+When Structor opens the Structor Market gallery it reads an `index.json` file in [structor-market](https://github.com/ipselon/structor-market) repo 
+where all available repos with components presets are listed.
 
-Once you published your components on the market, 
-they became accessible to other developers through the market gallery in Structor. 
+But how to create a repository with components presets?
 
-### Installing component packages
+### Extracting and publishing components presets
 
-We can install new components into Structor's library right from the workspace in two clicks. 
-Please open `Component Library` panel and find `Install` button at the top of the panel.
+Stuctor has a convenient mechanism for sharing components presets between projects. 
+Open the library panel in Structor's workspace and find `Extract` button at the top of the panel.
+ 
+<p align="center">
+    <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-market-extract-button.png" />
+</p>
+ 
+After clicking on this button you will be prompted to choose namespaces and pages you want to extract.
 
-<p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-market-install-button.png" />
+<p align="center">
+    <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-market-select-to-extract.png" />
 </p>
 
-Click on `Install` button to see the marketplace gallery. 
+In the next step of the wizard Structor is discovering all components in selected namespaces and pages.
 
-<p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-market-gallery.png" />
+>__Note:__ The only one restriction for the extraction is to use components only from project's `modules` directory.
+Simply saying, extracted components, component models or pages should not contain components out of any namespace. 
+Read detailed explanation of what is a namespace in [The code structure](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#the-code-structure) chapter.  
+
+Structor genuinely investigates how components are linked with each other and shows what namespaces will be additionally added into the package. 
+If you see errors which were not explained in this section please create an issue in Structor's repo. 
+
+Here you have to enter the absolute path of a directory where package's files will be extracted and click on `Extract namespaces` button. 
+
+<p align="center">
+    <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-market-enter-dirpath.png" />
 </p>
-
-At the top-left corner of each package's card we can see another `Install` button, 
-clicking by which we will start installation process.
-
-After the installation is finished we can see new groups in the `Component Library` panel. 
-
-<p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-market-installed-components.png" />
-</p>
-
-If we take a look at the source code of our project we will see new [namespaces](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#component-library) in `modules` folder.
  
-### Publishing components on the market
+Once files were successfully extracted you may find them in specified directory. 
+Now we can install this package into another project right from the local directory. 
 
-If you decided to share your components you can easily extract components from the library 
-into Structor compatible components package.
+If you want to share your package on Structor Market you can create a new repo on GitHub and push there the directory content as it is. 
+Then just make changes in `index.json` in [structor-market](https://github.com/ipselon/structor-market) repo with the URL of your repository. 
  
-Find at the top of `Component Library` panel `Extract` button and click on it. 
-This allows us to select namespaces we want to extract as a component package.
- 
-<p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-market-select-namespaces.png" />
-</p>
+### Extending existing presets on the market
 
-Srtuctor genuinely investigate how components are linked with each other. 
-If some components include other components from namespaces which were not selected, it 
-will warn you and will include such namespaces into the package.
+Creating own package is not reasonable if you are going to make an extension of components presets in some package.
  
-<p align="left">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-market-extract-namespaces.png" />
-</p>
-
-As we may see on the screenshot above, Structor suggests to extract components into predefined folder which is next to the project's root folder.
-**Note** This behavior can be changed in future in order to specify a custom directory path.
+So I'd like to suggest the following steps to provide the package extension:
+ * Fork a repo with Structor's presets and clone it to the local folder;
+ * Install Structor into an empty folder:
+    * Init `package.json` by command `npm -y init`;
+    * Install Structor by command: `install structor`;
+ * Run Structor and open browser with Structor's workspace;
+ * Go to the Structor Market gallery; 
+ * Choose installation from the local dir;
  
-After components are extracted successfully you can publish components on [Structor Market](https://github.com/ipselon/structor-market). 
-Create a GH repo for your package and push the content of the directory into the repo. 
-Then just create a PR in Structor Market with the link to your repo.
+ <p align="center">
+     <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-market-install-from-dir.png" />
+ </p>
+ 
+ * Enter the absolute path to the local folder of the cloned repo at the first step;
+ 
+ <p align="center">
+     <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/structor-market-install-from-dir-path.png" />
+ </p>
+ 
+ * Implement some new components/features/models;
+ * Extract namespaces with your changes into the folder of cloned repo;
+ * Push changes in cloned repo on GitHub;
+ * Make a PR to the main repo from your fork.
