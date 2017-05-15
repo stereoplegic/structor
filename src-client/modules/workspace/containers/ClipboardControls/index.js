@@ -18,7 +18,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
-import { modeMap } from 'modules/workspace/containers/QuickAppendModal/actions';
 
 const wideButtonLabelStyle = {
   margin: '0 0.5em',
@@ -35,34 +34,25 @@ class Container extends Component {
   handleButtonClick (e) {
     e.preventDefault();
     e.stopPropagation();
-    const {clipboardIndicatorModel: {clipboardKeys}} = this.props;
-    const {showQuickAppend} = this.props;
-    const funcSignature = e.currentTarget.dataset.func;
-    if (clipboardKeys.length <= 0) {
-      switch (funcSignature) {
-        case 'pasteBefore':
-          showQuickAppend(modeMap.addBefore);
-          break;
-        case 'pasteAfter':
-          showQuickAppend(modeMap.addAfter);
-          break;
-        case 'pasteFirst':
-          showQuickAppend(modeMap.insertFirst);
-          break;
-        case 'pasteLast':
-          showQuickAppend(modeMap.insertLast);
-          break;
-        case 'pasteReplace':
-          showQuickAppend(modeMap.replace);
-          break;
-        default:
-          break;
-      }
-    } else {
-      const func = this.props[e.currentTarget.dataset.func];
-      if (func) {
-        func();
-      }
+    const {handleBefore, handleFirst, handleLast, handleAfter, handleReplace} = this.props;
+    switch (funcSignature) {
+      case 'pasteBefore':
+        handleBefore();
+        break;
+      case 'pasteAfter':
+        handleAfter();
+        break;
+      case 'pasteFirst':
+        handleFirst();
+        break;
+      case 'pasteLast':
+        handleLast();
+        break;
+      case 'pasteReplace':
+        handleReplace();
+        break;
+      default:
+        break;
     }
   }
 
@@ -78,7 +68,7 @@ class Container extends Component {
           onClick={this.handleButtonClick}
           title="Append components before selected component">
           <span style={wideButtonLabelStyle}>
-              <i className="umy-icon-arrow-plus-down" />
+              <i className="umy-icon-arrow-plus-down"/>
               <span style={{marginLeft: '0.5em'}}>Before</span>
           </span>
         </button>
@@ -90,7 +80,7 @@ class Container extends Component {
           title="Insert components into selected component as the first child"
         >
           <span style={wideButtonLabelStyle}>
-              <i className="umy-icon-arrow-plus-up rotate-clockwise" />|
+              <i className="umy-icon-arrow-plus-up rotate-clockwise"/>|
             <span style={{marginLeft: '0.5em'}}>First</span>
           </span>
         </button>
@@ -102,7 +92,7 @@ class Container extends Component {
           title="Replace selected component"
         >
           <span style={wideButtonLabelStyle}>
-            <i className="umy-icon-replace" />
+            <i className="umy-icon-replace"/>
             <span style={{marginLeft: '0.5em'}}>Replace</span>
           </span>
         </button>
@@ -114,7 +104,7 @@ class Container extends Component {
           title="Insert components into selected component as the last child"
         >
           <span style={wideButtonLabelStyle}>
-            |<i style={{marginTop: '.6em'}} className="umy-icon-arrow-plus-down rotate-clockwise" />
+            |<i style={{marginTop: '.6em'}} className="umy-icon-arrow-plus-down rotate-clockwise"/>
             <span style={{marginLeft: '0.5em'}}>Last</span>
           </span>
         </button>
@@ -126,7 +116,7 @@ class Container extends Component {
           title="Append components after selected component"
         >
           <span style={wideButtonLabelStyle}>
-            <i className="umy-icon-arrow-plus-up" />
+            <i className="umy-icon-arrow-plus-up"/>
             <span style={{marginLeft: '0.5em'}}>After</span>
           </span>
         </button>

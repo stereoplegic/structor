@@ -45,7 +45,7 @@ class Container extends Component {
   }
 
   handleSubmit () {
-    const {submit, componentModel: {appendMode}, componentNames} = this.props;
+    const {submit, componentModel: {appendMode, targetKey}, componentNames} = this.props;
     const tuple = this.input.getText();
     if (tuple) {
       const parts = tuple.split('.');
@@ -61,7 +61,7 @@ class Container extends Component {
             errors: errors
           });
         } else {
-          submit(tuple, appendMode);
+          submit(tuple, appendMode, targetKey);
         }
       } else {
         this.setState({

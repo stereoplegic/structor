@@ -17,27 +17,30 @@
 import * as actions from './actions.js';
 
 const initialState = {
-    show: false,
-    appendMode: {},
+  show: false,
+  appendMode: {},
+  targetKey: undefined,
 };
 
 export default (state = initialState, action = {}) => {
 
-    const {type, payload} = action;
+  const {type, payload} = action;
 
-    if(type === actions.HIDE_MODAL){
-        return Object.assign({}, state, {
-            show: false
-        });
-    }
+  if (type === actions.HIDE_MODAL) {
+    return Object.assign({}, state, {
+      show: false
+    });
+  }
 
-    if(type === actions.SHOW_MODAL){
-        return Object.assign({}, state, {
-            show: true,
-            appendMode: payload,
-        });
-    }
+  if (type === actions.SHOW_MODAL) {
+    const {appendMode, targetKey} = payload;
+    return Object.assign({}, state, {
+      show: true,
+      appendMode,
+      targetKey,
+    });
+  }
 
-    return state;
-}
+  return state;
+};
 

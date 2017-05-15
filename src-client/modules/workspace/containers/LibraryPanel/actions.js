@@ -16,12 +16,9 @@
 
 import { cloneDeep } from 'lodash';
 import { bindActionCreators } from 'redux';
-import { graphApi, utils, utilsStore } from 'api';
+import { utilsStore } from 'api';
 import { success, failed} from 'modules/app/containers/AppMessage/actions';
-import { updateMarked, updatePage } from 'modules/workspace/containers/DeskPage/actions';
-import { setSelectedKey } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
 import { setForNew } from 'modules/workspace/containers/ClipboardIndicator/actions';
-import { pushHistory } from 'modules/workspace/containers/HistoryControls/actions';
 import { saveComponentDefaults } from 'modules/workspace/containers/SaveDefaultModelModal/actions';
 import { showModal as confirmModal } from 'modules/app/containers/ConfirmationModal/actions';
 
@@ -77,88 +74,9 @@ export const quickCopyToClipboard = (componentName, namespace, defaultsIndex) =>
     }
 };
 
-export const quickBefore = (componentNames) => (dispatch, getState) => {
-    const { libraryPanel: {componentTree} } = getState();
-    const variantModel = utilsStore.getComponentTupleModel(componentTree, componentNames);
-    if(variantModel){
-        dispatch(pushHistory());
-        const newSelectedKey = graphApi.quickBeforeOrAfter(variantModel, false);
-        dispatch(setSelectedKey(newSelectedKey));
-        dispatch(updatePage());
-    } else {
-        console.error('Quick add before: model for variant key was not found');
-    }
-};
-
-export const quickAfter = (componentNames) => (dispatch, getState) => {
-    const { libraryPanel: {componentTree} } = getState();
-    const variantModel = utilsStore.getComponentTupleModel(componentTree, componentNames);
-    if(variantModel){
-        dispatch(pushHistory());
-        const newSelectedKey = graphApi.quickBeforeOrAfter(variantModel, true);
-        dispatch(setSelectedKey(newSelectedKey));
-        dispatch(updatePage());
-    } else {
-        console.error('Quick add after: model for variant key was not found');
-    }
-};
-
-export const quickFirst = (componentNames) => (dispatch, getState) => {
-    const { libraryPanel: {componentTree} } = getState();
-    const variantModel = utilsStore.getComponentTupleModel(componentTree, componentNames);
-    if(variantModel){
-        dispatch(pushHistory());
-        const newSelectedKey = graphApi.quickFirstOrLast(variantModel, true);
-        dispatch(setSelectedKey(newSelectedKey));
-        dispatch(updatePage());
-    } else {
-        console.error('Quick add as first: model for variant key was not found');
-    }
-};
-
-export const quickLast = (componentNames) => (dispatch, getState) => {
-    const { libraryPanel: {componentTree} } = getState();
-    const variantModel = utilsStore.getComponentTupleModel(componentTree, componentNames);
-    if(variantModel){
-        dispatch(pushHistory());
-        const newSelectedKey = graphApi.quickFirstOrLast(variantModel, false);
-        dispatch(setSelectedKey(newSelectedKey));
-        dispatch(updatePage());
-    } else {
-        console.error('Quick add as first: model for variant key was not found');
-    }
-};
-
-export const quickReplace = (componentNames) => (dispatch, getState) => {
-    const { libraryPanel: {componentTree} } = getState();
-    const variantModel = utilsStore.getComponentTupleModel(componentTree, componentNames);
-    if(variantModel){
-        dispatch(pushHistory());
-        const newSelectedKey = graphApi.quickReplace(variantModel);
-        dispatch(setSelectedKey(newSelectedKey));
-        dispatch(updatePage());
-    } else {
-        console.error('Quick replace: model for variant key was not found');
-    }
-};
-
-//export const quickWrap = (componentName, selectedKey) => (dispatch, getState) => {
-//    const { libraryPanel: {defaultVariantMap, componentsList} } = getState();
-//    if(componentsList && componentsList.indexOf(componentName) >= 0){
-//        const variantModel = getVariantModel(defaultVariantMap, componentName);
-//        if(variantModel){
-//            dispatch(pushHistory());
-//            const newSelectedKey = graphApi.quickWrap(variantModel, selectedKey);
-//            dispatch(setSelectedKey(newSelectedKey));
-//            dispatch(updatePage());
-//        } else {
-//            console.error('Quick wrap: model for variant key was not found');
-//        }
-//    } else {
-//        dispatch(failed('Component ' + componentName + ' was not found.'))
-//    }
-//};
-
 export const containerActions = (dispatch) => bindActionCreators({
-    quickCopyToClipboard, togglePanelGroup, toggleItemGroup, deleteComponentDefault
+    quickCopyToClipboard,
+	togglePanelGroup,
+	toggleItemGroup,
+	deleteComponentDefault
 }, dispatch);

@@ -27,8 +27,7 @@ import {
   PageTreeViewPlaceholder,
   PlaceholderCircle
 } from 'components';
-import { CLIPBOARD_EMPTY } from 'modules/workspace/containers/ClipboardIndicator/actions';
-import { modeMap } from 'modules/workspace/containers/QuickAppendModal/actions';
+
 
 const scrollToSelected = function ($frameWindow, key) {
   setTimeout((function (_frameWindow) {
@@ -114,23 +113,13 @@ class Container extends Component {
   }
 
   handlePlaceholderClick = (type) => (nodeKey) => {
-    const {clipboardMode, pasteAfter, pasteBefore, pasteReplace, showQuickAppend} = this.props;
-    if (clipboardMode !== CLIPBOARD_EMPTY) {
-      if (type === 'pasteAfter') {
-        pasteAfter(nodeKey);
-      } else if (type === 'pasteBefore') {
-        pasteBefore(nodeKey);
-      } else if (type === 'pasteReplace') {
-        pasteReplace(nodeKey);
-      }
-    } else {
-      if (type === 'pasteAfter') {
-        showQuickAppend(modeMap.addAfter, nodeKey);
-      } else if (type === 'pasteBefore') {
-        showQuickAppend(modeMap.addBefore, nodeKey);
-      } else if (type === 'pasteReplace') {
-        showQuickAppend(modeMap.replace, nodeKey);
-      }
+    const {handleBefore, handleAfter, handleReplace} = this.props;
+    if (type === 'pasteAfter') {
+      handleAfter(nodeKey);
+    } else if (type === 'pasteBefore') {
+      handleBefore(nodeKey);
+    } else if (type === 'pasteReplace') {
+      handleReplace(nodeKey);
     }
   };
 

@@ -16,13 +16,12 @@
 
 import { bindActionCreators } from 'redux';
 import {
-    quickBefore,
-    quickAfter,
-    quickFirst,
-    quickLast,
-    quickReplace
-} from 'modules/workspace/containers/LibraryPanel/actions';
-import {setSelectedKeys} from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
+    pasteBefore,
+  pasteFirst,
+  pasteLast,
+  pasteAfter,
+  pasteReplace
+} from 'modules/workspace/containers/ClipboardControls/actions';
 
 export const modeMap = {
     addBefore: {type: 'addBefore', label: 'Add before selected component'},
@@ -34,29 +33,39 @@ export const modeMap = {
 
 export const HIDE_MODAL = "QuickAppendModal/HIDE_MODAL";
 export const SHOW_MODAL = "QuickAppendModal/SHOW_MODAL";
-export const SUBMIT = "QuickAppendModal/SUBMIT";
 
 export const hideModal = () => ({type: HIDE_MODAL});
 
-export const showModal = (appendMode, targetKey)  => (dispatch, getState) => {
-    if(targetKey){
-        dispatch(setSelectedKeys([targetKey]));
-    }
-    dispatch({type: SHOW_MODAL, payload: appendMode});
+const showModal = (appendMode, targetKey) => ({type: SHOW_MODAL, payload: {appendMode, targetKey}});
+
+export const quickBeforeModal = (targetKey) => (dispatch, getState) => {
+    dispatch(showModal(modeMap.addBefore, targetKey));
+};
+export const quickFirstModal = (targetKey) => (dispatch, getState) => {
+    dispatch(showModal(modeMap.insertFirst, targetKey));
+};
+export const quickLastModal = (targetKey) => (dispatch, getState) => {
+    dispatch(showModal(modeMap.insertLast, targetKey));
+};
+export const quickAfterModal = (targetKey) => (dispatch, getState) => {
+    dispatch(showModal(modeMap.addAfter, targetKey));
+};
+export const quickReplaceModal = (targetKey) => (dispatch, getState) => {
+    dispatch(showModal(modeMap.replace, targetKey));
 };
 
-export const submit = (componentTuple, appendMode) => (dispatch, getState) => {
+export const submit = (componentTuple, appendMode, targetKey) => (dispatch, getState) => {
     const componentNames = componentTuple.split('.');
     if(appendMode.type === modeMap.addBefore.type){
-        dispatch(quickBefore(componentNames));
+        dispatch(pasteBefore(targetKey, componentNames));
     } else if(appendMode.type === modeMap.addAfter.type){
-        dispatch(quickAfter(componentNames));
+        dispatch(pasteAfter(targetKey, componentNames));
     } else if(appendMode.type === modeMap.insertFirst.type){
-        dispatch(quickFirst(componentNames));
+        dispatch(pasteFirst(targetKey, componentNames));
     } else if(appendMode.type === modeMap.insertLast.type){
-        dispatch(quickLast(componentNames));
+        dispatch(pasteLast(targetKey, componentNames));
     } else if(appendMode.type === modeMap.replace.type){
-        dispatch(quickReplace(componentNames));
+        dispatch(pasteReplace(targetKey, componentNames));
     }
     dispatch(hideModal());
 };

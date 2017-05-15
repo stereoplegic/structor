@@ -56,24 +56,25 @@ export const setSelectedKey = (key, isModifier) => (dispatch, getState) => {
         } else {
           dispatch(failed('Currently selected component with id \'' + key + '\' was not found'));
         }
-      } else {
-        if (graphNode) {
-          selectedKeys.forEach(selectedKey => {
-            let selectedGraphNode = graphApi.getNode(selectedKey);
-            if (selectedGraphNode) {
-              selectedGraphNode.selected = undefined;
-            } else {
-              dispatch(failed('Currently selected component with id \'' + key + '\' was not found'));
-            }
-          });
-          graphNode.selected = true;
-          selectedKeys = [key];
-          dispatch({type: SET_SELECTED_KEY, payload: selectedKeys});
-          dispatch(updateMarked());
-        } else {
-          dispatch(failed('Required to be selected component with id \'' + key + '\' was not found'));
-        }
       }
+      // else {
+      //   if (graphNode) {
+      //     selectedKeys.forEach(selectedKey => {
+      //       let selectedGraphNode = graphApi.getNode(selectedKey);
+      //       if (selectedGraphNode) {
+      //         selectedGraphNode.selected = undefined;
+      //       } else {
+      //         dispatch(failed('Currently selected component with id \'' + key + '\' was not found'));
+      //       }
+      //     });
+      //     graphNode.selected = true;
+      //     selectedKeys = [key];
+      //     dispatch({type: SET_SELECTED_KEY, payload: selectedKeys});
+      //     dispatch(updateMarked());
+      //   } else {
+      //     dispatch(failed('Required to be selected component with id \'' + key + '\' was not found'));
+      //   }
+      // }
     }
   }
 };
