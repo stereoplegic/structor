@@ -171,20 +171,11 @@ class Container extends Component {
     }
   }
 
-  handleComponentClick (key, isModifier) {
+  handleComponentClick (key, isModifier, button) {
     const {
-      selectionBreadcrumbsModel: {selectedKeys},
       setSelectedKey,
-      loadOptionsAndShowModal,
-      currentComponent,
-      showBlueprintButtons
     } = this.props;
-    setSelectedKey(key, isModifier);
-    // if (!showBlueprintButtons && selectedKeys && selectedKeys.length > 0 && includes(selectedKeys, key)) {
-    //   loadOptionsAndShowModal(currentComponent);
-    // } else {
-    //   setSelectedKey(key, isModifier);
-    // }
+    setSelectedKey(key, isModifier, button);
   }
 
   handlePathnameChanged (pathname) {

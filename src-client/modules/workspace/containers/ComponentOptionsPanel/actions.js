@@ -18,7 +18,7 @@ import { merge, isEmpty } from 'lodash';
 import { bindActionCreators } from 'redux';
 import { utils, graphApi } from 'api';
 import { pushHistory } from 'modules/workspace/containers/HistoryControls/actions';
-import { setSelectedKey } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
+import { refreshSelectedKeys } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
 import { updatePage } from 'modules/workspace/containers/DeskPage/actions';
 import { failed } from 'modules/app/containers/AppMessage/actions';
 
@@ -27,39 +27,44 @@ export const TOGGLE_STYLE_SECTION = 'ComponentOptionsPanel/TOGGLE_STYLE_SECTION'
 export const TOGGLE_FAVORITE = 'ComponentOptionsPanel/TOGGLE_FAVORITE';
 export const UPDATE_OPTIONS_PANEL_STATE = 'ComponentOptionsPanel/UPDATE_OPTIONS_PANEL_STATE';
 
-export const deleteOption = (componentObject, optionPath) => (dispatch, getState) => {
-  const {key} = componentObject;
-  let node = graphApi.getNode(key);
-  if (node) {
-    let oldProps = node.modelNode.props || {};
-    let newProps = utils.delex(utils.fulex(oldProps), optionPath);
-    if (newProps.style && isEmpty(newProps.style)) {
-      delete newProps.style;
-    }
+export const deleteOption = (selectedComponents, optionPath) => (dispatch, getState) => {
+  if (selectedComponents && selectedComponents.length > 0) {
     dispatch(pushHistory());
-    node.modelNode.props = newProps;
-    dispatch(setSelectedKey(key));
+    let node;
+    let newProps;
+    selectedComponents.forEach(componentObject => {
+      node = graphApi.getNode(componentObject.key);
+      if (node) {
+        newProps = utils.delex(utils.fulex(componentObject.props), optionPath);
+        if (newProps.style && isEmpty(newProps.style)) {
+          delete newProps.style;
+        }
+        node.modelNode.props = newProps;
+      }
+    });
+    dispatch(refreshSelectedKeys());
     dispatch(updatePage());
-  } else {
-    dispatch(failed('Component with key ' + key + ' was not found.'));
   }
 };
 
-export const changeOption = (componentObject, optionObject) => (dispatch, getState) => {
-  const {key} = componentObject;
-  let node = graphApi.getNode(key);
-  if (node) {
-    let oldProps = node.modelNode.props || {};
-    let newProps = merge({}, oldProps, optionObject);
-    if (newProps.style && isEmpty(newProps.style)) {
-      delete newProps.style;
-    }
+export const changeOption = (selectedComponents, optionObject) => (dispatch, getState) => {
+  console.log('Change option: ', JSON.stringify(optionObject, null, 4));
+  if (selectedComponents && selectedComponents.length > 0) {
     dispatch(pushHistory());
-    node.modelNode.props = newProps;
-    dispatch(setSelectedKey(key));
+    let node;
+    let newProps;
+    selectedComponents.forEach(componentObject => {
+      node = graphApi.getNode(componentObject.key);
+      if (node) {
+        newProps = merge({}, componentObject.props, optionObject);
+        if (newProps.style && isEmpty(newProps.style)) {
+          delete newProps.style;
+        }
+        node.modelNode.props = newProps;
+      }
+    });
+    dispatch(refreshSelectedKeys());
     dispatch(updatePage());
-  } else {
-    dispatch(failed('Component with key ' + key + ' was not found.'));
   }
 };
 

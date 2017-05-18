@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { set, has, get, forOwn, isObject, includes } from 'lodash';
+import { set, has, get, forOwn, isObject, includes, merge } from 'lodash';
 import React, { Component } from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -87,21 +87,21 @@ class Container extends Component {
   }
 
   handleChangeOption (optionObject) {
-    const {currentComponent, changeOption} = this.props;
-    changeOption(currentComponent, optionObject);
+    const {selectedComponents, changeOption} = this.props;
+    changeOption(selectedComponents, optionObject);
   }
 
   handleDeleteOption (path) {
-    const {currentComponent, deleteOption} = this.props;
-    deleteOption(currentComponent, path);
+    const {selectedComponents, deleteOption} = this.props;
+    deleteOption(selectedComponents, path);
   }
 
   handleToggleOption = (valueObject) => (path, checked) => {
-    const {currentComponent, deleteOption, changeOption} = this.props;
+    const {selectedComponents, deleteOption, changeOption} = this.props;
     if (!checked) {
-      deleteOption(currentComponent, path);
+      deleteOption(selectedComponents, path);
     } else {
-      changeOption(currentComponent, valueObject);
+      changeOption(selectedComponents, valueObject);
     }
   };
 
@@ -125,15 +125,18 @@ class Container extends Component {
   render () {
 
     const {
-      currentComponent,
+      selectedComponents,
       componentModel: {activeTab, expandedStyleSections, favoriteStylePaths}
     } = this.props;
 
     let panelContent = null;
 
-    if (currentComponent) {
-
-      const {key, props} = currentComponent;
+    if (selectedComponents && selectedComponents.length > 0) {
+      let key = "selectedComponents";
+      let props = {};
+      selectedComponents.forEach(componentObject => {
+          props = merge(props, componentObject.props);
+      });
 
       let styleSections = [];
       let collapsed;

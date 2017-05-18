@@ -30,7 +30,7 @@ class Container extends Component {
   }
 
   render () {
-    const {selectionBreadcrumbsModel: {selectedKeys}} = this.props;
+    const {selectedKeys} = this.props;
     const {setForCuttingKeys, setForCopyingKeys, cloneSelected, moveSelected, deleteSelected} = this.props;
     if (selectedKeys) {
       return (

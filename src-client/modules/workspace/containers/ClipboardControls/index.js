@@ -35,6 +35,7 @@ class Container extends Component {
     e.preventDefault();
     e.stopPropagation();
     const {handleBefore, handleFirst, handleLast, handleAfter, handleReplace} = this.props;
+    const funcSignature = e.currentTarget.dataset.func;
     switch (funcSignature) {
       case 'pasteBefore':
         handleBefore();

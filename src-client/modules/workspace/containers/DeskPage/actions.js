@@ -38,7 +38,6 @@ import {
   cloneSelected,
   deleteSelected
 } from 'modules/workspace/containers/SelectionControls/actions';
-import { loadOptionsAndShowModal } from 'modules/workspace/containers/ComponentOptionsModal/actions';
 import { pushHistory, popHistory } from 'modules/workspace/containers/HistoryControls/actions';
 
 export const SET_PAGES = 'DeskPage/SET_PAGES';
@@ -206,7 +205,6 @@ export const resetPages = () => (dispatch, getState) => {
 
 export const containerActions = (dispatch) => bindActionCreators({
   loadPage,
-  loadOptionsAndShowModal,
   pageLoaded,
   setSelectedKey,
   setSelectedParentKey,

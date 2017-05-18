@@ -16,9 +16,9 @@
 
 import { createStructuredSelector } from 'reselect';
 import { currentComponentSelector } from 'modules/workspace/containers/ComponentControls/selectors';
+import { selectedComponentsSelector } from 'modules/workspace/containers/SelectionControls/selectors';
 
 export const modelSelector = createStructuredSelector({
     componentModel: state => state.componentOptionsPanel,
-    currentComponent: currentComponentSelector
-    //deskPageModel: state => state.deskPage
+    selectedComponents: selectedComponentsSelector,
 });

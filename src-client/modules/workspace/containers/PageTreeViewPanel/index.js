@@ -66,6 +66,9 @@ class Container extends Component {
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleSetHighlightSelectedKey = this.handleSetHighlightSelectedKey.bind(this);
     this.handleRemoveHighlightSelectedKey = this.handleRemoveHighlightSelectedKey.bind(this);
+    const {deskPageModel} = this.props;
+    const pageGraph = deskPageModel ? graphApi.getWrappedModelByPagePath(deskPageModel.currentPagePath) : {};
+    this.state = {pageGraph};
   }
 
   componentDidMount () {
@@ -79,6 +82,19 @@ class Container extends Component {
 
   componentWillUnmount () {
     this.$frameWindow = undefined;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {deskPageModel} = this.props;
+    const {
+      deskPageModel: newDeskPageModel,
+    } = nextProps;
+    if (newDeskPageModel.reloadPageCounter !== deskPageModel.reloadPageCounter
+      || newDeskPageModel.currentPagePath !== deskPageModel.currentPagePath
+      || newDeskPageModel.markedUpdateCounter !== deskPageModel.markedUpdateCounter
+      || newDeskPageModel.modelUpdateCounter !== deskPageModel.modelUpdateCounter) {
+      this.setState({pageGraph: graphApi.getWrappedModelByPagePath(newDeskPageModel.currentPagePath)});
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -239,12 +255,11 @@ class Container extends Component {
 
   render () {
 
-    const {deskPageModel, isInsertionModeOn} = this.props;
-    const pageGraph = graphApi.getWrappedModelByPagePath(deskPageModel.currentPagePath);
+    const {pageGraph} = this.state;
+    const {isInsertionModeOn} = this.props;
 
     let listItems = [];
     if (pageGraph) {
-      let length = pageGraph.children.length;
       pageGraph.children.forEach((child, index) => {
         listItems.push(this.buildNode(child));
         if (isInsertionModeOn) {
