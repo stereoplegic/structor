@@ -14,34 +14,12 @@
  * limitations under the License.
  */
 
-import {forOwn, uniq} from 'lodash';
-import { createStructuredSelector, createSelector } from 'reselect';
-import {pagesSelector, currentPageSelector} from 'modules/workspace/containers/DeskPage/selectors';
-
-export const selectedRoutesSelector = state => state.pageListPanel.selectedRoutes;
-
-export const selectedPagesSelector = createSelector(
-    pagesSelector,
-    selectedRoutesSelector,
-    (pages, selectedRoutes) => {
-        let result = [];
-        pages = pages || [];
-        let filteredPages;
-        forOwn(selectedRoutes, (value, prop) => {
-            if (value === true) {
-                filteredPages = pages.filter(page => page.pagePath === prop);
-                if (filteredPages && filteredPages.length > 0) {
-                    result = result.concat(filteredPages);
-                }
-            }
-        });
-        return result;
-    }
-);
+import { forOwn, uniq } from 'lodash';
+import { createStructuredSelector } from 'reselect';
+import { pagesSelector, currentPageSelector } from 'modules/workspace/containers/DeskPage/selectors';
 
 export const modelSelector = createStructuredSelector({
-    selectedRoutes: state => state.pageListPanel.selectedRoutes,
-    pages: pagesSelector,
-    currentPage: currentPageSelector,
+  pages: pagesSelector,
+  currentPage: currentPageSelector,
 });
 

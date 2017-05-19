@@ -16,10 +16,10 @@
 
 import { createStructuredSelector } from 'reselect';
 
-import { currentComponentSelector } from 'modules/workspace/containers/ComponentControls/selectors';
+import { selectedComponentsSelector } from 'modules/workspace/containers/SelectionControls/selectors';
 
 export const modelSelector = createStructuredSelector({
   readmeText: state => state.componentReadmePanel.readmeText,
-  currentComponent: currentComponentSelector,
+  selectedComponents: selectedComponentsSelector,
 });
 

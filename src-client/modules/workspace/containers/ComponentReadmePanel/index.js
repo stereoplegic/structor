@@ -30,34 +30,45 @@ const panelStyle = {
   backgroundColor: '#fff',
 };
 
+const notAvailableText = 'Documentation is not available';
+
 class Container extends Component {
 
   constructor (props) {
     super(props);
+    this.state = {readmeText: undefined};
   }
 
   componentDidMount () {
-    const {currentComponent, loadReadmeText} = this.props;
-    if (currentComponent) {
-      const {componentName, namespace} = currentComponent;
+    const {selectedComponents, loadReadmeText} = this.props;
+    if (selectedComponents.length === 1) {
+      const {componentName, namespace} = selectedComponents[0];
       loadReadmeText(componentName, namespace);
     }
   }
 
   componentWillReceiveProps (nextProps) {
-    const {currentComponent, loadReadmeText} = this.props;
-    const {currentComponent: nextComponent} = nextProps;
-    if (nextComponent && currentComponent !== nextComponent) {
-      const {componentName, namespace} = nextComponent;
-      loadReadmeText(componentName, namespace);
+    const {selectedComponents, loadReadmeText, readmeText} = this.props;
+    const {selectedComponents: nextComponents, readmeText: nextReadmeText} = nextProps;
+    if (nextComponents && selectedComponents !== nextComponents) {
+      if (nextComponents.length === 1) {
+        const {componentName, namespace} = nextComponents[0];
+        loadReadmeText(componentName, namespace);
+      } else {
+        this.setState({readmeText: undefined});
+      }
+    }
+    if (nextReadmeText !== readmeText) {
+      this.setState({readmeText: nextReadmeText});
     }
   }
 
   render () {
-    const {readmeText} = this.props;
+    const {readmeText} = this.state;
+    const validText = readmeText && readmeText.length > 0 ? readmeText : notAvailableText;
     return (
       <div style={panelStyle}>
-        <div dangerouslySetInnerHTML={{__html: marked(readmeText)}} />
+        <div dangerouslySetInnerHTML={{__html: marked(validText)}} />
       </div>
     );
   }

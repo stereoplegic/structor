@@ -14,16 +14,39 @@
  * limitations under the License.
  */
 
-import {forOwn, isObject} from 'lodash';
 import * as actions from './actions.js';
 
 const initialState = {
-
+  showPageExportDialog: false,
+  exportMode: null,
+  selectedRoutes: {},
 };
 
 export default (state = initialState, action = {}) => {
 
-    const {type, payload} = action;
-    return state;
-}
+  const {type, payload} = action;
+
+  if (type === actions.SHOW_MODAL) {
+    return Object.assign({}, state, {
+      showPageExportDialog: true,
+      exportMode: payload.exportMode,
+    });
+  }
+
+  if (type === actions.HIDE_MODAL) {
+    return Object.assign({}, state, {
+      showPageExportDialog: false,
+      exportMode: null,
+    });
+  }
+
+  if(type === actions.TOGGLE_ROUTE_SELECTION){
+    const {path} = payload;
+    let selectedRoutes = Object.assign({}, state.selectedRoutes);
+    selectedRoutes[path] = !selectedRoutes[path];
+    return Object.assign({}, state, {selectedRoutes});
+  }
+
+  return state;
+};
 

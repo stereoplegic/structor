@@ -27,6 +27,7 @@ export HistoryControls from 'modules/workspace/containers/HistoryControls';
 export LibraryControls from 'modules/workspace/containers/LibraryControls';
 export LibraryPanel from 'modules/workspace/containers/LibraryPanel';
 export PageExportControls from 'modules/workspace/containers/PageExportControls';
+export PageExportModal from 'modules/workspace/containers/PageExportModal';
 export PageListControls from 'modules/workspace/containers/PageListControls';
 export PageListPanel from 'modules/workspace/containers/PageListPanel';
 export PageOptionsModal from 'modules/workspace/containers/PageOptionsModal';

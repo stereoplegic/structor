@@ -38,6 +38,14 @@ const activeStyle = {
   cursor: 'pointer'
 };
 
+const makeTitle = (componentName) => {
+  let titleComponentName = componentName;
+  if (titleComponentName && titleComponentName.length > 30) {
+    titleComponentName = titleComponentName.substr(0, 27) + '...';
+  }
+  return titleComponentName;
+};
+
 class Container extends Component {
 
   constructor (props) {
@@ -78,14 +86,6 @@ class Container extends Component {
     setSelectedKey(key, true);
   }
 
-  makeTitle (componentName) {
-    let titleComponentName = componentName;
-    if (titleComponentName && titleComponentName.length > 30) {
-      titleComponentName = titleComponentName.substr(0, 27) + '...';
-    }
-    return titleComponentName;
-  }
-
   render () {
 
     const {componentModel: {selectedKeys}, removeSelectedKeys} = this.props;
@@ -98,19 +98,24 @@ class Container extends Component {
           content = [];
           const rootItem = parentsList[parentsList.length - 1];
           content.push(
-            <li key={'rootItem'}>
-                            <span style={labelStyle}
-                                  onClick={() => {removeSelectedKeys();}}>
-                                <i className="fa fa-times-circle fa-fw"
-                                   style={{opacity: '0.6'}}/>
-                                <span>Selected:&nbsp;</span>
-                                <strong>
-                                    {(rootItem.modelNode.pageName ? rootItem.modelNode.pagePath : 'Unknown')}
-                                </strong>
-                            </span>
+            <li
+              key={'rootItem'}
+              title="Clear selection"
+            >
+              <span
+                style={labelStyle}
+                onClick={() => {removeSelectedKeys();}}
+              >
+                  <i className="fa fa-times-circle fa-fw"
+                     style={{opacity: '0.6'}}/>
+                  <span>Selected:&nbsp;</span>
+                  {/*<strong>*/}
+                      {/*{(rootItem.modelNode.pageName ? makeTitle(rootItem.modelNode.pagePath) : 'Unknown')}*/}
+                  {/*</strong>*/}
+              </span>
             </li>
           );
-          const showNumber = 7;
+          const showNumber = 3;
           const componentNumber = parentsList.length - 1;
           const lastIndex = componentNumber - 1;
           let restNumber = componentNumber > showNumber ? componentNumber - showNumber : 0;
@@ -143,7 +148,7 @@ class Container extends Component {
                 );
               });
             }
-            let componentTitle = this.makeTitle(item.modelNode.type);
+            let componentTitle = makeTitle(item.modelNode.type);
             if (i !== 0) {
               content.push(
                 <li key={i}>
@@ -159,15 +164,15 @@ class Container extends Component {
                         style={{margin: '0 0.5em', cursor: 'pointer'}}
                         title="Show nested components"
                         className="dropdown">
-                                        <span className="dropdown-toggle" data-toggle="dropdown">
-                                            <span className="caret"></span>
-                                        </span>
-                                        <ul className="dropdown-menu dropdown-menu-right"
-                                            role="menu"
-                                            style={{overflowY: 'auto', maxHeight: '12em'}}>
-                                            {childrenMenuItems}
-                                        </ul>
-                                    </span>
+                      <span className="dropdown-toggle" data-toggle="dropdown">
+                          <span className="caret"></span>
+                      </span>
+                      <ul className="dropdown-menu dropdown-menu-right"
+                          role="menu"
+                          style={{overflowY: 'auto', maxHeight: '12em'}}>
+                          {childrenMenuItems}
+                      </ul>
+                  </span>
                 </li>
               );
             } else {
@@ -177,32 +182,32 @@ class Container extends Component {
               if (childrenMenuItems.length > 0) {
                 content.push(
                   <li key={i}>
-                                    <span key={'menuMore'}
-                                          className="dropdown"
-                                          style={activeStyle}
-                                          data-key={item.key}>
-                                        <span className="dropdown-toggle" data-toggle="dropdown">
-                                            <span>{componentTitle}&nbsp;</span>
-                                            <span className="caret"/>
-                                        </span>
-                                        <ul className="dropdown-menu dropdown-menu-right"
-                                            role="menu"
-                                            style={{overflowY: 'auto', maxHeight: '12em'}}>
-                                            {childrenMenuItems}
-                                        </ul>
-                                    </span>
+                    <span key={'menuMore'}
+                          className="dropdown"
+                          style={activeStyle}
+                          data-key={item.key}>
+                        <span className="dropdown-toggle" data-toggle="dropdown">
+                            <span>{componentTitle}&nbsp;</span>
+                            <span className="caret"/>
+                        </span>
+                        <ul className="dropdown-menu dropdown-menu-right"
+                            role="menu"
+                            style={{overflowY: 'auto', maxHeight: '12em'}}>
+                            {childrenMenuItems}
+                        </ul>
+                    </span>
                   </li>
                 );
               } else {
                 content.push(
                   <li key={i}>
-                                    <span style={activeStyle}
-                                          data-key={item.key}
-                                          title={item.modelNode.type}
-                                          onMouseEnter={this.handleSetHighlightSelectedKey}
-                                          onMouseLeave={this.handleRemoveHighlightSelectedKey}>
-                                        {componentTitle}
-                                    </span>
+                    <span style={activeStyle}
+                          data-key={item.key}
+                          title={item.modelNode.type}
+                          onMouseEnter={this.handleSetHighlightSelectedKey}
+                          onMouseLeave={this.handleRemoveHighlightSelectedKey}>
+                        {componentTitle}
+                    </span>
                   </li>
                 );
               }
@@ -231,7 +236,7 @@ class Container extends Component {
         for (let i = 0; i < lastShowIndex; i++) {
           graphNode = graphApi.getNode(selectedKeys[i]);
           if (graphNode && graphNode.modelNode) {
-            componentTitle = this.makeTitle(graphNode.modelNode.type);
+            componentTitle = makeTitle(graphNode.modelNode.type);
             content.push(
               <span key={i}
                     style={activeStyle}

@@ -17,6 +17,5 @@ import { createStructuredSelector } from 'reselect';
 
 export const modelSelector = createStructuredSelector({
     componentModel: state => state.pageViewControls,
-    deskModel: state => state.desk
 });
 

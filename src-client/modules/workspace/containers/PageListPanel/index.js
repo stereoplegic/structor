@@ -20,6 +20,7 @@ import { forOwn, isObject, isEmpty } from 'lodash';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 import PageExportControls from 'modules/workspace/containers/PageExportControls';
+import PageViewControls from 'modules/workspace/containers/PageViewControls';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
 const topToolbarStyle = {
@@ -66,24 +67,6 @@ const labelStyle = {
   wordBreak: 'break-all'
 };
 
-const checkBoxLabelStyle = {
-  width: '1.5em',
-  minWidth: '1.5em',
-  flexGrow: 0,
-};
-
-let checkBoxStyle = {
-  margin: 0,
-};
-
-const makeTitle = (componentName) => {
-  let titleComponentName = componentName;
-  if (titleComponentName && titleComponentName.length > 30) {
-    titleComponentName = titleComponentName.substr(0, 30) + '...';
-  }
-  return titleComponentName;
-};
-
 class Container extends Component {
 
   constructor (props) {
@@ -96,13 +79,11 @@ class Container extends Component {
     this.handleClearFind = this.handleClearFind.bind(this);
     this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
-    this.handleSelectPage = this.handleSelectPage.bind(this);
   }
 
   handleChangeFind (e) {
-    var value = this.inputElement.value;
-    var newState = {
-      filter: value
+    const newState = {
+      filter: this.inputElement.value,
     };
     this.setState(newState);
   }
@@ -126,15 +107,9 @@ class Container extends Component {
     this.props.changePageRoute(pagePath);
   }
 
-  handleSelectPage (e) {
-    e.stopPropagation();
-    const pagePath = e.currentTarget.dataset.path;
-    this.props.toggleRouteSelection(pagePath);
-  }
-
   render () {
     const {filter} = this.state;
-    const {pages, currentPage, selectedRoutes} = this.props;
+    const {pages, currentPage} = this.props;
     const filterString = filter ? filter.toUpperCase() : null;
     let items = [];
     if (pages && pages.length > 0) {
@@ -151,15 +126,6 @@ class Container extends Component {
               onClick={this.handleChangePage}
             >
               <div style={labelContainerStyle}>
-                <div style={checkBoxLabelStyle}>
-                  <input
-                    type="checkbox"
-                    style={checkBoxStyle}
-                    data-path={item.pagePath}
-                    checked={!!selectedRoutes[item.pagePath]}
-                    onClick={this.handleSelectPage}
-                  />
-                </div>
                 <div>
                   <span style={labelStyle}>{item.pagePath}</span>
                 </div>
@@ -185,16 +151,17 @@ class Container extends Component {
             onKeyDown={this.handleOnKeyDown}
             onChange={this.handleChangeFind}/>
           <span className="input-group-btn">
-                        <button
-                          className="btn btn-default"
-                          type="button"
-                          onClick={this.handleClearFind}
-                        >
-                            <span className="fa fa-times"/>
-                        </button>
-                    </span>
+            <button
+              className="btn btn-default"
+              type="button"
+              onClick={this.handleClearFind}
+            >
+                <span className="fa fa-times"/>
+            </button>
+          </span>
         </div>
         <div style={listContainerStyle}>
+          <PageViewControls style={{marginBottom: '0.5em'}} />
           <ListGroup>
             {items}
           </ListGroup>

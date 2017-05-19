@@ -29,6 +29,7 @@ import toolbarMiddleReducer from 'modules/workspace/containers/ToolbarMiddle/red
 import toolbarSelectionReducer from 'modules/workspace/containers/ToolbarSelection/reducer';
 import selectionBreadcrumbsReducer from 'modules/workspace/containers/SelectionBreadcrumbs/reducer';
 import pageExportControlsReducer from 'modules/workspace/containers/PageExportControls/reducer';
+import pageExportModalReducer from 'modules/workspace/containers/PageExportModal/reducer';
 import pageListControlsReducer from 'modules/workspace/containers/PageListControls/reducer';
 import pageListPanelReducer from 'modules/workspace/containers/PageListPanel/reducer';
 import pageViewControlsReducer from 'modules/workspace/containers/PageViewControls/reducer';
@@ -71,6 +72,7 @@ const reducer = combineReducers({
   toolbarLeft: toolbarLeftReducer,
   toolbarTop: toolbarTopReducer,
   pageExportControls: pageExportControlsReducer,
+  pageExportModal: pageExportModalReducer,
   pageListControls: pageListControlsReducer,
   pageListPanel: pageListPanelReducer,
   pageViewControls: pageViewControlsReducer,

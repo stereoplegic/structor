@@ -21,7 +21,6 @@ import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 
 import { Modal, Button } from 'react-bootstrap';
-import { ProxyInput } from 'components';
 
 class Container extends Component {
 
@@ -75,7 +74,7 @@ class Container extends Component {
           <Modal.Title id='contained-modal-title'>Confirm</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div style={{padding: '1em', wordBreak: 'break-all'}}>
+          <div style={{padding: '1em'}}>
             {message &&
             <div dangerouslySetInnerHTML={{__html: marked(message)}}/>
             }

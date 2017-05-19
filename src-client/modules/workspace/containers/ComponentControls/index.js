@@ -35,8 +35,10 @@ class Container extends Component {
     onEdit(e) {
         e.stopPropagation();
         e.preventDefault();
-        const {currentComponent, loadOptionsAndShowModal} = this.props;
-        loadOptionsAndShowModal(currentComponent);
+        const {selectedComponents, loadOptionsAndShowModal} = this.props;
+        if (selectedComponents && selectedComponents.length === 1) {
+          loadOptionsAndShowModal(selectedComponents[0]);
+        }
     }
 
     onGenerate(e) {
@@ -54,37 +56,38 @@ class Container extends Component {
     }
 
     render(){
-        const {currentComponent} = this.props;
+        const {selectedComponents} = this.props;
+        const isEnabled = selectedComponents && selectedComponents.length === 1;
         return (
             <div style={this.props.style} className="btn-group" role="group">
                 <button
                     className="btn btn-default btn-xs"
-                    disabled={!currentComponent}
+                    disabled={!isEnabled}
                     onClick={this.onEdit}
                     title="Show selected component options">
                     <span style={buttonLabelStyle}>
                         <i className="fa fa-wrench"/>
-                        <span style={{marginLeft: '0.5em'}}>Edit</span>
+                        <span style={{marginLeft: '0.3em'}}>Edit</span>
                     </span>
                 </button>
                 <button
                     className="btn btn-default btn-xs"
-                    disabled={!currentComponent}
+                    disabled={!isEnabled}
                     onClick={this.onGenerate}
                     title="Generate the source code for a new component">
                     <span style={buttonLabelStyle}>
                         <i className="fa fa-magic"/>
-                        <span style={{marginLeft: '0.5em'}}>Generate Component</span>
+                        <span style={{marginLeft: '0.3em'}}>New Component</span>
                     </span>
                 </button>
                 <button
                     className="btn btn-default btn-xs"
-                    disabled={!currentComponent}
+                    disabled={!isEnabled}
                     onClick={this.onSaveDefaultModel}
                     title="Save current component model as a variant">
                     <span style={buttonLabelStyle}>
                         <i className="fa fa-bookmark-o"/>
-                        <span style={{marginLeft: '0.5em'}}>Save Model</span>
+                        <span style={{marginLeft: '0.3em'}}>Save Model</span>
                     </span>
                 </button>
             </div>

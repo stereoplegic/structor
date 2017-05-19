@@ -70,7 +70,6 @@ class Container extends Component {
           title="Append components before selected component">
           <span style={wideButtonLabelStyle}>
               <i className="umy-icon-arrow-plus-down"/>
-              <span style={{marginLeft: '0.5em'}}>Before</span>
           </span>
         </button>
         <button
@@ -82,7 +81,6 @@ class Container extends Component {
         >
           <span style={wideButtonLabelStyle}>
               <i className="umy-icon-arrow-plus-up rotate-clockwise"/>|
-            <span style={{marginLeft: '0.5em'}}>First</span>
           </span>
         </button>
         <button
@@ -94,7 +92,6 @@ class Container extends Component {
         >
           <span style={wideButtonLabelStyle}>
             <i className="umy-icon-replace"/>
-            <span style={{marginLeft: '0.5em'}}>Replace</span>
           </span>
         </button>
         <button
@@ -106,7 +103,6 @@ class Container extends Component {
         >
           <span style={wideButtonLabelStyle}>
             |<i style={{marginTop: '.6em'}} className="umy-icon-arrow-plus-down rotate-clockwise"/>
-            <span style={{marginLeft: '0.5em'}}>Last</span>
           </span>
         </button>
         <button
@@ -118,7 +114,6 @@ class Container extends Component {
         >
           <span style={wideButtonLabelStyle}>
             <i className="umy-icon-arrow-plus-up"/>
-            <span style={{marginLeft: '0.5em'}}>After</span>
           </span>
         </button>
       </div>
