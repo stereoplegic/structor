@@ -93,7 +93,6 @@ class Container extends Component {
       const initPage = () => {
         this.contentWindow.__createPageDesk();
         wait(() => this.contentWindow.pageReadyState === 'initialized', pageLoaded);
-        //pageLoaded();
       };
       wait(() => this.contentWindow.pageReadyState === 'ready', initPage);
     });
@@ -113,10 +112,9 @@ class Container extends Component {
       this.frameWindow.src = '/structor-deskpage' + newComponentModel.currentPagePath;
     } else if (newComponentModel.pagePathToChange != null
       && newComponentModel.pagePathToChange != componentModel.pagePathToChange) {
-      if (this.contentWindow) {
+      if (this.page) {
         // only when page is already loaded
-        // console.log('Switching to path: ' + newComponentModel.pagePathToChange);
-        this.contentWindow.__switchToPath(newComponentModel.pagePathToChange);
+        this.page.changePath(newComponentModel.pagePathToChange);
       }
     }
   }
@@ -143,8 +141,6 @@ class Container extends Component {
     const {componentModel: newComponentModel} = nextProps;
     return (
       nextProps.style.width !== this.props.style.width
-      //|| newComponentModel.reloadPageCounter !== componentModel.reloadPageCounter
-      //|| newComponentModel.pagePathToChange !== componentModel.pagePathToChange
       || newComponentModel.isEditModeOn !== componentModel.isEditModeOn
       || newComponentModel.markedUpdateCounter !== componentModel.markedUpdateCounter
       || newComponentModel.modelUpdateCounter !== componentModel.modelUpdateCounter
@@ -284,7 +280,7 @@ class Container extends Component {
       <iframe
         ref={me => this.frameWindow = me}
         style={this.props.style}
-        src="/structor-deskpage"
+        src={'/structor-deskpage/'}
       />
     );
   }

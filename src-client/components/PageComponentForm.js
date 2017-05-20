@@ -64,33 +64,27 @@ class PageComponentForm extends Component {
           <td style={{height: '100%', verticalAlign: 'top'}}>
             <div className={'form-group ' + this.validatePagePath()}>
               <label htmlFor='pagePathElement'>Route path:</label>
-              <input id='pagePathElement'
-                     ref='pagePathInput'
-                     className="form-control input-sm"
-                     type="text"
-                     placeholder='Path'
-                     value={this.state.pagePath}
-                     onChange={this.handlePagePathChange}
+              <input
+                id='pagePathElement'
+                ref='pagePathInput'
+                className="form-control input-sm"
+                type="text"
+                placeholder='Path'
+                value={this.state.pagePath}
+                onChange={this.handlePagePathChange}
               />
             </div>
             <div className="form-group text-left">
               <label htmlFor='pageIndexCheckbox'>
-                <input id='pageIndexCheckbox'
-                       ref='pageIndexCheckbox'
-                       style={{display: 'inline-block'}}
-                       type="checkbox"/>
+                <input
+                  id='pageIndexCheckbox'
+                  ref='pageIndexCheckbox'
+                  style={{display: 'inline-block'}}
+                  type="checkbox"
+                />
                 <span>&nbsp;&nbsp;make index route</span>
               </label>
             </div>
-            <Panel>
-              <p>Route path possible values:</p>
-              <p><strong>/hello </strong>
-                <small>// matches /hello</small>
-              </p>
-              <p><strong>/hello/:name </strong>
-                <small>// matches /hello/michael and /hello/ryan</small>
-              </p>
-            </Panel>
           </td>
           <td style={{width: '1em'}}/>
         </tr>

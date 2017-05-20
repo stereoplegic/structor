@@ -14,35 +14,24 @@
  * limitations under the License.
  */
 
-import { matchPattern, formatPattern, getParams } from 'react-router/lib/PatternUtils.js';
+// import { matchPattern, formatPattern, getParams } from 'react-router/lib/PatternUtils.js';
 
-export function getAvailableRoute(existingRoutes, checkPathname){
-    let candidateRootKey = undefined;
-    if(existingRoutes && existingRoutes.length > 0){
-        if(checkPathname === '/' || checkPathname === '/structor-deskpage' || checkPathname === '/structor-deskpage/'){
-            candidateRootKey = existingRoutes[0];
-        } else {
-            try{
-                let root;
-                for(let i = 0; i < existingRoutes.length; i++){
-                    root = existingRoutes[i];
-                    let paramsObj = getParams(root, checkPathname);
-                    let formattedPath = root;
-                    if(paramsObj){
-                        formattedPath = decodeURIComponent(formatPattern(root, paramsObj));
-                    }
-                    if (checkPathname === formattedPath) {
-                        candidateRootKey = root;
-                        break;
-                    }
-                }
-            } catch(e){
-                console.error('Path name ' + checkPathname + ' was not found in project model. Error: ' + (e.message ? e.message : e));
-            }
-        }
+const reg = /(\/.+?)(?:#|\?|$)/;
+
+export function getAvailableRoute (existingRoutes, checkPathname) {
+  let candidateRootKey = undefined;
+  if (existingRoutes && existingRoutes.length > 0) {
+    if (checkPathname === '/' || checkPathname === '/structor-deskpage' || checkPathname === '/structor-deskpage/') {
+      candidateRootKey = existingRoutes[0];
+    } else {
+      const match = reg.exec(checkPathname);
+      if (match && match.length > 0) {
+        candidateRootKey = existingRoutes.find(i => match[1].indexOf(i) >= 0);
+      }
     }
-    if(!candidateRootKey){
-        console.error('Path name ' + checkPathname + ' was not found in project model.');
-    }
-    return candidateRootKey;
+  }
+  if (!candidateRootKey) {
+    console.error('Path name ' + checkPathname + ' was not found in project model.');
+  }
+  return candidateRootKey;
 }
