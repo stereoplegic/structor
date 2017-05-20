@@ -32,7 +32,8 @@ import {
 import {
   setSelectedKey,
   resetSelectedKeys,
-  setSelectedParentKey
+  setSelectedParentKey,
+  setHighlightSelectedKey
 } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
 import {
   cloneSelected,
@@ -218,5 +219,6 @@ export const containerActions = (dispatch) => bindActionCreators({
   handleReplace,
   cloneSelected,
   deleteSelected,
-  popHistory
+  popHistory,
+  setHighlightSelectedKey
 }, dispatch);

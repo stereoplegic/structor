@@ -53,9 +53,9 @@ class Container extends Component {
     }
 
     const {loadPage, pageLoaded} = this.props;
-    const {setForCuttingKeys, setForCopyingKeys, setSelectedParentKey} = this.props;
+    const {setForCuttingKeys, setForCopyingKeys, setSelectedKey} = this.props;
     const {handleBefore, handleFirst, handleLast, handleAfter, handleReplace} = this.props;
-    const {cloneSelected, deleteSelected} = this.props;
+    const {cloneSelected, deleteSelected, setHighlightSelectedKey} = this.props;
     loadPage();
     this.contentDocument = this.frameWindow.contentDocument;
     this.contentWindow = this.frameWindow.contentWindow;
@@ -72,20 +72,22 @@ class Container extends Component {
           context.setGetter('pageModel', pathname => graphApi.getWrappedModelByPagePath(pathname));
           context.setGetter('marked', pathname => graphApi.getMarkedKeysByPagePath(pathname));
           context.setGetter('mode', () => this.props.componentModel.isEditModeOn);
-          context.setGetter('showBlueprintButtons', () => this.props.showBlueprintButtons);
+          context.setGetter('parentList', (selectedKey) => graphApi.getParentsList(selectedKey));
+
 
           context.addListener('componentClick.desk', this.handleComponentClick);
           context.addListener('pathnameChanged.desk', this.handlePathnameChanged);
-          context.addListener('cut.desk', (key, isModifier) => { setForCuttingKeys([key]); });
-          context.addListener('copy.desk', (key, isModifier) => { setForCopyingKeys([key]); });
-          context.addListener('clone.desk', (key, isModifier) => { cloneSelected(); });
-          context.addListener('delete.desk', (key, isModifier) => { deleteSelected(); });
-          context.addListener('before.desk', (key, isModifier) => { handleBefore(); });
-          context.addListener('after.desk', (key, isModifier) => { handleAfter(); });
-          context.addListener('first.desk', (key, isModifier) => { handleFirst(); });
-          context.addListener('last.desk', (key, isModifier) => { handleLast(); });
-          context.addListener('replace.desk', (key, isModifier) => { handleReplace(); });
-          context.addListener('selectParent.desk', (key, isModifier) => { setSelectedParentKey(key, isModifier)});
+          context.addListener('cut.desk', (keys) => { setForCuttingKeys(keys); });
+          context.addListener('copy.desk', (keys) => { setForCopyingKeys(keys); });
+          context.addListener('clone.desk', () => { cloneSelected(); });
+          context.addListener('delete.desk', () => { deleteSelected(); });
+          context.addListener('before.desk', () => { handleBefore(); });
+          context.addListener('after.desk', () => { handleAfter(); });
+          context.addListener('first.desk', () => { handleFirst(); });
+          context.addListener('last.desk', () => { handleLast(); });
+          context.addListener('replace.desk', () => { handleReplace(); });
+          context.addListener('select.desk', (key) => { setSelectedKey(key); });
+          context.addListener('highlight.desk', (key, isHighlighted) => { setHighlightSelectedKey(key, isHighlighted)});
         }
 
       };
