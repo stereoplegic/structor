@@ -101,7 +101,7 @@ function initProxyServer () {
           if (proxyURL && proxyURL.length > 0 && url.indexOf(proxyURL) >= 0) {
             proxy.web(req, res, {target: proxyURL});
           } else {
-            console.log('Redirecting.... to: ', url);
+            // all other requests redirect to deskpage
             res.redirect('/structor-deskpage' + url.replace('http://', ''));
           }
         }

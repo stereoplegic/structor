@@ -48,7 +48,6 @@ export const deleteOption = (selectedComponents, optionPath) => (dispatch, getSt
 };
 
 export const changeOption = (selectedComponents, optionObject) => (dispatch, getState) => {
-  console.log('Change option: ', JSON.stringify(optionObject, null, 4));
   if (selectedComponents && selectedComponents.length > 0) {
     dispatch(pushHistory());
     let node;
