@@ -1,7 +1,7 @@
 {
   "name": "structor",
-  "version": "2.2.8",
-  "description": "Structor: React UI Builder",
+  "version": "2.2.9",
+  "description": "Structor - React UI Builder",
   "main": "structor.js",
   "scripts": {
     "build-server": "gulp --gulpfile ./build-conf/gulpfile.js build-server",
