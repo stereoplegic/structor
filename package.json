@@ -37,6 +37,7 @@
     "babel-preset-stage-0": "^6.16.0",
     "body-parser": "1.15.0",
     "css-loader": "^0.26.1",
+    "eventsource-polyfill": "^0.9.6",
     "exports-loader": "^0.6.3",
     "express": "4.13.4",
     "express-urlrewrite": "1.2.0",
