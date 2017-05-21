@@ -15,13 +15,24 @@
  */
 import { bindActionCreators } from 'redux';
 import { setSelectedKey, } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
-import { pasteBefore, pasteAfter, pasteReplace } from 'modules/workspace/containers/ClipboardControls/actions';
+import {
+  handleBefore,
+  handleFirst,
+  handleLast,
+  handleAfter,
+  handleReplace
+} from 'modules/workspace/containers/ClipboardControls/actions';
+import {
+  setForCuttingKeys,
+  setForCopyingKeys
+} from 'modules/workspace/containers/ClipboardIndicator/actions';
+import {
+  deleteSelected
+} from 'modules/workspace/containers/SelectionControls/actions';
 import { graphApi } from 'api';
 import { pushHistory } from 'modules/workspace/containers/HistoryControls/actions';
 import { updatePage } from 'modules/workspace/containers/DeskPage/actions';
-import {
-  showModal as showQuickAppend
-} from 'modules/workspace/containers/QuickAppendModal/actions';
+
 import {
   setHighlightSelectedKey
 } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
@@ -37,10 +48,14 @@ export const changeText = (newText, selectedKey) => (dispatch, getState) => {
 
 export const containerActions = (dispatch) => bindActionCreators({
   setSelectedKey,
+  setForCuttingKeys,
+  setForCopyingKeys,
   changeText,
-  pasteBefore,
-  pasteAfter,
-  pasteReplace,
-  showQuickAppend,
-  setHighlightSelectedKey
+  handleBefore,
+  handleFirst,
+  handleLast,
+  handleAfter,
+  handleReplace,
+  setHighlightSelectedKey,
+  deleteSelected
 }, dispatch);

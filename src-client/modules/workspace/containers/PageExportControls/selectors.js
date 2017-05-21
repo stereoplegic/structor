@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-import { createSelector, createStructuredSelector } from 'reselect';
-import {selectedPagesSelector} from 'modules/workspace/containers/PageListPanel/selectors';
+import { createStructuredSelector } from 'reselect';
 
 export const modelSelector = createStructuredSelector({
     componentModel: state => state.pageExportControls,
-    selectedPages: selectedPagesSelector,
 });
 

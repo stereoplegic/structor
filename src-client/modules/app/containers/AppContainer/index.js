@@ -20,90 +20,92 @@ import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
 
 import {
-    Desk,
-    PageOptionsModal,
-    ComponentOptionsModal,
-    QuickAppendModal,
-    SaveDefaultModelModal
+  Desk,
+  PageOptionsModal,
+  ComponentOptionsModal,
+  QuickAppendModal,
+  SaveDefaultModelModal,
+  PageExportModal
 } from 'modules/workspace';
-import {Generator} from 'modules/generator';
-import {Installer, SelectDirectoryModal} from 'modules/installer';
-import {Extractor} from 'modules/extractor';
+import { Generator } from 'modules/generator';
+import { Installer, SelectDirectoryModal } from 'modules/installer';
+import { Extractor } from 'modules/extractor';
 import ProxySetupModal from 'modules/app/containers/ProxySetupModal';
 import ConfirmationModal from 'modules/app/containers/ConfirmationModal';
 import InformationModal from 'modules/app/containers/InformationModal';
 
 class Container extends Component {
 
-    constructor(props) {
-        super(props);
+  constructor (props) {
+    super(props);
+  }
+
+  componentDidMount () {
+    this.props.getProjectStatus();
+  }
+
+  render () {
+
+    const {componentModel: {packageConfig, workspaceMode}} = this.props;
+
+    let content = null;
+    if (workspaceMode === 'desk') {
+      content = (
+        <div style={{overflow: 'hidden', width: '100%', height: '100%'}}>
+          <div ref='appBody' style={{position: 'absolute', top: '0px', left: '0px', right: '0px', bottom: '0px'}}>
+            <Desk />
+            <PageOptionsModal />
+            <ComponentOptionsModal />
+            <ProxySetupModal />
+            <QuickAppendModal />
+            <SaveDefaultModelModal />
+            <ConfirmationModal />
+            <InformationModal />
+            <PageExportModal />
+          </div>
+        </div>
+      );
+    } else if (workspaceMode === 'generator') {
+      content = (
+        <div style={{width: '100%', height: '100%'}}>
+          <Generator />
+          <ConfirmationModal />
+          <InformationModal />
+        </div>
+      );
+    } else if (workspaceMode === 'installer') {
+      content = (
+        <div style={{width: '100%', height: '100%'}}>
+          <Installer />
+          <ConfirmationModal />
+          <InformationModal />
+          <SelectDirectoryModal />
+        </div>
+      );
+    } else if (workspaceMode === 'extractor') {
+      content = (
+        <div style={{width: '100%', height: '100%'}}>
+          <Extractor />
+          <ConfirmationModal />
+          <InformationModal />
+        </div>
+      );
+    } else {
+      content = (
+        <div style={{position: 'fixed', top: '0px', left: '0px', right: '0px', bottom: '0px'}}>
+          <div
+            style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%'}}>
+            <div style={{display: 'block'}}>
+              <div className="umy-logo"/>
+            </div>
+          </div>
+        </div>
+      );
     }
 
-    componentDidMount(){
-        this.props.getProjectStatus();
-    }
-
-    render() {
-
-        const { componentModel: {packageConfig, workspaceMode} } = this.props;
-
-        let content = null;
-        if(workspaceMode === 'desk') {
-            content = (
-                <div style={{overflow: 'hidden', width: '100%', height: '100%'}}>
-                    <div ref='appBody' style={{position: 'absolute', top: '0px', left: '0px', right: '0px', bottom: '0px'}}>
-                        <Desk />
-                        <PageOptionsModal />
-                        <ComponentOptionsModal />
-                        <ProxySetupModal />
-                        <QuickAppendModal />
-                        <SaveDefaultModelModal />
-                        <ConfirmationModal />
-                        <InformationModal />
-                    </div>
-                </div>
-            );
-        } else if(workspaceMode === 'generator'){
-            content = (
-                <div style={{width: '100%', height: '100%'}}>
-                    <Generator />
-                    <ConfirmationModal />
-                    <InformationModal />
-                </div>
-            );
-        } else if(workspaceMode === 'installer'){
-            content = (
-                <div style={{width: '100%', height: '100%'}}>
-                    <Installer />
-                    <ConfirmationModal />
-                    <InformationModal />
-                    <SelectDirectoryModal />
-                </div>
-            );
-        } else if(workspaceMode === 'extractor'){
-            content = (
-                <div style={{width: '100%', height: '100%'}}>
-                    <Extractor />
-                    <ConfirmationModal />
-                    <InformationModal />
-                </div>
-            );
-        } else {
-            content = (
-                <div style={{position: 'fixed', top: '0px', left: '0px', right: '0px', bottom: '0px'}}>
-                    <div
-                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%'}}>
-                        <div style={{display: 'block'}}>
-                            <div className="umy-logo" />
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-
-        return content;
-    }
+    return content;
+  }
 }
 
-export default connect( modelSelector, containerActions)(Container);
+export default connect(modelSelector, containerActions)(Container);
 

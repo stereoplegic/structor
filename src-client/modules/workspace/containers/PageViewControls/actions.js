@@ -14,9 +14,20 @@
  * limitations under the License.
  */
 import { bindActionCreators } from 'redux';
-import { changeViewportWidth } from 'modules/workspace/containers/Desk/actions';
+
+import { deletePage as deleteDeskPage } from 'modules/workspace/containers/DeskPage/actions';
 import { showModal } from 'modules/workspace/containers/PageOptionsModal/actions';
+import { showModal as confirmModal } from 'modules/app/containers/ConfirmationModal/actions';
+
+export const deletePage = () => (dispatch, getState) => {
+  dispatch(confirmModal(
+    '#### Are you sure you want to delete the current page?',
+    () => {
+      dispatch(deleteDeskPage());
+    }
+  ));
+};
 
 export const containerActions = (dispatch) => bindActionCreators({
-    changeViewportWidth, showModal
+    showModal, deletePage
 }, dispatch);

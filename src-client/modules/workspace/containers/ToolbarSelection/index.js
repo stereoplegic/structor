@@ -21,7 +21,7 @@ import { modelSelector } from './selectors.js';
 import SelectionControls from 'modules/workspace/containers/SelectionControls';
 import ClipboardControls from 'modules/workspace/containers/ClipboardControls';
 import HistoryControls from 'modules/workspace/containers/HistoryControls';
-import BlueprintControls from 'modules/workspace/containers/BlueprintControls';
+import ComponentControls from 'modules/workspace/containers/ComponentControls';
 import ClipboardIndicator from 'modules/workspace/containers/ClipboardIndicator';
 
 const containerStyle = {
@@ -48,10 +48,10 @@ class Container extends Component {
       <div style={this.props.style}>
         <div style={containerStyle}>
           <HistoryControls style={controlsGroupStyle}/>
-          <BlueprintControls style={controlsGroupStyle}/>
           <SelectionControls style={controlsGroupStyle}/>
           <ClipboardControls style={controlsGroupStyle}/>
           <ClipboardIndicator style={controlsGroupStyle}/>
+          <ComponentControls style={controlsGroupStyle}/>
         </div>
       </div>
     );

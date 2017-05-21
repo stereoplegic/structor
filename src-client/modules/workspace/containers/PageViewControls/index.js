@@ -18,138 +18,98 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
-import { ADD_NEW, DUPLICATE } from 'modules/workspace/containers/PageOptionsModal/actions';
+import { ADD_NEW, DUPLICATE, CHANGE_OPTIONS } from 'modules/workspace/containers/PageOptionsModal/actions';
+
+const buttonLabelStyle = {
+  margin: '0 0'
+};
 
 class Container extends Component {
 
-    constructor(props) {
-        super(props);
-    }
+  constructor (props) {
+    super(props);
+  }
 
-    handleShowModal = (type) => (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        this.props.showModal(type);
-    };
+  handleShowModal = (type) => (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    this.props.showModal(type);
+  };
 
-    handleChangeViewport = (widthValue) => (e) => {
-        this.props.changeViewportWidth(widthValue);
-    };
+  handleDeletePage = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    this.props.deletePage();
+  };
 
-    render(){
-        const {deskModel} = this.props;
-        const buttonLabelStyle = {
-            margin: '0 0.5em'
-        };
-        return (
-            <div
-                style={this.props.style}
-                className="btn-group"
-                role="group">
-                <button
-                    key="addPageButton"
-                    className="btn btn-default btn-xs"
-                    onClick={this.handleShowModal(ADD_NEW)}
-                    title="Create new page">
-                    <span style={buttonLabelStyle}>
-                        <i className="fa fa-plus" />
-                        <span style={{marginLeft: '0.5em'}}>Add Page</span>
-                    </span>
-                </button>
-                <button
-                    key="copyPageButton"
-                    className="btn btn-default btn-xs"
-                    onClick={this.handleShowModal(DUPLICATE)}
-                    title="Clone current page">
-                    <span style={buttonLabelStyle}>
-                        <i className="fa fa-copy" />
-                        <span style={{marginLeft: '0.5em'}}>Clone Page</span>
-                    </span>
-                </button>
-                <div
-                    key="pageWidthButton"
-                    className="btn-group"
-                    role="group">
-                    <button
-                        className="btn btn-default btn-xs dropdown-toggle"
-                        data-toggle="dropdown">
-                        <span style={{marginLeft: '0.5em'}}>Width</span>
-                        <span style={buttonLabelStyle}>{deskModel.iframeWidth}</span>
-                        <span className="caret" />
-                        &nbsp;&nbsp;
-                    </button>
-                    <ul
-                        className="dropdown-menu"
-                        role="menu">
-                        <li>
-                            <a
-                                href="#"
-                                onClick={this.handleChangeViewport('100%')}>
-                                100%
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                onClick={this.handleChangeViewport('1800px')}>
-                                1800px
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                onClick={this.handleChangeViewport('1200px')}>
-                                1200px
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                onClick={this.handleChangeViewport('1100px')}>
-                                1100px
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                onClick={this.handleChangeViewport('1000px')}>
-                                1000px
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                onClick={this.handleChangeViewport('900px')}>
-                                900px
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                onClick={this.handleChangeViewport('770px')}>
-                                770px
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                onClick={this.handleChangeViewport('700px')}>
-                                700px
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                onClick={this.handleChangeViewport('340px')}>
-                                340px
-                            </a>
-                        </li>
+  render () {
+    const {style} = this.props;
 
-                    </ul>
-                </div>
-            </div>
-        );
-    }
+    return (
+      <div
+        className="btn-group btn-group-justified"
+        style={style}
+        role="group"
+      >
+        <div
+          className="btn-group"
+          role="group"
+        >
+          <button
+            key="changePageButton"
+            className="btn btn-default btn-xs"
+            onClick={this.handleShowModal(CHANGE_OPTIONS)}
+            title="Change page properties">
+            <span style={buttonLabelStyle}>
+                <i className="fa fa-gears"/>
+            </span>
+          </button>
+        </div>
+        <div
+          className="btn-group"
+          role="group"
+        >
+          <button
+            key="addPageButton"
+            className="btn btn-default btn-xs"
+            onClick={this.handleShowModal(ADD_NEW)}
+            title="Create new page">
+            <span style={buttonLabelStyle}>
+                <i className="fa fa-plus"/>
+            </span>
+          </button>
+        </div>
+        <div
+          className="btn-group"
+          role="group"
+        >
+          <button
+            key="copyPageButton"
+            className="btn btn-default btn-xs"
+            onClick={this.handleShowModal(DUPLICATE)}
+            title="Clone current page">
+            <span style={buttonLabelStyle}>
+                <i className="fa fa-copy"/>
+            </span>
+          </button>
+        </div>
+        <div
+          className="btn-group"
+          role="group"
+        >
+          <button
+            className="btn btn-default btn-xs"
+            onClick={this.handleDeletePage}
+            title="Delete current page"
+          >
+          <span style={buttonLabelStyle}>
+            <i className="fa fa-trash-o"/>
+          </span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
 }
 

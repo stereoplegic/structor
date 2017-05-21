@@ -195,7 +195,6 @@ class Container extends Component {
     };
 
     let breadcrumbsComponent = null;
-    let middleToolbarComponent = null;
     let selectionToolbarComponent = null;
     let topPanelHeight = 0;
 
@@ -212,29 +211,18 @@ class Container extends Component {
       };
       breadcrumbsComponent = (<ToolbarTop style={breadcrumbsTopStyle}/>);
 
-      let middleToolbarStyle = {
+      let selectionToolbarStyle = {
         position: 'absolute',
         top: '3em',
         left: 'calc(4em + ' + leftPanelWidth + 'px)',
         right: '5px',
-        paddingTop: !!breadcrumbsComponent ? '5px' : '10px',
-        height: '3em',
-        borderLeft: '1px solid #dbdbdb',
-      };
-      middleToolbarComponent = (<ToolbarMiddle style={middleToolbarStyle}/>);
-
-      let selectionToolbarStyle = {
-        position: 'absolute',
-        top: '6em',
-        left: 'calc(4em + ' + leftPanelWidth + 'px)',
-        right: '5px',
-        paddingTop: !!breadcrumbsComponent ? '5px' : '5px',
+        paddingTop: '5px',
         height: '3em',
         borderLeft: '1px solid #dbdbdb',
       };
       selectionToolbarComponent = (<ToolbarSelection style={selectionToolbarStyle} />);
 
-      topPanelHeight = 9;
+      topPanelHeight = 6;
 
     } else {
       topPanelHeight = 0.3;
@@ -305,7 +293,6 @@ class Container extends Component {
         </div>
         }
         {breadcrumbsComponent}
-        {middleToolbarComponent}
         {selectionToolbarComponent}
         <div style={bodyContainerStyle}>
           <div style={bodyStyle}>

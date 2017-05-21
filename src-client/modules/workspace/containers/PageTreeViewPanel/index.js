@@ -25,10 +25,11 @@ import {
   PageTreeViewItem,
   PageTreeViewItemText,
   PageTreeViewPlaceholder,
-  PlaceholderCircle
+  PlaceholderCircle,
+  MouseOverOverlay
 } from 'components';
-import { CLIPBOARD_EMPTY } from 'modules/workspace/containers/ClipboardIndicator/actions';
-import { modeMap } from 'modules/workspace/containers/QuickAppendModal/actions';
+import MouseMenuOverlay from '../../../../components/MouseMenuOverlay';
+
 
 const scrollToSelected = function ($frameWindow, key) {
   setTimeout((function (_frameWindow) {
@@ -65,8 +66,20 @@ class Container extends Component {
     this.shouldScroll = true;
     this.scrollToSelected = this.scrollToSelected.bind(this);
     this.handleChangeText = this.handleChangeText.bind(this);
+    this.handleContextMenu = this.handleContextMenu.bind(this);
+    this.handleShowMouseMenu = this.handleShowMouseMenu.bind(this);
+    this.handleHideMouseMenu = this.handleHideMouseMenu.bind(this);
+    this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.handleMouseMenuClick = this.handleMouseMenuClick.bind(this);
     this.handleSetHighlightSelectedKey = this.handleSetHighlightSelectedKey.bind(this);
     this.handleRemoveHighlightSelectedKey = this.handleRemoveHighlightSelectedKey.bind(this);
+    const {deskPageModel} = this.props;
+    const pageGraph = deskPageModel ? graphApi.getWrappedModelByPagePath(deskPageModel.currentPagePath) : {};
+    this.state = {
+      pageGraph,
+      showMouseMenu: false,
+
+    };
   }
 
   componentDidMount () {
@@ -82,9 +95,23 @@ class Container extends Component {
     this.$frameWindow = undefined;
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {deskPageModel} = this.props;
+    const {
+      deskPageModel: newDeskPageModel,
+    } = nextProps;
+    if (newDeskPageModel.reloadPageCounter !== deskPageModel.reloadPageCounter
+      || newDeskPageModel.currentPagePath !== deskPageModel.currentPagePath
+      || newDeskPageModel.markedUpdateCounter !== deskPageModel.markedUpdateCounter
+      || newDeskPageModel.modelUpdateCounter !== deskPageModel.modelUpdateCounter) {
+      this.setState({pageGraph: graphApi.getWrappedModelByPagePath(newDeskPageModel.currentPagePath)});
+    }
+  }
+
   shouldComponentUpdate (nextProps, nextState) {
 
     const {deskPageModel, currentSelectedKeys, isInsertionModeOn} = this.props;
+    const {showMouseMenu, pointX, pointY} = this.state;
     const {
       deskPageModel: newDeskPageModel,
       currentSelectedKeys: newSelectedKeys,
@@ -100,6 +127,9 @@ class Container extends Component {
       || newDeskPageModel.markedUpdateCounter !== deskPageModel.markedUpdateCounter
       || newDeskPageModel.modelUpdateCounter !== deskPageModel.modelUpdateCounter
       || isInsertionModeOn !== nextInsertionModeOn
+      || showMouseMenu !== nextState.showMouseMenu
+      || pointX !== nextState.pointX
+      || pointY !== nextState.pointY
     );
   }
 
@@ -113,25 +143,53 @@ class Container extends Component {
     }
   }
 
+  handleContextMenu (e) {
+      e.stopPropagation();
+      e.preventDefault();
+  }
+
+  handleMouseDown (e) {
+    this.handleHideMouseMenu();
+  }
+
   handlePlaceholderClick = (type) => (nodeKey) => {
-    const {clipboardMode, pasteAfter, pasteBefore, pasteReplace, showQuickAppend} = this.props;
-    if (clipboardMode !== CLIPBOARD_EMPTY) {
-      if (type === 'pasteAfter') {
-        pasteAfter(nodeKey);
-      } else if (type === 'pasteBefore') {
-        pasteBefore(nodeKey);
-      } else if (type === 'pasteReplace') {
-        pasteReplace(nodeKey);
-      }
-    } else {
-      if (type === 'pasteAfter') {
-        showQuickAppend(modeMap.addAfter, nodeKey);
-      } else if (type === 'pasteBefore') {
-        showQuickAppend(modeMap.addBefore, nodeKey);
-      } else if (type === 'pasteReplace') {
-        showQuickAppend(modeMap.replace, nodeKey);
-      }
+    const {handleBefore, handleAfter, handleReplace} = this.props;
+    if (type === 'pasteAfter') {
+      handleAfter(nodeKey);
+    } else if (type === 'pasteBefore') {
+      handleBefore(nodeKey);
+    } else if (type === 'pasteReplace') {
+      handleReplace(nodeKey);
     }
+  };
+
+  handleMouseMenuClick (type, itemKey) {
+    const {currentSelectedKeys} = this.props;
+    const {
+      handleBefore,
+      handleAfter,
+      handleReplace,
+      handleFirst,
+      setForCuttingKeys,
+      setForCopyingKeys,
+      deleteSelected
+    } = this.props;
+    if (type === 'after') {
+      handleAfter(itemKey);
+    } else if (type === 'fefore') {
+      handleBefore(itemKey);
+    } else if (type === 'replace') {
+      handleReplace(itemKey);
+    } else if (type === 'first') {
+      handleFirst(itemKey);
+    } else if (type === 'cut') {
+      setForCuttingKeys(currentSelectedKeys);
+    } else if (type === 'copy') {
+      setForCopyingKeys(currentSelectedKeys);
+    } else if (type === 'delete') {
+      deleteSelected();
+    }
+    this.handleHideMouseMenu();
   };
 
   handleSetHighlightSelectedKey (e) {
@@ -149,6 +207,19 @@ class Container extends Component {
   handleChangeText (text, nodeKey) {
     this.props.changeText(text, nodeKey);
   };
+
+  handleShowMouseMenu (e, itemKey) {
+    this.setState({
+      showMouseMenu: true,
+      pointX: e.pageX,
+      pointY: e.pageY,
+      itemKey,
+    });
+  }
+
+  handleHideMouseMenu () {
+    this.setState({showMouseMenu: false});
+  }
 
   buildNode = (graphNode) => {
 
@@ -242,6 +313,8 @@ class Container extends Component {
         onMouseLeave={this.handleRemoveHighlightSelectedKey}
         isPadding={isInsertionModeOn}
         beforeNamePlaceholder={replacePlaceholder}
+        onShowMouseMenu={this.handleShowMouseMenu}
+        onHideMouseMenu={this.handleHideMouseMenu}
       >
         {inner}
       </PageTreeViewItem>
@@ -250,12 +323,11 @@ class Container extends Component {
 
   render () {
 
-    const {deskPageModel, isInsertionModeOn} = this.props;
-    const pageGraph = graphApi.getWrappedModelByPagePath(deskPageModel.currentPagePath);
+    const {pageGraph, showMouseMenu, pointX, pointY, itemKey} = this.state;
+    const {isInsertionModeOn} = this.props;
 
     let listItems = [];
     if (pageGraph) {
-      let length = pageGraph.children.length;
       pageGraph.children.forEach((child, index) => {
         listItems.push(this.buildNode(child));
         if (isInsertionModeOn) {
@@ -278,6 +350,8 @@ class Container extends Component {
       <div
         ref={me => this.panelElement = me}
         style={panelStyle}
+        onContextMenu={this.handleContextMenu}
+        onMouseDown={this.handleMouseDown}
       >
         <div>
           <ul
@@ -298,6 +372,14 @@ class Container extends Component {
             {listItems}
           </ul>
         </div>
+        <MouseMenuOverlay
+          showMenu={showMouseMenu}
+          pointX={pointX}
+          pointY={pointY}
+          panel={this.panelElement}
+          onMenuItemClick={this.handleMouseMenuClick}
+          itemKey={itemKey}
+        />
       </div>
     );
   }

@@ -57,7 +57,7 @@ export const change = (options, mode) => (dispatch, getState) => {
         } else if (mode === ADD_NEW) {
             let existingPages;
             if (pages && pages.length > 0) {
-                existingPages = pages.filter(p => p.pagePath === pagePath || p.pageName === pageName);
+                existingPages = pages.filter(p => p.pagePath === pagePath);
             }
             if (!existingPages || existingPages.length <= 0) {
                 dispatch(addNewPage(pageName, pagePath));
@@ -71,7 +71,7 @@ export const change = (options, mode) => (dispatch, getState) => {
         } else if (mode === DUPLICATE) {
             let existingPages;
             if (pages && pages.length > 0) {
-                existingPages = pages.filter(p => p.pagePath === pagePath || p.pageName === pageName);
+                existingPages = pages.filter(p => p.pagePath === pagePath);
             }
             if (!existingPages || existingPages.length <= 0) {
                 dispatch(clonePage(pageName, pagePath));

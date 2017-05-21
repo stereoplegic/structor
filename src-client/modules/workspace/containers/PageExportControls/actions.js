@@ -16,62 +16,42 @@
 
 import { bindActionCreators } from 'redux';
 import { graphApi } from 'api';
-import {showModal as confirmModal} from 'modules/app/containers/ConfirmationModal/actions';
+import { showPageExportModal } from 'modules/workspace/containers/PageExportModal/actions';
 
-export const GENERATE_APPLICATION = "PageListPanel/GENERATE_APPLICATION";
+export const GENERATE_APPLICATION = 'PageListPanel/GENERATE_APPLICATION';
 
 export const exportPages = (pages) => (dispatch, getState) => {
-	dispatch(confirmModal(
-		'The source code of the selected pages will be saved into the directory:\n\n' +
-		'`<APP_SRC_DIR>/routes`\n\n' +
-		'**Warning:** The content of this directory will be rewritten',
-		() => {
-			let pagesModel = [];
-			let pageModel;
-			if (pages && pages.length > 0) {
-				pages.forEach(page => {
-					pageModel = graphApi.getPageModelByPagePath(page.pagePath);
-					if (pageModel) {
-						pagesModel.push(pageModel);
-					}
-				});
-			}
-			if (pagesModel.length > 0) {
-				dispatch({type: GENERATE_APPLICATION, payload: {pagesModel, hasApplicationFiles: false}});
-			}
-		}
-	));
+  let pagesModel = [];
+  let pageModel;
+  if (pages && pages.length > 0) {
+    pages.forEach(page => {
+      pageModel = graphApi.getPageModelByPagePath(page.pagePath);
+      if (pageModel) {
+        pagesModel.push(pageModel);
+      }
+    });
+  }
+  if (pagesModel.length > 0) {
+    dispatch({type: GENERATE_APPLICATION, payload: {pagesModel, hasApplicationFiles: false}});
+  }
 };
 
 export const exportApplication = (pages) => (dispatch, getState) => {
-	dispatch(confirmModal(
-		'The source code of the selected pages will be saved into the directory:\n\n' +
-		'`<APP_SRC_DIR>/routes`\n\n' +
-		'The following files will be created in `<APP_SRC_DIR>`\n\n' +
-		'* **store.js** - Redux store\n' +
-		'* **reducers.js** - Redux global reducer combination\n' +
-		'* **sagas.js** - Sagas combination\n' +
-		'* **index.js** - Application main entry file\n\n' +
-		'**Note:** The content of the directory and files will be rewritten\n' +
-		'',
-		() => {
-			let pagesModel = [];
-			let pageModel;
-			if (pages && pages.length > 0) {
-				pages.forEach(page => {
-					pageModel = graphApi.getPageModelByPagePath(page.pagePath);
-					if (pageModel) {
-						pagesModel.push(pageModel);
-					}
-				});
-			}
-			if (pagesModel.length > 0) {
-				dispatch({type: GENERATE_APPLICATION, payload: {pagesModel, hasApplicationFiles: true}});
-			}
-		}
-	));
+  let pagesModel = [];
+  let pageModel;
+  if (pages && pages.length > 0) {
+    pages.forEach(page => {
+      pageModel = graphApi.getPageModelByPagePath(page.pagePath);
+      if (pageModel) {
+        pagesModel.push(pageModel);
+      }
+    });
+  }
+  if (pagesModel.length > 0) {
+    dispatch({type: GENERATE_APPLICATION, payload: {pagesModel, hasApplicationFiles: true}});
+  }
 };
 
 export const containerActions = (dispatch) => bindActionCreators({
-	exportPages, exportApplication
+  showPageExportModal
 }, dispatch);

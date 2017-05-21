@@ -17,28 +17,34 @@
 import * as actions from './actions.js';
 
 const initialState = {
-  show: false,
-  appendMode: {},
-  targetKey: undefined,
+  showPageExportDialog: false,
+  exportMode: null,
+  selectedRoutes: {},
 };
 
 export default (state = initialState, action = {}) => {
 
   const {type, payload} = action;
 
-  if (type === actions.HIDE_MODAL) {
+  if (type === actions.SHOW_MODAL) {
     return Object.assign({}, state, {
-      show: false
+      showPageExportDialog: true,
+      exportMode: payload.exportMode,
     });
   }
 
-  if (type === actions.SHOW_MODAL) {
-    const {appendMode, targetKey} = payload;
+  if (type === actions.HIDE_MODAL) {
     return Object.assign({}, state, {
-      show: true,
-      appendMode,
-      targetKey,
+      showPageExportDialog: false,
+      exportMode: null,
     });
+  }
+
+  if(type === actions.TOGGLE_ROUTE_SELECTION){
+    const {path} = payload;
+    let selectedRoutes = Object.assign({}, state.selectedRoutes);
+    selectedRoutes[path] = !selectedRoutes[path];
+    return Object.assign({}, state, {selectedRoutes});
   }
 
   return state;

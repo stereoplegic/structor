@@ -18,20 +18,12 @@ import {forOwn, isObject} from 'lodash';
 import * as actions from './actions.js';
 
 const initialState = {
-    selectedRoutes: {},
+
 };
 
 export default (state = initialState, action = {}) => {
 
     const {type, payload} = action;
-
-    if(type === actions.TOGGLE_ROUTE_SELECTION){
-        const {path} = payload;
-        let selectedRoutes = Object.assign({}, state.selectedRoutes);
-        selectedRoutes[path] = !selectedRoutes[path];
-        return Object.assign({}, state, {selectedRoutes});
-    }
-
     return state;
 }
 

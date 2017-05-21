@@ -15,9 +15,16 @@
  */
 
 import { createStructuredSelector } from 'reselect';
-import { selectedComponentsSelector } from 'modules/workspace/containers/SelectionControls/selectors';
+import { pagesSelector } from 'modules/workspace/containers/DeskPage/selectors';
+
+export const selectedRoutesSelector = state => state.pageExportModal.selectedRoutes;
+export const exportModeSelector = state => state.pageExportModal.exportMode;
+export const showPageExportDialogSelector = state => state.pageExportModal.showPageExportDialog;
 
 export const modelSelector = createStructuredSelector({
-    componentModel: state => state.componentOptionsPanel,
-    selectedComponents: selectedComponentsSelector,
+  selectedRoutes: selectedRoutesSelector,
+  exportMode: exportModeSelector,
+  showPageExportDialog: showPageExportDialogSelector,
+  pages: pagesSelector,
 });
+

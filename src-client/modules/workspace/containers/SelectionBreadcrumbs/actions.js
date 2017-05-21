@@ -21,12 +21,13 @@ import { updateMarked } from 'modules/workspace/containers/DeskPage/actions';
 
 export const SET_SELECTED_KEY = 'SelectionBreadcrumbs/SET_SELECTED_KEY';
 
-export const setSelectedKey = (key, isModifier) => (dispatch, getState) => {
+export const setSelectedKey = (key, isModifier, button) => (dispatch, getState) => {
   let {selectionBreadcrumbs: {selectedKeys}} = getState();
   let filtered = selectedKeys.filter(selectedKey => key === selectedKey);
-  //console.log('Filtered size: ' + filtered.length);
   if (filtered.length === 0) {
+    // select new component on the page
     if (selectedKeys.length > 0 && !isModifier) {
+      // there are already selected components - we need to clear selection on each
       selectedKeys.forEach(selectedKey => {
         let graphNode = graphApi.getNode(selectedKey);
         if (graphNode) {
@@ -35,6 +36,7 @@ export const setSelectedKey = (key, isModifier) => (dispatch, getState) => {
       });
       selectedKeys = [];
     }
+    // set selection on graph node
     let nextGraphNode = graphApi.getNode(key);
     if (nextGraphNode) {
       nextGraphNode.selected = true;
@@ -46,8 +48,10 @@ export const setSelectedKey = (key, isModifier) => (dispatch, getState) => {
     }
   } else {
     if (selectedKeys.length > 0) {
+      // this component is already is among selected components
       let graphNode = graphApi.getNode(key);
       if (isModifier) {
+        // remove selection from the component if user pressed modifier key
         if (graphNode) {
           graphNode.selected = undefined;
           selectedKeys = selectedKeys.filter(selectedKey => key !== selectedKey);
@@ -57,21 +61,25 @@ export const setSelectedKey = (key, isModifier) => (dispatch, getState) => {
           dispatch(failed('Currently selected component with id \'' + key + '\' was not found'));
         }
       } else {
-        if (graphNode) {
-          selectedKeys.forEach(selectedKey => {
-            let selectedGraphNode = graphApi.getNode(selectedKey);
-            if (selectedGraphNode) {
-              selectedGraphNode.selected = undefined;
-            } else {
-              dispatch(failed('Currently selected component with id \'' + key + '\' was not found'));
-            }
-          });
-          graphNode.selected = true;
-          selectedKeys = [key];
-          dispatch({type: SET_SELECTED_KEY, payload: selectedKeys});
-          dispatch(updateMarked());
-        } else {
-          dispatch(failed('Required to be selected component with id \'' + key + '\' was not found'));
+        if (button === undefined || button === 0) {
+          // user didn't press modifier key - select another component and remove all selection marks
+          // and we will do that only if user click the first button of the mouse or nothing
+          if (graphNode) {
+            selectedKeys.forEach(selectedKey => {
+              let selectedGraphNode = graphApi.getNode(selectedKey);
+              if (selectedGraphNode) {
+                selectedGraphNode.selected = undefined;
+              } else {
+                dispatch(failed('Currently selected component with id \'' + key + '\' was not found'));
+              }
+            });
+            graphNode.selected = true;
+            selectedKeys = [key];
+            dispatch({type: SET_SELECTED_KEY, payload: selectedKeys});
+            dispatch(updateMarked());
+          } else {
+            dispatch(failed('Required to be selected component with id \'' + key + '\' was not found'));
+          }
         }
       }
     }
@@ -156,6 +164,11 @@ export const setSelectedKeys = (keys) => (dispatch, getState) => {
     dispatch({type: SET_SELECTED_KEY, payload: newSelectedKeys});
     dispatch(updateMarked());
   }
+};
+
+export const refreshSelectedKeys = () => (dispatch, getState) => {
+  const {selectionBreadcrumbs: {selectedKeys}} = getState();
+  dispatch({type: SET_SELECTED_KEY, payload: selectedKeys});
 };
 
 export const containerActions = (dispatch) => bindActionCreators({

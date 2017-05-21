@@ -14,10 +14,49 @@
  * limitations under the License.
  */
 
-import { createStructuredSelector } from 'reselect';
+import { createSelector, createStructuredSelector } from 'reselect';
+import { graphApi, utilsStore } from 'api';
+import { selectedKeysSelector } from 'modules/workspace/containers/SelectionBreadcrumbs/selectors';
+import { componentTreeSelector } from 'modules/workspace/containers/LibraryPanel/selectors';
+
+export const selectedComponentsSelector = createSelector(
+  componentTreeSelector,
+  selectedKeysSelector,
+  (tree, keys) => {
+    let result = [];
+    if(keys && keys.length > 0){
+      let selectedNode;
+      let componentDef;
+      let selectedComponent;
+      keys.forEach(key => {
+        selectedNode = graphApi.getNode(key);
+        if (selectedNode) {
+          const {modelNode} = selectedNode;
+          try {
+            componentDef = utilsStore.findComponentDef(tree, modelNode.type, modelNode.namespace);
+            selectedComponent = {
+              key,
+              componentName: modelNode.type,
+              namespace: modelNode.namespace,
+              props: modelNode.props,
+              text: modelNode.text,
+              children: modelNode.children,
+              sourceFilePath: componentDef.absoluteIndexFilePath,
+              defaults: componentDef.defaults,
+            };
+            result.push(selectedComponent);
+          } catch (e) {
+            // do nothing;
+          }
+        }
+      });
+    }
+    return result;
+  }
+);
 
 export const modelSelector = createStructuredSelector({
   componentModel: state => state.selectionControls,
-  selectionBreadcrumbsModel: state => state.selectionBreadcrumbs
+  selectedKeys: selectedKeysSelector,
 });
 

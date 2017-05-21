@@ -74,7 +74,7 @@ function initServer () {
 
 function initProxyServer () {
   if (serverRef) {
-    if (!proxy && config.projectProxyURL()) {
+    if (!proxy) {
       proxy = httpProxy.createProxyServer({});
       proxy.on('error', (err, req, res) => {
         const statusText = 'Proxy server error connecting to ' + config.projectProxyURL() + req.url + ' ' + (err.message ? err.message : err);
@@ -98,10 +98,11 @@ function initProxyServer () {
           next('route');
         } else {
           let proxyURL = config.projectProxyURL();
-          if (proxyURL && proxyURL.length > 0) {
+          if (proxyURL && proxyURL.length > 0 && url.indexOf(proxyURL) >= 0) {
             proxy.web(req, res, {target: proxyURL});
           } else {
-            next('route');
+            // all other requests redirect to deskpage
+            res.redirect('/structor-deskpage' + url.replace('http://', ''));
           }
         }
       });

@@ -41,8 +41,38 @@ class PageTreeViewItem extends Component {
   handleClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (this.props.onSelect) {
-      this.props.onSelect(this.props.itemKey, e.metaKey || e.ctrlKey);
+  };
+
+  handleMouseDownStartTag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const {onSelect, isSelected, itemKey, onShowMouseMenu, onHideMouseMenu} = this.props;
+    if (e.button === 0) {
+      if (onSelect) {
+        onSelect(itemKey, e.metaKey || e.ctrlKey);
+      }
+      onHideMouseMenu();
+    } else if (e.button === 2) {
+      if (onSelect && !isSelected) {
+        onSelect(itemKey, e.metaKey || e.ctrlKey);
+      }
+      onShowMouseMenu(e, itemKey);
+    } else {
+      onHideMouseMenu();
+    }
+  };
+
+  handleMouseDownEndTag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const {onSelect, itemKey, onHideMouseMenu} = this.props;
+    if (e.button === 0) {
+      if (onSelect) {
+        onSelect(itemKey, e.metaKey || e.ctrlKey);
+      }
+      onHideMouseMenu();
+    } else {
+      onHideMouseMenu();
     }
   };
 
@@ -91,6 +121,7 @@ class PageTreeViewItem extends Component {
             <a key={'toplink'}
                href="#"
                onClick={this.handleClick}
+               onMouseDown={this.handleMouseDownStartTag}
                style={linkStyle}
                data-key={itemKey}
                onMouseEnter={onMouseEnter}
@@ -104,7 +135,7 @@ class PageTreeViewItem extends Component {
             { props &&
             <div
               className="text-muted"
-              onClick={this.handleClick}
+              onMouseDown={this.handleMouseDownStartTag}
               style={propsStyle}
             >
               <span>{props}</span>
@@ -119,6 +150,7 @@ class PageTreeViewItem extends Component {
             <a key={'bottomlink'}
                href="#"
                onClick={this.handleClick}
+               onMouseDown={this.handleMouseDownEndTag}
                style={linkStyle}
                data-key={itemKey}
                onMouseEnter={onMouseEnter}
@@ -141,6 +173,7 @@ class PageTreeViewItem extends Component {
             {beforeNamePlaceholder}
             <a href="#"
                onClick={this.handleClick}
+               onMouseDown={this.handleMouseDownStartTag}
                style={linkStyle}
                data-key={itemKey}
                onMouseEnter={onMouseEnter}
@@ -155,6 +188,7 @@ class PageTreeViewItem extends Component {
             <div
               className="text-muted"
               onClick={this.handleClick}
+              onMouseDown={this.handleMouseDownStartTag}
               style={propsStyle}>
               {props}
             </div>

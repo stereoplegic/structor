@@ -18,6 +18,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 
+import PageListControls from 'modules/workspace/containers/PageListControls';
 import SelectionBreadcrumbs from 'modules/workspace/containers/SelectionBreadcrumbs';
 
 const containerStyle = {
@@ -33,6 +34,11 @@ const breadCrumbsStyle = {
   margin: '0px 0.5em 0 0.5em'
 };
 
+const controlsGroupStyle = {
+  padding: '0px',
+  margin: '0px 0px 0px 0.5em'
+};
+
 class Container extends Component {
 
   constructor (props) {
@@ -43,6 +49,7 @@ class Container extends Component {
     return (
       <div style={this.props.style}>
         <div style={containerStyle}>
+          <PageListControls style={controlsGroupStyle}/>
           <SelectionBreadcrumbs style={breadCrumbsStyle}/>
         </div>
       </div>

@@ -28,6 +28,7 @@ export DirPathInput from './DirPathInput';
 export InputComponentAutocomplete from './InputComponentAutocomplete';
 export MetaOptionInput from './MetaOptionInput';
 export MetaOptionsContainer from './MetaOptionsContainer';
+export MouseOverOverlay from './MouseMenuOverlay';
 export NamespaceCard from './NamespaceCard';
 export OptionInput from './OptionInput';
 export PageComponentForm from './PageComponentForm';

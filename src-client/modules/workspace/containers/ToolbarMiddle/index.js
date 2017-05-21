@@ -19,7 +19,6 @@ import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 
 import PageListControls from 'modules/workspace/containers/PageListControls';
-import PageViewControls from 'modules/workspace/containers/PageViewControls';
 import ComponentControls from 'modules/workspace/containers/ComponentControls';
 
 const containerStyle = {
@@ -46,7 +45,6 @@ class Container extends Component {
       <div style={this.props.style}>
         <div style={containerStyle}>
           <PageListControls style={controlsGroupStyle}/>
-          <PageViewControls style={controlsGroupStyle}/>
           <ComponentControls style={controlsGroupStyle}/>
         </div>
       </div>

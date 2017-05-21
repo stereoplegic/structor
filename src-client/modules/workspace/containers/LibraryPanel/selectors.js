@@ -17,7 +17,7 @@
 import {forOwn, uniq} from 'lodash';
 import { createStructuredSelector, createSelector } from 'reselect';
 
-const componentTreeSelector = state => state.libraryPanel.componentTree;
+export const componentTreeSelector = state => state.libraryPanel.componentTree;
 
 export const componentNamesSelector = createSelector(
     componentTreeSelector,

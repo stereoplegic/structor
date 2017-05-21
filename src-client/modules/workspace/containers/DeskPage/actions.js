@@ -23,24 +23,23 @@ import {
   resetClipboardKeys
 } from 'modules/workspace/containers/ClipboardIndicator/actions';
 import {
-  pasteBefore,
-  pasteAfter,
-  pasteFirst,
-  pasteLast,
-  pasteReplace
+  handleBefore,
+  handleFirst,
+  handleLast,
+  handleAfter,
+  handleReplace
 } from 'modules/workspace/containers/ClipboardControls/actions';
 import {
   setSelectedKey,
   resetSelectedKeys,
-  setSelectedParentKey
+  setSelectedParentKey,
+  setHighlightSelectedKey
 } from 'modules/workspace/containers/SelectionBreadcrumbs/actions';
 import {
   cloneSelected,
   deleteSelected
 } from 'modules/workspace/containers/SelectionControls/actions';
-import { loadOptionsAndShowModal } from 'modules/workspace/containers/ComponentOptionsModal/actions';
 import { pushHistory, popHistory } from 'modules/workspace/containers/HistoryControls/actions';
-import { showModal as showQuickAppend } from 'modules/workspace/containers/QuickAppendModal/actions';
 
 export const SET_PAGES = 'DeskPage/SET_PAGES';
 export const RELOAD_PAGE = 'DeskPage/RELOAD_PAGE';
@@ -145,7 +144,7 @@ export const changePageOptions = (pageName, pagePath) => (dispatch, getState) =>
     if (pagePath !== currentPagePath || pageName !== currentPageName) {
       dispatch(pushHistory());
       let pageList;
-      var firstChar = pageName.charAt(0).toUpperCase();
+      let firstChar = pageName.charAt(0).toUpperCase();
       pageName = firstChar + pageName.substr(1);
       pageList = graphApi.changePagePathAndName(currentPagePath, pagePath, pageName);
       if (pageList) {
@@ -207,20 +206,19 @@ export const resetPages = () => (dispatch, getState) => {
 
 export const containerActions = (dispatch) => bindActionCreators({
   loadPage,
-  loadOptionsAndShowModal,
   pageLoaded,
   setSelectedKey,
   setSelectedParentKey,
   changePageRouteFeedback,
   setForCuttingKeys,
   setForCopyingKeys,
-  pasteBefore,
-  pasteAfter,
-  pasteFirst,
-  pasteLast,
-  pasteReplace,
+  handleBefore,
+  handleFirst,
+  handleLast,
+  handleAfter,
+  handleReplace,
   cloneSelected,
   deleteSelected,
-  showQuickAppend,
-  popHistory
+  popHistory,
+  setHighlightSelectedKey
 }, dispatch);

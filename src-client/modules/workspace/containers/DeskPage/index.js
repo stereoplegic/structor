@@ -19,7 +19,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
-import { modeMap } from '../QuickAppendModal/actions.js';
 import { graphApi } from 'api';
 
 let lastWaitTimer = undefined;
@@ -54,10 +53,9 @@ class Container extends Component {
     }
 
     const {loadPage, pageLoaded} = this.props;
-    const {setForCuttingKeys, setForCopyingKeys, setSelectedParentKey} = this.props;
-    const {pasteBefore, pasteAfter, pasteFirst, pasteLast, pasteReplace} = this.props;
-    const {cloneSelected, deleteSelected} = this.props;
-    const {showQuickAppend} = this.props;
+    const {setForCuttingKeys, setForCopyingKeys, setSelectedKey} = this.props;
+    const {handleBefore, handleFirst, handleLast, handleAfter, handleReplace} = this.props;
+    const {cloneSelected, deleteSelected, setHighlightSelectedKey} = this.props;
     loadPage();
     this.contentDocument = this.frameWindow.contentDocument;
     this.contentWindow = this.frameWindow.contentWindow;
@@ -68,77 +66,35 @@ class Container extends Component {
       this.contentWindow.onPageDidMount = (page) => {
         this.page = page;
 
-        page.bindOnComponentMouseDown(this.handleComponentClick);
-        page.bindOnPathnameChanged(this.handlePathnameChanged);
-        page.bindGetPagePath(pathname => graphApi.getPagePath(pathname));
-        page.bindGetPageModel(pathname => graphApi.getWrappedModelByPagePath(pathname));
-        page.bindGetMarked(pathname => graphApi.getMarkedKeysByPagePath(pathname));
-        page.bindGetMode(() => {return this.props.componentModel.isEditModeOn;});
-        page.bindGetShowBlueprintButtons(() => this.props.showBlueprintButtons);
+        if (page) {
+          let context = page.getContext();
+          context.setGetter('pagePath', pathname => graphApi.getPagePath(pathname));
+          context.setGetter('pageModel', pathname => graphApi.getWrappedModelByPagePath(pathname));
+          context.setGetter('marked', pathname => graphApi.getMarkedKeysByPagePath(pathname));
+          context.setGetter('mode', () => this.props.componentModel.isEditModeOn);
+          context.setGetter('parentList', (selectedKey) => graphApi.getParentsList(selectedKey));
 
-        page.bindToState('onCut', (key, isModifier) => {
-          setForCuttingKeys([key]);
-        });
-        page.bindToState('onCopy', (key, isModifier) => {
-          setForCopyingKeys([key]);
-        });
-        page.bindToState('onClone', (key, isModifier) => {
-          cloneSelected();
-        });
-        page.bindToState('onDelete', (key, isModifier) => {
-          deleteSelected();
-        });
 
-        page.bindToState('onBefore', (key, isModifier) => {
-          const {clipboardIndicatorModel: {clipboardKeys}} = this.props;
-          if (clipboardKeys && clipboardKeys.length > 0) {
-            pasteBefore(key);
-          } else {
-            showQuickAppend(modeMap.addBefore);
-          }
-        });
-        page.bindToState('onAfter', (key, isModifier) => {
-          const {clipboardIndicatorModel: {clipboardKeys}} = this.props;
-          if (clipboardKeys && clipboardKeys.length > 0) {
-            pasteAfter(key);
-          } else {
-            showQuickAppend(modeMap.addAfter);
-          }
-        });
-        page.bindToState('onFirst', (key, isModifier) => {
-          const {clipboardIndicatorModel: {clipboardKeys}} = this.props;
-          if (clipboardKeys && clipboardKeys.length > 0) {
-            pasteFirst(key);
-          } else {
-            showQuickAppend(modeMap.insertFirst);
-          }
-        });
-        page.bindToState('onLast', (key, isModifier) => {
-          const {clipboardIndicatorModel: {clipboardKeys}} = this.props;
-          if (clipboardKeys && clipboardKeys.length > 0) {
-            pasteLast(key);
-          } else {
-            showQuickAppend(modeMap.insertLast);
-          }
-        });
-        page.bindToState('onReplace', (key, isModifier) => {
-          const {clipboardIndicatorModel: {clipboardKeys}} = this.props;
-          if (clipboardKeys && clipboardKeys.length > 0) {
-            pasteReplace(key);
-          } else {
-            showQuickAppend(modeMap.replace);
-          }
-        });
-        page.bindToState('onSelectParent', (key, isModifier) => {
-          setSelectedParentKey(key, isModifier);
-        });
+          context.addListener('componentClick.desk', this.handleComponentClick);
+          context.addListener('pathnameChanged.desk', this.handlePathnameChanged);
+          context.addListener('cut.desk', (keys) => { setForCuttingKeys(keys); });
+          context.addListener('copy.desk', (keys) => { setForCopyingKeys(keys); });
+          context.addListener('clone.desk', () => { cloneSelected(); });
+          context.addListener('delete.desk', () => { deleteSelected(); });
+          context.addListener('before.desk', () => { handleBefore(); });
+          context.addListener('after.desk', () => { handleAfter(); });
+          context.addListener('first.desk', () => { handleFirst(); });
+          context.addListener('last.desk', () => { handleLast(); });
+          context.addListener('replace.desk', () => { handleReplace(); });
+          context.addListener('select.desk', (key) => { setSelectedKey(key); });
+          context.addListener('highlight.desk', (key, isHighlighted) => { setHighlightSelectedKey(key, isHighlighted)});
+        }
 
       };
 
       const initPage = () => {
         this.contentWindow.__createPageDesk();
         wait(() => this.contentWindow.pageReadyState === 'initialized', pageLoaded);
-        //pageLoaded();
       };
       wait(() => this.contentWindow.pageReadyState === 'ready', initPage);
     });
@@ -158,10 +114,9 @@ class Container extends Component {
       this.frameWindow.src = '/structor-deskpage' + newComponentModel.currentPagePath;
     } else if (newComponentModel.pagePathToChange != null
       && newComponentModel.pagePathToChange != componentModel.pagePathToChange) {
-      if (this.contentWindow) {
+      if (this.page) {
         // only when page is already loaded
-        // console.log('Switching to path: ' + newComponentModel.pagePathToChange);
-        this.contentWindow.__switchToPath(newComponentModel.pagePathToChange);
+        this.page.changePath(newComponentModel.pagePathToChange);
       }
     }
   }
@@ -188,8 +143,6 @@ class Container extends Component {
     const {componentModel: newComponentModel} = nextProps;
     return (
       nextProps.style.width !== this.props.style.width
-      //|| newComponentModel.reloadPageCounter !== componentModel.reloadPageCounter
-      //|| newComponentModel.pagePathToChange !== componentModel.pagePathToChange
       || newComponentModel.isEditModeOn !== componentModel.isEditModeOn
       || newComponentModel.markedUpdateCounter !== componentModel.markedUpdateCounter
       || newComponentModel.modelUpdateCounter !== componentModel.modelUpdateCounter
@@ -202,29 +155,25 @@ class Container extends Component {
       if (this.doUpdatePageModel) {
         const {componentModel} = this.props;
         //console.log('Updating page model: ' + componentModel.currentPagePath);
-        this.page.updatePageModel({pathname: componentModel.currentPagePath});
+        this.page.updatePageModel({
+          pathname: componentModel.currentPagePath,
+        });
       }
       if (this.doUpdateMarks) {
         const {componentModel} = this.props;
         //console.log('Updating marked only');
-        this.page.updateMarks({pathname: componentModel.currentPagePath});
+        this.page.updateMarks({
+          pathname: componentModel.currentPagePath
+        });
       }
     }
   }
 
-  handleComponentClick (key, isModifier) {
+  handleComponentClick (key, isModifier, button) {
     const {
-      selectionBreadcrumbsModel: {selectedKeys},
       setSelectedKey,
-      loadOptionsAndShowModal,
-      currentComponent,
-      showBlueprintButtons
     } = this.props;
-    if (!showBlueprintButtons && selectedKeys && selectedKeys.length > 0 && includes(selectedKeys, key)) {
-      loadOptionsAndShowModal(currentComponent);
-    } else {
-      setSelectedKey(key, isModifier);
-    }
+    setSelectedKey(key, isModifier, button);
   }
 
   handlePathnameChanged (pathname) {
@@ -333,7 +282,7 @@ class Container extends Component {
       <iframe
         ref={me => this.frameWindow = me}
         style={this.props.style}
-        src="/structor-deskpage"
+        src={'/structor-deskpage/'}
       />
     );
   }
