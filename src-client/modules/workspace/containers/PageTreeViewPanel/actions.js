@@ -22,6 +22,13 @@ import {
   handleAfter,
   handleReplace
 } from 'modules/workspace/containers/ClipboardControls/actions';
+import {
+  setForCuttingKeys,
+  setForCopyingKeys
+} from 'modules/workspace/containers/ClipboardIndicator/actions';
+import {
+  deleteSelected
+} from 'modules/workspace/containers/SelectionControls/actions';
 import { graphApi } from 'api';
 import { pushHistory } from 'modules/workspace/containers/HistoryControls/actions';
 import { updatePage } from 'modules/workspace/containers/DeskPage/actions';
@@ -41,11 +48,14 @@ export const changeText = (newText, selectedKey) => (dispatch, getState) => {
 
 export const containerActions = (dispatch) => bindActionCreators({
   setSelectedKey,
+  setForCuttingKeys,
+  setForCopyingKeys,
   changeText,
   handleBefore,
   handleFirst,
   handleLast,
   handleAfter,
   handleReplace,
-  setHighlightSelectedKey
+  setHighlightSelectedKey,
+  deleteSelected
 }, dispatch);
