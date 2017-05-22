@@ -70,7 +70,8 @@ function callControllerMethod (controller, req, res) {
 }
 
 export function initServer (options) {
-  const {serverDir, projectDir, portNumber, debugMode, io} = options;
+  const {serverDir, projectDir, portNumber, debugMode, io, host} = options;
+  const hostname = host || 'localhost';
   serverDirPath = serverDir;
   projectDirPath = projectDir;
   return config.init(projectDir, serverDir, debugMode)
@@ -89,10 +90,10 @@ export function initServer (options) {
           });
         }
 
-        server.appServer.listen(portNumber, () => {
+        server.appServer.listen(portNumber, hostname, () => {
           if (status === config.READY) {
             console.log('Structor has been started successfully.');
-            console.log(`\nOpen in the browser: http://localhost:${portNumber}/structor\n`);
+            console.log(`\nOpen in the browser: http://${hostname}:${portNumber}/structor\n`);
           }
         });
 
