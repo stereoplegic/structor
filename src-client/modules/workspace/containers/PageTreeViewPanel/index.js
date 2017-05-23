@@ -176,7 +176,7 @@ class Container extends Component {
     } = this.props;
     if (type === 'after') {
       handleAfter(itemKey);
-    } else if (type === 'fefore') {
+    } else if (type === 'before') {
       handleBefore(itemKey);
     } else if (type === 'replace') {
       handleReplace(itemKey);
