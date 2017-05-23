@@ -1,6 +1,7 @@
 # Structor's User Guide
 
 * [Getting Started](https://github.com/ipselon/structor/blob/master/docs#getting-started)
+* [Integrating with Create React App](https://github.com/ipselon/structor/blob/master/docs/integrating-with-create-react-app.md)
 * [Designing UI](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#designing-ui)
     * [A component model](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#a-component-model)
     * [Combine and modify component models](https://github.com/ipselon/structor/blob/master/docs/designing-ui.md#combine-and-modify-component-models)
