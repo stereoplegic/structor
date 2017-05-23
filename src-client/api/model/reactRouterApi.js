@@ -26,7 +26,7 @@ export function getAvailableRoute (existingRoutes, checkPathname) {
     } else {
       const match = reg.exec(checkPathname);
       if (match && match.length > 0) {
-        candidateRootKey = existingRoutes.find(i => match[1].indexOf(i) >= 0);
+        candidateRootKey = existingRoutes.find(i => match[1] === i);
       }
     }
   }
