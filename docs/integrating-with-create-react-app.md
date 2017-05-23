@@ -32,11 +32,11 @@ In case you missed, Structor does not depend on any starter/seed/boilerplate pro
 Instead it can be integrated with any other project. But there is a requirement to the structure of the source code.
 
 > **Note** Structor uses a self-contained structure for React/Redux components. 
-You may learn more about this structure from the [Working with code](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#working-with-code) chapter. 
+You may learn more about this structure from the [Working with code](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#working-with-code) chapter of the Structor's User Guide. 
 And if you are going to use the source code generators in Structor or install presets of components from Structor Market, 
 you should use the recommended source code structure.
 
-An integration point with the project's source code is a root directory of that source code. 
+An integration point with a project is a root directory of the source code. 
 Webpack 2 in the Structor's guts wants to know where all files are and how they are related to each other. 
 
 That's why Structor is asking you about the source root directory during the installation, 
@@ -50,7 +50,7 @@ so we have to make `resolve.modules` consistent in CRA and Structor.
 As you may know, it's not possible to change Webpack's config in CRA manually. 
 But there is a way to do that through the `NODE_PATH` environment variable.   
 
-From this point I suggest to run thought a brief tutorial 
+From this point I suggest to run a brief tutorial 
 where we will learn how to build a simple component in Structor, and then import this component into our CRA project. 
 
 ### Installation and creating an app
@@ -111,7 +111,7 @@ Click on the plus icon in left vertical toolbar and find `Install` button on the
   <img width="60%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/integrate-with-cra-install-button.png" />
 </p>
 
-Here we can see the marketplace where we have install `mui-next-spkg` components preset.
+Here we can see the marketplace from which we should install `mui-next-spkg` components preset.
 
 <p align="center">
   <img width="60%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/integrate-with-cra-market.png" />
@@ -125,7 +125,7 @@ instead we just select the page with the already prepared prototype of our new c
 </p>
 
 If we try to click somewhere on the page we can see that we can select components on the page and somehow manipulate them. 
-This tutorial is not intended to teach how to create UI in Structor, but if you want to learn about this please read [Getting Started](https://github.com/ipselon/structor/blob/master/docs#getting-started) chapter of User Guide.   
+This tutorial is not intended to teach how to create UI in Structor, but if you want to learn about this please read the [Getting Started](https://github.com/ipselon/structor/blob/master/docs#getting-started) chapter of the Structor's User Guide.   
 
 Now we need to select a root element of our new React component on the page. 
 Click on the code icon in the left vertical toolbar and find `ThemeProvider` component in the bottom tree view.
@@ -134,8 +134,8 @@ Click on the code icon in the left vertical toolbar and find `ThemeProvider` com
   <img width="60%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/integrate-with-cra-treeview.png" />
 </p>
 
-Keep `ThemeProvider` selected find and click on the `New Component` button in the top toolbar. 
-Here we should choose what type of component we want to generate. Choose `react-component` generator.
+Keeping `ThemeProvider` selected, find and click on the `New Component` button in the top toolbar. 
+Here we should choose what type of component we want to generate. Choose a `react-component` generator.
 
 <p align="center">
   <img width="60%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/integrate-with-cra-generators.png" />
@@ -143,7 +143,7 @@ Here we should choose what type of component we want to generate. Choose `react-
 
 On the first page of the generator wizard type `MyNotes` in the name field. And type `Tutorial` in the namespace field.
 
-> To learn more about the structure of the generated source code please read [Working with code](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#working-with-code) chapter of User Guide.
+> To learn more about the structure of the generated source code please read the [Working with code](https://github.com/ipselon/structor/blob/master/docs/working-with-code.md#working-with-code) chapter of the Structor's User Guide.
 
 <p align="center">
   <img width="60%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/integrate-with-cra-component-name.png" />
@@ -151,7 +151,7 @@ On the first page of the generator wizard type `MyNotes` in the name field. And 
 
 Do not change any options in the following steps of the wizard. Just click on `Install component` in the last step.
 
-Now we will see that we have `MyNotes` component instead of `ThemeProvider`.
+Now we will see that we have `MyNotes` component instead of `ThemeProvider` on the page.
  
 At this point we should change the components source code to make it functional. 
 
