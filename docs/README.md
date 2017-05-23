@@ -112,7 +112,7 @@ Installation process will take some time because Structor installs dependencies 
 
 Let's start to compose something interesting. Make sure that the current page is `/home` page and click somewhere on the text in the center of the page. You'll see that a border appeared around some area - it means that you selected a component. There is a few ways to understand what the component is selected now.
 
-We may find it in a breadcrumbs control at the top of the workspace as it is shown on the screenshot below. Or you can take a look at the blueprint buttons which appeared at the place you clicked. 
+We may find it in a breadcrumbs control at the top of the workspace as it is shown on the screenshot below. Or you can take a look at the context menu which appeared at the place you clicked right mouse button. 
 
 <p align="center">
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-breadcrumbs.png" />
@@ -132,17 +132,13 @@ There is a requirement in the Material UI lib to place `MuiThemeProvider` as a r
 
 Just open the `MUI` group in the library panel and click on `ThemeProvider` item in the list. We will see that there is a sublist. The sublist in the library shows that this component has several models. Let's click on `default` model and see that `ThemeProvider` component's model was copied to clipboard.
 
-<p align="center">
-  <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-treeview-panel.png" />
-</p>
-
 Now we have to replace `h3` component in the tree with the component from clipboard. If you do not have `h3` selected, select it by clicking on it on the page or just select on the treeview (or in the breadcrumbs control).
 
 <p align="center">
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-add-component.png" />
 </p>
 
-Then find `Replace` button in the top toolbar, or find a blueprint button on the page which tells `Replace selected`.
+Then find `Replace` button in the top toolbar, or click right mouse and hit a `Replace` button in the context menu.
 
 <p align="center">
   <img width="70%" src="https://raw.githubusercontent.com/ipselon/structor/master/docs/img/first-tutorial-replace-buttons.png" />
@@ -156,7 +152,7 @@ As the result we will have the composition as it is shown on the screenshot belo
 
 Now replace a `Placeholder` component on the page with `raised primary` model of `Button` component. And then place `h2` component (from __HTML__ group) before `Button` inside of `LayoutItem` component. 
 
-Placing a component before or after another component can be provided in the same manner as we were replacing components - you have to pick a component from the library and then use `Before` or `After` button in the top toolbar or blueprint buttons for selected component.
+Placing a component before or after another component can be provided in the same manner as we were replacing components - you have to pick a component from the library and then use `Before` or `After` button in the top toolbar or context menu for selected component.
 
 In the result we should have the following composition:
 
