@@ -41,6 +41,8 @@ if(argv['p']){
     }
 }
 
+var host = argv['h'] || 'localhost';
+
 var workingDir = process.cwd();
 if(argv['d']){
     if(path.isAbsolute(argv['d'])){
@@ -52,4 +54,4 @@ if(argv['d']){
 
 var debugMode = argv['v'];
 
-controller.initServer({ serverDir: __dirname, projectDir: workingDir, portNumber: portNumber, debugMode: debugMode, io: io });
+controller.initServer({ serverDir: __dirname, projectDir: workingDir, portNumber: portNumber, debugMode: debugMode, io: io, host: host });
