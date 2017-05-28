@@ -45,6 +45,11 @@ class Container extends Component {
       const {componentName, namespace} = selectedComponents[0];
       loadReadmeText(componentName, namespace);
     }
+    marked.setOptions({
+      highlight: function (code) {
+        return hljs.highlightAuto(code).value;
+      }
+    });
   }
 
   componentWillReceiveProps (nextProps) {
