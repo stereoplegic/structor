@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-// import { matchPattern, formatPattern, getParams } from 'react-router/lib/PatternUtils.js';
-
 const reg = /(\/.+?)(?:#|\?|$)/;
 
 export function getAvailableRoute (existingRoutes, checkPathname) {
