@@ -20,8 +20,8 @@ export const SET_README_TEXT = "ComponentReadmePanel/SET_README_TEXT";
 
 export const loadReadmeText = (componentName, namespace) =>
   ({type: LOAD_README_TEXT, payload: {componentName, namespace}});
-export const setReadmeText = (readmeText) =>
-  ({type: SET_README_TEXT, payload: readmeText});
+export const setReadmeText = (readmeText, propNames) =>
+  ({type: SET_README_TEXT, payload: {readmeText, propNames}});
 
 export const containerActions = (dispatch) => bindActionCreators({
   loadReadmeText

@@ -63,10 +63,11 @@ class Container extends Component {
     this.handleToggleFavorite = this.handleToggleFavorite.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const {componentModel} = nextProps;
-    if (componentModel !== this.props.componentModel) {
-      coockiesApi.saveDeskSettings({optionsPanel: componentModel});
+  componentWillReceiveProps (nextProps) {
+    const {componentModel: nextComponentModel, readmeText: nextReadmeText} = nextProps;
+    const {componentModel, readmeText} = this.props;
+    if (nextComponentModel !== componentModel) {
+      coockiesApi.saveDeskSettings({optionsPanel: nextComponentModel});
     }
   }
 
@@ -126,16 +127,17 @@ class Container extends Component {
 
     const {
       selectedComponents,
-      componentModel: {activeTab, expandedStyleSections, favoriteStylePaths}
+      componentModel: {activeTab, expandedStyleSections, favoriteStylePaths},
+      propNames
     } = this.props;
 
     let panelContent = null;
 
     if (selectedComponents && selectedComponents.length > 0) {
-      let key = "selectedComponents";
+      let key = 'selectedComponents';
       let props = {};
       selectedComponents.forEach(componentObject => {
-          props = merge(props, componentObject.props);
+        props = merge(props, componentObject.props);
       });
 
       let styleSections = [];
@@ -277,7 +279,7 @@ class Container extends Component {
         }
       });
       if (favoriteStyleInputs.length > 0) {
-        if (expandedStyleSections["favoriteStyleGroup"] === true) {
+        if (expandedStyleSections['favoriteStyleGroup'] === true) {
           collapsed = 'in';
         } else {
           collapsed = '';
@@ -372,7 +374,9 @@ class Container extends Component {
           <div style={{position: 'relative', marginTop: '1em'}}>
             <CollapsiblePlusOptionInput
               style={{width: '100%', zIndex: '1030', marginBottom: '0.5em'}}
-              onCommit={this.handleAddNewProp}/>
+              optionNames={propNames}
+              onCommit={this.handleAddNewProp}
+            />
           </div>
           {optionInputs}
         </Tab>

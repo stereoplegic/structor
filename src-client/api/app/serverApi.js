@@ -51,7 +51,7 @@ export function loadComponentOptions(componentName, namespace, sourceCodeFilePat
 	let result = {};
 	return invokeStructor('getComponentNotes', {componentName, namespace})
 		.then(response => {
-			result.readmeText = response;
+			result.readmeText = response.readmeText;
 			if (sourceCodeFilePath) {
 				return invokeStructor('getComponentSourceCode', {filePath: sourceCodeFilePath})
 					.then(response => {
@@ -64,7 +64,7 @@ export function loadComponentOptions(componentName, namespace, sourceCodeFilePat
 		});
 }
 
-export function loadComponentReadmeText(componentName, namespace) {
+export function loadComponentNotes(componentName, namespace) {
   return invokeStructor('getComponentNotes', {componentName, namespace});
 }
 

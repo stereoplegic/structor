@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
+import marked from 'marked';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { modelSelector } from './selectors.js';
 import { containerActions } from './actions.js';
-import marked from 'marked';
 
 const panelStyle = {
   padding: '1em 1em 1em 1em',
@@ -39,30 +39,9 @@ class Container extends Component {
     this.state = {readmeText: undefined};
   }
 
-  componentDidMount () {
-    const {selectedComponents, loadReadmeText} = this.props;
-    if (selectedComponents.length === 1) {
-      const {componentName, namespace} = selectedComponents[0];
-      loadReadmeText(componentName, namespace);
-    }
-    marked.setOptions({
-      highlight: function (code) {
-        return hljs.highlightAuto(code).value;
-      }
-    });
-  }
-
   componentWillReceiveProps (nextProps) {
-    const {selectedComponents, loadReadmeText, readmeText} = this.props;
-    const {selectedComponents: nextComponents, readmeText: nextReadmeText} = nextProps;
-    if (nextComponents && selectedComponents !== nextComponents) {
-      if (nextComponents.length === 1) {
-        const {componentName, namespace} = nextComponents[0];
-        loadReadmeText(componentName, namespace);
-      } else {
-        this.setState({readmeText: undefined});
-      }
-    }
+    const {readmeText} = this.props;
+    const {readmeText: nextReadmeText} = nextProps;
     if (nextReadmeText !== readmeText) {
       this.setState({readmeText: nextReadmeText});
     }
@@ -71,9 +50,15 @@ class Container extends Component {
   render () {
     const {readmeText} = this.state;
     const validText = readmeText && readmeText.length > 0 ? readmeText : notAvailableText;
+    const html = marked(validText, {
+      highlight: function (code) {
+        return hljs.highlightAuto(code).value;
+      }
+    });
+
     return (
       <div style={panelStyle}>
-        <div dangerouslySetInnerHTML={{__html: marked(validText)}} />
+        <div dangerouslySetInnerHTML={{__html: html}} />
       </div>
     );
   }

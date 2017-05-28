@@ -74,7 +74,6 @@ class Container extends Component {
           context.setGetter('mode', () => this.props.componentModel.isEditModeOn);
           context.setGetter('parentList', (selectedKey) => graphApi.getParentsList(selectedKey));
 
-
           context.addListener('componentClick.desk', this.handleComponentClick);
           context.addListener('pathnameChanged.desk', this.handlePathnameChanged);
           context.addListener('cut.desk', (keys) => { setForCuttingKeys(keys); });

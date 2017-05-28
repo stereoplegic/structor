@@ -18,6 +18,7 @@ import * as actions from './actions.js';
 
 const initialState = {
   readmeText: '',
+  propNames: [],
 };
 
 export default (state = initialState, action = {}) => {
@@ -26,7 +27,8 @@ export default (state = initialState, action = {}) => {
 
   if (type === actions.SET_README_TEXT) {
     return Object.assign({}, state, {
-      readmeText: payload
+      readmeText: payload.readmeText,
+      propNames: payload.propNames,
     });
   }
 

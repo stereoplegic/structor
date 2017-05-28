@@ -18,6 +18,7 @@ import express from 'express';
 import rewrite from 'express-urlrewrite';
 import httpProxy from 'http-proxy';
 import { sortBy } from 'lodash';
+import marked from 'marked';
 import { config, storage, commons, gengine } from 'structor-commons';
 import * as gengineManager from '../commons/gengine';
 import * as middlewareCompilerManager from './middlewareCompilerManager.js';
@@ -153,7 +154,22 @@ export function writeComponentDefaults (options) {
 }
 
 export function getComponentNotes (options) {
-  return storage.readComponentDocument(options.componentName, options.namespace);
+  const {componentName, namespace} = options;
+  return storage.readComponentDocument(componentName, namespace)
+    .then(readmeText => {
+      let propNames = [];
+      if (readmeText && readmeText.length > 0) {
+        marked(readmeText, {
+          highlight: function (code) {
+            if (code && code.length > 0 && code.indexOf(`${componentName}.propTypes`) >= 0) {
+              const ast = commons.parse(code);
+              propNames = commons.getObjectAssignmentPropNames(ast);
+            }
+          }
+        });
+      }
+      return {readmeText, propNames};
+    });
 }
 
 export function getComponentSourceCode (options) {

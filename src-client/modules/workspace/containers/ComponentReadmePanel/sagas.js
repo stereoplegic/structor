@@ -24,8 +24,8 @@ function* loadReadmeText(){
     const { payload } = yield take(actions.LOAD_README_TEXT);
     try {
       const {componentName, namespace} = payload;
-      const readmeText = yield call(serverApi.loadComponentReadmeText, componentName, namespace);
-      yield put(actions.setReadmeText(readmeText));
+      const componentNotes = yield call(serverApi.loadComponentNotes, componentName, namespace);
+      yield put(actions.setReadmeText(componentNotes.readmeText, componentNotes.propNames));
     } catch(error) {
       yield put(messageActions.failed('Loading readme. Error: ' + (error.message ? error.message : error)));
     }

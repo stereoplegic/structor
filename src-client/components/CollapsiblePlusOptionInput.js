@@ -15,16 +15,13 @@
  */
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Collapse, Panel } from 'react-bootstrap';
-import { getStylePropList } from 'api/utils/styleProps.js';
 
 class CollapsiblePlusOptionInput extends Component {
 
   constructor (props) {
     super(props);
     this.state = {};
-    this.styleProps = getStylePropList();
     this.handleToggle = this.handleToggle.bind(this);
     this.handleCommit = this.handleCommit.bind(this);
     this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
@@ -59,19 +56,15 @@ class CollapsiblePlusOptionInput extends Component {
 
   render () {
 
-    //let addInputStyle = {
-    //    height: '1.55em',
-    //    paddingTop: '2px',
-    //    paddingBottom: '2px',
-    //    marginBottom: '0.5em'
-    //};
-
-    let styleOptions = [];
-    this.styleProps.forEach(style => {
-      styleOptions.push(
-        <option key={style}>{style}</option>
-      );
-    });
+    let options = [];
+    const {optionNames} = this.props;
+    if (optionNames && optionNames.length > 0) {
+      optionNames.forEach((optionName, index) => {
+        options.push(
+          <option key={optionName + index}>{optionName}</option>
+        );
+      });
+    }
 
     return (
       <div style={this.props.style}>
@@ -94,7 +87,7 @@ class CollapsiblePlusOptionInput extends Component {
                        placeholder="prop[.prop]"
                        type="text"
                        autoComplete="on"
-                       list="styleOptions"
+                       list="options"
                        className="form-control"
                        onKeyDown={this.handleOnKeyDown}/>
                 <label style={{marginTop: '5px'}}>Property value</label>
@@ -110,8 +103,8 @@ class CollapsiblePlusOptionInput extends Component {
                   <span>Add</span>
                 </button>
               </Panel>
-              <datalist id="styleOptions">
-                {styleOptions}
+              <datalist id="options">
+                {options}
               </datalist>
             </form>
           </div>

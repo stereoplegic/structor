@@ -18,6 +18,7 @@ import { bindActionCreators } from 'redux';
 import { graphApi } from 'api';
 import { success, failed, timeout, close } from 'modules/app/containers/AppMessage/actions';
 import { updateMarked } from 'modules/workspace/containers/DeskPage/actions';
+import { loadReadmeText } from 'modules/workspace/containers/ComponentReadmePanel/actions';
 
 export const SET_SELECTED_KEY = 'SelectionBreadcrumbs/SET_SELECTED_KEY';
 
@@ -84,6 +85,11 @@ export const setSelectedKey = (key, isModifier, button) => (dispatch, getState) 
       }
     }
   }
+  if (selectedKeys && selectedKeys.length > 0) {
+    let graphNode = graphApi.getNode(selectedKeys[0]);
+    const {modelNode} = graphNode;
+    dispatch(loadReadmeText(modelNode.type, modelNode.namespace));
+  }
 };
 
 export const setSelectedParentKey = (key, isModifier) => (dispatch, getState) => {
@@ -136,6 +142,11 @@ export const resetSelectedKeys = () => (dispatch, getState) => {
     });
     dispatch({type: SET_SELECTED_KEY, payload: newSelectedKeys});
     dispatch(updateMarked());
+    if (newSelectedKeys && newSelectedKeys.length > 0) {
+      let graphNode = graphApi.getNode(newSelectedKeys[0]);
+      const {modelNode} = graphNode;
+      dispatch(loadReadmeText(modelNode.type, modelNode.namespace));
+    }
   }
 };
 
@@ -163,12 +174,22 @@ export const setSelectedKeys = (keys) => (dispatch, getState) => {
     });
     dispatch({type: SET_SELECTED_KEY, payload: newSelectedKeys});
     dispatch(updateMarked());
+    if (newSelectedKeys && newSelectedKeys.length > 0) {
+      let graphNode = graphApi.getNode(newSelectedKeys[0]);
+      const {modelNode} = graphNode;
+      dispatch(loadReadmeText(modelNode.type, modelNode.namespace));
+    }
   }
 };
 
 export const refreshSelectedKeys = () => (dispatch, getState) => {
   const {selectionBreadcrumbs: {selectedKeys}} = getState();
   dispatch({type: SET_SELECTED_KEY, payload: selectedKeys});
+  if (selectedKeys && selectedKeys.length > 0) {
+    let graphNode = graphApi.getNode(selectedKeys[0]);
+    const {modelNode} = graphNode;
+    dispatch(loadReadmeText(modelNode.type, modelNode.namespace));
+  }
 };
 
 export const containerActions = (dispatch) => bindActionCreators({
