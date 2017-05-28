@@ -42,7 +42,8 @@ const btnGroupStyle = {
 const getAboutText = (version) => `
 <h3 class="text-center">Structor - React UI Builder</h3>
 <h5 class="text-center">${version}</h5>
-<h5 class="text-center">Apache License, Version 2.0</h5>
+<p class="text-center">Apache License, Version 2.0</p>
+<br/>
 <hr/>
 #### Created by <a href="https://www.linkedin.com/in/apustovalov" target="_blank">Alex Pustovalov</a> 
 <i class="fa fa-envelope-o"></i> <a href="mailto:apustovalov@gmail.com">apustovalov@gmail.com</a>\n\n
