@@ -7,7 +7,7 @@
 </p>
 
 <h1 align="center">Structor - React UI Builder</h1>
-<h3 align="center">Install Components&nbsp;&nbsp;>&nbsp;&nbsp;Prototype UI&nbsp;&nbsp;>&nbsp;&nbsp;Generate Source Sode&nbsp;&nbsp;>&nbsp;&nbsp;Build Application</h3>
+<h3 align="center">Install Components&nbsp;&nbsp;>&nbsp;&nbsp;Prototype UI&nbsp;&nbsp;>&nbsp;&nbsp;Generate Source Code&nbsp;&nbsp;>&nbsp;&nbsp;Build Application</h3>
 
 <br/>
 <br/>
