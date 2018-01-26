@@ -10,7 +10,7 @@ module.exports = [
             main: './src-client/main.js'
         },
         output: {
-            path: path.resolve('../test/node_modules/structor/static'),
+            path: path.resolve('test/node_modules/structor/static'),
             filename: '[name].js'
         },
         devtool: 'inline-source-map',
