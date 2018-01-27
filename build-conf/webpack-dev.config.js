@@ -1,5 +1,7 @@
-var webpack = require("webpack");
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var webpack = require("webpack"),
+    ExtractTextPlugin = require("extract-text-webpack-plugin"),
+    path = require('path')
+
 
 module.exports = [
     {
@@ -8,7 +10,7 @@ module.exports = [
             main: './src-client/main.js'
         },
         output: {
-            path: '/Users/ipselon/Development/projects/structor/test/node_modules/structor/static',
+            path: path.resolve('test/node_modules/structor/static'),
             filename: '[name].js'
         },
         devtool: 'inline-source-map',

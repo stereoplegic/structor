@@ -4,6 +4,7 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     babel = require('gulp-babel');
     uglify = require('gulp-uglify');
+    path = require('path')
     // watch = require('gulp-watch');
 
 gulp.task('default', function() {
@@ -11,7 +12,7 @@ gulp.task('default', function() {
 });
 
 gulp.task('clean-server-dev', function(){
-    return del(['/Users/ipselon/Development/projects/structor/test/node_modules/structor/server'], {force: true});
+    return del([path.resolve('../test/node_modules/structor/server')], {force: true});
 });
 
 gulp.task('clean-server', function(){
@@ -21,7 +22,7 @@ gulp.task('clean-server', function(){
 gulp.task('build-server-dev', ['clean-server-dev'], function() {
     return gulp.src('../src-server/**/*.js')
         .pipe(babel())
-        .pipe(gulp.dest('/Users/ipselon/Development/projects/structor/test/node_modules/structor/server'));
+        .pipe(gulp.dest(path.resolve('../test/node_modules/structor/server')));
 });
 
 gulp.task('build-server', ['clean-server'], function() {
